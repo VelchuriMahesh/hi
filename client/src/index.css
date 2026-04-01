@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+
+  /* ✅ REFINED COLOR PALETTE */
+  --primary: #3E2C23;    /* Headings, Buttons, Highlights */
+  --secondary: #EAE3DC;  /* Alternate Section backgrounds */
+  --bg-main: #F8F6F3;    /* Entire Page main background */
+  --accent: #C8A96A;     /* Hover effects, Icons, Stars */
+
+  /* ✅ FONT SYSTEM */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Poppins', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── GLOBAL FONT & COLOR DEFAULTS ── */
+
+body {
+  background-color: var(--bg-main) !important; /* Main Background #F8F6F3 */
+  font-family: var(--font-body) !important;    /* Body: Poppins */
+  color: var(--primary);                        /* Default text: #3E2C23 */
+  @apply antialiased;
+  min-width: 320px;
+}
+
+/* Force Poppins on all standard text elements */
+p, span, a, li, label, input, textarea, button {
+  font-family: var(--font-body) !important;
+}
+
+/* Force Playfair Display on all Headings */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading) !important; /* Headings: Playfair Display */
+  color: var(--primary) !important;            /* Heading Color: #3E2C23 */
+  font-weight: 700;
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(200, 169, 106, 0.3); /* Uses Accent color for text selection */
+}
+
+@layer components {
+  /* Main wrapper for sections */
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Alternate Section Background (#EAE3DC) */
+  .section-secondary {
+    background-color: var(--secondary) !important;
+  }
+
+  /* Small premium highlights (Poppins) */
+  .eyebrow {
+    font-family: var(--font-body) !important;
+    color: var(--primary);
+    @apply inline-flex items-center rounded-full border border-white/60 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] shadow-soft;
+  }
+
+  .glass-panel {
+    @apply rounded-[30px] border border-white/70 bg-white/70 shadow-soft backdrop-blur-xl;
+  }
+
+  /* ✅ PRIMARY BUTTON: #3E2C23 (Poppins) */
+  .button-primary {
+    background-color: var(--primary) !important;
+    font-family: var(--font-body) !important;
+    color: #FFFFFF !important;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition duration-300 hover:-translate-y-1 hover:shadow-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+    /* HOVER EFFECT: Accent Gold #C8A96A */
+    @apply hover:bg-[#C8A96A];
+  }
+
+  /* ✅ SECONDARY BUTTON (Poppins) */
+  .button-secondary {
+    font-family: var(--font-body) !important;
+    border: 1.5px solid var(--primary);
+    background-color: transparent;
+    color: var(--primary);
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition duration-300 hover:-translate-y-1 hover:shadow-soft;
+    /* Hover interaction using accent */
+    @apply hover:border-[#C8A96A] hover:text-[#C8A96A];
+  }
+
+  .luxury-card {
+    @apply rounded-[30px] border border-white/70 bg-white/80 p-6 shadow-card backdrop-blur-xl;
+  }
+
+  /* Accent highlights for premium feel */
+  .text-accent {
+    color: var(--accent) !important;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded-[24px] bg-stone-200;
+    background-image: linear-gradient(
+      90deg,
+      rgba(231, 229, 228, 0.9) 0px,
+      rgba(255, 255, 255, 0.95) 80px,
+      rgba(231, 229, 228, 0.9) 160px
+    );
+    background-size: 400px 100%;
+  }
+
+  .soft-divider {
+    background: linear-gradient(to right, transparent, var(--secondary), transparent);
+    @apply h-px w-full;
+  }
+}
