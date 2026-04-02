@@ -1,230 +1,492 @@
-import { useEffect, useMemo, useState } from 'react';
-import HeroBanner from '../components/HeroBanner';
+import { useEffect, useState } from 'react';
 import ImageGrid from '../components/ImageGrid';
 import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
-import SectionCta from '../components/SectionCta';
-import SectionHeading from '../components/SectionHeading';
-import VideoCard from '../components/VideoCard';
-import { aboutServices, aboutStory, fallbackReviews, heroContent } from '../data/content';
-import useMergedGallery from '../hooks/useMergedGallery';
+import { fallbackReviews } from '../data/content';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
-import { fetchVideos } from '../services/cms';
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
+const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
+const TEL_LINK        = `tel:${PHONE_NUMBER}`;
+
+const CONSULT_WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  'Hi, I would like to book a design consultation at Shrusara Fashion Boutique. Please share available slots.'
+)}`;
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+const differentiators = [
+  'Customized Fit for Every Body Type',
+  'Premium Maggam & Aari Work',
+  'Personally Guided Design Process',
+  'Focus on Finishing & Detail',
+  'On-Time Delivery Commitment',
+];
+
+const processSteps = [
+  {
+    step: '01',
+    title: 'Consultation',
+    description:
+      'We begin by understanding your occasion, body type, preferences, and design vision. Chief Designer Shruthi Ajith personally guides every consultation.',
+  },
+  {
+    step: '02',
+    title: 'Design Finalization',
+    description:
+      'Silhouette, fabric, embellishments, and handwork are finalized together — ensuring every detail reflects your style and occasion requirement.',
+  },
+  {
+    step: '03',
+    title: 'Trial & Perfect Fit',
+    description:
+      'Trials are carefully scheduled around your event timeline. Final delivery is planned so your outfit is ready well before your special day.',
+  },
+];
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+const WaIcon = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+  </svg>
+);
+
+const PhoneIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="15" height="15" aria-hidden="true">
+    <path d="M5 12l4.2 4.2L19 6.5" />
+  </svg>
+);
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function About() {
-  const { media: heroMedia } = useHeroMedia('about');
-  const { images, firebaseImages, loading: galleryLoading, refresh: refreshGallery } = useMergedGallery('all');
-  const [reviews, setReviews] = useState(fallbackReviews);
+  const { media: heroMedia }                = useHeroMedia('about');
+  const [reviews, setReviews]               = useState(fallbackReviews);
   const [reviewsLoading, setReviewsLoading] = useState(true);
-  const [videos, setVideos] = useState([]);
-
-  const totalImageCount = images.length;
-  const dynamicImageCount = firebaseImages.length;
-
-  useEffect(() => {
-    const onStorage = (event) => {
-      if (event.key === 'gallery-updated') {
-        refreshGallery();
-      }
-    };
-
-    window.addEventListener('storage', onStorage);
-
-    return () => {
-      window.removeEventListener('storage', onStorage);
-    };
-  }, [refreshGallery]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refreshGallery();
-    }, 15000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [refreshGallery]);
 
   useEffect(() => {
     let mounted = true;
-
-    Promise.allSettled([fetchReviews(), fetchVideos()]).then(([reviewsResponse, videosResponse]) => {
-      if (!mounted) {
-        return;
-      }
-
-      if (reviewsResponse.status === 'fulfilled' && reviewsResponse.value.reviews?.length) {
-        setReviews(reviewsResponse.value);
-      }
-
-      if (videosResponse.status === 'fulfilled') {
-        const aboutVideos = (videosResponse.value || []).filter((video) => {
-          const videoPage = String(video.page || video.section || 'about').trim().toLowerCase();
-          return videoPage === 'about';
-        });
-        setVideos(aboutVideos);
-      }
-
-      setReviewsLoading(false);
-    });
-
-    return () => {
-      mounted = false;
-    };
+    fetchReviews()
+      .then(res => { if (mounted && res.reviews?.length) setReviews(res); })
+      .finally(() => { if (mounted) setReviewsLoading(false); });
+    return () => { mounted = false; };
   }, []);
-
-  const featuredDesigns = useMemo(() => images.slice(0, 8), [images]);
 
   return (
     <>
+      <style>{`
+        /* ── Variables ── */
+        :root {
+          --c-primary:   #3E2C23;
+          --c-secondary: #EAE3DC;
+          --c-bg:        #F8F6F3;
+          --c-accent:    #C8A96A;
+          --c-muted:     #7A6A60;
+          --c-white:     #FFFFFF;
+          --r-lg:        24px;
+          --r-sm:        14px;
+        }
+        body { background: var(--c-bg); }
+
+        /* ── HERO ── */
+        .ab-hero {
+          display: grid; grid-template-columns: 1fr 1fr;
+          min-height: 88vh; align-items: center;
+          background: var(--c-bg); position: relative; overflow: hidden;
+        }
+        .ab-hero::before {
+          content: ''; position: absolute; inset: 0; pointer-events: none;
+          background: radial-gradient(ellipse 55% 65% at 28% 50%, rgba(200,169,106,.09) 0%, transparent 70%);
+        }
+        .ab-hero-text { padding: 80px 40px 80px 5vw; z-index: 2; }
+        .ab-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font: 600 11px/1 'Poppins',sans-serif; letter-spacing: .18em;
+          text-transform: uppercase; color: var(--c-accent); margin-bottom: 18px;
+        }
+        .ab-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--c-accent); display: block; }
+        .ab-hero-h1 {
+          font: 700 clamp(1.9rem,3.2vw,2.8rem)/1.2 'Playfair Display',serif;
+          color: var(--c-primary); margin-bottom: 20px;
+        }
+        .ab-hero-sub {
+          font: 400 1rem/1.75 'Poppins',sans-serif;
+          color: var(--c-muted); max-width: 440px; margin-bottom: 10px;
+        }
+        .ab-hero-designer {
+          display: inline-flex; align-items: center; gap: 8px;
+          font: 600 12px/1 'Poppins',sans-serif; color: var(--c-primary);
+          margin-bottom: 32px;
+        }
+        .ab-hero-designer::before { content: '✦'; color: var(--c-accent); font-size: 10px; }
+        .ab-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+        .ab-btn-pri {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: var(--c-primary); color: #fff;
+          font: 600 13px/1 'Poppins',sans-serif; padding: 14px 28px;
+          border-radius: 50px; text-decoration: none;
+          border: 2px solid var(--c-primary); transition: box-shadow .25s, transform .2s;
+        }
+        .ab-btn-pri:hover { box-shadow: 0 0 0 4px rgba(62,44,35,.15), 0 6px 24px rgba(62,44,35,.25); transform: translateY(-1px); }
+        .ab-btn-sec {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: transparent; color: var(--c-primary);
+          font: 600 13px/1 'Poppins',sans-serif; padding: 14px 28px;
+          border-radius: 50px; text-decoration: none;
+          border: 2px solid var(--c-primary); transition: background .2s, color .2s;
+        }
+        .ab-btn-sec:hover { background: var(--c-primary); color: #fff; }
+        .ab-hero-img-wrap { position: relative; height: 88vh; overflow: hidden; }
+        .ab-hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+        .ab-hero-fade {
+          position: absolute; inset: 0;
+          background: linear-gradient(to right, var(--c-bg) 0%, transparent 16%);
+        }
+
+        /* ── SHELLS ── */
+        .ab-shell { max-width: 1280px; margin: 0 auto; padding: 80px 5vw; }
+        .ab-alt { background: var(--c-secondary); }
+        .ab-alt-inner { max-width: 1280px; margin: 0 auto; padding: 80px 5vw; }
+
+        /* ── SECTION HEADINGS ── */
+        .ab-sec-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font: 600 11px/1 'Poppins',sans-serif; letter-spacing: .18em;
+          text-transform: uppercase; color: var(--c-accent); margin-bottom: 14px;
+        }
+        .ab-sec-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--c-accent); display: block; }
+        .ab-sec-h2 {
+          font: 700 clamp(1.6rem,2.6vw,2.3rem)/1.25 'Playfair Display',serif;
+          color: var(--c-primary); margin-bottom: 12px;
+        }
+        .ab-sec-sub { font: 400 .95rem/1.75 'Poppins',sans-serif; color: var(--c-muted); max-width: 600px; }
+
+        /* ── FOUNDER SECTION ── */
+        .ab-founder-grid {
+          display: grid; grid-template-columns: 1fr 1.3fr; gap: 56px;
+          align-items: center; margin-top: 0;
+        }
+        .ab-founder-img-wrap {
+          position: relative; border-radius: 28px; overflow: hidden;
+          aspect-ratio: 4/5; background: var(--c-secondary);
+          box-shadow: 0 8px 40px rgba(62,44,35,.14);
+        }
+        .ab-founder-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        .ab-founder-badge {
+          position: absolute; bottom: 24px; left: 24px;
+          background: var(--c-primary); color: #fff;
+          border-radius: 16px; padding: 14px 20px;
+          box-shadow: 0 4px 20px rgba(62,44,35,.3);
+        }
+        .ab-founder-badge-name {
+          font: 700 14px/1 'Playfair Display',serif; color: #fff; margin-bottom: 4px;
+        }
+        .ab-founder-badge-role {
+          font: 500 11px/1 'Poppins',sans-serif; color: var(--c-accent); letter-spacing: .08em;
+        }
+        .ab-founder-content { display: flex; flex-direction: column; justify-content: center; }
+        .ab-founder-body {
+          font: 400 1rem/1.85 'Poppins',sans-serif; color: var(--c-muted);
+          margin-bottom: 28px;
+        }
+        .ab-founder-body + .ab-founder-body { margin-top: -12px; }
+        .ab-founder-sig {
+          display: inline-flex; align-items: center; gap: 10px;
+          font: 600 13px/1 'Poppins',sans-serif; color: var(--c-primary);
+        }
+        .ab-founder-sig::before { content: '✦'; color: var(--c-accent); font-size: 11px; }
+
+        /* ── DIFFERENTIATORS ── */
+        .ab-diff-grid {
+          display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-top: 36px;
+        }
+        .ab-diff-item {
+          background: var(--c-white); border-radius: var(--r-lg); padding: 24px 20px;
+          border: 1px solid rgba(62,44,35,.06); box-shadow: 0 2px 16px rgba(62,44,35,.07);
+          display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+        }
+        .ab-diff-icon {
+          width: 36px; height: 36px; border-radius: 50%;
+          background: rgba(200,169,106,.12); display: flex; align-items: center; justify-content: center;
+          color: var(--c-accent); flex-shrink: 0;
+        }
+        .ab-diff-text { font: 600 .82rem/1.5 'Poppins',sans-serif; color: var(--c-primary); }
+
+        /* ── PROCESS ── */
+        .ab-process-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 40px; }
+        .ab-process-card {
+          background: var(--c-white); border-radius: var(--r-lg); padding: 32px 28px;
+          border: 1px solid rgba(62,44,35,.06); box-shadow: 0 2px 16px rgba(62,44,35,.07);
+          position: relative; overflow: hidden;
+        }
+        .ab-process-card::before {
+          content: attr(data-step); position: absolute; top: -10px; right: 16px;
+          font: 700 5rem/1 'Playfair Display',serif; color: rgba(200,169,106,.1); pointer-events: none;
+        }
+        .ab-process-step {
+          display: inline-block; font: 700 11px/1 'Poppins',sans-serif;
+          letter-spacing: .15em; text-transform: uppercase; color: var(--c-accent); margin-bottom: 16px;
+        }
+        .ab-process-title {
+          font: 700 1.2rem/1.25 'Playfair Display',serif; color: var(--c-primary); margin-bottom: 12px;
+        }
+        .ab-process-desc { font: 400 .87rem/1.7 'Poppins',sans-serif; color: var(--c-muted); }
+
+        /* ── TRUST ── */
+        .ab-trust-wrap {
+          background: var(--c-white); border-radius: 28px; padding: 40px 36px;
+          border: 1px solid rgba(62,44,35,.06); box-shadow: 0 4px 24px rgba(62,44,35,.07);
+        }
+        .ab-trust-stat {
+          display: inline-flex; align-items: center; gap: 10px;
+          background: var(--c-primary); color: #fff;
+          font: 700 14px/1 'Poppins',sans-serif;
+          padding: 12px 24px; border-radius: 50px; margin-bottom: 32px;
+        }
+        .ab-trust-stat-stars { color: var(--c-accent); letter-spacing: 2px; font-size: 13px; }
+
+        /* ── FINAL CTA ── */
+        .ab-cta-wrap {
+          background: var(--c-primary); border-radius: 32px; padding: 64px 56px;
+          text-align: center; position: relative; overflow: hidden;
+        }
+        .ab-cta-wrap::before {
+          content: ''; position: absolute; inset: 0; pointer-events: none;
+          background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(200,169,106,.12) 0%, transparent 70%);
+        }
+        .ab-cta-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font: 600 11px/1 'Poppins',sans-serif; letter-spacing: .18em;
+          text-transform: uppercase; color: var(--c-accent); margin-bottom: 20px;
+        }
+        .ab-cta-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--c-accent); display: block; }
+        .ab-cta-eyebrow::after  { content: ''; width: 22px; height: 1px; background: var(--c-accent); display: block; }
+        .ab-cta-h {
+          font: 700 clamp(1.6rem,2.8vw,2.4rem)/1.2 'Playfair Display',serif;
+          color: #fff; margin-bottom: 14px;
+        }
+        .ab-cta-sub {
+          font: 400 1rem/1.75 'Poppins',sans-serif;
+          color: rgba(255,255,255,.75); max-width: 480px; margin: 0 auto 12px;
+        }
+        .ab-cta-scarcity {
+          display: inline-flex; align-items: center; gap: 6px;
+          font: 500 12px/1 'Poppins',sans-serif; color: rgba(255,255,255,.5);
+          margin-bottom: 36px;
+        }
+        .ab-cta-scarcity::before { content: '⚑'; font-size: 11px; }
+        .ab-cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
+        .ab-cta-btn-pri {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: var(--c-accent); color: #fff;
+          font: 600 13px/1 'Poppins',sans-serif; padding: 16px 32px;
+          border-radius: 50px; text-decoration: none;
+          border: 2px solid var(--c-accent); transition: box-shadow .2s, transform .2s;
+        }
+        .ab-cta-btn-pri:hover { box-shadow: 0 0 0 4px rgba(200,169,106,.3); transform: translateY(-1px); }
+        .ab-cta-btn-sec {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: transparent; color: #fff;
+          font: 600 13px/1 'Poppins',sans-serif; padding: 16px 32px;
+          border-radius: 50px; text-decoration: none;
+          border: 2px solid rgba(255,255,255,.35); transition: background .2s;
+        }
+        .ab-cta-btn-sec:hover { background: rgba(255,255,255,.1); }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:1200px) {
+          .ab-diff-grid { grid-template-columns: repeat(3,1fr); }
+        }
+        @media(max-width:1024px) {
+          .ab-founder-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+          .ab-process-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media(max-width:768px) {
+          .ab-hero { grid-template-columns: 1fr; min-height: auto; }
+          .ab-hero-text { padding: 50px 5vw 32px; order: 2; }
+          .ab-hero-img-wrap { order: 1; height: 55vw; min-height: 280px; }
+          .ab-hero-fade { background: linear-gradient(to bottom, transparent 60%, var(--c-bg) 100%); }
+          .ab-hero-btns { flex-direction: column; }
+          .ab-btn-pri, .ab-btn-sec { width: 100%; justify-content: center; }
+          .ab-shell { padding: 50px 5vw; }
+          .ab-alt-inner { padding: 50px 5vw; }
+          .ab-founder-grid { grid-template-columns: 1fr; gap: 32px; }
+          .ab-founder-img-wrap { aspect-ratio: 3/2; }
+          .ab-diff-grid { grid-template-columns: 1fr 1fr; }
+          .ab-process-grid { grid-template-columns: 1fr; }
+          .ab-cta-wrap { padding: 40px 24px; }
+          .ab-cta-btns { flex-direction: column; align-items: center; }
+          .ab-cta-btn-pri, .ab-cta-btn-sec { width: 100%; justify-content: center; }
+        }
+        @media(max-width:480px) {
+          .ab-diff-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
       <PageMeta
         title="About Shrusara Fashion Boutique | Bangalore Boutique"
-        description="Learn about Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore and our approach to bridal and designer customization."
-        keywords="About boutique Bangalore, bridal boutique Mahalakshmipuram, designer boutique Bangalore"
+        description="Shrusara Fashion Boutique, Bangalore — a designer-led bridal and fashion boutique by Chief Designer Shruthi Ajith. Premium customized outfits with expert fit and finish."
+        keywords="About Shrusara Fashion Boutique, Shruthi Ajith designer Bangalore, bridal boutique Mahalakshmipuram Bangalore"
         canonicalPath="/about"
       />
 
-      <HeroBanner
-        eyebrow={heroContent.about.eyebrow}
-        title={heroContent.about.title}
-        description={heroContent.about.description}
-        image={heroMedia?.imageUrl || heroContent.about.image}
-        videoUrl={heroMedia?.videoUrl || heroContent.about.videoUrl}
-      />
-
-      <Reveal className="section-shell py-12 sm:py-16">
-        <div className="glass-panel p-6 sm:p-8 lg:p-10">
-          <SectionHeading
-            eyebrow="About Shrusara"
-            title="About Shrusara"
-            description={aboutStory.short}
+      {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
+      <section className="ab-hero">
+        <div className="ab-hero-text">
+          <p className="ab-eyebrow">About Shrusara · Bangalore</p>
+          <h1 className="ab-hero-h1">
+            A Bridal &amp; Designer Boutique Built on Craftsmanship, Fit &amp; Trust
+          </h1>
+          <p className="ab-hero-sub">
+            Shrusara Fashion Boutique is a Bangalore based designer boutique specializing in
+            customized bridal blouses and outfits with premium handwork, precise fitting, and
+            personalized styling.
+          </p>
+          <p className="ab-hero-designer">Designed personally by Chief Designer Shruthi Ajith</p>
+          <div className="ab-hero-btns">
+            <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-btn-pri">
+              <WaIcon size={18} /> Book Consultation on WhatsApp
+            </a>
+            <a href={TEL_LINK} className="ab-btn-sec">
+              <PhoneIcon /> Call Now
+            </a>
+          </div>
+        </div>
+        <div className="ab-hero-img-wrap">
+          <img
+            src={heroMedia?.imageUrl || '/images/about/hero.jpg'}
+            alt="Shrusara Fashion Boutique Bangalore"
+            className="ab-hero-img"
           />
+          <div className="ab-hero-fade" />
+        </div>
+      </section>
+
+      {/* ── 2. FOUNDER ──────────────────────────────────────────────────────── */}
+      <Reveal className="ab-shell">
+        <p className="ab-sec-eyebrow">The Designer Behind Shrusara</p>
+        <h2 className="ab-sec-h2">Meet Our Chief Designer – Shruthi Ajith</h2>
+        <div className="ab-founder-grid" style={{ marginTop: 40 }}>
+          <div className="ab-founder-img-wrap">
+            <img
+              src="/images/about/shruthi-ajith.jpg"
+              alt="Shruthi Ajith – Chief Designer, Shrusara Fashion Boutique"
+              className="ab-founder-img"
+            />
+            <div className="ab-founder-badge">
+              <p className="ab-founder-badge-name">Shruthi Ajith</p>
+              <p className="ab-founder-badge-role">Chief Designer &amp; Founder</p>
+            </div>
+          </div>
+          <div className="ab-founder-content">
+            <p className="ab-founder-body">
+              Shruthi Ajith, founder and chief designer of Shrusara Fashion Boutique, brings
+              deep expertise in fashion designing with a strong focus on customized bridal and
+              designer wear.
+            </p>
+            <p className="ab-founder-body">
+              She personally works with every client to understand their body type, style
+              preferences, and occasion requirements. From design selection to final fitting,
+              every outfit is guided with attention to detail — ensuring perfect fit and
+              premium finishing.
+            </p>
+            <p className="ab-founder-sig">Shruthi Ajith, Chief Designer</p>
+          </div>
         </div>
       </Reveal>
 
-      <Reveal className="section-shell py-12 sm:py-16">
-        <SectionHeading
-          eyebrow="Our Services"
-          title="A boutique offering for bridal, festive, designer, and kids wear"
-          description="No clutter, no generic styling copy, just clear boutique services with a premium finish."
-        />
-        <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {aboutServices.map((service) => (
-            <article key={service} className="luxury-card">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linen text-cocoa">
-                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
-                  <path d="m5 12 4.2 4.2L19 6.5" />
-                </svg>
+      {/* ── 3. DIFFERENTIATORS ──────────────────────────────────────────────── */}
+      <div className="ab-alt">
+        <div className="ab-alt-inner">
+          <p className="ab-sec-eyebrow">Why Shrusara</p>
+          <h2 className="ab-sec-h2">Why Brides Choose Shrusara</h2>
+          <p className="ab-sec-sub">
+            A boutique experience designed to feel personal, precise, and premium at every step.
+          </p>
+          <div className="ab-diff-grid">
+            {differentiators.map(item => (
+              <div key={item} className="ab-diff-item">
+                <div className="ab-diff-icon">
+                  <CheckIcon />
+                </div>
+                <p className="ab-diff-text">{item}</p>
               </div>
-              <h2 className="mt-5 text-xl font-semibold text-ink">{service}</h2>
-              <p className="mt-2 text-sm leading-7 text-stone-600">
-                Personalized boutique work shaped around fit, finish, and occasion.
-              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 4. PROCESS ──────────────────────────────────────────────────────── */}
+      <Reveal className="ab-shell">
+        <p className="ab-sec-eyebrow">Our Approach</p>
+        <h2 className="ab-sec-h2">Our Approach to Every Design</h2>
+        <p className="ab-sec-sub">
+          Every outfit at Shrusara is designed with a structured approach — starting from
+          understanding your requirement, guiding you through design selection, and ensuring
+          perfect fitting through trials.
+        </p>
+        <div className="ab-process-grid">
+          {processSteps.map(step => (
+            <article key={step.step} className="ab-process-card" data-step={step.step}>
+              <span className="ab-process-step">Step {step.step}</span>
+              <h3 className="ab-process-title">{step.title}</h3>
+              <p className="ab-process-desc">{step.description}</p>
             </article>
           ))}
         </div>
       </Reveal>
 
-      <Reveal className="section-shell py-12 sm:py-16">
-        <div className="glass-panel p-6 sm:p-8 lg:p-10">
-          <SectionHeading
-            eyebrow="Why Choose Us"
-            title={aboutStory.intro}
-            description="A calm boutique experience with attention to fitting, embroidery quality, and delivery confidence."
-          />
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            {[
-              'Customized fitting',
-              'Maggam expertise',
-              'Premium stitching',
-              'Consultation',
-              'On-time delivery'
-            ].map((item) => (
-              <article key={item} className="rounded-[24px] bg-white/90 p-5 shadow-card">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linen text-cocoa">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
-                    <path d="m5 12 4.2 4.2L19 6.5" />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-ink">{item}</h3>
-                <p className="mt-2 text-sm leading-7 text-stone-600">
-                  Premium boutique execution that keeps the process elegant and dependable.
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal className="section-shell py-12 sm:py-16">
-        <SectionHeading
-          eyebrow="Featured Designs"
-          title="Bridal, designer, and kids favorites from our boutique collection"
-          description="Static local references come first, followed by dynamic gallery uploads managed through Firebase-backed admin tools."
-        />
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-sm text-stone-600">
-            Total designs: <strong>{totalImageCount}</strong>, admin uploads: <strong>{dynamicImageCount}</strong>
+      {/* ── 5. TRUST / SOCIAL PROOF ─────────────────────────────────────────── */}
+      <div className="ab-alt">
+        <div className="ab-alt-inner">
+          <p className="ab-sec-eyebrow">Trusted by Brides</p>
+          <h2 className="ab-sec-h2">Trusted by Brides Across Bangalore</h2>
+          <p className="ab-sec-sub">
+            100+ happy clients with consistent quality and service.
           </p>
-          <button
-            className="button-secondary h-10 px-3 text-sm"
-            type="button"
-            onClick={refreshGallery}
-            disabled={galleryLoading}
-          >
-            {galleryLoading ? 'Refreshing...' : 'Refresh gallery'}
-          </button>
-        </div>
-        <div className="mt-10">
-          <ImageGrid
-            images={featuredDesigns}
-            loading={galleryLoading}
-            columnsClassName="sm:grid-cols-2 lg:grid-cols-4"
-            carouselOnMobile
-          />
-        </div>
-      </Reveal>
-
-      <Reveal className="section-shell py-12 sm:py-16">
-        <SectionHeading
-          eyebrow="Client Videos"
-          title="Boutique moments shared through testimonial videos"
-          description="YouTube testimonial links added from the admin panel appear here with premium preview cards."
-        />
-        {videos.length ? (
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {videos.map((video) => (
-              <VideoCard
-                key={video.id}
-                video={video}
-                onOpen={(item) => window.open(item.url, '_blank', 'noopener,noreferrer')}
-              />
-            ))}
+          <div className="ab-trust-wrap" style={{ marginTop: 36 }}>
+            <div className="ab-trust-stat">
+              <span className="ab-trust-stat-stars">★★★★★</span>
+              100+ Happy Clients in Bangalore
+            </div>
+            <ReviewsSection
+              payload={reviews}
+              loading={reviewsLoading}
+              description="Real experiences from brides and clients who trusted Shrusara for their special occasions."
+            />
           </div>
-        ) : (
-          <div className="mt-10 rounded-[28px] border border-white/70 bg-white/85 p-8 shadow-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cocoa">
-              Video testimonials
-            </p>
-            <p className="mt-4 text-lg font-semibold text-ink">
-              Add testimonial YouTube links from the admin panel to show them here.
-            </p>
+        </div>
+      </div>
+
+      {/* ── 6. FINAL CTA ────────────────────────────────────────────────────── */}
+      <div className="ab-shell" style={{ paddingTop: 0 }}>
+        <div className="ab-cta-wrap">
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+            <p className="ab-cta-eyebrow">Start Your Consultation</p>
           </div>
-        )}
-      </Reveal>
-
-      <ReviewsSection
-        payload={reviews}
-        loading={reviewsLoading}
-        description="Google review data helps reassure visitors that the boutique experience is trusted and well rated."
-      />
-
-      <SectionCta
-        title="Start with a boutique consultation"
-        description="Tell us what you are planning for and we will recommend the right category, silhouette, and design direction."
-      />
+          <h2 className="ab-cta-h">Start Your Design Consultation Today</h2>
+          <p className="ab-cta-sub">
+            Share your requirement and our Chief Designer Shruthi Ajith will guide you with
+            the right design and fit.
+          </p>
+          <p className="ab-cta-scarcity">Limited consultation slots available</p>
+          <div className="ab-cta-btns">
+            <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-cta-btn-pri">
+              <WaIcon size={18} /> WhatsApp Consultation
+            </a>
+            <a href={TEL_LINK} className="ab-cta-btn-sec">
+              <PhoneIcon /> Call Now
+            </a>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
