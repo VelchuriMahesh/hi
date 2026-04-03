@@ -858,12 +858,12 @@ export default function Home() {
       `}</style>
 
       <PageMeta
-        title="Bridal Blouse Designer & Designer Boutique in Bangalore | Shrusara Fashion Boutique"
-        description="Customized bridal blouses, lehengas, gowns, and designer outfits tailored to your style, body type, and occasion in Bangalore."
-        keywords="Bridal blouse designer Bangalore, Maggam work blouse, Boutique Bangalore, Designer boutique Bangalore"
-        canonicalPath="/"
-        schema={schema}
-      />
+  title="Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique"
+  description="Customized bridal blouses, designer outfits, lehengas, and gowns in Bangalore with perfect fit, premium finishing, and personalized styling by Shrusara Fashion Boutique."
+  keywords="Bridal blouse designer Bangalore, Maggam work blouse, Boutique Bangalore, Designer boutique Bangalore"
+  canonicalPath="/"
+  schema={schema}
+/>
 
      {/* ── HERO SECTION ──────────────────────────────────────────────────────────── */}
 <section className="sf-hero">

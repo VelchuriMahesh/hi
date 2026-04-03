@@ -463,11 +463,10 @@ export default function Bridal() {
       `}</style>
 
       <PageMeta
-        title="Bridal Blouse Designer in Bangalore | Shrusara Fashion Boutique"
-        description="Customized bridal blouses, lehengas and gowns in Bangalore with Maggam & Aari work, perfect fit and premium finishing by Chief Designer Shruthi Ajith."
-        keywords="Bridal blouse designer Bangalore, Maggam work blouse, Aari work blouse Bangalore, Boutique Bangalore"
-        canonicalPath="/bridal-blouse-designer-bangalore"
-      />
+  title="Bridal Blouse Designer in Bangalore | Maggam & Aari Work Boutique"
+  description="Customized bridal blouses in Bangalore with premium maggam and aari work, perfect fit, and expert design guidance by Chief Designer Shruthi Ajith at Shrusara Fashion Boutique."
+  canonicalPath="/bridal-blouse-bangalore"
+/>
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="br-hero">

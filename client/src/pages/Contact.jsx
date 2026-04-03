@@ -6,11 +6,10 @@ export default function Contact() {
   return (
     <>
       <PageMeta
-        title="Contact Shrusara Fashion Boutique | Bangalore"
-        description="Contact Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore for bridal blouse design, boutique appointments, and WhatsApp consultations."
-        keywords="Contact boutique Bangalore, bridal boutique Mahalakshmipuram contact, WhatsApp boutique Bangalore"
-        canonicalPath="/contact"
-      />
+  title="Contact Bridal Boutique in Bangalore | Shrusara Fashion Boutique"
+  description="Visit Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore or connect via WhatsApp or call to book your bridal and designer outfit consultation."
+  canonicalPath="/contact-shrusara-bangalore"
+/>
 
       <section className="section-shell pb-12 pt-8 sm:pb-16">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">

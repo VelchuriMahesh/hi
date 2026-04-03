@@ -456,13 +456,11 @@ export default function Designer() {
         }
       `}</style>
 
-      <PageMeta
-        title="Designer Outfits in Bangalore | Shrusara Fashion Boutique"
-        description="Customized gowns, Indo-western outfits, and party wear in Bangalore with perfect fit, premium finishing and modern styling by Chief Designer Shruthi Ajith."
-        keywords="Designer outfits Bangalore, Designer gowns Bangalore, Indo western boutique Bangalore, party wear boutique Bangalore"
-        canonicalPath="/designer-outfits-bangalore"
-      />
-
+     <PageMeta
+  title="Designer Outfits in Bangalore | Gowns, Indo-Western & Party Wear"
+  description="Explore customized designer outfits in Bangalore including gowns, Indo-western sets, and party wear with premium tailoring and personalized styling at Shrusara Fashion Boutique."
+  canonicalPath="/designer-outfits-bangalore"
+/>
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="ds-hero">
         <div className="ds-hero-text">
