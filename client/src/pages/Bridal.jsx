@@ -3,6 +3,20 @@ import ImageGrid from '../components/ImageGrid';
 import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
+
+// Static Image Imports
+import lehenga1 from '../assets/images/bridal/lehenga-1.jpg';
+import lehenga2 from '../assets/images/bridal/lehenga-2.jpeg';
+import gown1 from '../assets/images/bridal/bridal/gown-1.jpeg';
+import gown2 from '../assets/images/bridal/bridal/gown-2.jpeg';
+import gown3 from '../assets/images/bridal/bridal/gown-3.jpeg';
+import gown4 from '../assets/images/bridal/bridal/gown-4.jpeg';
+import blouse1 from '../assets/images/bridal/bridal-02.jpeg';
+import blouse2 from '../assets/images/bridal/bridal-03.jpeg';
+import blouse3 from '../assets/images/bridal/bridal-04.jpeg';
+import blouse4 from '../assets/images/bridal/bridal-08.jpeg';
+import blouse5 from '../assets/images/bridal/bridal-10.jpeg';
+
 import {
   bridalProcess,
   bridalServices,
@@ -25,12 +39,22 @@ const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
 // ─── Bridal outfits data with filter tags ─────────────────────────────────────
 const bridalOutfits = [
-  { id: 1, tag: 'bridal-blouse', title: 'Maggam Work Blouse',     image: '/images/bridal/blouse-1.jpg' },
-  { id: 2, tag: 'lehenga',       title: 'Bridal Lehenga',          image: '/images/bridal/lehenga-1.jpg' },
-  { id: 3, tag: 'gowns',         title: 'Bridal Gown',             image: '/images/bridal/gown-1.jpg' },
-  { id: 4, tag: 'bridal-blouse', title: 'Aari Work Blouse',        image: '/images/bridal/blouse-2.jpg' },
-  { id: 5, tag: 'lehenga',       title: 'Reception Lehenga',       image: '/images/bridal/lehenga-2.jpg' },
-  { id: 6, tag: 'bridal-blouse', title: 'Muhurtham Blouse',        image: '/images/bridal/blouse-3.jpg' },
+  // BRIDAL BLOUSE CATEGORY
+  { id: 1, tag: 'bridal-blouse', title: 'Maggam Work Blouse', image: blouse1 },
+  { id: 2, tag: 'bridal-blouse', title: 'Aari Work Blouse',   image: blouse2 },
+  { id: 3, tag: 'bridal-blouse', title: 'Muhurtham Blouse',   image: blouse3 },
+  { id: 11, tag: 'bridal-blouse', title: 'Designer Blouse',   image: blouse4 },
+  { id: 12, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: blouse5 },
+  
+  // LEHENGA CATEGORY
+  { id: 4, tag: 'lehenga', title: 'Bridal Lehenga',    image: lehenga1 },
+  { id: 5, tag: 'lehenga', title: 'Reception Lehenga', image: lehenga2 },
+  
+  // GOWNS CATEGORY
+  { id: 7, tag: 'gowns', title: 'Bridal Gown',         image: gown1 },
+  { id: 8, tag: 'gowns', title: 'Reception Gown',      image: gown2 },
+  { id: 9, tag: 'gowns', title: 'Evening Bridal Gown', image: gown3 },
+  { id: 10, tag: 'gowns', title: 'Custom Bridal Gown', image: gown4 },
 ];
 
 const FILTERS = [
@@ -89,10 +113,11 @@ const PhoneIcon = () => (
 );
 
 // ─── Bridal Outfits Filter Section ───────────────────────────────────────────
-function BridalOutfits({ galleryImages, galleryLoading }) {
+function BridalOutfits() {
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const filtered = activeFilter === 'all'
+  // Strictly filter from your manual bridalOutfits list to avoid duplicates
+  const filteredData = activeFilter === 'all'
     ? bridalOutfits
     : bridalOutfits.filter(o => o.tag === activeFilter);
 
@@ -111,25 +136,20 @@ function BridalOutfits({ galleryImages, galleryLoading }) {
         ))}
       </div>
 
-      {/* Grid — uses dynamic gallery images from admin if available, else static */}
-      {galleryImages && galleryImages.length > 0 ? (
-        <div className="br-outfit-grid">
-          {(activeFilter === 'all' ? galleryImages : galleryImages.slice(0, 4)).map((img, i) => (
-            <div key={i} className="br-outfit-card">
-              <img src={img.src || img.url || img} alt={img.alt || `Bridal design ${i + 1}`} loading="lazy" className="br-outfit-img" />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="br-outfit-grid">
-          {filtered.map(item => (
-            <div key={item.id} className="br-outfit-card">
-              <img src={item.image} alt={item.title} loading="lazy" className="br-outfit-img" />
-              <div className="br-outfit-label">{item.title}</div>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Grid — Shows only manual images to prevent "double" images */}
+      <div className="br-outfit-grid">
+        {filteredData.map(item => (
+          <div key={item.id} className="br-outfit-card">
+            <img 
+              src={item.image} 
+              alt={item.title} 
+              loading="lazy" 
+              className="br-outfit-img" 
+            />
+            <div className="br-outfit-label">{item.title}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -152,7 +172,7 @@ export default function Bridal() {
   return (
     <>
       <style>{`
-        /* ── Variables (same palette as Home) ── */
+        /* ── Variables ── */
         :root {
           --c-primary:   #3E2C23;
           --c-secondary: #EAE3DC;
@@ -463,10 +483,10 @@ export default function Bridal() {
       `}</style>
 
       <PageMeta
-  title="Bridal Blouse Designer in Bangalore | Maggam & Aari Work Boutique"
-  description="Customized bridal blouses in Bangalore with premium maggam and aari work, perfect fit, and expert design guidance by Chief Designer Shruthi Ajith at Shrusara Fashion Boutique."
-  canonicalPath="/bridal-blouse-bangalore"
-/>
+        title="Bridal Blouse Designer in Bangalore | Maggam & Aari Work Boutique"
+        description="Customized bridal blouses in Bangalore with premium maggam and aari work, perfect fit, and expert design guidance by Chief Designer Shruthi Ajith at Shrusara Fashion Boutique."
+        canonicalPath="/bridal-blouse-bangalore"
+      />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="br-hero">
@@ -493,8 +513,8 @@ export default function Bridal() {
         </div>
         <div className="br-hero-img-wrap">
           <img
-            src={heroMedia?.imageUrl || '/videos/blouse.png'}
-            alt="Bridal blouse designer Bangalore – Shrusara Fashion Boutique"
+            src="/videos/bridal_hero.jpeg"
+            alt="Custom Bridal Blouse Bangalore"
             className="br-hero-img"
           />
           <div className="br-hero-fade" />
@@ -522,11 +542,11 @@ export default function Bridal() {
       <div className="br-alt">
         <div className="br-alt-inner">
           <p className="br-sec-eyebrow">Bridal Outfits</p>
-          <h2 className="br-sec-h2">Bridal Outfits</h2>
+          <h2 className="br-sec-h2">Our Bridal Collection</h2>
           <p className="br-sec-sub">
             Explore customized bridal blouses, lehengas, and gowns designed for your wedding and special occasions.
           </p>
-          <BridalOutfits galleryImages={bridalGallery} galleryLoading={galleryLoading} />
+          <BridalOutfits />
         </div>
       </div>
 
@@ -551,7 +571,7 @@ export default function Bridal() {
         </div>
       </Reveal>
 
-      {/* ── 5. GALLERY ──────────────────────────────────────────────────────── */}
+      {/* ── 5. GALLERY (Shows Admin Images) ─────────────────────────────────── */}
       <div className="br-alt">
         <div className="br-alt-inner">
           <p className="br-sec-eyebrow">Gallery</p>
