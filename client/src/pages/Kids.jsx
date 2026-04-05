@@ -365,10 +365,10 @@ export default function Kids() {
         </div>
         <div className="kd-hero-img-wrap">
           <img
-            src={heroMedia?.imageUrl || '/videos/kids.png'}
-            alt="Kids outfits Bangalore – Shrusara Fashion Boutique"
-            className="kd-hero-img"
-          />
+  src="/videos/kids.png"
+  alt="Kids outfits Bangalore – Shrusara Fashion Boutique"
+  className="kd-hero-img"
+/>
           <div className="kd-hero-fade" />
         </div>
       </section>

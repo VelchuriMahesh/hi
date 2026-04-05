@@ -4,9 +4,23 @@ import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
 import { fallbackReviews } from '../data/content';
-import useMergedGallery from '../hooks/useMergedGallery';
+import useGallery from '../hooks/useGallery';       // ← ONLY dynamic admin images
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
+
+// Static Image Imports (Strictly for Explore Styles Section)
+import d1  from '../assets/images/designer/designer-01.jpeg';
+import d2  from '../assets/images/designer/designer-02.jpeg';
+import d3  from '../assets/images/designer/designer-03.jpeg';
+import d4  from '../assets/images/designer/designer-04.jpeg';
+import d5  from '../assets/images/designer/designer-05.jpeg';
+import d6  from '../assets/images/designer/designer-06.jpeg';
+import d7  from '../assets/images/designer/designer-07.jpeg';
+import d8  from '../assets/images/designer/designer-08.jpeg';
+import d9  from '../assets/images/designer/designer-09.jpeg';
+import d10 from '../assets/images/designer/designer-10.jpeg';
+import d11 from '../assets/images/designer/designer-11.jpeg';
+import d12 from '../assets/images/designer/designer-12.jpeg';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -17,21 +31,27 @@ const DESIGNER_MSG    = encodeURIComponent(
 const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${DESIGNER_MSG}`;
 const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
-// ─── Designer outfits data with filter tags ───────────────────────────────────
-const designerOutfits = [
-  { id: 1, tag: 'gowns',         title: 'Designer Gown',          image: '/images/designer/gown-1.jpg' },
-  { id: 2, tag: 'indo-western',  title: 'Indo-Western Set',        image: '/images/designer/indo-1.jpg' },
-  { id: 3, tag: 'party-wear',    title: 'Party Wear',              image: '/images/designer/party-1.jpg' },
-  { id: 4, tag: 'gowns',         title: 'Flared Gown',             image: '/images/designer/gown-2.jpg' },
-  { id: 5, tag: 'indo-western',  title: 'Fusion Kurta Set',        image: '/images/designer/indo-2.jpg' },
-  { id: 6, tag: 'party-wear',    title: 'Embellished Party Wear',  image: '/images/designer/party-2.jpg' },
+// ─── Static Designer outfits data (Strictly for the Explore Styles Section) ──
+const staticDesignerOutfits = [
+  { id: 1,  tag: 'gowns',        title: 'Designer Gown',    image: d1  },
+  { id: 2,  tag: 'indo-western', title: 'Indo-Western Set', image: d2  },
+  { id: 3,  tag: 'party-wear',   title: 'Party Wear',       image: d3  },
+  { id: 4,  tag: 'gowns',        title: 'Flared Gown',      image: d4  },
+  { id: 5,  tag: 'gowns',        title: 'Designer Gown',    image: d5  },
+  { id: 6,  tag: 'indo-western', title: 'Indo-Western Set', image: d6  },
+  { id: 7,  tag: 'party-wear',   title: 'Party Wear',       image: d7  },
+  { id: 8,  tag: 'gowns',        title: 'Flared Gown',      image: d8  },
+  { id: 9,  tag: 'gowns',        title: 'Designer Gown',    image: d9  },
+  { id: 10, tag: 'indo-western', title: 'Indo-Western Set', image: d10 },
+  { id: 11, tag: 'party-wear',   title: 'Party Wear',       image: d11 },
+  { id: 12, tag: 'gowns',        title: 'Flared Gown',      image: d12 },
 ];
 
 const FILTERS = [
-  { key: 'all',          label: 'All' },
-  { key: 'gowns',        label: 'Designer Gowns' },
+  { key: 'all',          label: 'All'               },
+  { key: 'gowns',        label: 'Designer Gowns'    },
   { key: 'indo-western', label: 'Indo-Western Sets' },
-  { key: 'party-wear',   label: 'Party Wear' },
+  { key: 'party-wear',   label: 'Party Wear'        },
 ];
 
 const designerServiceItems = [
@@ -55,44 +75,48 @@ const processSteps = [
   {
     step: '01',
     title: 'Consultation',
-    description: 'Share your event date, style preferences, and outfit ideas. Chief Designer Shruthi Ajith will guide you personally from the first call.',
+    description:
+      'Share your event date, style preferences, and outfit ideas. Chief Designer Shruthi Ajith will guide you personally from the first call.',
   },
   {
     step: '02',
     title: 'Design Direction',
-    description: 'We finalize silhouette, fabric, embellishments, and styling together — ensuring every detail matches your vision and occasion.',
+    description:
+      'We finalize silhouette, fabric, embellishments, and styling together — ensuring every detail matches your vision and occasion.',
   },
   {
     step: '03',
     title: 'Trial & Finish',
-    description: 'Trials are scheduled around your event timeline. Final fitting and delivery planned so you receive your outfit well before your special day.',
+    description:
+      'Trials are scheduled around your event timeline. Final fitting and delivery planned so you receive your outfit well before your special day.',
   },
 ];
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const WaIcon = ({ size = 18 }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
   </svg>
 );
 
 const PhoneIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
-    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
   </svg>
 );
 
-// ─── Designer Outfits Filter Section ─────────────────────────────────────────
-function DesignerOutfits({ galleryImages, galleryLoading }) {
+// ─── 1. Explore Styles Section (STRICTLY STATIC — d1 to d12 only) ─────────────
+function DesignerOutfits() {
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const filtered = activeFilter === 'all'
-    ? designerOutfits
-    : designerOutfits.filter(o => o.tag === activeFilter);
+  // Only uses the staticDesignerOutfits array — never touches any API or hook
+  const filteredData =
+    activeFilter === 'all'
+      ? staticDesignerOutfits
+      : staticDesignerOutfits.filter(o => o.tag === activeFilter);
 
   return (
     <div className="ds-outfits">
-      {/* Filter pills */}
       <div className="ds-filters">
         {FILTERS.map(f => (
           <button
@@ -105,35 +129,67 @@ function DesignerOutfits({ galleryImages, galleryLoading }) {
         ))}
       </div>
 
-      {/* Grid — uses dynamic gallery images from admin if available, else static */}
-      {galleryImages && galleryImages.length > 0 ? (
-        <div className="ds-outfit-grid">
-          {(activeFilter === 'all' ? galleryImages : galleryImages.slice(0, 4)).map((img, i) => (
-            <div key={i} className="ds-outfit-card">
-              <img src={img.src || img.url || img} alt={img.alt || `Designer outfit ${i + 1}`} loading="lazy" className="ds-outfit-img" />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="ds-outfit-grid">
-          {filtered.map(item => (
-            <div key={item.id} className="ds-outfit-card">
-              <img src={item.image} alt={item.title} loading="lazy" className="ds-outfit-img" />
-              <div className="ds-outfit-label">{item.title}</div>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="ds-outfit-grid">
+        {filteredData.map(item => (
+          <div key={item.id} className="ds-outfit-card">
+            <img
+              src={item.image}
+              alt={item.title}
+              loading="lazy"
+              className="ds-outfit-img"
+            />
+            <div className="ds-outfit-label">{item.title}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-// ─── Page Component ───────────────────────────────────────────────────────────
+// ─── 2. Gallery Section (STRICTLY DYNAMIC — admin-uploaded images only) ────────
+//
+//  useGallery('designer') fetches ONLY images that the admin has uploaded via
+//  the dashboard. It does NOT merge or include any of the static d1–d12 imports.
+//  If you need to create this hook, see hooks/useGallery.js below.
+//
+function DesignerGallery({ images, loading }) {
+  if (loading) {
+    return (
+      <div className="ds-gallery-loading">
+        <p className="ds-gallery-note">Loading gallery…</p>
+      </div>
+    );
+  }
+
+  if (!images || images.length === 0) {
+    return (
+      <p className="ds-gallery-note">
+        No gallery images yet. Admin can add images from the dashboard.
+      </p>
+    );
+  }
+
+  return (
+    <ImageGrid
+      images={images.slice(0, 9)}
+      loading={loading}
+      priority
+      columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+    />
+  );
+}
+
+// ─── Main Page Component ──────────────────────────────────────────────────────
 export default function Designer() {
   const [reviews, setReviews]               = useState(fallbackReviews);
   const [reviewsLoading, setReviewsLoading] = useState(true);
-  const { media: heroMedia }                = useHeroMedia('designer');
-  const { images: designerGallery, loading: galleryLoading } = useMergedGallery('designer');
+
+  // Hero media — dynamic from admin
+  const { media: heroMedia } = useHeroMedia('designer');
+
+  // ── Gallery: ONLY admin-uploaded images via useGallery (NOT useMergedGallery) ──
+  // useGallery fetches purely dynamic images; it never blends in the static d1–d12.
+  const { images: designerGallery, loading: galleryLoading } = useGallery('designer');
 
   useEffect(() => {
     let mounted = true;
@@ -146,7 +202,7 @@ export default function Designer() {
   return (
     <>
       <style>{`
-        /* ── Variables (same palette as Bridal) ── */
+        /* ── Variables ── */
         :root {
           --c-primary:   #3E2C23;
           --c-secondary: #EAE3DC;
@@ -267,7 +323,7 @@ export default function Designer() {
         }
         .ds-trust-desc { font: 400 .85rem/1.7 'Poppins',sans-serif; color: var(--c-muted); }
 
-        /* ── DESIGNER OUTFITS / FILTER ── */
+        /* ── DESIGNER OUTFITS / FILTER (Explore Styles — static only) ── */
         .ds-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; margin-top: 32px; }
         .ds-filter-pill {
           font: 600 12px/1 'Poppins',sans-serif; color: var(--c-primary);
@@ -316,7 +372,8 @@ export default function Designer() {
         }
         .ds-svc-text { font: 500 .88rem/1.5 'Poppins',sans-serif; color: var(--c-primary); }
 
-        /* ── GALLERY ── */
+        /* ── GALLERY (dynamic admin images only) ── */
+        .ds-gallery-loading { padding: 40px 0; text-align: center; }
         .ds-gallery-note {
           font: 400 .82rem/1.5 'Poppins',sans-serif; color: var(--c-muted);
           font-style: italic; margin-top: 28px; text-align: center;
@@ -456,11 +513,12 @@ export default function Designer() {
         }
       `}</style>
 
-     <PageMeta
-  title="Designer Outfits in Bangalore | Gowns, Indo-Western & Party Wear"
-  description="Explore customized designer outfits in Bangalore including gowns, Indo-western sets, and party wear with premium tailoring and personalized styling at Shrusara Fashion Boutique."
-  canonicalPath="/designer-outfits-bangalore"
-/>
+      <PageMeta
+        title="Designer Outfits in Bangalore | Gowns, Indo-Western & Party Wear"
+        description="Explore customized designer outfits in Bangalore including gowns, Indo-western sets, and party wear with premium tailoring and personalized styling at Shrusara Fashion Boutique."
+        canonicalPath="/designer-outfits-bangalore"
+      />
+
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="ds-hero">
         <div className="ds-hero-text">
@@ -486,7 +544,7 @@ export default function Designer() {
         </div>
         <div className="ds-hero-img-wrap">
           <img
-            src={heroMedia?.imageUrl || '/videos/designer.png'}
+            src="/videos/designer.jpeg"
             alt="Designer outfits Bangalore – Shrusara Fashion Boutique"
             className="ds-hero-img"
           />
@@ -494,7 +552,7 @@ export default function Designer() {
         </div>
       </section>
 
-      {/* ── 2. OCCASION SECTION (replaces Occasionwear) ─────────────────────── */}
+      {/* ── 2. APPROACH SECTION ─────────────────────────────────────────────── */}
       <Reveal className="ds-shell">
         <p className="ds-sec-eyebrow">Occasionwear</p>
         <h2 className="ds-sec-h2">Outfits designed to match your occasion, style, and comfort</h2>
@@ -504,9 +562,9 @@ export default function Designer() {
         </p>
         <div className="ds-trust-grid" style={{ marginTop: 36 }}>
           {[
-            { value: 'Made for you',    label: 'Pattern and silhouette adjusted to your body type and occasion.' },
-            { value: 'Style first',     label: 'Modern designs balanced with comfort so you feel as good as you look.' },
-            { value: 'Timely finish',   label: 'Trials and final delivery planned carefully around your event date.' },
+            { value: 'Made for you',  label: 'Pattern and silhouette adjusted to your body type and occasion.' },
+            { value: 'Style first',   label: 'Modern designs balanced with comfort so you feel as good as you look.' },
+            { value: 'Timely finish', label: 'Trials and final delivery planned carefully around your event date.' },
           ].map(item => (
             <div key={item.value} className="ds-trust-card">
               <p className="ds-trust-label">Our Approach</p>
@@ -517,7 +575,12 @@ export default function Designer() {
         </div>
       </Reveal>
 
-      {/* ── 3. EXPLORE STYLES WITH FILTER ───────────────────────────────────── */}
+      {/* ── 3. EXPLORE STYLES (STRICTLY STATIC — d1 to d12 only) ────────────── */}
+      {/*
+          SOURCE : staticDesignerOutfits array using d1–d12 imported at the top.
+          RULE   : This section must NEVER use any hook, API call, or dynamic data.
+                   Admin changes do NOT affect this section.
+      */}
       <div className="ds-alt">
         <div className="ds-alt-inner">
           <p className="ds-sec-eyebrow">Explore Styles</p>
@@ -525,7 +588,8 @@ export default function Designer() {
           <p className="ds-sec-sub">
             Browse our customized designer outfits crafted for receptions, parties, and festive occasions.
           </p>
-          <DesignerOutfits galleryImages={designerGallery} galleryLoading={galleryLoading} />
+          {/* DesignerOutfits renders ONLY the static d1–d12 images with filter pills */}
+          <DesignerOutfits />
         </div>
       </div>
 
@@ -550,7 +614,15 @@ export default function Designer() {
         </div>
       </Reveal>
 
-      {/* ── 5. GALLERY ──────────────────────────────────────────────────────── */}
+      {/* ── 5. GALLERY (STRICTLY DYNAMIC — admin-uploaded images only) ──────── */}
+      {/*
+          SOURCE : useGallery('designer') hook — fetches ONLY admin-uploaded images.
+          RULE   : This section must NEVER include d1–d12 or any static import.
+                   Admin adds/removes images via the dashboard; changes reflect here.
+          NOTE   : If you previously used useMergedGallery here, that was wrong —
+                   useMergedGallery blends static + dynamic, causing cross-section mixing.
+                   useGallery fetches purely dynamic images with no static fallback.
+      */}
       <div className="ds-alt">
         <div className="ds-alt-inner">
           <p className="ds-sec-eyebrow">Gallery</p>
@@ -560,15 +632,11 @@ export default function Designer() {
             with premium detailing and modern styling.
           </p>
           <div style={{ marginTop: 36 }}>
-            <ImageGrid
-              images={designerGallery.slice(0, 9)}
-              loading={galleryLoading}
-              priority
-              columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-            />
+            {/* DesignerGallery renders ONLY admin-uploaded images from useGallery hook */}
+            <DesignerGallery images={designerGallery} loading={galleryLoading} />
           </div>
           <p className="ds-gallery-note">
-            Showing our latest designer outfits · Updated regularly with new work
+            Showing our latest gallery from the studio · Admin can update these images from the dashboard
           </p>
         </div>
       </div>
@@ -630,7 +698,7 @@ export default function Designer() {
       {/* ── 9. FINAL CTA ────────────────────────────────────────────────────── */}
       <div className="ds-shell" style={{ paddingTop: 0 }}>
         <div className="ds-cta-wrap">
-          <div style={{ display:'flex', justifyContent:'center', marginBottom:20 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
             <p className="ds-cta-eyebrow">Limited Slots Available</p>
           </div>
           <h2 className="ds-cta-h">Book Your Designer Outfit Consultation Today</h2>
