@@ -73,9 +73,9 @@ export const heroContent = {
 
 export const navLinks = [
   { label: 'Home', to: '/' },
-  { label: 'Bridal Blouse', to: '/bridal-blouse-designer-bangalore' },
-  { label: 'Designer Outfits', to: '/designer-outfits-bangalore' },
-  { label: 'Kids Outfits', to: '/kids-outfits-bangalore' },
+  { label: 'Bridal', to: '/bridal-blouse-designer-bangalore' },
+  { label: 'Designer', to: '/designer-outfits-bangalore' },
+  { label: 'Kids', to: '/kids-outfits-bangalore' },
   { label: 'About', to: '/about' },
   { label: 'Contact', to: '/contact' },
   { label: 'Blog', to: '/blog' }

@@ -42,8 +42,8 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <a className="button-secondary" href={contactLinks.call}>
-            {contactLinks.phoneDisplay}
-          </a>
+  Call Now
+</a>
           <a className="button-primary" href={contactLinks.whatsapp}>
             Book on WhatsApp
           </a>

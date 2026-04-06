@@ -199,16 +199,47 @@ const BridalLandingPage = () => {
           display: flex; align-items: center; justify-content: space-between;
           height: 72px;
         }
-        .bl-hdr-brand { display: flex; flex-direction: column; gap: 2px; }
+
+        /* ── LOGO BRAND BLOCK ── */
+        .bl-hdr-brand {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          text-decoration: none;
+        }
+        .bl-hdr-logo {
+          height: 52px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          flex-shrink: 0;
+        }
+        .bl-hdr-text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          line-height: 1;
+        }
         .bl-hdr-name {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.5rem; font-weight: 700; color: var(--bl-dark);
-          letter-spacing: .03em; line-height: 1;
+          font-size: 1.85rem;
+          font-weight: 700;
+          color: #2b2118;
+          letter-spacing: 0.01em;
+          line-height: 1;
+          margin: 0;
         }
         .bl-hdr-sub {
-          font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
-          color: var(--bl-gold); font-weight: 600;
+          font-size: 0.52rem;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          color: var(--bl-gold);
+          font-weight: 600;
+          margin-top: 5px;
+          line-height: 1;
+          word-spacing: 0.2em;
         }
+
         .bl-hdr-badge {
           display: flex; align-items: center; gap: 6px;
           font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
@@ -586,30 +617,30 @@ const BridalLandingPage = () => {
           max-width: 380px;
           margin-bottom: 28px;
         }
-          /* ── FLOATING CALL ── */
-.bl-float-call {
-  position: fixed;
-  bottom: 100px; /* above WhatsApp */
-  right: 24px;
-  z-index: 200;
-}
 
-.bl-float-call a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #000; /* clean premium look */
-  color: #fff;
-  box-shadow: 0 6px 28px rgba(0,0,0,.4);
-  text-decoration: none;
-}
+        /* ── FLOATING CALL ── */
+        .bl-float-call {
+          position: fixed;
+          bottom: 100px;
+          right: 24px;
+          z-index: 200;
+        }
+        .bl-float-call a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: #000;
+          color: #fff;
+          box-shadow: 0 6px 28px rgba(0,0,0,.4);
+          text-decoration: none;
+        }
+        .bl-float-call a:hover {
+          background: #B8935A;
+        }
 
-.bl-float-call a:hover {
-  background: #B8935A; /* match your gold theme */
-}
         .bl-footer-divider {
           width: 40px;
           height: 1px;
@@ -737,6 +768,11 @@ const BridalLandingPage = () => {
 
           .bl-footer { padding: 48px 5vw 28px; }
           .bl-footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+          /* Logo responsive on mobile */
+          .bl-hdr-logo { height: 40px; }
+          .bl-hdr-name { font-size: 1.4rem; }
+          .bl-hdr-sub { font-size: 0.45rem; letter-spacing: 0.25em; }
         }
         @media(max-width:480px) {
           .bl-gallery-grid { grid-template-columns: 1fr; }
@@ -748,8 +784,15 @@ const BridalLandingPage = () => {
         {/* ── HEADER ──────────────────────────────────────────────────────────── */}
         <header className="bl-hdr">
           <div className="bl-hdr-brand">
-            <div className="bl-hdr-name">Shrusara</div>
-            <div className="bl-hdr-sub">Fashion Boutique, Bangalore</div>
+            <img
+              src="/videos/logo.png"
+              alt="Shrusara Logo"
+              className="bl-hdr-logo"
+            />
+            <div className="bl-hdr-text">
+              <div className="bl-hdr-name">Shrusara</div>
+              <div className="bl-hdr-sub">FASHION&nbsp;&nbsp;BOUTIQUE</div>
+            </div>
           </div>
           <div className="bl-hdr-badge">
             <span className="bl-hdr-badge-dot" />
@@ -760,7 +803,7 @@ const BridalLandingPage = () => {
           </a>
         </header>
 
-        {/* ── HERO (split layout matching Home page) ──────────────────────────── */}
+        {/* ── HERO ────────────────────────────────────────────────────────────── */}
         <section className="bl-hero">
           <div className="bl-hero-text">
             <p className="bl-hero-eyebrow">Bridal Specialist · Bangalore</p>
@@ -983,12 +1026,14 @@ const BridalLandingPage = () => {
           </div>
         </footer>
 
-        {/* ── FLOATING WHATSAPP ────────────────────────────────────────────────── */}
+        {/* ── FLOATING CALL ────────────────────────────────────────────────────── */}
         <div className="bl-float-call">
-  <a href={`tel:${PHONE_NUMBER}`} aria-label="Call">
-    <PhoneIcon size={26} />
-  </a>
-</div>
+          <a href={`tel:${PHONE_NUMBER}`} aria-label="Call">
+            <PhoneIcon size={26} />
+          </a>
+        </div>
+
+        {/* ── FLOATING WHATSAPP ────────────────────────────────────────────────── */}
         <div className="bl-float-wa">
           <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
             <WaIcon size={28} />

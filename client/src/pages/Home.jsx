@@ -947,60 +947,85 @@ export default function Home() {
       </div>
 
 {/* ── CATEGORIES (TITLE AT TOP, PRICE AT BOTTOM) ────────────────────────── */}
-      <div className="sf-shell-alt">
-        <div className="sf-shell-alt-inner">
-          <p className="sf-eyebrow">Explore Categories</p>
-          <h2 className="sf-heading">Find Your Perfect Bridal or Designer Outfit</h2>
-          
-          <div className="sf-cat-grid">
-            
-            {/* Bridal Collection Card */}
-            <Link to="/bridal-blouse-designer-bangalore" className="sf-cat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {/* Image Background */}
-              <img src={designer06} alt="Bridal Collection" className="sf-cat-img" loading="lazy" />
-              
-              {/* TOP SECTION: Title and Button */}
-              <div className="sf-cat-header-overlay" style={{ 
-                position: 'relative', 
-                zIndex: 2, 
-                padding: '32px', 
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)' 
-              }}>
-                <h3 className="sf-cat-title" style={{ margin: '0 0 16px 0', fontSize: '2rem' }}>Bridal Collection</h3>
-                <span className="sf-btn-mini-visual">View Collection</span>
-              </div>
-
-              {/* BOTTOM SECTION: Price Bar */}
-              <div className="sf-price-bar" style={{ position: 'relative', zIndex: 2 }}>
-                Bridal designs starting at ₹6000
-              </div>
-            </Link>
-
-            {/* Designer Collection Card */}
-            <Link to="/designer-outfits-bangalore" className="sf-cat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {/* Image Background */}
-              <img src={designer04} alt="Designer Collection" className="sf-cat-img" loading="lazy" />
-              
-              {/* TOP SECTION: Title and Button */}
-              <div className="sf-cat-header-overlay" style={{ 
-                position: 'relative', 
-                zIndex: 2, 
-                padding: '32px', 
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%)' 
-              }}>
-                <h3 className="sf-cat-title" style={{ margin: '0 0 16px 0', fontSize: '2rem' }}>Designer Collection</h3>
-                <span className="sf-btn-mini-visual">View Collection</span>
-              </div>
-
-              {/* BOTTOM SECTION: Price Bar */}
-              <div className="sf-price-bar" style={{ position: 'relative', zIndex: 2 }}>
-                Designer outfit starting at ₹5000
-              </div>
-            </Link>
-
-          </div>
+{/* ── CATEGORIES ────────────────────────── */}
+<div className="sf-shell-alt">
+  <div className="sf-shell-alt-inner">
+    <p className="sf-eyebrow">Explore Categories</p>
+    <h2 className="sf-heading">Find Your Perfect Bridal or Designer Outfit</h2>
+    
+    <div className="sf-cat-grid">
+      
+      {/* Bridal Collection Card */}
+      <Link
+        to="/bridal-blouse-designer-bangalore"
+        className="sf-cat-card"
+        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+      >
+        <img
+          src="/videos/cat1.jpeg"
+          alt="Bridal Collection"
+          className="sf-cat-img"
+          loading="lazy"
+        />
+        
+        {/* TOP: Title only */}
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 2, 
+          padding: '32px', 
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%)' 
+        }}>
+          <h3 className="sf-cat-title" style={{ margin: 0, fontSize: '2rem' }}>
+            Bridal Collection
+          </h3>
         </div>
-      </div>
+
+        {/* Spacer */}
+        <div style={{ flex: 1 }} />
+
+        {/* BOTTOM: Price Bar */}
+        <div className="sf-price-bar" style={{ position: 'relative', zIndex: 2 }}>
+          Bridal designs starting at ₹6000
+        </div>
+      </Link>
+
+      {/* Designer Collection Card */}
+      <Link
+        to="/designer-outfits-bangalore"
+        className="sf-cat-card"
+        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+      >
+        <img
+          src="/videos/cat2.jpeg"
+          alt="Designer Collection"
+          className="sf-cat-img"
+          loading="lazy"
+        />
+        
+        {/* TOP: Title only */}
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 2, 
+          padding: '32px', 
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%)' 
+        }}>
+          <h3 className="sf-cat-title" style={{ margin: 0, fontSize: '2rem' }}>
+            Designer Collection
+          </h3>
+        </div>
+
+        {/* Spacer */}
+        <div style={{ flex: 1 }} />
+
+        {/* BOTTOM: Price Bar */}
+        <div className="sf-price-bar" style={{ position: 'relative', zIndex: 2 }}>
+          Designer outfit starting at ₹5000
+        </div>
+      </Link>
+
+    </div>
+  </div>
+</div>
 
       {/* ── ABOUT ─────────────────────────────────────────────────────────── */}
       <div className="sf-shell">
