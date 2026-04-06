@@ -31,9 +31,12 @@ export default function Footer() {
           <a className="block transition hover:text-cocoa" href={contactLinks.call}>
             {contactLinks.phoneDisplay}
           </a>
-          <a className="block transition hover:text-cocoa" href={`mailto:${contactLinks.email}`}>
-            {contactLinks.email}
-          </a>
+          <a
+  className="block transition hover:text-cocoa"
+  href="mailto:help@shrusara.com"
+>
+  help@shrusara.com
+</a>
           <a className="block transition hover:text-cocoa" href={contactLinks.maps} target="_blank" rel="noreferrer">
             View on Google Maps
           </a>

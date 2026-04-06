@@ -390,14 +390,17 @@ export default function About() {
             </a>
           </div>
         </div>
-        <div className="ab-hero-img-wrap">
-          <img
-            src={heroMedia?.imageUrl || '/images/about/hero.jpg'}
-            alt="Shrusara Fashion Boutique Bangalore"
-            className="ab-hero-img"
-          />
-          <div className="ab-hero-fade" />
-        </div>
+       <div className="ab-hero-img-wrap">
+  <video
+    src="/videos/about-hero.mp4"
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="ab-hero-img"
+  />
+  <div className="ab-hero-fade" />
+</div>
       </section>
 
       {/* ── 2. FOUNDER ──────────────────────────────────────────────────────── */}
@@ -407,10 +410,10 @@ export default function About() {
         <div className="ab-founder-grid">
           <div className="ab-founder-img-wrap">
             <img
-              src="/images/about/shruthi-ajith.jpg"
-              alt="Shruthi Ajith – Chief Designer, Shrusara Fashion Boutique"
-              className="ab-founder-img"
-            />
+  src="/videos/shruthi-ajith.jpeg"
+  alt="Shruthi Ajith – Chief Designer, Shrusara Fashion Boutique"
+  className="ab-founder-img"
+/>
             <div className="ab-founder-badge">
               <p className="ab-founder-badge-name">Shruthi Ajith</p>
               <p className="ab-founder-badge-role">Chief Designer &amp; Founder</p>

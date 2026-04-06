@@ -171,7 +171,7 @@ function DesignerGallery({ images, loading }) {
 
   return (
     <ImageGrid
-      images={images.slice(0, 9)}
+      images={images.slice(0, 100)}
       loading={loading}
       priority
       columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
@@ -252,15 +252,33 @@ export default function Designer() {
           font: 600 12px/1 'Poppins',sans-serif; color: var(--c-primary);
           margin-bottom: 8px;
         }
-        .ds-hero-designer::before { content:'✦'; color:var(--c-accent); font-size:10px; }
-        .ds-hero-price {
-          display: inline-flex; align-items: center; gap: 8px;
-          font: 600 12px/1 'Poppins',sans-serif; color: var(--c-muted);
-          margin-bottom: 32px;
-        }
-        .ds-hero-price strong { color: var(--c-primary); }
-        .ds-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+        .ds-hero-designer::before {
+  content: '✦';
+  color: var(--c-accent);
+  font-size: 14px; /* increased */
+}
 
+.ds-hero-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font: 700 16px/1.4 'Poppins', sans-serif; /* increased size */
+  color: var(--c-muted);
+
+  margin-bottom: 16px; /* fixed */
+}
+
+.ds-hero-price strong {
+  color: var(--c-primary);
+  font-size: 18px; /* highlight price */
+}
+
+.ds-hero-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
         /* Buttons */
         .ds-btn-pri {
           display: inline-flex; align-items: center; gap: 8px;
@@ -351,26 +369,111 @@ export default function Designer() {
           font: 600 13px/1.3 'Poppins',sans-serif; color: #fff;
         }
 
-        /* ── SERVICES ── */
-        .ds-svc-grid {
-          display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 24px; margin-top: 0;
+        /* ── LINKED IMAGE BANNER (above Services) ── */
+        .ds-img-banner-wrap {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 5vw 64px;
         }
-        .ds-svc-intro {
-          background: var(--c-white); border-radius: var(--r-lg); padding: 32px 28px;
-          border: 1px solid rgba(62,44,35,.06); box-shadow: 0 2px 16px rgba(62,44,35,.07);
-          display: flex; flex-direction: column; justify-content: center;
+        .ds-img-banner-link {
+          display: block;
+          border-radius: var(--r-lg);
+          overflow: hidden;
+          position: relative;
+          box-shadow: 0 4px 28px rgba(62,44,35,.12);
+          transition: box-shadow .3s, transform .3s;
+          text-decoration: none;
         }
-        .ds-svc-items { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .ds-svc-item {
-          background: var(--c-white); border-radius: var(--r-sm); padding: 20px 20px;
-          border: 1px solid rgba(62,44,35,.06); box-shadow: 0 2px 12px rgba(62,44,35,.06);
-          display: flex; align-items: flex-start; gap: 12px;
+        .ds-img-banner-link:hover {
+          box-shadow: 0 12px 40px rgba(62,44,35,.2);
+          transform: translateY(-3px);
         }
-        .ds-svc-dot {
-          width: 8px; height: 8px; border-radius: 50%; background: var(--c-accent);
-          flex-shrink: 0; margin-top: 5px;
+        .ds-img-banner-img {
+          width: 100%;
+          height: 420px;
+          object-fit: cover;
+          object-position: center;
+          display: block;
         }
-        .ds-svc-text { font: 500 .88rem/1.5 'Poppins',sans-serif; color: var(--c-primary); }
+        .ds-img-banner-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            135deg,
+            rgba(62,44,35,.7) 0%,
+            rgba(62,44,35,.2) 55%,
+            transparent 100%
+          );
+          display: flex;
+          align-items: flex-end;
+          padding: 40px 44px;
+        }
+        .ds-img-banner-content { max-width: 520px; }
+        .ds-img-banner-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font: 600 10px/1 'Poppins',sans-serif; letter-spacing:.2em;
+          text-transform: uppercase; color: var(--c-accent); margin-bottom: 12px;
+        }
+        .ds-img-banner-eyebrow::before { content:''; width:18px; height:1px; background:var(--c-accent); display:block; }
+        .ds-img-banner-title {
+          font: 700 clamp(1.3rem,2.2vw,1.9rem)/1.25 'Playfair Display',serif;
+          color: #fff; margin-bottom: 14px;
+        }
+        .ds-img-banner-cta {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: var(--c-accent); color: #fff;
+          font: 600 12px/1 'Poppins',sans-serif; padding: 12px 24px;
+          border-radius: 50px;
+          transition: box-shadow .2s;
+        }
+        .ds-img-banner-link:hover .ds-img-banner-cta {
+          box-shadow: 0 0 0 4px rgba(200,169,106,.35);
+        }
+        .ds-img-banner-arrow {
+          font-size: 16px;
+          transition: transform .2s;
+        }
+        .ds-img-banner-link:hover .ds-img-banner-arrow { transform: translateX(4px); }
+
+        /* ── SERVICES HEADLINE ── */
+        .ds-services-headline { margin-bottom: 0; }
+        .ds-services-headline .ds-sec-eyebrow { margin-bottom: 14px; }
+        .ds-services-headline .ds-sec-h2 { margin-bottom: 12px; }
+        .ds-services-headline .ds-sec-sub { max-width: 640px; }
+
+        /* ── CONSULT BANNER ── */
+        .ds-consult-banner {
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 32px; flex-wrap: wrap;
+          background: var(--c-primary); border-radius: 20px;
+          padding: 36px 44px;
+          margin-top: 0;
+        }
+        .ds-consult-title {
+          font: 700 clamp(1.2rem,2vw,1.6rem)/1.3 'Playfair Display',serif;
+          color: #fff; margin-bottom: 8px;
+        }
+        .ds-consult-sub {
+          font: 400 .88rem/1.6 'Poppins',sans-serif;
+          color: rgba(255,255,255,.65);
+        }
+        .ds-consult-btns { display: flex; gap: 12px; flex-shrink: 0; flex-wrap: wrap; }
+        .ds-btn-primary-light {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: var(--c-accent); color: #fff;
+          font: 600 13px/1 'Poppins',sans-serif; padding: 14px 28px;
+          border-radius: 50px; text-decoration: none;
+          border: 2px solid var(--c-accent); transition: box-shadow .2s, transform .2s;
+        }
+        .ds-btn-primary-light:hover { box-shadow: 0 0 0 4px rgba(200,169,106,.3); transform: translateY(-1px); }
+        .ds-btn-secondary-light {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: transparent; color: #fff;
+          font: 600 13px/1 'Poppins',sans-serif; padding: 14px 28px;
+          border-radius: 50px; text-decoration: none;
+          border: 2px solid rgba(255,255,255,.4); transition: background .2s;
+        }
+        .ds-btn-secondary-light:hover { background: rgba(255,255,255,.1); }
 
         /* ── GALLERY (dynamic admin images only) ── */
         .ds-gallery-loading { padding: 40px 0; text-align: center; }
@@ -506,10 +609,17 @@ export default function Designer() {
           .ds-cta-wrap{padding:40px 24px;}
           .ds-cta-btns{flex-direction:column;align-items:center;}
           .ds-cta-btn-pri,.ds-cta-btn-sec{width:100%;justify-content:center;}
+          .ds-consult-banner{flex-direction:column;align-items:flex-start;padding:28px 24px;}
+          .ds-consult-btns{width:100%;}
+          .ds-btn-primary-light,.ds-btn-secondary-light{width:100%;justify-content:center;}
+          .ds-img-banner-img{height:260px;}
+          .ds-img-banner-overlay{padding:24px 24px;}
+          .ds-img-banner-wrap{padding-bottom:40px;}
         }
         @media(max-width:480px){
           .ds-outfit-grid{grid-template-columns:1fr;}
           .ds-why-grid{grid-template-columns:1fr;}
+          .ds-img-banner-img{height:220px;}
         }
       `}</style>
 
@@ -525,12 +635,10 @@ export default function Designer() {
           <p className="ds-eyebrow">Designer Outfits · Bangalore</p>
           <h1 className="ds-hero-h1">
             Designer Outfits in Bangalore for Modern Occasions
-            <span>Gowns, Indo-Western &amp; Party Wear with Premium Finish</span>
+            <span>  Customized gowns, Indo-western outfits, and party wear designed with
+            perfect fit, premium finishing and modern styling.</span>
           </h1>
-          <p className="ds-hero-sub">
-            Customized gowns, Indo-western outfits, and party wear designed with
-            perfect fit, premium finishing and modern styling.
-          </p>
+          
           <p className="ds-hero-designer">Styled personally by Chief Designer Shruthi Ajith</p>
           <p className="ds-hero-price">Designer outfits starting from <strong>₹5000</strong> onwards</p>
           <div className="ds-hero-btns">
@@ -593,26 +701,62 @@ export default function Designer() {
         </div>
       </div>
 
+      {/* ── 3b. LINKED IMAGE BANNER (above Services) ────────────────────────── */}
+      <div className="ds-img-banner-wrap">
+        <a
+          href={WA_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ds-img-banner-link"
+          aria-label="Book your designer outfit consultation via WhatsApp"
+        >
+          <img
+            src="/videos/designer.jpeg"
+            alt="Designer Outfit Consultation – Shrusara Fashion Boutique"
+            className="ds-img-banner-img"
+          />
+          <div className="ds-img-banner-overlay">
+            <div className="ds-img-banner-content">
+              <p className="ds-img-banner-eyebrow">Limited Slots</p>
+              <h3 className="ds-img-banner-title">
+                Your perfect designer outfit, crafted just for your occasion
+              </h3>
+              <span className="ds-img-banner-cta">
+                WhatsApp Enquiry <span className="ds-img-banner-arrow">→</span>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+
       {/* ── 4. SERVICE SECTION ──────────────────────────────────────────────── */}
-      <Reveal className="ds-shell">
-        <div className="ds-svc-grid">
-          <div className="ds-svc-intro">
-            <p className="ds-sec-eyebrow">Services</p>
-            <h2 className="ds-sec-h2">What We Design for Your Occasion</h2>
-            <p className="ds-sec-sub">
-              From concept to final fitting, we ensure every outfit is styled to suit your event perfectly.
-            </p>
-          </div>
-          <div className="ds-svc-items">
-            {designerServiceItems.map(item => (
-              <div key={item} className="ds-svc-item">
-                <span className="ds-svc-dot" />
-                <p className="ds-svc-text">{item}</p>
-              </div>
-            ))}
-          </div>
+      <Reveal className="ds-shell" style={{ paddingTop: 0 }}>
+        <div className="ds-services-headline">
+          <p className="ds-sec-eyebrow">Services</p>
+          <h2 className="ds-sec-h2">Customized Designer Outfits &amp; Occasionwear in Bangalore</h2>
+          <p className="ds-sec-sub">
+            From gowns to Indo-western sets and party wear, we create perfectly tailored designs with
+            premium finishing and personalized styling — designed for perfect fit, elegant finish.
+          </p>
         </div>
       </Reveal>
+
+      <div className="ds-shell" style={{ paddingTop: 0 }}>
+        <div className="ds-consult-banner">
+          <div>
+            <h2 className="ds-consult-title">Join our happy clients — book your consultation today</h2>
+            <p className="ds-consult-sub">Book Your Designer Outfit Consultation Today</p>
+          </div>
+          <div className="ds-consult-btns">
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-primary-light">
+              WhatsApp Enquiry
+            </a>
+            <a href={TEL_LINK} className="ds-btn-secondary-light">
+              Call Now
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* ── 5. GALLERY (STRICTLY DYNAMIC — admin-uploaded images only) ──────── */}
       {/*

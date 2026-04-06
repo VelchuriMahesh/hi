@@ -11,11 +11,13 @@ import gown1 from '../assets/images/bridal/bridal/gown-1.jpeg';
 import gown2 from '../assets/images/bridal/bridal/gown-2.jpeg';
 import gown3 from '../assets/images/bridal/bridal/gown-3.jpeg';
 import gown4 from '../assets/images/bridal/bridal/gown-4.jpeg';
+import gown5 from '../assets/images/bridal/bridal/gown-5.jpeg';
 import blouse1 from '../assets/images/bridal/bridal-02.jpeg';
 import blouse2 from '../assets/images/bridal/bridal-03.jpeg';
 import blouse3 from '../assets/images/bridal/bridal-04.jpeg';
 import blouse4 from '../assets/images/bridal/bridal-08.jpeg';
 import blouse5 from '../assets/images/bridal/bridal-10.jpeg';
+import heroBridal from '../assets/images/bridal/hero-bridal.jpeg';
 
 import {
   bridalProcess,
@@ -51,10 +53,10 @@ const bridalOutfits = [
   { id: 5, tag: 'lehenga', title: 'Reception Lehenga', image: lehenga2 },
   
   // GOWNS CATEGORY
-  { id: 7, tag: 'gowns', title: 'Bridal Gown',         image: gown1 },
+  
   { id: 8, tag: 'gowns', title: 'Reception Gown',      image: gown2 },
-  { id: 9, tag: 'gowns', title: 'Evening Bridal Gown', image: gown3 },
-  { id: 10, tag: 'gowns', title: 'Custom Bridal Gown', image: gown4 },
+   { id: 9, tag: 'gowns', title: 'Reception Gown',      image: gown5 },
+
 ];
 
 const FILTERS = [
@@ -321,6 +323,72 @@ export default function Bridal() {
           font: 600 13px/1.3 'Poppins',sans-serif; color: #fff;
         }
 
+        /* ── LINKED IMAGE BANNER (above Services) ── */
+        .br-img-banner-wrap {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 5vw 64px;
+        }
+        .br-img-banner-link {
+          display: block;
+          border-radius: var(--r-lg);
+          overflow: hidden;
+          position: relative;
+          box-shadow: 0 4px 28px rgba(62,44,35,.12);
+          transition: box-shadow .3s, transform .3s;
+          text-decoration: none;
+        }
+        .br-img-banner-link:hover {
+          box-shadow: 0 12px 40px rgba(62,44,35,.2);
+          transform: translateY(-3px);
+        }
+        .br-img-banner-img {
+          width: 100%;
+          height: 420px;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+        .br-img-banner-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            135deg,
+            rgba(62,44,35,.7) 0%,
+            rgba(62,44,35,.2) 55%,
+            transparent 100%
+          );
+          display: flex;
+          align-items: flex-end;
+          padding: 40px 44px;
+        }
+        .br-img-banner-content { max-width: 520px; }
+        .br-img-banner-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font: 600 10px/1 'Poppins',sans-serif; letter-spacing:.2em;
+          text-transform: uppercase; color: var(--c-accent); margin-bottom: 12px;
+        }
+        .br-img-banner-eyebrow::before { content:''; width:18px; height:1px; background:var(--c-accent); display:block; }
+        .br-img-banner-title {
+          font: 700 clamp(1.3rem,2.2vw,1.9rem)/1.25 'Playfair Display',serif;
+          color: #fff; margin-bottom: 14px;
+        }
+        .br-img-banner-cta {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: var(--c-accent); color: #fff;
+          font: 600 12px/1 'Poppins',sans-serif; padding: 12px 24px;
+          border-radius: 50px;
+          transition: box-shadow .2s;
+        }
+        .br-img-banner-link:hover .br-img-banner-cta {
+          box-shadow: 0 0 0 4px rgba(200,169,106,.35);
+        }
+        .br-img-banner-arrow {
+          font-size: 16px;
+          transition: transform .2s;
+        }
+        .br-img-banner-link:hover .br-img-banner-arrow { transform: translateX(4px); }
+
         /* ── SERVICES ── */
         .br-svc-grid {
           display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 24px; margin-top: 0;
@@ -475,10 +543,14 @@ export default function Bridal() {
           .br-cta-wrap{padding:40px 24px;}
           .br-cta-btns{flex-direction:column;align-items:center;}
           .br-cta-btn-pri,.br-cta-btn-sec{width:100%;justify-content:center;}
+          .br-img-banner-img{height:260px;}
+          .br-img-banner-overlay{padding:24px 24px;}
+          .br-img-banner-wrap{padding-bottom:40px;}
         }
         @media(max-width:480px){
           .br-outfit-grid{grid-template-columns:1fr;}
           .br-why-grid{grid-template-columns:1fr;}
+          .br-img-banner-img{height:220px;}
         }
       `}</style>
 
@@ -492,33 +564,74 @@ export default function Bridal() {
       <section className="br-hero">
         <div className="br-hero-text">
           <p className="br-eyebrow">Bridal Specialist · Bangalore</p>
+
           <h1 className="br-hero-h1">
             Customized Bridal Blouses &amp; Outfits in Bangalore
             <span>with Perfect Fit &amp; Premium Aari Work</span>
           </h1>
-          <p className="br-hero-sub">
-            Custom bridal blouses, lehengas, and gowns designed with perfect fit,
-            premium finishing, and personalized styling.
+
+          {/* FIXED STAR ALIGNMENT */}
+          <p className="br-hero-sub br-sub-flex">
+            <span className="br-star">✦</span>
+            <span className="br-text">
+              Custom bridal blouses, lehengas, and gowns designed with perfect fit,
+              premium finishing, and personalized styling.
+            </span>
           </p>
-          <p className="br-hero-designer">Designed personally by Chief Designer Shruthi Ajith</p>
-          <p className="br-hero-price">Bridal blouse designs starting from <strong>₹6000</strong></p>
+
+          <p className="br-hero-designer">
+            Designed personally by Chief Designer Shruthi Ajith
+          </p>
+
+          <p className="br-hero-price">
+            Bridal blouse designs starting from <strong>₹6000</strong>
+          </p>
+
           <div className="br-hero-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-pri">
+            <a
+              href={WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="br-btn-pri"
+            >
               <WaIcon size={18} /> Book Bridal Consultation
             </a>
+
             <a href={TEL_LINK} className="br-btn-sec">
               <PhoneIcon /> Call Now
             </a>
           </div>
         </div>
+
         <div className="br-hero-img-wrap">
-          <img
-            src="/videos/bridal_hero.jpeg"
-            alt="Custom Bridal Blouse Bangalore"
-            className="br-hero-img"
-          />
+       <img
+  src={heroBridal}
+  alt="Bridal Blouse Bangalore"
+  className="br-hero-img"
+/>
           <div className="br-hero-fade" />
         </div>
+
+        {/* CSS (INLINE AS YOU LIKE) */}
+        <style>{`
+          .br-sub-flex {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+          }
+
+          .br-star {
+            color: #C8A96A;
+            font-size: 14px;
+            line-height: 1.6;
+            flex-shrink: 0;
+            margin-top: 2px;
+          }
+
+          .br-text {
+            line-height: 1.7;
+          }
+        `}</style>
       </section>
 
       {/* ── 2. TRUST BAR ────────────────────────────────────────────────────── */}
@@ -550,8 +663,36 @@ export default function Bridal() {
         </div>
       </div>
 
+      {/* ── 3b. LINKED IMAGE BANNER (above Services) ────────────────────────── */}
+      <div className="br-img-banner-wrap">
+        <a
+          href={WA_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="br-img-banner-link"
+          aria-label="Book your bridal consultation via WhatsApp"
+        >
+          <img
+            src="/videos/bridal_hero.jpeg"
+            alt="Bridal Blouse Consultation – Shrusara Fashion Boutique"
+            className="br-img-banner-img"
+          />
+          <div className="br-img-banner-overlay">
+            <div className="br-img-banner-content">
+              <p className="br-img-banner-eyebrow">Limited Slots</p>
+              <h3 className="br-img-banner-title">
+                Your dream bridal blouse, crafted just for you
+              </h3>
+              <span className="br-img-banner-cta">
+                Book Consultation <span className="br-img-banner-arrow">→</span>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+
       {/* ── 4. SERVICE SECTION ──────────────────────────────────────────────── */}
-      <Reveal className="br-shell">
+      <Reveal className="br-shell" style={{ paddingTop: 0 }}>
         <div className="br-svc-grid">
           <div className="br-svc-intro">
             <p className="br-sec-eyebrow">Services</p>
@@ -581,7 +722,7 @@ export default function Bridal() {
           </p>
           <div style={{ marginTop: 36 }}>
             <ImageGrid
-              images={bridalGallery.slice(0, 9)}
+              images={bridalGallery.slice(0, 100)}
               loading={galleryLoading}
               priority
               columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
