@@ -1,5 +1,13 @@
 import { useState } from 'react';
-
+import heroBridal from '../assets/images/bridal/hero-bridal.jpeg';
+import b1 from '../assets/images/bridal/bridal-02.jpeg';
+import b2 from '../assets/images/bridal/bridal-03.jpeg';
+import b3 from '../assets/images/bridal/bridal-04.jpeg';
+import b4 from '../assets/images/bridal/bridal-08.jpeg';
+import b5 from '../assets/images/bridal/bridal-10.jpeg';
+import designer01 from '../assets/images/designer/designer-01.jpeg';
+import designer03 from '../assets/images/designer/designer-03.jpeg';
+import designer06 from '../assets/images/designer/designer-06.jpeg';
 /**
  * SHRUSARA BRIDAL LANDING PAGE
  * Fully rewritten — clean, premium, no exit points
@@ -36,14 +44,20 @@ const trustPoints = [
 ];
 
 const galleryItems = [
-  { src: '/images/bridal/blouse-1.jpg',  tag: 'Bridal Blouse',   aspect: '3/4' },
-  { src: '/images/bridal/blouse-2.jpg',  tag: 'Bridal Blouse',   aspect: '3/4' },
-  { src: '/images/bridal/lehenga-1.jpg', tag: 'Bridal Lehenga',  aspect: '3/4' },
-  { src: '/images/bridal/blouse-3.jpg',  tag: 'Bridal Blouse',   aspect: '3/4' },
-  { src: '/images/bridal/blouse-4.jpg',  tag: 'Bridal Blouse',   aspect: '3/4' },
-  { src: '/images/bridal/gown-1.jpg',    tag: 'Bridal Gown',     aspect: '3/4' },
-  { src: '/images/bridal/blouse-5.jpg',  tag: 'Bridal Blouse',   aspect: '3/4' },
-  { src: '/images/bridal/lehenga-2.jpg', tag: 'Bridal Lehenga',  aspect: '3/4' },
+ { src: '/videos/1.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/2.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+   { src: '/videos/3.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+    { src: '/videos/4.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+     { src: '/videos/5.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+      { src: '/videos/6.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+      { src: b1, tag: 'Bridal Blouse', aspect: '3/4' },
+{ src: b2, tag: 'Bridal Blouse', aspect: '3/4' },
+{ src: b3, tag: 'Bridal Blouse', aspect: '3/4' },
+{ src: b4, tag: 'Bridal Blouse', aspect: '3/4' },
+{ src: b5, tag: 'Bridal Blouse', aspect: '3/4' },
+{ src: designer01, tag: 'Designer Outfit', aspect: '3/4' },
+{ src: designer03, tag: 'Designer Outfit', aspect: '3/4' },
+{ src: designer06, tag: 'Designer Outfit', aspect: '3/4' },
 ];
 
 const reviews = [
@@ -606,9 +620,9 @@ const BridalLandingPage = () => {
           <div className="bl-hero-img-wrap">
             <div className="bl-hero-img-frame">
               <img
-                src="/images/bridal/hero-bridal.jpg"
-                alt="Bridal blouse by Shrusara Fashion Boutique Bangalore"
-              />
+  src={heroBridal}
+  alt="Bridal blouse by Shrusara Fashion Boutique Bangalore"
+/>
             </div>
             <div className="bl-hero-badge">
               <div className="bl-hero-badge-num">100+</div>
