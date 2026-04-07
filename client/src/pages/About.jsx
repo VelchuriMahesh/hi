@@ -342,6 +342,134 @@ export default function About() {
           .ab-process-grid { grid-template-columns: 1fr 1fr; }
           .ab-videos-grid { grid-template-columns: 1fr; }
         }
+          /* --- ADVANCED FOUNDER SECTION --- */
+.ab-designer-section {
+  background: #3E2C23; /* Dark Coffee Brand Color */
+  border-radius: 40px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin: 60px auto;
+  max-width: 1200px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+}
+
+/* Image Side */
+.ab-designer-image-box {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+}
+
+.ab-designer-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Content Side */
+.ab-designer-info-box {
+  flex: 1.2;
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+/* Decorative Gold Line */
+.ab-designer-info-box::before {
+  content: '';
+  position: absolute;
+  top: 80px;
+  left: 40px;
+  width: 2px;
+  height: 100px;
+  background: #C8A96A;
+}
+
+.ab-designer-eyebrow {
+  color: #C8A96A;
+  font: 600 12px 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+.ab-designer-name {
+  color: #FFFFFF;
+  font: 700 3rem/1.1 'Playfair Display', serif;
+  margin-bottom: 10px;
+}
+
+.ab-designer-role {
+  color: rgba(255, 255, 255, 0.6);
+  font: 500 1rem 'Poppins', sans-serif;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ab-designer-role::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+.ab-designer-bio {
+  color: rgba(255, 255, 255, 0.8);
+  font: 400 1.05rem/1.8 'Poppins', sans-serif;
+  margin-bottom: 24px;
+}
+
+.ab-designer-quote {
+  color: #C8A96A;
+  font: italic 600 1.1rem 'Playfair Display', serif;
+  margin-top: 20px;
+  padding-left: 20px;
+  border-left: 2px solid #C8A96A;
+}
+
+/* --- ADVANCED MOBILE FRIENDLY --- */
+@media (max-width: 992px) {
+  .ab-designer-section {
+    flex-direction: column; /* Stack on mobile */
+    margin: 20px;
+    border-radius: 30px;
+  }
+
+  .ab-designer-image-box {
+    min-height: 400px;
+  }
+
+  .ab-designer-info-box {
+    padding: 50px 30px;
+    text-align: center;
+  }
+
+  .ab-designer-info-box::before {
+    display: none; /* Hide vertical line on mobile */
+  }
+
+  .ab-designer-name {
+    font-size: 2.2rem;
+  }
+
+  .ab-designer-role {
+    justify-content: center;
+  }
+
+  .ab-designer-quote {
+    border-left: none;
+    border-top: 1px solid #C8A96A;
+    padding: 20px 0 0;
+    margin-top: 30px;
+  }
+}
         @media(max-width:768px) {
           .ab-hero { grid-template-columns: 1fr; min-height: auto; }
           .ab-hero-text { padding: 50px 5vw 32px; order: 2; }
@@ -403,39 +531,43 @@ export default function About() {
 </div>
       </section>
 
-      {/* ── 2. FOUNDER ──────────────────────────────────────────────────────── */}
-      <Reveal className="ab-shell">
-        <p className="ab-sec-eyebrow">The Designer Behind Shrusara</p>
-        <h2 className="ab-sec-h2">Meet Our Chief Designer – Shruthi Ajith</h2>
-        <div className="ab-founder-grid">
-          <div className="ab-founder-img-wrap">
-            <img
-  src="/videos/shruthi-ajith.jpeg"
-  alt="Shruthi Ajith – Chief Designer, Shrusara Fashion Boutique"
-  className="ab-founder-img"
-/>
-            <div className="ab-founder-badge">
-              <p className="ab-founder-badge-name">Shruthi Ajith</p>
-              <p className="ab-founder-badge-role">Chief Designer &amp; Founder</p>
-            </div>
-          </div>
-          <div className="ab-founder-content">
-            <p className="ab-founder-body">
-              Shruthi Ajith, founder and chief designer of Shrusara Fashion Boutique, brings
-              deep expertise in fashion designing with a strong focus on customized bridal and
-              designer wear.
-            </p>
-            <p className="ab-founder-body">
-              She personally works with every client to understand their body type, style
-              preferences, and occasion requirements. From design selection to final fitting,
-              every outfit is guided with attention to detail — ensuring perfect fit and
-              premium finishing.
-            </p>
-            <p className="ab-founder-sig">Shruthi Ajith, Chief Designer</p>
-          </div>
-        </div>
-      </Reveal>
+{/* ── 2. FOUNDER (Mobile Friendly) ────────────────────────── */}
+{/* ── 2. ADVANCED FOUNDER SECTION ────────────────────────── */}
+<Reveal>
+  <div className="ab-designer-section">
+    {/* Left Side: Professional Framed Image */}
+    <div className="ab-designer-image-box">
+      <img
+        src="/videos/shruthi-ajith.jpeg"
+        alt="Shruthi Ajith – Chief Designer"
+        className="ab-designer-img"
+      />
+    </div>
 
+    {/* Right Side: Sophisticated Text Info */}
+    <div className="ab-designer-info-box">
+      <p className="ab-designer-eyebrow">The Designer Behind Shrusara</p>
+      <h2 className="ab-designer-name">Shruthi Ajith</h2>
+      <div className="ab-designer-role">Founder &amp; Chief Designer</div>
+
+      <p className="ab-designer-bio">
+        Shruthi Ajith brings deep expertise in fashion designing with a strong focus 
+        on customized bridal and designer wear. She personally works with every client 
+        to understand their body type, style preferences, and occasion requirements.
+      </p>
+
+      <p className="ab-designer-bio">
+        From the initial design selection to the final fitting, every outfit is guided 
+        with extreme attention to detail—ensuring a perfect fit and a premium finishing 
+        that matches your vision.
+      </p>
+
+      <p className="ab-designer-quote">
+        "We don't just stitch clothes; we design your dreams."
+      </p>
+    </div>
+  </div>
+</Reveal>
       {/* ── 3. DIFFERENTIATORS ──────────────────────────────────────────────── */}
       <div className="ab-alt">
         <div className="ab-alt-inner">

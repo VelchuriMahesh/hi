@@ -616,11 +616,87 @@ export default function Designer() {
           .ds-img-banner-overlay{padding:24px 24px;}
           .ds-img-banner-wrap{padding-bottom:40px;}
         }
-        @media(max-width:480px){
-          .ds-outfit-grid{grid-template-columns:1fr;}
-          .ds-why-grid{grid-template-columns:1fr;}
-          .ds-img-banner-img{height:220px;}
-        }
+/* --- EXACT IMAGE STYLE BANNER --- */
+.ds-image-match-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  background: #3E2C23; /* Deep Brown from your palette */
+  border-radius: 40px;
+  padding: 60px 80px;
+  margin: 60px auto;
+  max-width: 1200px;
+  width: 90%;
+}
+
+.ds-image-match-content {
+  flex: 1;
+}
+
+.ds-image-match-title {
+  font: 600 2.4rem/1.2 'Playfair Display', serif !important;
+  color: #FFFFFF !important;
+  margin-bottom: 12px;
+}
+
+.ds-image-match-sub {
+  font: 400 1.1rem 'Poppins', sans-serif !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0;
+}
+
+.ds-image-match-btns {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Gold Button */
+.ds-btn-gold-pill {
+  background: #C8A96A;
+  color: #FFFFFF;
+  text-decoration: none;
+  font: 600 15px 'Poppins', sans-serif;
+  padding: 20px 40px;
+  border-radius: 100px;
+  transition: transform 0.2s;
+  white-space: nowrap;
+}
+
+/* Outline Button */
+.ds-btn-outline-pill {
+  background: transparent;
+  color: #FFFFFF;
+  text-decoration: none;
+  font: 600 15px 'Poppins', sans-serif;
+  padding: 20px 40px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.ds-btn-gold-pill:hover { transform: scale(1.02); }
+.ds-btn-outline-pill:hover { background: rgba(255,255,255,0.1); }
+
+/* Responsive */
+@media (max-width: 992px) {
+  .ds-image-match-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 30px;
+    align-items: center;
+  }
+  .ds-image-match-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+  .ds-btn-gold-pill, .ds-btn-outline-pill {
+    width: 100%;
+    text-align: center;
+  }
+}
       `}</style>
 
       <PageMeta
@@ -639,9 +715,18 @@ export default function Designer() {
             perfect fit, premium finishing and modern styling.</span>
           </h1>
           
-          <p className="ds-hero-designer">Styled personally by Chief Designer Shruthi Ajith</p>
-          <p className="ds-hero-price">Designer outfits starting from <strong>₹5000</strong> onwards</p>
-          <div className="ds-hero-btns">
+<p className="ds-line">
+  <span className="ds-star">✦</span>
+  <span>Styled personally by Chief Designer Shruthi Ajith</span>
+</p>
+
+<p className="ds-line">
+  <span className="ds-star">✦</span>
+  <span>
+    Designer outfits starting at <strong>₹5000</strong> onwards
+  </span>
+  <br/>
+</p>  <br/>  <div className="ds-hero-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-pri">
               <WaIcon size={18} /> WhatsApp Enquiry
             </a>
@@ -702,32 +787,26 @@ export default function Designer() {
       </div>
 
       {/* ── 3b. LINKED IMAGE BANNER (above Services) ────────────────────────── */}
-      <div className="ds-img-banner-wrap">
-        <a
-          href={WA_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ds-img-banner-link"
-          aria-label="Book your designer outfit consultation via WhatsApp"
-        >
-          <img
-            src="/videos/designer.jpeg"
-            alt="Designer Outfit Consultation – Shrusara Fashion Boutique"
-            className="ds-img-banner-img"
-          />
-          <div className="ds-img-banner-overlay">
-            <div className="ds-img-banner-content">
-              <p className="ds-img-banner-eyebrow">Limited Slots</p>
-              <h3 className="ds-img-banner-title">
-                Your perfect designer outfit, crafted just for your occasion
-              </h3>
-              <span className="ds-img-banner-cta">
-                WhatsApp Enquiry <span className="ds-img-banner-arrow">→</span>
-              </span>
-            </div>
-          </div>
-        </a>
-      </div>
+{/* ── 3b. EXACT IMAGE STYLE BANNER ────────────────────────── */}
+<div className="ds-image-match-banner">
+  <div className="ds-image-match-content">
+    <h2 className="ds-image-match-title">
+      Join our happy clients — book your consultation today
+    </h2>
+    <p className="ds-image-match-sub">
+      Start your bridal consultation
+    </p>
+  </div>
+
+  <div className="ds-image-match-btns">
+    <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-gold-pill">
+      WhatsApp Enquiry
+    </a>
+    <a href={TEL_LINK} className="ds-btn-outline-pill">
+      Call Now
+    </a>
+  </div>
+</div>
 
       {/* ── 4. SERVICE SECTION ──────────────────────────────────────────────── */}
       <Reveal className="ds-shell" style={{ paddingTop: 0 }}>

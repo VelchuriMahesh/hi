@@ -527,50 +527,41 @@ export default function Home() {
           gap: 28px;
           margin-top: 40px;
         }
-        .sf-cat-card {
-          position: relative;
-          min-height: 520px;
-          border-radius: var(--sf-radius);
-          overflow: hidden;
-          background: #1a1a1a;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-          transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
-          text-decoration: none;
-        }
-        .sf-cat-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-        }
-        .sf-cat-img {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-          z-index: 1;
-          transition: transform 0.6s ease;
-        }
-        .sf-cat-card:hover .sf-cat-img {
-          transform: scale(1.08);
-        }
-        .sf-cat-overlay-bottom {
-          position: relative;
-          z-index: 2;
-          width: 100%;
-          /* Improved gradient for better text legibility */
-          background: linear-gradient(to top, 
-            rgba(0,0,0,0.95) 0%, 
-            rgba(0,0,0,0.7) 30%, 
-            rgba(0,0,0,0.2) 60%, 
-            transparent 100%);
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-        }
+ /* ── CATEGORIES CSS (CLEANED UP) ── */
+.sf-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+.sf-cat-card {
+  position: relative;
+  min-height: 480px; /* High enough to show the photo */
+  border-radius: var(--sf-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes one top, one bottom */
+  text-decoration: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+.sf-cat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+.sf-cat-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1; /* Behind text */
+  transition: transform 0.6s ease;
+}
+.sf-cat-card:hover .sf-cat-img {
+  transform: scale(1.08);
+}
         .sf-cat-body {
           padding: 40px 32px 24px 32px;
           color: var(--sf-white);
@@ -820,6 +811,18 @@ export default function Home() {
   font-weight: 600;
   display: inline-block;
 }
+  .sf-line {
+  display: flex;
+  align-items: center; /* 🔥 THIS FIXES IT */
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sf-star {
+  color: #C8A96A;
+  flex-shrink: 0;
+  font-size: 14px;
+}
         }
       `}</style>
 
@@ -836,9 +839,21 @@ export default function Home() {
         <div className="sf-hero-text">
           <p className="sf-hero-eyebrow">Trusted Boutique · Bangalore</p>
           <h1 className="sf-hero-h1">Bridal & Designer Boutique in Bangalore</h1>
-         <p className="sf-hero-sub">
-  <span className="sf-line">✦ Customized bridal blouses, designer outfits, and occasion wear with perfect fit, premium finishing, and personalized styling.</span>
-  <span className="sf-line">✦ Designed personally by Chief Designer Shruthi Ajith</span>
+      <p className="sf-hero-sub">
+  <span className="sf-line">
+    <span className="sf-star">✦</span>
+    <span>
+      Customized bridal blouses, designer outfits, and occasion wear with perfect fit,
+      premium finishing, and personalized styling.
+    </span>
+  </span>
+
+  <span className="sf-line">
+    <span className="sf-star">✦</span>
+    <span>
+      Designed personally by Chief Designer Shruthi Ajith
+    </span>
+  </span>
 </p>
 
 <style>
@@ -849,6 +864,10 @@ export default function Home() {
 }
 `}
 </style>
+<br/>
+
+<br/>
+
           <div className="sf-hero-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary">
               <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
@@ -900,7 +919,7 @@ export default function Home() {
         <div className="sf-consult-banner">
           <div>
             <h2 className="sf-consult-title">Join our happy clients — book your consultation today</h2>
-            <p className="sf-consult-sub">Book Your Bridal Consultation Today</p>
+            <p className="sf-consult-sub">Start your bridal consultation</p>
           </div>
           <div className="sf-consult-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light">
@@ -947,7 +966,7 @@ export default function Home() {
       </div>
 
 {/* ── CATEGORIES (TITLE AT TOP, PRICE AT BOTTOM) ────────────────────────── */}
-{/* ── CATEGORIES ────────────────────────── */}
+{/* ── CATEGORIES (Gold Titles & Prices Fixed) ────────────────────────── */}
 <div className="sf-shell-alt">
   <div className="sf-shell-alt-inner">
     <p className="sf-eyebrow">Explore Categories</p>
@@ -955,12 +974,9 @@ export default function Home() {
     
     <div className="sf-cat-grid">
       
-      {/* Bridal Collection Card */}
-      <Link
-        to="/bridal-blouse-designer-bangalore"
-        className="sf-cat-card"
-        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-      >
+      {/* 1. Bridal Collection Card */}
+      <Link to="/bridal-blouse-designer-bangalore" className="sf-cat-card">
+        {/* Background Image */}
         <img
           src="/videos/cat1.jpeg"
           alt="Bridal Collection"
@@ -968,33 +984,46 @@ export default function Home() {
           loading="lazy"
         />
         
-        {/* TOP: Title only */}
+        {/* TOP BAR: Title */}
         <div style={{ 
           position: 'relative', 
           zIndex: 2, 
-          padding: '32px', 
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%)' 
+          padding: '24px 20px', 
+          background: 'rgba(26, 26, 26, 0.85)', // Dark contrast
+          textAlign: 'center',
+          borderBottom: '1px solid rgba(200, 169, 106, 0.2)' 
         }}>
-          <h3 className="sf-cat-title" style={{ margin: 0, fontSize: '2rem' }}>
+          <h3 style={{ 
+            margin: 0, 
+            fontSize: '1.9rem', 
+            color: '#C8A96A', // Gold visible color
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: '600'
+          }}>
             Bridal Collection
           </h3>
         </div>
 
-        {/* Spacer */}
-        <div style={{ flex: 1 }} />
-
-        {/* BOTTOM: Price Bar */}
-        <div className="sf-price-bar" style={{ position: 'relative', zIndex: 2 }}>
+        {/* BOTTOM BAR: Price */}
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 2,
+          background: 'rgba(26, 26, 26, 0.9)', 
+          padding: '16px 20px',
+          color: '#C8A96A', // Gold visible color
+          fontWeight: '700',
+          fontSize: '13px',
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          letterSpacing: '1.5px'
+        }}>
           Bridal designs starting at ₹6000
         </div>
       </Link>
 
-      {/* Designer Collection Card */}
-      <Link
-        to="/designer-outfits-bangalore"
-        className="sf-cat-card"
-        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-      >
+      {/* 2. Designer Collection Card */}
+      <Link to="/designer-outfits-bangalore" className="sf-cat-card">
+        {/* Background Image */}
         <img
           src="/videos/cat2.jpeg"
           alt="Designer Collection"
@@ -1002,23 +1031,39 @@ export default function Home() {
           loading="lazy"
         />
         
-        {/* TOP: Title only */}
+        {/* TOP BAR: Title */}
         <div style={{ 
           position: 'relative', 
           zIndex: 2, 
-          padding: '32px', 
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%)' 
+          padding: '24px 20px', 
+          background: 'rgba(26, 26, 26, 0.85)',
+          textAlign: 'center',
+          borderBottom: '1px solid rgba(200, 169, 106, 0.2)' 
         }}>
-          <h3 className="sf-cat-title" style={{ margin: 0, fontSize: '2rem' }}>
+          <h3 style={{ 
+            margin: 0, 
+            fontSize: '1.9rem', 
+            color: '#C8A96A', // Gold visible color
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: '600'
+          }}>
             Designer Collection
           </h3>
         </div>
 
-        {/* Spacer */}
-        <div style={{ flex: 1 }} />
-
-        {/* BOTTOM: Price Bar */}
-        <div className="sf-price-bar" style={{ position: 'relative', zIndex: 2 }}>
+        {/* BOTTOM BAR: Price */}
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 2,
+          background: 'rgba(26, 26, 26, 0.9)',
+          padding: '16px 20px',
+          color: '#C8A96A', // Gold visible color
+          fontWeight: '700',
+          fontSize: '13px',
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          letterSpacing: '1.5px'
+        }}>
           Designer outfit starting at ₹5000
         </div>
       </Link>
@@ -1026,7 +1071,6 @@ export default function Home() {
     </div>
   </div>
 </div>
-
       {/* ── ABOUT ─────────────────────────────────────────────────────────── */}
       <div className="sf-shell">
         <p className="sf-eyebrow">About Shrusara</p>

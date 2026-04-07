@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-// --- Shrusara Knowledge Base ---
+// --- Updated Shrusara Knowledge Base ---
 const SHRUSARA_DATA = {
-  welcome: "Namaste! I'm your Shrusara Stylist. I can help you with Bridal Blouses, Maggam work, or Kids' outfits. What are you looking for today?",
-  services: "We specialize in: \n✦ Bridal Blouses (Maggam & Aari)\n✦ Lehengas & Gowns\n✦ Indo-Western Sets\n✦ Kids Festive Wear",
-  process: "Our process is simple: \n1. Consultation \n2. Design Direction \n3. Trial & Perfect Fitting.",
-  location: "Our boutique is located in Mahalakshmipuram, Bengaluru, 560086. Would you like a Google Maps link?",
-  contact: "You can reach us at 9741827558 or visit us in Mahalakshmipuram.",
+  welcome: "Namaste! I'm your Shrusara Assistant. Our founder & chief designer Shruthi Ajith specializes in customized bridal and designer wear. How can we help you look your best today?",
+  founder: "Shruthi Ajith is the founder and chief designer at Shrusara. With deep expertise in fashion design, she personally works with every client to understand their body type and style preferences. From first sketch to final fitting, she ensures every outfit has a premium finish.",
+  services: "We specialize in: \n✦ Bridal Blouses (Maggam & Aari)\n✦ Customized Gowns & Lehengas\n✦ Indo-Western Sets\n✦ Kids Festive Wear\n\nEvery piece is personally guided by Shruthi Ajith.",
+  process: "Our Boutique Flow: \n1. Consultation with Shruthi Ajith \n2. Design & Fabric Selection \n3. Personal Fitting & Trials.",
+  location: "📍 Shrusara Fashion Boutique\n106, 6th Main Road, Mahalakshmipuram,\nBangalore - 560086.",
+  contact: "📞 Phone: 9741827558\n✉️ Email: help@shrusara.com",
+  maps: "https://www.google.com/maps/search/?api=1&query=Shrusara%20Fashion%20Boutique%2C%20106%2C%206th%20Main%20Road%2C%20Mahalakshmipuram%2C%20Bangalore%20-%20560086",
 };
 
-// --- Custom Fashion Logo (Needle & Thread Emblem) ---
 const FashionLogo = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-stone-300">
     <path d="M12 2L12 18M12 18C10 18 8 16 8 14C8 12 12 8 12 8C12 8 16 12 16 14C16 16 14 18 12 18Z" stroke="currentColor" strokeWidth="1.5"/>
@@ -37,27 +38,31 @@ export default function ShrusaraAssistantPro() {
     const text = userInput || input;
     if (!text.trim()) return;
 
-    // Add User Message
-    const userMsg = { id: Date.now(), role: 'user', text };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages(prev => [...prev, { id: Date.now(), role: 'user', text }]);
     setInput('');
     setIsTyping(true);
 
-    // AI Logic - Simple keyword matching based on your website data
     setTimeout(() => {
-      let reply = "That sounds lovely! Our lead designer can help you with that. Would you like to book a consultation on WhatsApp?";
+      let reply = "That sounds lovely! Shruthi Ajith can guide you personally on this. Would you like to book a consultation?";
       const lowerText = text.toLowerCase();
 
-      if (lowerText.includes('bridal') || lowerText.includes('blouse')) reply = "Shrusara is famous for Bridal Blouses. We focus on custom necklines and Maggam/Aari work. Shall I show you our process?";
-      if (lowerText.includes('maggam') || lowerText.includes('aari')) reply = "Our Maggam & Aari work uses premium handcrafted embroidery with 3D finishing. It's perfect for wedding sarees!";
-      if (lowerText.includes('kids')) reply = "We design comfort-first kids' outfits with festive charm. We even do family coordination sets!";
-      if (lowerText.includes('location') || lowerText.includes('where')) reply = SHRUSARA_DATA.location;
-      if (lowerText.includes('process')) reply = SHRUSARA_DATA.process;
-      if (lowerText.includes('price') || lowerText.includes('cost')) reply = "Pricing depends on the intricacy of work (like Maggam detailing). A basic consultation is the best way to get a quote!";
+      if (lowerText.includes('bridal') || lowerText.includes('blouse') || lowerText.includes('maggam')) {
+        reply = "Shrusara is famous for Bridal Blouses. Shruthi Ajith personally supervises all Maggam and Aari work to ensure perfect detailing.";
+      } else if (lowerText.includes('who') || lowerText.includes('founder') || lowerText.includes('designer') || lowerText.includes('shruthi')) {
+        reply = SHRUSARA_DATA.founder;
+      } else if (lowerText.includes('location') || lowerText.includes('where') || lowerText.includes('address')) {
+        reply = `${SHRUSARA_DATA.location}\n\nWould you like to view it on Google Maps?`;
+      } else if (lowerText.includes('map') || lowerText.includes('direction')) {
+        reply = `You can find our boutique here: ${SHRUSARA_DATA.maps}`;
+      } else if (lowerText.includes('contact') || lowerText.includes('phone') || lowerText.includes('email')) {
+        reply = `${SHRUSARA_DATA.contact}\n\nYou can also visit us at Mahalakshmipuram.`;
+      } else if (lowerText.includes('kids')) {
+        reply = "For kids, we design comfort-first festive outfits. Shruthi ensures the fabrics are skin-friendly while looking grand.";
+      }
 
       setMessages(prev => [...prev, { id: Date.now() + 1, role: 'assistant', text: reply }]);
       setIsTyping(false);
-    }, 1200);
+    }, 1000);
   };
 
   return (
@@ -68,7 +73,7 @@ export default function ShrusaraAssistantPro() {
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.95 }}
-            className="mb-4 flex h-[580px] w-[380px] max-w-[90vw] flex-col overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-2xl"
+            className="mb-4 flex h-[600px] w-[380px] max-w-[90vw] flex-col overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-2xl"
           >
             {/* Header */}
             <div className="bg-[#1a1a1a] p-6 text-white">
@@ -79,7 +84,7 @@ export default function ShrusaraAssistantPro() {
                   </div>
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-stone-200">Shrusara</h3>
-                    <p className="text-[10px] text-stone-500">Bangalore's Bridal Expert</p>
+                    <p className="text-[10px] text-stone-500">By Designer Shruthi Ajith</p>
                   </div>
                 </div>
                 <button onClick={() => setOpen(false)} className="text-stone-500 hover:text-white transition-colors">
@@ -97,27 +102,28 @@ export default function ShrusaraAssistantPro() {
                   key={msg.id}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-[13.5px] leading-relaxed shadow-sm ${
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed shadow-sm ${
                     msg.role === 'user' ? 'bg-stone-900 text-white rounded-tr-none' : 'bg-white text-stone-800 border border-stone-100 rounded-tl-none'
                   }`}>
                     {msg.text.split('\n').map((line, i) => (
                       <span key={i}>{line}<br/></span>
                     ))}
+                    {msg.text.includes('Google Maps') && (
+                      <a href={SHRUSARA_DATA.maps} target="_blank" rel="noreferrer" className="mt-2 inline-block text-amber-600 font-bold underline">Open Maps →</a>
+                    )}
                   </div>
                 </motion.div>
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-white border border-stone-100 rounded-2xl px-4 py-3">
-                    <TypingIndicator />
-                  </div>
+                  <TypingIndicator />
                 </div>
               )}
             </div>
 
             {/* Quick Suggestions */}
             <div className="px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar bg-[#fdfcfb]">
-              {['Bridal Blouses', 'Maggam Work', 'Kids Boutique', 'Location'].map((label) => (
+              {['Bridal Work', 'About the Designer', 'Location', 'Contact Details'].map((label) => (
                 <button
                   key={label}
                   onClick={() => handleSend(label)}
@@ -138,18 +144,18 @@ export default function ShrusaraAssistantPro() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about bridal, fitting, maggam..."
+                  placeholder="Ask Shruthi about your design..."
                   className="w-full rounded-full border border-stone-200 bg-stone-50 py-3 pl-5 pr-12 text-sm focus:border-stone-400 focus:outline-none transition-all"
                 />
                 <button
                   type="submit"
-                  className="absolute right-1.5 h-9 w-9 flex items-center justify-center rounded-full bg-stone-900 text-white hover:bg-black transition-all"
+                  className="absolute right-1.5 h-9 w-9 flex items-center justify-center rounded-full bg-stone-900 text-white"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                 </button>
               </form>
-              <p className="mt-3 text-center text-[10px] uppercase tracking-widest text-stone-400 font-semibold">
-                Trusted by 127+ Brides in Bangalore
+              <p className="mt-3 text-center text-[9px] uppercase tracking-widest text-stone-400 font-bold">
+                Mahalakshmipuram • Bangalore
               </p>
             </div>
           </motion.div>
@@ -161,11 +167,11 @@ export default function ShrusaraAssistantPro() {
         onClick={() => setOpen(!open)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex h-16 w-16 items-center justify-center rounded-full bg-stone-900 text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+        className="flex h-16 w-16 items-center justify-center rounded-full bg-stone-900 text-white shadow-xl"
       >
         <AnimatePresence mode="wait">
           {open ? (
-            <motion.svg key="c" initial={{ rotate: -90 }} animate={{ rotate: 0 }} exit={{ rotate: 90 }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></motion.svg>
+            <motion.svg key="c" initial={{ rotate: -90 }} animate={{ rotate: 0 }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></motion.svg>
           ) : (
             <motion.div key="i" initial={{ scale: 0 }} animate={{ scale: 1 }} className="relative">
               <FashionLogo />
@@ -183,7 +189,7 @@ export default function ShrusaraAssistantPro() {
 
 function TypingIndicator() {
   return (
-    <div className="flex gap-1.5">
+    <div className="flex gap-1.5 bg-white border border-stone-100 rounded-2xl px-4 py-3">
       {[0, 1, 2].map((i) => (
         <motion.div
           key={i}

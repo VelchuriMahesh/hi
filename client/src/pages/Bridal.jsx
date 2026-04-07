@@ -525,6 +525,21 @@ export default function Bridal() {
           .br-why-grid{grid-template-columns:repeat(3,1fr);}
           .br-process-grid{grid-template-columns:1fr 1fr;}
         }
+          .br-sub-flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.br-star {
+  color: #C8A96A;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.br-text {
+  line-height: 1.7;
+}
         @media(max-width:768px){
           .br-hero{grid-template-columns:1fr;min-height:auto;}
           .br-hero-text{padding:50px 5vw 32px;order:2;}
@@ -552,6 +567,92 @@ export default function Bridal() {
           .br-why-grid{grid-template-columns:1fr;}
           .br-img-banner-img{height:220px;}
         }
+          /* --- EXACT IMAGE STYLE BANNER --- */
+.br-image-match-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  background: #3E2C23; /* Deep Brown */
+  border-radius: 40px;
+  padding: 60px 80px;
+  margin: 60px auto;
+  max-width: 1280px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.br-image-match-content {
+  flex: 1;
+}
+
+.br-image-match-title {
+  font: 600 2.4rem/1.2 'Playfair Display', serif !important;
+  color: #FFFFFF !important;
+  margin-bottom: 12px;
+}
+
+.br-image-match-sub {
+  font: 400 1.1rem 'Poppins', sans-serif !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0;
+}
+
+.br-image-match-btns {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Gold Button */
+.br-btn-gold-pill {
+  background: #C8A96A;
+  color: #FFFFFF !important;
+  text-decoration: none;
+  font: 600 15px 'Poppins', sans-serif;
+  padding: 20px 40px;
+  border-radius: 100px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Outline Button */
+.br-btn-outline-pill {
+  background: transparent;
+  color: #FFFFFF !important;
+  text-decoration: none;
+  font: 600 15px 'Poppins', sans-serif;
+  padding: 20px 40px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.br-btn-gold-pill:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+.br-btn-outline-pill:hover { background: rgba(255,255,255,0.1); }
+
+@media (max-width: 992px) {
+  .br-image-match-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 30px;
+    margin: 40px auto;
+    width: 95%;
+  }
+  .br-image-match-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+  .br-btn-gold-pill, .br-btn-outline-pill {
+    width: 100%;
+    justify-content: center;
+  }
+  .br-image-match-title { font-size: 1.8rem !important; }
+}
       `}</style>
 
       <PageMeta
@@ -571,21 +672,27 @@ export default function Bridal() {
           </h1>
 
           {/* FIXED STAR ALIGNMENT */}
-          <p className="br-hero-sub br-sub-flex">
-            <span className="br-star">✦</span>
-            <span className="br-text">
-              Custom bridal blouses, lehengas, and gowns designed with perfect fit,
-              premium finishing, and personalized styling.
-            </span>
-          </p>
+<p className="br-hero-sub br-sub-flex">
+  <span className="br-star">✦</span>
+  <span className="br-text">
+    Custom bridal blouses, lehengas, and gowns designed with perfect fit,
+    premium finishing, and personalized styling.
+  </span>
+</p>
 
-          <p className="br-hero-designer">
-            Designed personally by Chief Designer Shruthi Ajith
-          </p>
+<p className="br-hero-designer br-sub-flex">
+  <span className="br-star"></span>
+  <span className="br-text">
+    Designed personally by Chief Designer Shruthi Ajith
+  </span>
+</p>
 
-          <p className="br-hero-price">
-            Bridal blouse designs starting from <strong>₹6000</strong>
-          </p>
+<p className="br-hero-price br-sub-flex">
+  <span className="br-star">✦</span>
+  <span className="br-text">
+    Bridal designs starting at <strong>₹6000</strong>
+  </span>
+</p>
 
           <div className="br-hero-btns">
             <a
@@ -664,33 +771,28 @@ export default function Bridal() {
       </div>
 
       {/* ── 3b. LINKED IMAGE BANNER (above Services) ────────────────────────── */}
-      <div className="br-img-banner-wrap">
-        <a
-          href={WA_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="br-img-banner-link"
-          aria-label="Book your bridal consultation via WhatsApp"
-        >
-          <img
-            src="/videos/bridal_hero.jpeg"
-            alt="Bridal Blouse Consultation – Shrusara Fashion Boutique"
-            className="br-img-banner-img"
-          />
-          <div className="br-img-banner-overlay">
-            <div className="br-img-banner-content">
-              <p className="br-img-banner-eyebrow">Limited Slots</p>
-              <h3 className="br-img-banner-title">
-                Your dream bridal blouse, crafted just for you
-              </h3>
-              <span className="br-img-banner-cta">
-                Book Consultation <span className="br-img-banner-arrow">→</span>
-              </span>
-            </div>
-          </div>
-        </a>
-      </div>
+{/* ── 3b. REPLACED WITH IMAGE STYLE BANNER ────────────────────────── */}
+<div className="br-shell" style={{ paddingBottom: 0 }}>
+  <div className="br-image-match-banner">
+    <div className="br-image-match-content">
+      <h2 className="br-image-match-title">
+        Join our happy brides — book your consultation today
+      </h2>
+      <p className="br-image-match-sub">
+        Start your bridal consultation with Shruthi Ajith
+      </p>
+    </div>
 
+    <div className="br-image-match-btns">
+      <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-gold-pill">
+        <WaIcon size={18} /> WhatsApp Enquiry
+      </a>
+      <a href={TEL_LINK} className="br-btn-outline-pill">
+        Call Now
+      </a>
+    </div>
+  </div>
+</div>
       {/* ── 4. SERVICE SECTION ──────────────────────────────────────────────── */}
       <Reveal className="br-shell" style={{ paddingTop: 0 }}>
         <div className="br-svc-grid">
@@ -791,7 +893,7 @@ export default function Bridal() {
       <div className="br-shell" style={{ paddingTop: 0 }}>
         <div className="br-cta-wrap">
           <div style={{ display:'flex', justifyContent:'center', marginBottom:20 }}>
-            <p className="br-cta-eyebrow">Limited Slots Available</p>
+            <p className="br-cta-eyebrow"> Book Your Bridal Blouse Consultation Today</p>
           </div>
           <h2 className="br-cta-h">Book Your Bridal Blouse Consultation Today</h2>
           <p className="br-cta-sub">
