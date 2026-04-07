@@ -435,41 +435,65 @@ export default function About() {
 }
 
 /* --- ADVANCED MOBILE FRIENDLY --- */
-@media (max-width: 992px) {
-  .ab-designer-section {
-    flex-direction: column; /* Stack on mobile */
-    margin: 20px;
-    border-radius: 30px;
+/* --- UPDATED MOBILE HERO STYLES --- */
+@media(max-width:768px) {
+  .ab-hero { 
+    grid-template-columns: 1fr; 
+    min-height: auto; 
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Make video taller and more impactful on mobile */
+  .ab-hero-img-wrap { 
+    order: 1; 
+    height: 70vh; /* Takes up 70% of the screen height */
+    width: 100%;
+    position: relative;
   }
 
-  .ab-designer-image-box {
-    min-height: 400px;
+  .ab-hero-img {
+    object-position: center center; /* Focus on the center of the video */
   }
 
-  .ab-designer-info-box {
-    padding: 50px 30px;
+  /* Improved gradient to blend video into the text content */
+  .ab-hero-fade { 
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      transparent 70%, 
+      var(--c-bg) 95%,
+      var(--c-bg) 100%
+    ); 
+  }
+
+  .ab-hero-text { 
+    padding: 40px 6vw 60px; 
+    order: 2; 
+    margin-top: -60px; /* Pulls text up over the video fade for a seamless look */
+    background: var(--c-bg);
+    position: relative;
+    z-index: 10;
+    border-radius: 30px 30px 0 0; /* Elegant rounded corners */
     text-align: center;
   }
 
-  .ab-designer-info-box::before {
-    display: none; /* Hide vertical line on mobile */
+  .ab-eyebrow { justify-content: center; }
+  .ab-hero-h1 { font-size: 1.8rem; margin-bottom: 15px; }
+  .ab-hero-sub { margin: 0 auto 20px; }
+  .ab-hero-designer { justify-content: center; }
+  
+  .ab-hero-btns { 
+    flex-direction: column; 
+    gap: 12px;
+    width: 100%;
   }
-
-  .ab-designer-name {
-    font-size: 2.2rem;
+  
+  .ab-btn-pri, .ab-btn-sec { 
+    width: 100%; 
+    justify-content: center; 
+    padding: 16px; /* Slightly larger touch target for mobile */
   }
-
-  .ab-designer-role {
-    justify-content: center;
-  }
-
-  .ab-designer-quote {
-    border-left: none;
-    border-top: 1px solid #C8A96A;
-    padding: 20px 0 0;
-    margin-top: 30px;
-  }
-    /* --- HERITAGE HIGHLIGHT LINE --- */
+} /* --- HERITAGE HIGHLIGHT LINE --- */
 .ab-designer-heritage {
   display: inline-flex;
   align-items: center;
@@ -553,13 +577,14 @@ export default function About() {
             </a>
           </div>
         </div>
-       <div className="ab-hero-img-wrap">
+<div className="ab-hero-img-wrap">
   <video
     src="/videos/about-hero.mp4"
     autoPlay
     muted
     loop
-    playsInline
+    playsInline  /* Required for mobile background video */
+    webkit-playsinline="true"
     className="ab-hero-img"
   />
   <div className="ab-hero-fade" />
