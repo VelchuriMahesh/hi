@@ -11,6 +11,8 @@ import designer06 from '../assets/images/designer/designer-06.jpeg';
 import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
 import gown3 from "../assets/images/bridal/bridal/gown-3.jpeg";
 import gown4 from "../assets/images/bridal/bridal/gown-4.jpeg";
+import img110 from '../assets/images/bridal/110.jpeg';
+import img120 from '../assets/images/bridal/120.jpeg';
 
 /**
  * SHRUSARA BRIDAL LANDING PAGE
@@ -1037,10 +1039,10 @@ const BridalLandingPage = () => {
                 <img src={b1} alt="Maggam work bridal blouse" />
               </div>
               <div className="bl-craft-img-card">
-                <img src={b3} alt="Aari work bridal blouse" />
+                <img src={img110} alt="Aari work bridal blouse" />
               </div>
               <div className="bl-craft-img-card">
-                <img src={b4} alt="Zari embroidery bridal blouse" />
+                <img src={img120} alt="Zari embroidery bridal blouse" />
               </div>
             </div>
           </div>
