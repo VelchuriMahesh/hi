@@ -6,6 +6,9 @@ import ReviewsSection from '../components/ReviewsSection';
 
 // Static Image Imports
 import lehenga1 from "../assets/images/bridal/lehenga-2.jpeg";
+import s11 from "../assets/images/bridal/11.jpeg";
+import s12 from "../assets/images/bridal/22.jpeg";
+import s13 from "../assets/images/bridal/33.jpeg";
 import lehenga2 from '../assets/images/bridal/lehenga-1.jpeg';
 import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
 import gown2 from '../assets/images/bridal/bridal/gown-2.jpeg';
@@ -44,9 +47,12 @@ const bridalOutfits = [
   // BRIDAL BLOUSE CATEGORY
   { id: 1, tag: 'bridal-blouse', title: 'Maggam Work Blouse', image: blouse1 },
   { id: 2, tag: 'bridal-blouse', title: 'Aari Work Blouse',   image: blouse2 },
-  { id: 3, tag: 'bridal-blouse', title: 'Muhurtham Blouse',   image: blouse3 },
+
   { id: 11, tag: 'bridal-blouse', title: 'Designer Blouse',   image: blouse4 },
   { id: 12, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: blouse5 },
+    { id: 13, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: s11 },
+      { id: 14, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: s12 },
+        { id: 15, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: s13 },
   
   // LEHENGA CATEGORY
   { id: 4, tag: 'lehenga', title: 'Bridal Lehenga',    image: lehenga1 },
