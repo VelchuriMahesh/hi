@@ -1095,9 +1095,12 @@ const BridalLandingPage = () => {
               <p className="bl-footer-brand-name">Shrusara Fashion Boutique</p>
               <p className="bl-footer-brand-tag">Bridal Boutique in Bangalore</p>
               <p className="bl-footer-desc">
-                Customized bridal blouses, bridal lehengas, and bridal gowns crafted with
-                premium fit, detailed handwork, and elegant finishing.
-              </p>
+  Shrusara Fashion Boutique – Bridal Boutique in Bangalore
+</p>
+<p className="bl-footer-desc">
+  Customized bridal blouses, bridal lehengas, and bridal gowns crafted with
+  premium fit, detailed handwork, and elegant finishing.
+</p>
               <div className="bl-footer-divider" />
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
@@ -1136,13 +1139,7 @@ const BridalLandingPage = () => {
           </div>
 
           {/* Bottom bar */}
-         <p className="bl-footer-desc">
-  Shrusara Fashion Boutique – Bridal Boutique in Bangalore
-</p>
-<p className="bl-footer-desc">
-  Customized bridal blouses, bridal lehengas, and bridal gowns crafted with
-  premium fit, detailed handwork, and elegant finishing.
-</p>
+         
         </footer>
 
         {/* ── FLOATING CALL ────────────────────────────────────────────────────── */}
