@@ -9,15 +9,13 @@ import designer01 from '../assets/images/designer/designer-01.jpeg';
 import designer03 from '../assets/images/designer/designer-03.jpeg';
 import designer06 from '../assets/images/designer/designer-06.jpeg';
 import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
-
 import gown3 from "../assets/images/bridal/bridal/gown-3.jpeg";
 import gown4 from "../assets/images/bridal/bridal/gown-4.jpeg";
 
-
-/**  /videos/blouse.png
+/**
  * SHRUSARA BRIDAL LANDING PAGE
- * Hero updated to match Home page split-layout style.
- * Footer updated with full address, contact, and map link.
+ * Hero updated with new heading/subtext copy.
+ * Footer made compact and tight.
  */
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -32,7 +30,7 @@ const trustPoints = [
     icon: '✦',
     label: 'Craftsmanship',
     title: 'Premium Maggam & Aari Work',
-    desc: ' Intricate handcrafted embroidery designed for bridal elegance and richness',
+    desc: 'Intricate handcrafted embroidery designed for bridal elegance and richness',
   },
   {
     icon: '◈',
@@ -49,22 +47,20 @@ const trustPoints = [
 ];
 
 const galleryItems = [
-   { src: '/videos/11.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-    { src: '/videos/22.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-     { src: '/videos/33.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-      { src: '/videos/44.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-       { src: '/videos/55.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-        { src: '/videos/66.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-         { src: '/videos/77.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/1.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/2.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/3.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-
-  { src: b1, tag: 'Bridal Blouse', aspect: '3/4' },
-
-  { src: b3, tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b4, tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b5, tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/11.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/22.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/33.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/44.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/55.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/66.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/77.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/1.jpeg',  tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/2.jpeg',  tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: '/videos/3.jpeg',  tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: b1,  tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: b3,  tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: b4,  tag: 'Bridal Blouse', aspect: '3/4' },
+  { src: b5,  tag: 'Bridal Blouse', aspect: '3/4' },
 ];
 
 const reviews = [
@@ -311,29 +307,52 @@ const BridalLandingPage = () => {
           color: var(--bl-gold); font-weight: 600; margin-bottom: 22px;
         }
         .bl-hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--bl-gold); display: block; }
+
+        /* ── UPDATED HERO HEADINGS ── */
         .bl-hero-h1 {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(2.4rem,4vw,3.6rem); font-weight: 700; line-height: 1.1;
-          color: var(--bl-dark); margin-bottom: 8px;
+          font-size: clamp(2rem, 3.4vw, 3.2rem);
+          font-weight: 700;
+          line-height: 1.12;
+          color: var(--bl-dark);
+          margin-bottom: 10px;
         }
         .bl-hero-h1 em { font-style: italic; color: var(--bl-gold); }
         .bl-hero-h2 {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.3rem,2vw,1.8rem); font-weight: 400; font-style: italic;
-          color: var(--bl-muted); margin-bottom: 22px; line-height: 1.3;
+          font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+          font-weight: 400;
+          font-style: italic;
+          color: var(--bl-muted);
+          margin-bottom: 20px;
+          line-height: 1.35;
         }
         .bl-hero-sub {
-          font-size: .9rem; line-height: 1.85; color: var(--bl-muted);
-          max-width: 440px; margin-bottom: 6px; font-weight: 300;
+          font-size: .88rem;
+          line-height: 1.85;
+          color: var(--bl-muted);
+          max-width: 460px;
+          margin-bottom: 6px;
+          font-weight: 300;
         }
         .bl-hero-designer {
           display: inline-flex; align-items: center; gap: 7px;
           font-size: .72rem; font-weight: 600; letter-spacing: .06em;
-          color: var(--bl-dark); margin-bottom: 10px;
+          color: var(--bl-dark); margin-bottom: 6px;
         }
         .bl-hero-designer::before { content: '✦'; color: var(--bl-gold); font-size: .7rem; }
-        .bl-hero-price { font-size: .76rem; color: var(--bl-muted); margin-bottom: 36px; }
+        .bl-hero-price { font-size: .76rem; color: var(--bl-muted); margin-bottom: 10px; }
         .bl-hero-price strong { color: var(--bl-dark); font-weight: 700; }
+
+        /* ── SCARCITY LINE UNDER PRICE ── */
+        .bl-hero-scarcity {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-size: .68rem; color: rgba(184,147,90,.85);
+          font-weight: 500; letter-spacing: .04em;
+          margin-bottom: 28px;
+        }
+        .bl-hero-scarcity::before { content: '⚑'; font-size: .65rem; }
+
         .bl-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 
         /* Hero image panel */
@@ -669,45 +688,139 @@ const BridalLandingPage = () => {
           font-style: italic;
         }
 
-        /* ── FOOTER ── */
+        /* ──────────────────────────────────────────────────
+           FOOTER — compact, tight layout
+        ────────────────────────────────────────────────── */
         .bl-footer {
           background: var(--bl-dark);
           border-top: 1px solid rgba(184,147,90,.18);
-          padding: 56px 5vw 36px;
-          color: rgba(255,255,255,.75);
+          padding: 36px 5vw 24px;
+          color: rgba(255,255,255,.65);
         }
         .bl-footer-inner {
           max-width: 1100px;
           margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1.4fr 1fr;
-          gap: 60px;
-          align-items: start;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: flex-start;
+          gap: 32px 60px;
+        }
+
+        /* Brand column */
+        .bl-footer-brand {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          min-width: 200px;
+          flex: 1.2;
         }
         .bl-footer-brand-name {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.7rem;
+          font-size: 1.25rem;
           font-weight: 700;
           color: var(--bl-white);
-          letter-spacing: .03em;
+          letter-spacing: .02em;
           line-height: 1;
-          margin-bottom: 6px;
+          margin: 0;
         }
         .bl-footer-brand-tag {
-          font-size: .58rem;
-          letter-spacing: .22em;
+          font-size: .52rem;
+          letter-spacing: .2em;
           text-transform: uppercase;
           color: var(--bl-gold);
           font-weight: 600;
-          margin-bottom: 18px;
+          margin-bottom: 10px;
         }
         .bl-footer-desc {
-          font-size: .82rem;
-          line-height: 1.8;
-          color: rgba(255,255,255,.55);
+          font-size: .76rem;
+          line-height: 1.7;
+          color: rgba(255,255,255,.42);
           font-weight: 300;
-          max-width: 380px;
-          margin-bottom: 28px;
+          max-width: 300px;
+          margin: 0;
+        }
+
+        /* Divider between columns */
+        .bl-footer-divider-v {
+          width: 1px;
+          align-self: stretch;
+          background: rgba(184,147,90,.15);
+          flex-shrink: 0;
+        }
+
+        /* Contact column */
+        .bl-footer-contact {
+          flex: 1;
+          min-width: 200px;
+        }
+        .bl-footer-contact-title {
+          font-size: .56rem;
+          letter-spacing: .2em;
+          text-transform: uppercase;
+          color: var(--bl-gold);
+          font-weight: 600;
+          margin-bottom: 14px;
+        }
+        .bl-footer-contact-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .bl-footer-contact-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          font-size: .76rem;
+          color: rgba(255,255,255,.52);
+          line-height: 1.45;
+          text-decoration: none;
+          transition: color .2s;
+        }
+        .bl-footer-contact-item:hover { color: var(--bl-gold); }
+        .bl-footer-contact-icon {
+          color: var(--bl-gold);
+          flex-shrink: 0;
+          margin-top: 2px;
+        }
+        .bl-footer-map-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-top: 14px;
+          font-size: .6rem;
+          font-weight: 600;
+          letter-spacing: .14em;
+          text-transform: uppercase;
+          color: var(--bl-gold);
+          text-decoration: none;
+          border: 1px solid rgba(184,147,90,.3);
+          padding: 7px 14px;
+          transition: background .2s, border-color .2s;
+        }
+        .bl-footer-map-link:hover {
+          background: rgba(184,147,90,.1);
+          border-color: var(--bl-gold);
+        }
+
+        /* Bottom bar */
+        .bl-footer-bottom {
+          max-width: 1100px;
+          margin: 20px auto 0;
+          padding-top: 16px;
+          border-top: 1px solid rgba(255,255,255,.06);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .bl-footer-copy {
+          font-size: .65rem;
+          color: rgba(255,255,255,.22);
+        }
+        .bl-footer-copy-right {
+          font-size: .65rem;
+          color: rgba(255,255,255,.22);
         }
 
         /* ── FLOATING CALL ── */
@@ -729,84 +842,7 @@ const BridalLandingPage = () => {
           box-shadow: 0 6px 28px rgba(0,0,0,.4);
           text-decoration: none;
         }
-        .bl-float-call a:hover {
-          background: #B8935A;
-        }
-
-        .bl-footer-divider {
-          width: 40px;
-          height: 1px;
-          background: var(--bl-gold);
-          margin-bottom: 28px;
-          opacity: .6;
-        }
-        .bl-footer-contact-title {
-          font-size: .62rem;
-          letter-spacing: .2em;
-          text-transform: uppercase;
-          color: var(--bl-gold);
-          font-weight: 600;
-          margin-bottom: 18px;
-        }
-        .bl-footer-contact-list {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-        }
-        .bl-footer-contact-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          font-size: .82rem;
-          color: rgba(255,255,255,.6);
-          line-height: 1.5;
-          text-decoration: none;
-          transition: color .2s;
-        }
-        .bl-footer-contact-item:hover { color: var(--bl-gold); }
-        .bl-footer-contact-icon {
-          color: var(--bl-gold);
-          flex-shrink: 0;
-          margin-top: 2px;
-        }
-        .bl-footer-map-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          margin-top: 20px;
-          font-size: .68rem;
-          font-weight: 600;
-          letter-spacing: .14em;
-          text-transform: uppercase;
-          color: var(--bl-gold);
-          text-decoration: none;
-          border: 1px solid rgba(184,147,90,.35);
-          padding: 10px 18px;
-          transition: background .2s, border-color .2s;
-        }
-        .bl-footer-map-link:hover {
-          background: rgba(184,147,90,.1);
-          border-color: var(--bl-gold);
-        }
-        .bl-footer-bottom {
-          max-width: 1100px;
-          margin: 40px auto 0;
-          padding-top: 24px;
-          border-top: 1px solid rgba(255,255,255,.07);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-        .bl-footer-copy {
-          font-size: .72rem;
-          color: rgba(255,255,255,.28);
-        }
-        .bl-footer-copy-right {
-          font-size: .72rem;
-          color: rgba(255,255,255,.28);
-        }
+        .bl-float-call a:hover { background: #B8935A; }
 
         /* ── FLOATING WA ── */
         .bl-float-wa {
@@ -832,9 +868,9 @@ const BridalLandingPage = () => {
         /* ── RESPONSIVE ── */
         @media(max-width:1024px) {
           .bl-gallery-grid { grid-template-columns: repeat(2,1fr); }
-          .bl-footer-inner { grid-template-columns: 1fr; gap: 40px; }
           .bl-craft-inner { grid-template-columns: 1fr; gap: 40px; }
           .bl-designer-layout { grid-template-columns: 1fr; gap: 32px; }
+          .bl-footer-divider-v { display: none; }
         }
         @media(max-width:768px) {
           .bl-hdr-badge { display: none; }
@@ -863,8 +899,9 @@ const BridalLandingPage = () => {
           .bl-cta-btns { flex-direction: column; align-items: center; }
           .bl-cta-btn-pri, .bl-cta-btn-sec { width: 100%; justify-content: center; }
 
-          .bl-footer { padding: 48px 5vw 28px; }
-          .bl-footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+          .bl-footer { padding: 28px 5vw 20px; }
+          .bl-footer-inner { flex-direction: column; gap: 24px; }
+          .bl-footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
 
           /* Logo responsive on mobile */
           .bl-hdr-logo { height: 40px; }
@@ -905,18 +942,20 @@ const BridalLandingPage = () => {
           <div className="bl-hero-text">
             <p className="bl-hero-eyebrow">Bridal Specialist · Bangalore</p>
             <h1 className="bl-hero-h1">
-              Exquisite Bridal Blouses<br />in <em>Bangalore</em>
+              Customized Bridal Blouses &amp;<br />Complete Bridal Outfits in <em>Bangalore</em>
             </h1>
-            <h2 className="bl-hero-h2">Designed for Your Big Day</h2>
+            <h2 className="bl-hero-h2">Designed for Your Big Day – Perfect Fit, Premium Craftsmanship</h2>
             <p className="bl-hero-sub">
-              Customized bridal blouses with perfect fit, premium maggam &amp; aari work, and
-              complete bridal outfit guidance including lehengas and gowns.
+              Customized bridal blouses, bridal lehengas, and bridal gowns tailored to your body type,
+              wedding style, and personal preferences. Every outfit is crafted with intricate Maggam
+              and aari work for a rich and elegant finish.
             </p>
             <p className="bl-hero-designer">Designed personally by Chief Designer Shruthi Ajith</p>
-            <p className="bl-hero-price">Bridal blouses starting from <strong>₹6,000</strong></p>
+            <p className="bl-hero-price">Bridal designs starting from <strong>₹6,000</strong></p>
+            <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
               <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-btn-pri">
-                <WaIcon size={17} /> WhatsApp Design Enquiry
+                <WaIcon size={17} /> Book Your Bridal Consultation
               </a>
               <a href={`tel:${PHONE_NUMBER}`} className="bl-btn-sec">
                 <PhoneIcon size={15} /> Call Now
@@ -955,10 +994,9 @@ const BridalLandingPage = () => {
           <h2 className="bl-sec-h">Bridal Blouse Designs Crafted for Real Brides</h2>
           <p className="bl-sec-sub">
             A curated collection of customized bridal blouses, lehengas, and gowns with premium handwork.
-            <br/>
+            <br />
             Real Brides. Real Designs. Designed at Shrusara.
           </p>
-
           <div className="bl-gallery-grid">
             {galleryItems.map((item, i) => (
               <div key={i} className="bl-gallery-card">
@@ -1090,36 +1128,33 @@ const BridalLandingPage = () => {
         <footer className="bl-footer">
           <div className="bl-footer-inner">
 
-            {/* Left — Brand + Description */}
-            <div>
+            {/* Brand column */}
+            <div className="bl-footer-brand">
               <p className="bl-footer-brand-name">Shrusara Fashion Boutique</p>
-              <p className="bl-footer-brand-tag">Bridal Boutique in Bangalore</p>
+              <p className="bl-footer-brand-tag">Bridal Boutique · Bangalore</p>
               <p className="bl-footer-desc">
-  Shrusara Fashion Boutique – Bridal Boutique in Bangalore
-</p>
-<p className="bl-footer-desc">
-  Customized bridal blouses, bridal lehengas, and bridal gowns crafted with
-  premium fit, detailed handwork, and elegant finishing.
-</p>
-              <div className="bl-footer-divider" />
+                Customized bridal blouses, lehengas, and gowns crafted with premium fit,
+                detailed handwork, and elegant finishing.
+              </p>
+            </div>
+
+            {/* Vertical divider */}
+            <div className="bl-footer-divider-v" />
+
+            {/* Contact column */}
+            <div className="bl-footer-contact">
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
                 <span className="bl-footer-contact-item">
-                  <span className="bl-footer-contact-icon">
-                    <MapPinIcon size={15} />
-                  </span>
+                  <span className="bl-footer-contact-icon"><MapPinIcon size={13} /></span>
                   106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086
                 </span>
                 <a href="tel:+919741827558" className="bl-footer-contact-item">
-                  <span className="bl-footer-contact-icon">
-                    <PhoneIcon size={15} />
-                  </span>
+                  <span className="bl-footer-contact-icon"><PhoneIcon size={13} /></span>
                   9741827558
                 </a>
                 <a href="mailto:help@shrusara.com" className="bl-footer-contact-item">
-                  <span className="bl-footer-contact-icon">
-                    <MailIcon size={15} />
-                  </span>
+                  <span className="bl-footer-contact-icon"><MailIcon size={13} /></span>
                   help@shrusara.com
                 </a>
               </div>
@@ -1129,17 +1164,17 @@ const BridalLandingPage = () => {
                 rel="noopener noreferrer"
                 className="bl-footer-map-link"
               >
-                <MapPinIcon size={13} /> View on Google Maps
+                <MapPinIcon size={11} /> View on Google Maps
               </a>
             </div>
-
-            {/* Right — Quick CTA */}
-            
 
           </div>
 
           {/* Bottom bar */}
-         
+          <div className="bl-footer-bottom">
+            <p className="bl-footer-copy">© {new Date().getFullYear()} Shrusara Fashion Boutique. All rights reserved.</p>
+            <p className="bl-footer-copy-right">Bangalore's Bridal Studio</p>
+          </div>
         </footer>
 
         {/* ── FLOATING CALL ────────────────────────────────────────────────────── */}
