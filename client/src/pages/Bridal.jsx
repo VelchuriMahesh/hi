@@ -5,9 +5,9 @@ import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
 
 // Static Image Imports
-import lehenga1 from '../assets/images/bridal/lehenga-1.jpg';
+import lehenga1 from "../assets/images/bridal/lehenga-2.jpeg";
 import lehenga2 from '../assets/images/bridal/lehenga-2.jpeg';
-import gown1 from '../assets/images/bridal/bridal/gown-1.jpeg';
+import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
 import gown2 from '../assets/images/bridal/bridal/gown-2.jpeg';
 import gown3 from '../assets/images/bridal/bridal/gown-3.jpeg';
 import gown4 from '../assets/images/bridal/bridal/gown-4.jpeg';

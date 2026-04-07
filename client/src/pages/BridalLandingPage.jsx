@@ -8,8 +8,13 @@ import b5 from '../assets/images/bridal/bridal-10.jpeg';
 import designer01 from '../assets/images/designer/designer-01.jpeg';
 import designer03 from '../assets/images/designer/designer-03.jpeg';
 import designer06 from '../assets/images/designer/designer-06.jpeg';
+import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
 
-/**
+import gown3 from "../assets/images/bridal/bridal/gown-3.jpeg";
+import gown4 from "../assets/images/bridal/bridal/gown-4.jpeg";
+
+
+/**  /videos/blouse.png
  * SHRUSARA BRIDAL LANDING PAGE
  * Hero updated to match Home page split-layout style.
  * Footer updated with full address, contact, and map link.
@@ -49,17 +54,20 @@ const galleryItems = [
   { src: '/videos/1.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
   { src: '/videos/2.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
   { src: '/videos/3.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/4.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/5.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/6.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+    { src: '/videos/blouse.png', tag: 'Bridal Blouse', aspect: '3/4' },
+     { src: '/videos/bridal_home.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+      { src: '/videos/bridal_hero.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b1, tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b2, tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b3, tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b4, tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b5, tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: designer01, tag: 'Designer Outfit', aspect: '3/4' },
-  { src: designer03, tag: 'Designer Outfit', aspect: '3/4' },
-  { src: designer06, tag: 'Designer Outfit', aspect: '3/4' },
+
+  { src: gown1, tag: 'Designer Outfit', aspect: '3/4' },
+
+  { src: gown3, tag: 'Designer Outfit', aspect: '3/4' },
+  { src: gown4, tag: 'Designer Outfit', aspect: '3/4' },
+
 ];
 
 const reviews = [
