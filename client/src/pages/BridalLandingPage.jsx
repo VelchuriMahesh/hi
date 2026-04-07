@@ -1131,53 +1131,18 @@ const BridalLandingPage = () => {
             </div>
 
             {/* Right — Quick CTA */}
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <p className="bl-footer-contact-title">Book a Consultation</p>
-              <p style={{ fontSize: '.82rem', color: 'rgba(255,255,255,.45)', lineHeight: 1.75, marginBottom: 24, fontWeight: 300 }}>
-                Share your wedding date and design preferences to get started with a personalized bridal consultation.
-              </p>
-              <a
-                href={WA_PREFILL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 9,
-                  background: '#25D366', color: '#fff',
-                  fontSize: '.68rem', fontWeight: 600, letterSpacing: '.14em',
-                  textTransform: 'uppercase', padding: '14px 24px',
-                  textDecoration: 'none', marginBottom: 12,
-                  transition: 'opacity .2s',
-                }}
-              >
-                <WaIcon size={16} /> WhatsApp Us
-              </a>
-              <a
-                href="tel:+919741827558"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 9,
-                  background: 'transparent', color: 'rgba(255,255,255,.6)',
-                  fontSize: '.68rem', fontWeight: 600, letterSpacing: '.14em',
-                  textTransform: 'uppercase', padding: '14px 24px',
-                  textDecoration: 'none',
-                  border: '1px solid rgba(255,255,255,.15)',
-                  transition: 'border-color .2s, color .2s',
-                }}
-              >
-                <PhoneIcon size={14} /> Call Now
-              </a>
-            </div>
+            
 
           </div>
 
           {/* Bottom bar */}
-          <div className="bl-footer-bottom">
-            <p className="bl-footer-copy">
-              Shrusara Fashion Boutique · Mahalakshmipuram, Bangalore – 560086
-            </p>
-            <p className="bl-footer-copy-right">
-              © {new Date().getFullYear()} Shrusara. All rights reserved.
-            </p>
-          </div>
+         <p className="bl-footer-desc">
+  Shrusara Fashion Boutique – Bridal Boutique in Bangalore
+</p>
+<p className="bl-footer-desc">
+  Customized bridal blouses, bridal lehengas, and bridal gowns crafted with
+  premium fit, detailed handwork, and elegant finishing.
+</p>
         </footer>
 
         {/* ── FLOATING CALL ────────────────────────────────────────────────────── */}
