@@ -469,6 +469,41 @@ export default function About() {
     padding: 20px 0 0;
     margin-top: 30px;
   }
+    /* --- HERITAGE HIGHLIGHT LINE --- */
+.ab-designer-heritage {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(200, 169, 106, 0.1); /* Subtle Gold Tint */
+  border-left: 3px solid #C8A96A;      /* Strong Gold Sidebar */
+  padding: 12px 24px;
+  margin-bottom: 32px;
+  border-radius: 0 8px 8px 0;
+}
+
+.ab-designer-heritage-text {
+  color: #C8A96A;
+  font: 600 0.95rem/1.4 'Poppins', sans-serif;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* Mobile tweak for the highlight */
+@media (max-width: 992px) {
+  .ab-designer-heritage {
+    border-left: none;
+    border-top: 2px solid #C8A96A;
+    border-bottom: 2px solid #C8A96A;
+    border-radius: 0;
+    padding: 15px 10px;
+    justify-content: center;
+    width: 100%;
+  }
+  .ab-designer-heritage-text {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}
 }
         @media(max-width:768px) {
           .ab-hero { grid-template-columns: 1fr; min-height: auto; }
@@ -533,9 +568,10 @@ export default function About() {
 
 {/* ── 2. FOUNDER (Mobile Friendly) ────────────────────────── */}
 {/* ── 2. ADVANCED FOUNDER SECTION ────────────────────────── */}
+{/* ── 2. ADVANCED FOUNDER SECTION (Updated with Highlight) ────────────────────────── */}
 <Reveal>
   <div className="ab-designer-section">
-    {/* Left Side: Professional Framed Image */}
+    {/* Image Side */}
     <div className="ab-designer-image-box">
       <img
         src="/videos/shruthi-ajith.jpeg"
@@ -544,11 +580,19 @@ export default function About() {
       />
     </div>
 
-    {/* Right Side: Sophisticated Text Info */}
+    {/* Content Side */}
     <div className="ab-designer-info-box">
       <p className="ab-designer-eyebrow">The Designer Behind Shrusara</p>
       <h2 className="ab-designer-name">Shruthi Ajith</h2>
       <div className="ab-designer-role">Founder &amp; Chief Designer</div>
+
+      {/* 🔥 NEW HIGHLIGHTED LINE */}
+      <div className="ab-designer-heritage">
+        <p className="ab-designer-heritage-text">
+          Designing customized bridal and designer wear with precision, 
+          quality and perfect fit since 2015
+        </p>
+      </div>
 
       <p className="ab-designer-bio">
         Shruthi Ajith brings deep expertise in fashion designing with a strong focus 
@@ -558,8 +602,7 @@ export default function About() {
 
       <p className="ab-designer-bio">
         From the initial design selection to the final fitting, every outfit is guided 
-        with extreme attention to detail—ensuring a perfect fit and a premium finishing 
-        that matches your vision.
+        with extreme attention to detail—ensuring a perfect fit and a premium finishing.
       </p>
 
       <p className="ab-designer-quote">
