@@ -24,9 +24,7 @@ import gown4 from "../assets/images/bridal/bridal/gown-4.jpeg";
 const WHATSAPP_NUMBER = '919741827558';
 const PHONE_NUMBER    = '+919741827558';
 
-const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  'Hi, I am looking for a customized bridal outfit.\nMy wedding date is [date].\nI need consultation for blouse / lehenga / gown.\nI would like to consult with Chief Designer Shruthi Ajith.'
-)}`;
+const WA_PREFILL = `https://wa.me/919741827558?text=Hi%2C%20I%20am%20looking%20for%20a%20customized%20bridal%20outfit.%20My%20wedding%20date%20is%20%5Bdate%5D.%20I%20need%20consultation%20for%20blouse%20%2F%20lehenga%20%2F%20gown.%20I%20would%20like%20to%20consult%20with%20Chief%20Designer%20Shruthi%20Ajith.`;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const trustPoints = [
@@ -34,40 +32,39 @@ const trustPoints = [
     icon: '✦',
     label: 'Craftsmanship',
     title: 'Premium Maggam & Aari Work',
-    desc: 'Intricate handcrafted embroidery on every bridal outfit.',
+    desc: ' Intricate handcrafted embroidery designed for bridal elegance and richness',
   },
   {
     icon: '◈',
     label: 'Fit Promise',
-    title: 'Perfect Fit — Zero Alterations',
-    desc: 'Pattern and measurements tailored precisely to your body type.',
+    title: 'Perfect Fit – Tailored for You',
+    desc: 'Every measurement is customized to your body type for flawless fitting',
   },
   {
     icon: '◷',
     label: 'Reliability',
     title: 'On-Time Delivery Commitment',
-    desc: 'Delivery planned well before your special day, every time.',
+    desc: 'Your bridal outfit will be ready well before your special day',
   },
 ];
 
 const galleryItems = [
+   { src: '/videos/11.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+    { src: '/videos/22.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+     { src: '/videos/33.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+      { src: '/videos/44.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+       { src: '/videos/55.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+        { src: '/videos/66.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+         { src: '/videos/77.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
   { src: '/videos/1.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
   { src: '/videos/2.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
   { src: '/videos/3.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-    { src: '/videos/blouse.png', tag: 'Bridal Blouse', aspect: '3/4' },
-     { src: '/videos/bridal_home.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-      { src: '/videos/bridal_hero.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
+
   { src: b1, tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b2, tag: 'Bridal Blouse', aspect: '3/4' },
+
   { src: b3, tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b4, tag: 'Bridal Blouse', aspect: '3/4' },
   { src: b5, tag: 'Bridal Blouse', aspect: '3/4' },
-
-  { src: gown1, tag: 'Designer Outfit', aspect: '3/4' },
-
-  { src: gown3, tag: 'Designer Outfit', aspect: '3/4' },
-  { src: gown4, tag: 'Designer Outfit', aspect: '3/4' },
-
 ];
 
 const reviews = [
@@ -77,9 +74,21 @@ const reviews = [
 ];
 
 const processSteps = [
-  { step: '01', title: 'Consultation' },
-  { step: '02', title: 'Design Finalization' },
-  { step: '03', title: 'Trial & Perfect Fit' },
+  {
+    step: '01',
+    title: 'Consultation',
+    desc: 'Discuss your wedding details, design ideas, and preferences',
+  },
+  {
+    step: '02',
+    title: 'Design Finalization',
+    desc: 'Finalize blouse and outfit design, fabrics, and embroidery details',
+  },
+  {
+    step: '03',
+    title: 'Trial & Perfect Fit',
+    desc: 'Ensure perfect fitting with trials and finishing touches',
+  },
 ];
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -158,7 +167,7 @@ function BridalCtaForm() {
       </div>
       <div className="bl-cta-btns">
         <a href={waLink} target="_blank" rel="noopener noreferrer" className="bl-cta-btn-pri">
-          <WaIcon size={18} /> WhatsApp Enquiry
+          <WaIcon size={18} /> WhatsApp Consultation
         </a>
         <a href={`tel:${PHONE_NUMBER}`} className="bl-cta-btn-sec">
           <PhoneIcon size={16} /> Call Now
@@ -427,10 +436,73 @@ const BridalLandingPage = () => {
           color: rgba(255,255,255,.92); font-weight: 600;
         }
 
+        /* ── CRAFTSMANSHIP ── */
+        .bl-craft { padding: 80px 5vw; background: var(--bl-white); }
+        .bl-craft-inner {
+          max-width: 1100px; margin: 0 auto;
+          display: grid; grid-template-columns: 1fr 1fr;
+          gap: 80px; align-items: center;
+        }
+        .bl-craft-left {}
+        .bl-craft-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-bottom: 14px;
+        }
+        .bl-craft-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-craft-h {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700;
+          color: var(--bl-dark); margin-bottom: 20px; line-height: 1.2;
+        }
+        .bl-craft-desc {
+          font-size: .9rem; line-height: 1.85; color: var(--bl-muted);
+          font-weight: 300; margin-bottom: 16px;
+        }
+        .bl-craft-tags {
+          display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
+        }
+        .bl-craft-tag {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: var(--bl-gold-pale); color: var(--bl-dark);
+          font-size: .62rem; font-weight: 600; letter-spacing: .12em;
+          text-transform: uppercase; padding: 8px 16px;
+          border: 1px solid rgba(184,147,90,.25);
+        }
+        .bl-craft-tag::before { content: '✦'; color: var(--bl-gold); font-size: .55rem; }
+        .bl-craft-right {
+          display: grid; grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+        .bl-craft-img-card {
+          overflow: hidden; aspect-ratio: 3/4; background: var(--bl-gold-pale);
+        }
+        .bl-craft-img-card img {
+          width: 100%; height: 100%; object-fit: cover; display: block;
+          transition: transform .6s;
+        }
+        .bl-craft-img-card:hover img { transform: scale(1.06); }
+        .bl-craft-img-card:first-child {
+          grid-row: span 2; aspect-ratio: auto;
+        }
+
         /* ── DESIGNER TRUST ── */
         .bl-designer { padding: 80px 5vw; background: var(--bl-dark); }
         .bl-designer-inner {
-          max-width: 900px; margin: 0 auto;
+          max-width: 960px; margin: 0 auto;
+        }
+        .bl-designer-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-bottom: 14px;
+        }
+        .bl-designer-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-designer-sec-h {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700;
+          color: var(--bl-white); margin-bottom: 48px; line-height: 1.2;
+        }
+        .bl-designer-layout {
           display: grid; grid-template-columns: 1fr 2fr;
           gap: 60px; align-items: center;
         }
@@ -451,16 +523,21 @@ const BridalLandingPage = () => {
           color: var(--bl-gold); font-weight: 600; margin-bottom: 14px;
         }
         .bl-designer-stars { color: var(--bl-gold); letter-spacing: 3px; font-size: .9rem; }
+        .bl-designer-right {}
         .bl-designer-text {
           font-size: 1.05rem; line-height: 1.9; color: rgba(255,255,255,.75);
           font-weight: 300;
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-style: italic;
+          font-style: italic; margin-bottom: 18px;
+        }
+        .bl-designer-sub {
+          font-size: .87rem; line-height: 1.75; color: rgba(255,255,255,.5);
+          font-weight: 300;
         }
 
         /* ── REVIEWS ── */
         .bl-reviews { padding: 80px 5vw; background: var(--bl-white); }
-        .bl-reviews-hdr { margin-bottom: 40px; }
+        .bl-reviews-hdr { margin-bottom: 12px; }
         .bl-reviews-badge {
           display: inline-flex; align-items: center; gap: 10px;
           background: var(--bl-dark); color: var(--bl-white);
@@ -471,7 +548,11 @@ const BridalLandingPage = () => {
         .bl-reviews-title {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
           font-size: clamp(1.4rem,2.2vw,2rem); font-weight: 700;
-          color: var(--bl-dark); margin-bottom: 0;
+          color: var(--bl-dark); margin-bottom: 8px;
+        }
+        .bl-reviews-sub {
+          font-size: .87rem; color: var(--bl-muted); line-height: 1.75;
+          max-width: 520px; font-weight: 300; margin-bottom: 36px;
         }
         .bl-reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
         .bl-review-card {
@@ -497,7 +578,7 @@ const BridalLandingPage = () => {
         .bl-process-card {
           background: var(--bl-white); padding: 36px 28px;
           border: 1px solid rgba(184,147,90,.12);
-          position: relative; overflow: hidden; text-align: center;
+          position: relative; overflow: hidden;
         }
         .bl-process-card::before {
           content: attr(data-step); position: absolute; top: -12px; right: 14px;
@@ -511,7 +592,10 @@ const BridalLandingPage = () => {
         }
         .bl-process-title {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.3rem; font-weight: 700; color: var(--bl-dark);
+          font-size: 1.3rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 10px;
+        }
+        .bl-process-desc {
+          font-size: .82rem; color: var(--bl-muted); line-height: 1.7; font-weight: 300;
         }
 
         /* ── FINAL CTA ── */
@@ -749,6 +833,8 @@ const BridalLandingPage = () => {
         @media(max-width:1024px) {
           .bl-gallery-grid { grid-template-columns: repeat(2,1fr); }
           .bl-footer-inner { grid-template-columns: 1fr; gap: 40px; }
+          .bl-craft-inner { grid-template-columns: 1fr; gap: 40px; }
+          .bl-designer-layout { grid-template-columns: 1fr; gap: 32px; }
         }
         @media(max-width:768px) {
           .bl-hdr-badge { display: none; }
@@ -766,7 +852,10 @@ const BridalLandingPage = () => {
 
           .bl-trust-grid { grid-template-columns: 1fr; }
           .bl-gallery-grid { grid-template-columns: repeat(2,1fr); }
-          .bl-designer-inner { grid-template-columns: 1fr; gap: 32px; }
+          .bl-craft-inner { grid-template-columns: 1fr; gap: 40px; }
+          .bl-craft-right { grid-template-columns: repeat(2,1fr); }
+          .bl-craft-img-card:first-child { grid-row: auto; aspect-ratio: 3/4; }
+          .bl-designer-layout { grid-template-columns: 1fr; gap: 32px; }
           .bl-reviews-grid { grid-template-columns: 1fr; }
           .bl-process-grid { grid-template-columns: 1fr; }
           .bl-cta-box { padding: 48px 24px; }
@@ -866,7 +955,10 @@ const BridalLandingPage = () => {
           <h2 className="bl-sec-h">Bridal Blouse Designs Crafted for Real Brides</h2>
           <p className="bl-sec-sub">
             A curated collection of customized bridal blouses, lehengas, and gowns with premium handwork.
+            <br/>
+            Real Brides. Real Designs. Designed at Shrusara.
           </p>
+
           <div className="bl-gallery-grid">
             {galleryItems.map((item, i) => (
               <div key={i} className="bl-gallery-card">
@@ -877,18 +969,67 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
+        {/* ── CRAFTSMANSHIP ───────────────────────────────────────────────────── */}
+        <section className="bl-craft">
+          <div className="bl-craft-inner">
+            <div className="bl-craft-left">
+              <p className="bl-craft-eyebrow">Craftsmanship</p>
+              <h2 className="bl-craft-h">
+                Intricate Hand Embroidery –<br />Crafted to Perfection
+              </h2>
+              <p className="bl-craft-desc">
+                Every bridal outfit at Shrusara is detailed with precision using maggam work,
+                aari work, zari, and handcrafted embroidery techniques to create timeless,
+                elegant designs.
+              </p>
+              <p className="bl-craft-desc">
+                From heavy bridal blouses to complete bridal outfits, each piece reflects
+                careful craftsmanship and premium finishing.
+              </p>
+              <div className="bl-craft-tags">
+                <span className="bl-craft-tag">Maggam Work</span>
+                <span className="bl-craft-tag">Aari Work</span>
+                <span className="bl-craft-tag">Zari Embroidery</span>
+                <span className="bl-craft-tag">Handcrafted Detailing</span>
+                <span className="bl-craft-tag">Premium Finishing</span>
+              </div>
+            </div>
+            <div className="bl-craft-right">
+              <div className="bl-craft-img-card">
+                <img src={b1} alt="Maggam work bridal blouse" />
+              </div>
+              <div className="bl-craft-img-card">
+                <img src={b3} alt="Aari work bridal blouse" />
+              </div>
+              <div className="bl-craft-img-card">
+                <img src={b4} alt="Zari embroidery bridal blouse" />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── DESIGNER TRUST ──────────────────────────────────────────────────── */}
         <section className="bl-designer">
           <div className="bl-designer-inner">
-            <div className="bl-designer-accent">
-              <p className="bl-designer-role">Chief Designer</p>
-              <p className="bl-designer-name">Shruthi Ajith</p>
-              <p className="bl-designer-stars">★★★★★</p>
+            <p className="bl-designer-eyebrow">Designer</p>
+            <h2 className="bl-designer-sec-h">Meet Your Bridal Designer</h2>
+            <div className="bl-designer-layout">
+              <div className="bl-designer-accent">
+                <p className="bl-designer-role">Founder &amp; Chief Designer</p>
+                <p className="bl-designer-name">Shruthi Ajith</p>
+                <p className="bl-designer-stars">★★★★★</p>
+              </div>
+              <div className="bl-designer-right">
+                <p className="bl-designer-text">
+                  "Every bridal outfit at Shrusara — from blouse to complete bridal look — is
+                  personally guided by our Chief Designer to ensure perfect fit, styling, and finishing."
+                </p>
+                <p className="bl-designer-sub">
+                  We work closely with every bride to understand her vision and bring it to life
+                  with precision and care.
+                </p>
+              </div>
             </div>
-            <p className="bl-designer-text">
-              "Every bridal outfit at Shrusara — from blouses to lehengas and gowns — is
-              personally guided by our Chief Designer to ensure perfect fit, styling, and finishing."
-            </p>
           </div>
         </section>
 
@@ -899,6 +1040,9 @@ const BridalLandingPage = () => {
               <span className="bl-reviews-badge-stars">★★★★★</span> 100+ Happy Brides in Bangalore
             </div>
             <h2 className="bl-reviews-title">Trusted by Brides Across Bangalore</h2>
+            <p className="bl-reviews-sub">
+              From engagement to wedding day, we design outfits that brides truly love and feel confident in.
+            </p>
           </div>
           <div className="bl-reviews-grid">
             {reviews.map((r, i) => (
@@ -920,6 +1064,7 @@ const BridalLandingPage = () => {
               <div key={step.step} className="bl-process-card" data-step={step.step}>
                 <span className="bl-process-step">Step {step.step}</span>
                 <h3 className="bl-process-title">{step.title}</h3>
+                <p className="bl-process-desc">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -931,11 +1076,12 @@ const BridalLandingPage = () => {
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
               <p className="bl-cta-eyebrow">Bridal Consultation</p>
             </div>
-            <h2 className="bl-cta-h">Send Your Bridal Design Enquiry on WhatsApp</h2>
+            <h2 className="bl-cta-h">Book Your Bridal Consultation Today</h2>
             <p className="bl-cta-sub">
-              Share your wedding date, saree details, and design preferences to get started.
+              Share your wedding date, outfit details, and design preferences to get started
+              with your customized bridal outfit.
             </p>
-            <p className="bl-cta-scarcity">Limited bridal consultation slots available this month</p>
+            <p className="bl-cta-scarcity">Limited bridal consultation slots available for upcoming wedding season</p>
             <BridalCtaForm />
           </div>
         </section>
@@ -947,10 +1093,10 @@ const BridalLandingPage = () => {
             {/* Left — Brand + Description */}
             <div>
               <p className="bl-footer-brand-name">Shrusara Fashion Boutique</p>
-              <p className="bl-footer-brand-tag">Bridal &amp; Designer Boutique · Bangalore</p>
+              <p className="bl-footer-brand-tag">Bridal Boutique in Bangalore</p>
               <p className="bl-footer-desc">
-                Bridal blouses, designer outfits, lehengas, gowns, and kids outfits tailored
-                for premium fit, handcrafted detailing, and elegant occasion styling.
+                Customized bridal blouses, bridal lehengas, and bridal gowns crafted with
+                premium fit, detailed handwork, and elegant finishing.
               </p>
               <div className="bl-footer-divider" />
               <p className="bl-footer-contact-title">Contact Us</p>
