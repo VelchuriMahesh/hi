@@ -53,6 +53,7 @@ const bridalOutfits = [
     { id: 13, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: s11 },
       { id: 14, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: s12 },
         { id: 15, tag: 'bridal-blouse', title: 'Bridal Embroidery', image: s13 },
+           { id: 9, tag: 'gowns', title: 'Reception Gown',      image: gown5 },
   
   // LEHENGA CATEGORY
   { id: 4, tag: 'lehenga', title: 'Bridal Lehenga',    image: lehenga1 },
@@ -61,7 +62,7 @@ const bridalOutfits = [
   // GOWNS CATEGORY
   
   { id: 8, tag: 'gowns', title: 'Reception Gown',      image: gown2 },
-   { id: 9, tag: 'gowns', title: 'Reception Gown',      image: gown5 },
+
 
 ];
 

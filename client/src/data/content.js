@@ -1,10 +1,10 @@
 const phoneRaw = (import.meta.env.VITE_PHONE_NUMBER || '919876543210').replace(/\D/g, '');
 const whatsappRaw = (import.meta.env.VITE_WHATSAPP_NUMBER || phoneRaw).replace(/\D/g, '');
 const phoneDisplay = import.meta.env.VITE_PHONE_DISPLAY || '+91 98765 43210';
-const email = import.meta.env.VITE_CONTACT_EMAIL || 'hello@shrusarafashion.com';
+const email = import.meta.env.VITE_CONTACT_EMAIL || 'help@shrusara.com';
 const address =
   import.meta.env.VITE_BOUTIQUE_ADDRESS ||
-  'Shrusara Fashion Boutique, Mahalakshmipuram, Bengaluru, Karnataka 560086';
+  'Shrusara Fashion Boutique, 106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086';
 const siteUrl = import.meta.env.VITE_SITE_URL || 'https://shrusarafashion.com';
 
 export function buildDesignWhatsAppLink(designName = 'this design') {

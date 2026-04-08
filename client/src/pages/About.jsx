@@ -1058,7 +1058,8 @@ body { background: var(--c-bg); }
               <div className="ab-designer-quote-wrap">
                 <span className="ab-designer-quote-mark">"</span>
                 <p className="ab-designer-quote">
-                  "We don't just stitch clothes; we design your dreams."
+                  "We design your Dreams <br/>
+Shruthi Ajith Founder & Chief Designer"
                 </p>
               </div>
 
