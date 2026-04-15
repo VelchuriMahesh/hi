@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.local
+client/.env
+server/.env
+*firebase-adminsdk*.json
