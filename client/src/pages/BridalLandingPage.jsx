@@ -480,6 +480,12 @@ const BridalLandingPage = () => {
           font-size: .9rem; line-height: 1.85; color: var(--bl-muted);
           font-weight: 300; margin-bottom: 16px;
         }
+        .bl-craft-note {
+          font-size: .85rem; line-height: 1.75; color: var(--bl-text);
+          font-weight: 400; margin-top: 20px; margin-bottom: 0;
+          border-left: 2px solid var(--bl-gold);
+          padding-left: 14px;
+        }
         .bl-craft-tags {
           display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
         }
@@ -555,10 +561,21 @@ const BridalLandingPage = () => {
           font-size: .87rem; line-height: 1.75; color: rgba(255,255,255,.5);
           font-weight: 300;
         }
+        .bl-designer-trusted {
+          font-size: .82rem; line-height: 1.7; color: rgba(255,255,255,.45);
+          font-weight: 300; margin-top: 28px;
+          border-top: 1px solid rgba(184,147,90,.2);
+          padding-top: 20px;
+        }
 
         /* ── REVIEWS ── */
         .bl-reviews { padding: 80px 5vw; background: var(--bl-white); }
         .bl-reviews-hdr { margin-bottom: 12px; }
+        .bl-reviews-top-rated {
+          font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+          text-transform: uppercase; color: var(--bl-gold);
+          margin-bottom: 10px; display: block;
+        }
         .bl-reviews-badge {
           display: inline-flex; align-items: center; gap: 10px;
           background: var(--bl-dark); color: var(--bl-white);
@@ -740,6 +757,14 @@ const BridalLandingPage = () => {
           font-weight: 300;
           max-width: 300px;
           margin: 0;
+        }
+        .bl-footer-seo {
+          font-size: .72rem;
+          line-height: 1.7;
+          color: rgba(255,255,255,.28);
+          font-weight: 300;
+          max-width: 340px;
+          margin: 10px 0 0;
         }
 
         /* Divider between columns */
@@ -944,13 +969,13 @@ const BridalLandingPage = () => {
           <div className="bl-hero-text">
             <p className="bl-hero-eyebrow">Bridal Specialist · Bangalore</p>
             <h1 className="bl-hero-h1">
-              Customized Bridal Blouses &amp;<br />Complete Bridal Outfits in <em>Bangalore</em>
+              Customized Bridal Blouse Designer in <em>Bangalore</em><br />
+              Premium Bridal Blouses &amp; Complete Bridal Outfits
             </h1>
-            <h2 className="bl-hero-h2">Designed for Your Big Day – Perfect Fit, Premium Craftsmanship</h2>
+            <h2 className="bl-hero-h2">Perfect Fit. Handcrafted Maggam &amp; Aari Work. Designed for Your Big Day.</h2>
             <p className="bl-hero-sub">
-              Customized bridal blouses, bridal lehengas, and bridal gowns tailored to your body type,
-              wedding style, and personal preferences. Every outfit is crafted with intricate Maggam
-              and aari work for a rich and elegant finish.
+              Customized bridal blouses, bridal lehengas, and gowns tailored to your body type
+              and wedding style by experienced bridal designers.
             </p>
             <p className="bl-hero-designer">Designed personally by Chief Designer Shruthi Ajith</p>
             <p className="bl-hero-price">Bridal designs starting from <strong>₹6,000</strong></p>
@@ -993,11 +1018,10 @@ const BridalLandingPage = () => {
         {/* ── GALLERY ─────────────────────────────────────────────────────────── */}
         <section className="bl-gallery">
           <p className="bl-sec-eyebrow">Gallery</p>
-          <h2 className="bl-sec-h">Bridal Blouse Designs Crafted for Real Brides</h2>
+          <h2 className="bl-sec-h">Customized Bridal Blouse Designs in Bangalore</h2>
           <p className="bl-sec-sub">
-            A curated collection of customized bridal blouses, lehengas, and gowns with premium handwork.
-            <br />
-            Real Brides. Real Designs. Designed at Shrusara.
+            Explore our collection of maggam work blouses, aari embroidery designs, and customized
+            bridal outfits created for brides across Bangalore.
           </p>
           <div className="bl-gallery-grid">
             {galleryItems.map((item, i) => (
@@ -1033,6 +1057,10 @@ const BridalLandingPage = () => {
                 <span className="bl-craft-tag">Handcrafted Detailing</span>
                 <span className="bl-craft-tag">Premium Finishing</span>
               </div>
+              <p className="bl-craft-note">
+                Every bridal blouse is handcrafted using premium maggam work, aari embroidery,
+                zari, and detailed finishing techniques.
+              </p>
             </div>
             <div className="bl-craft-right">
               <div className="bl-craft-img-card">
@@ -1068,6 +1096,9 @@ const BridalLandingPage = () => {
                   We work closely with every bride to understand her vision and bring it to life
                   with precision and care.
                 </p>
+                <p className="bl-designer-trusted">
+                  One of the trusted bridal blouse designers in Bangalore, known for customized designs and perfect fitting.
+                </p>
               </div>
             </div>
           </div>
@@ -1076,6 +1107,7 @@ const BridalLandingPage = () => {
         {/* ── REVIEWS ─────────────────────────────────────────────────────────── */}
         <section className="bl-reviews">
           <div className="bl-reviews-hdr">
+            <span className="bl-reviews-top-rated">Top Rated Bridal Boutique in Bangalore</span>
             <div className="bl-reviews-badge">
               <span className="bl-reviews-badge-stars">★★★★★</span> 100+ Happy Brides in Bangalore
             </div>
@@ -1138,12 +1170,17 @@ const BridalLandingPage = () => {
                 Customized bridal blouses, lehengas, and gowns crafted with premium fit,
                 detailed handwork, and elegant finishing.
               </p>
+              <p className="bl-footer-seo">
+                Shrusara Fashion Boutique is a leading bridal boutique in Bangalore specializing
+                in customized bridal blouses, maggam work designs, aari embroidery, and complete
+                bridal outfits including lehengas and gowns.
+              </p>
             </div>
 
             {/* Vertical divider */}
             <div className="bl-footer-divider-v" />
 
-            {/* Contact column */}
+{/* Contact column */}
             <div className="bl-footer-contact">
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
@@ -1160,7 +1197,9 @@ const BridalLandingPage = () => {
                   help@shrusara.com
                 </a>
               </div>
-              <a
+              
+              {/* FIXED LINE BELOW: Added the opening <a tag */}
+              <a 
                 href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1169,7 +1208,6 @@ const BridalLandingPage = () => {
                 <MapPinIcon size={11} /> View on Google Maps
               </a>
             </div>
-
           </div>
 
           {/* Bottom bar */}
