@@ -54,9 +54,7 @@ export default function ImageGrid({
           <p className="text-sm font-medium text-stone-700">
             {image.title || image.alt || 'Custom boutique design'}
           </p>
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-cocoa">
-            Tap to explore
-          </span>
+         
         </div>
       </motion.button>
     );
