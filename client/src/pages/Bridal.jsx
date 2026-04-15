@@ -5,13 +5,7 @@ import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
 
 // Static Image Imports
-import lehenga1 from "../assets/images/bridal/lehenga-2.jpeg";
 
-import lehenga2 from '../assets/images/bridal/lehenga-1.jpeg';
-import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
-import gown2 from '../assets/images/bridal/bridal/gown-2.jpeg';
-import gown3 from '../assets/images/bridal/bridal/gown-3.jpeg';
-import gown4 from '../assets/images/bridal/bridal/gown-4.jpeg';
 
 
 
@@ -48,97 +42,90 @@ const bridalOutfits = [
 {
   id: 1,
   tag: 'bridal-blouse',
-  title: 'Custom Fit Muhurtham Silk Saree Handwork Blouse Bangalore',
-  alt: 'Custom fit muhurtham silk saree blouse with handwork design in Bangalore',
-  image: "/videos/custom-fit-muhurtham-silk-saree-handwork-blouse-bangalore.webp"
+  title: 'Custom Fit Muhurtham Silk Saree Blouse Bangalore',
+  alt: 'Custom fit muhurtham silk saree blouse Bangalore',
+  image: "/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp"
 },
 
 {
   id: 2,
   tag: 'bridal-blouse',
-  title: 'Designer Bridal Blouse Back Neck Pattern Shrusara',
-  alt: 'Designer bridal blouse with stylish back neck pattern by Shrusara',
-  image: "/videos/designer-bridal-blouse-back-neck-pattern-shrusara.webp"
+  title: 'Designer Bridal Blouse Back Neck Pattern',
+  alt: 'Designer bridal blouse back neck pattern Shrusara',
+  image: "/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp"
 },
 
 {
   id: 11,
   tag: 'bridal-blouse',
-  title: 'Handcrafted Heavy Aari Work Wedding Blouse Back Neck Shrusara Boutique',
-  alt: 'Handcrafted heavy Aari work bridal blouse with detailed back neck design',
-  image: "/videos/handcrafted-heavy-aari-work-wedding-blouse-backneck-shrusara-boutique.webp"
+  title: 'Handcrafted Aari Work Wedding Blouse',
+  alt: 'Handcrafted Aari work wedding blouse Shrusara boutique',
+  image: "/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp"
 },
 
 {
   id: 12,
   tag: 'bridal-blouse',
-  title: 'Intricate Hand Embroidery Maggam Bridal Wedding Wear Bangalore',
-  alt: 'Intricate maggam embroidery bridal blouse with premium handwork in Bangalore',
-  image: "/videos/intricate-hand-embroidery-maggam-bridal-wedding-wear-bangalore.webp"
+  title: 'Intricate Maggam Embroidery Bridal Blouse',
+  alt: 'Intricate maggam embroidery bridal blouse Mahalakshmipuram',
+  image: "/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp"
 },
 
 {
   id: 13,
   tag: 'bridal-blouse',
-  title: 'Modern Gown Maternity Photoshoot Premium Finishing Shrusara Bangalore',
-  alt: 'Modern maternity gown with premium finishing for photoshoot in Bangalore',
-  image: "/videos/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp"
+  title: 'Premium Antique Gold Temple Work Blouse',
+  alt: 'Premium antique gold temple work bridal blouse Bangalore',
+  image: "/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp"
 },
 
 {
   id: 14,
   tag: 'bridal-blouse',
-  title: 'Premium Maggam Aari Work Bridal Blouse Bangalore Shrusara',
-  alt: 'Premium maggam Aari work bridal blouse with detailed craftsmanship in Bangalore',
-  image: "/videos/premium-maggam-aari-work-bridal-blouse-bangalore-shrusara.webp"
+  title: 'Premium Maggam Work Bridal Blouse',
+  alt: 'Premium maggam work bridal blouse Mahalakshmipuram Shrusara',
+  image: "/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp"
 },
 
 {
   id: 15,
   tag: 'bridal-blouse',
-  title: 'Royal Heritage Style Bridal Maggam Blouse Bangalore',
-  alt: 'Royal heritage style bridal maggam blouse with traditional design in Bangalore',
-  image: "/videos/royal-heritage-style-bridal-maggam-blouse-bangalore.webp"
+  title: 'Royal Heritage Bridal Maggam Blouse',
+  alt: 'Royal heritage style bridal maggam blouse Bangalore',
+  image: "/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp"
 },
 
 {
   id: 9,
-  tag: 'gowns',
-  title: 'Traditional South Indian Wedding Blouse Gold Zari Work Designed Shrusara Boutique',
-  alt: 'Traditional South Indian bridal blouse with gold zari work designed by Shrusara Boutique',
-  image: "/videos/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp"
+  tag: 'bridal-blouse',
+  title: 'Traditional South Indian Wedding Blouse',
+  alt: 'Traditional South Indian wedding blouse gold zari work Shrusara boutique',
+  image: "/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp"
 },
 
 {
-    id: 4,
-    tag: 'lehenga',
-    title: 'Bridal Lehenga',
-    alt: 'Custom Made Bridal Muhurtham Lehenga Shrusara',
-    image: lehenga1
-  },
-  {
-    id: 5,
-    tag: 'lehenga',
-    title: 'Reception Lehenga',
-    alt: 'Custom Made Bridal Muhurtham Lehenga Shrusara',
-    image: lehenga2
-  },
-  {
-    id: 6,
-    tag: 'lehenga',
-    title: 'Luxury Bridal Lehenga',
-    alt: 'Luxury Bridal Lehenga Custom Design Bangalore',
-    image: "/videos/luxury-bridal-lehenga-custom-design-bangalore.webp"
-  },
-  {
+  id: 6,
+  tag: 'lehenga',
+  title: 'Luxury Bridal Lehenga',
+  alt: 'Luxury bridal lehenga custom design Bangalore',
+  image: "/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp"
+},
 
-    id: 8,
-    tag: 'gowns',
-    title: 'elegant modern reception gown',
-    alt: 'elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric',
-    image: gown2 
-  },
+{
+  id: 7,
+  tag: 'lehenga',
+  title: 'Custom Muhurtham Bridal Lehenga',
+  alt: 'Custom made bridal muhurtham lehenga Shrusara',
+  image: "/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp"
+},
 
+{
+  id: 8,
+  tag: 'gowns',
+  title: 'Elegant Reception Gown',
+  alt: 'Elegant modern reception gown brides silhouette premium fabric',
+  image: "/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp"
+},
 ];
 
 const FILTERS = [
@@ -398,12 +385,7 @@ export default function Bridal() {
         }
         .br-outfit-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(62,44,35,.14); }
         .br-outfit-img { width:100%; height:100%; object-fit:cover; display:block; }
-        .br-outfit-label {
-          position: absolute; bottom: 0; left: 0; right: 0;
-          padding: 18px 16px 16px;
-          background: linear-gradient(to top, rgba(62,44,35,.75) 0%, transparent 100%);
-          font: 600 13px/1.3 'Poppins',sans-serif; color: #fff;
-        }
+        .br-outfit-label { display: none; }
 
         /* ── LINKED IMAGE BANNER (above Services) ── */
         .br-img-banner-wrap {

@@ -50,12 +50,6 @@ export default function ImageGrid({
           wrapperClassName="aspect-[4/5] rounded-[22px]"
           className="group-hover:scale-[1.02]"
         />
-        <div className="space-y-2 px-1 pb-1 pt-4">
-          <p className="text-sm font-medium text-stone-700">
-            {image.title || image.alt || 'Custom boutique design'}
-          </p>
-         
-        </div>
       </motion.button>
     );
   }

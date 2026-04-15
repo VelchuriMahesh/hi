@@ -4,23 +4,9 @@ import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
 import { fallbackReviews } from '../data/content';
-import useGallery from '../hooks/useGallery';       // ← ONLY dynamic admin images
+import useGallery from '../hooks/useGallery';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
-
-// Static Image Imports (Strictly for Explore Styles Section)
-import d1  from '../assets/images/designer/designer-01.jpeg';
-import d2  from '../assets/images/designer/designer-02.jpeg';
-import d3  from '../assets/images/designer/designer-03.jpeg';
-import d4  from '../assets/images/designer/designer-04.jpeg';
-import d5  from '../assets/images/designer/designer-05.jpeg';
-import d6  from '../assets/images/designer/designer-06.jpeg';
-import d7  from '../assets/images/designer/designer-07.jpeg';
-import d8  from '../assets/images/designer/designer-08.jpeg';
-import d9  from '../assets/images/designer/designer-09.jpeg';
-import d10 from '../assets/images/designer/designer-10.jpeg';
-import d11 from '../assets/images/designer/designer-11.jpeg';
-import d12 from '../assets/images/designer/designer-12.jpeg';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -33,19 +19,92 @@ const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
 // ─── Static Designer outfits data (Strictly for the Explore Styles Section) ──
 const staticDesignerOutfits = [
-  { id: 1,  tag: 'gowns',        title: 'Designer Gown',    image: d1  },
-  { id: 2,  tag: 'indo-western', title: 'Indo-Western Set', image: d2  },
-  { id: 3,  tag: 'party-wear',   title: 'Party Wear',       image: d3  },
-  { id: 4,  tag: 'gowns',        title: 'Flared Gown',      image: d4  },
-  { id: 5,  tag: 'gowns',        title: 'Designer Gown',    image: d5  },
-  { id: 6,  tag: 'indo-western', title: 'Indo-Western Set', image: d6  },
-  { id: 7,  tag: 'party-wear',   title: 'Party Wear',       image: d7  },
-  { id: 8,  tag: 'gowns',        title: 'Flared Gown',      image: d8  },
-  { id: 9,  tag: 'gowns',        title: 'Designer Gown',    image: d9  },
-  { id: 10, tag: 'indo-western', title: 'Indo-Western Set', image: d10 },
-  { id: 11, tag: 'party-wear',   title: 'Party Wear',       image: d11 },
-  { id: 12, tag: 'gowns',        title: 'Flared Gown',      image: d12 },
+  {
+    id: 1,
+    tag: 'gowns',
+    title: 'Elegant Designer Evening Gown',
+    alt: 'Elegant designer evening gown for Shruthi Ajith Bangalore',
+    image: "/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp"
+  },
+  {
+    id: 2,
+    tag: 'gowns',
+    title: 'Modern Bridal Reception Gown',
+    alt: 'Modern bridal reception gown with premium finishing by Shrusara Bangalore',
+    image: "/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp"
+  },
+  {
+    id: 3,
+    tag: 'gowns',
+    title: 'Maternity Photoshoot Gown',
+    alt: 'Modern maternity photoshoot gown with premium finishing Shrusara Bangalore',
+    image: "/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp"
+  },
+  {
+    id: 4,
+    tag: 'gowns',
+    title: 'Designer Ball Gown',
+    alt: 'Premium designer ball gown for engagement in Bangalore',
+    image: "/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp"
+  },
+  {
+    id: 5,
+    tag: 'gowns',
+    title: 'Reception Gown for Brides',
+    alt: 'Reception gown for brides by Shrusara fashion boutique',
+    image: "/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp"
+  },
+  {
+    id: 6,
+    tag: 'indo-western',
+    title: 'Contemporary Bridal Trousseau Outfit',
+    alt: 'Contemporary modern bridal trousseau outfit by Shruthi Ajith',
+    image: "/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp"
+  },
+  {
+    id: 7,
+    tag: 'indo-western',
+    title: 'Indo Western Fusion Bridal Wear',
+    alt: 'Indo western fusion bridal wear Bangalore Shrusara',
+    image: "/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp"
+  },
+  {
+    id: 8,
+    tag: 'party-wear',
+    title: 'Red Reception Gown',
+    alt: 'Custom photoshoot red gown for reception wear Bangalore',
+    image: "/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp"
+  },
+  {
+    id: 9,
+    tag: 'party-wear',
+    title: 'Designer Blouse Saree',
+    alt: 'Designer blouse saree Bangalore by Shrusara',
+    image: "/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp"
+  },
+  {
+    id: 10,
+    tag: 'party-wear',
+    title: 'Evening Designer Gown',
+    alt: 'Elegant evening designer gown for Shruthi Ajith Bangalore',
+    image: "/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp"
+  },
+  {
+    id: 11,
+    tag: 'party-wear',
+    title: 'Modern Tail Gown',
+    alt: 'Modern tail gown for reception with premium finishing Shrusara Bangalore',
+    image: "/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp"
+  }
 ];
+
+// ─── Convert static outfits to ImageGrid-compatible format for Gallery ────────
+const staticGalleryImages = staticDesignerOutfits.map(item => ({
+  id: `static-${item.id}`,
+  url: item.image,
+  alt: item.alt,
+  title: item.title,
+}));
 
 const FILTERS = [
   { key: 'all',          label: 'All'               },
@@ -105,11 +164,10 @@ const PhoneIcon = () => (
   </svg>
 );
 
-// ─── 1. Explore Styles Section (STRICTLY STATIC — d1 to d12 only) ─────────────
+// ─── 1. Explore Styles Section (STRICTLY STATIC — no API, no hooks) ───────────
 function DesignerOutfits() {
   const [activeFilter, setActiveFilter] = useState('all');
 
-  // Only uses the staticDesignerOutfits array — never touches any API or hook
   const filteredData =
     activeFilter === 'all'
       ? staticDesignerOutfits
@@ -134,11 +192,11 @@ function DesignerOutfits() {
           <div key={item.id} className="ds-outfit-card">
             <img
               src={item.image}
-              alt={item.title}
+              alt={item.alt}
               loading="lazy"
               className="ds-outfit-img"
             />
-            <div className="ds-outfit-label">{item.title}</div>
+            {/* No label rendered — clean image only */}
           </div>
         ))}
       </div>
@@ -146,13 +204,12 @@ function DesignerOutfits() {
   );
 }
 
-// ─── 2. Gallery Section (STRICTLY DYNAMIC — admin-uploaded images only) ────────
-//
-//  useGallery('designer') fetches ONLY images that the admin has uploaded via
-//  the dashboard. It does NOT merge or include any of the static d1–d12 imports.
-//  If you need to create this hook, see hooks/useGallery.js below.
-//
+// ─── 2. Gallery Section — static 11 images + admin-uploaded images merged ──────
 function DesignerGallery({ images, loading }) {
+  // Merge: 11 static images first, then admin-uploaded images appended after
+  const adminImages = images || [];
+  const mergedImages = [...staticGalleryImages, ...adminImages];
+
   if (loading) {
     return (
       <div className="ds-gallery-loading">
@@ -161,18 +218,10 @@ function DesignerGallery({ images, loading }) {
     );
   }
 
-  if (!images || images.length === 0) {
-    return (
-      <p className="ds-gallery-note">
-        No gallery images yet. Admin can add images from the dashboard.
-      </p>
-    );
-  }
-
   return (
     <ImageGrid
-      images={images.slice(0, 100)}
-      loading={loading}
+      images={mergedImages.slice(0, 100)}
+      loading={false}
       priority
       columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
     />
@@ -184,11 +233,8 @@ export default function Designer() {
   const [reviews, setReviews]               = useState(fallbackReviews);
   const [reviewsLoading, setReviewsLoading] = useState(true);
 
-  // Hero media — dynamic from admin
   const { media: heroMedia } = useHeroMedia('designer');
 
-  // ── Gallery: ONLY admin-uploaded images via useGallery (NOT useMergedGallery) ──
-  // useGallery fetches purely dynamic images; it never blends in the static d1–d12.
   const { images: designerGallery, loading: galleryLoading } = useGallery('designer');
 
   useEffect(() => {
@@ -253,32 +299,28 @@ export default function Designer() {
           margin-bottom: 8px;
         }
         .ds-hero-designer::before {
-  content: '✦';
-  color: var(--c-accent);
-  font-size: 14px; /* increased */
-}
+          content: '✦';
+          color: var(--c-accent);
+          font-size: 14px;
+        }
+        .ds-hero-price {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font: 700 16px/1.4 'Poppins', sans-serif;
+          color: var(--c-muted);
+          margin-bottom: 16px;
+        }
+        .ds-hero-price strong {
+          color: var(--c-primary);
+          font-size: 18px;
+        }
+        .ds-hero-btns {
+          display: flex;
+          gap: 14px;
+          flex-wrap: wrap;
+        }
 
-.ds-hero-price {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  font: 700 16px/1.4 'Poppins', sans-serif; /* increased size */
-  color: var(--c-muted);
-
-  margin-bottom: 16px; /* fixed */
-}
-
-.ds-hero-price strong {
-  color: var(--c-primary);
-  font-size: 18px; /* highlight price */
-}
-
-.ds-hero-btns {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
         /* Buttons */
         .ds-btn-pri {
           display: inline-flex; align-items: center; gap: 8px;
@@ -341,7 +383,7 @@ export default function Designer() {
         }
         .ds-trust-desc { font: 400 .85rem/1.7 'Poppins',sans-serif; color: var(--c-muted); }
 
-        /* ── DESIGNER OUTFITS / FILTER (Explore Styles — static only) ── */
+        /* ── EXPLORE STYLES / FILTER (static only) ── */
         .ds-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; margin-top: 32px; }
         .ds-filter-pill {
           font: 600 12px/1 'Poppins',sans-serif; color: var(--c-primary);
@@ -362,12 +404,8 @@ export default function Designer() {
         }
         .ds-outfit-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(62,44,35,.14); }
         .ds-outfit-img { width:100%; height:100%; object-fit:cover; display:block; }
-        .ds-outfit-label {
-          position: absolute; bottom: 0; left: 0; right: 0;
-          padding: 18px 16px 16px;
-          background: linear-gradient(to top, rgba(62,44,35,.75) 0%, transparent 100%);
-          font: 600 13px/1.3 'Poppins',sans-serif; color: #fff;
-        }
+        /* Label hidden — clean image only */
+        .ds-outfit-label { display: none; }
 
         /* ── LINKED IMAGE BANNER (above Services) ── */
         .ds-img-banner-wrap {
@@ -475,7 +513,7 @@ export default function Designer() {
         }
         .ds-btn-secondary-light:hover { background: rgba(255,255,255,.1); }
 
-        /* ── GALLERY (dynamic admin images only) ── */
+        /* ── GALLERY ── */
         .ds-gallery-loading { padding: 40px 0; text-align: center; }
         .ds-gallery-note {
           font: 400 .82rem/1.5 'Poppins',sans-serif; color: var(--c-muted);
@@ -616,87 +654,76 @@ export default function Designer() {
           .ds-img-banner-overlay{padding:24px 24px;}
           .ds-img-banner-wrap{padding-bottom:40px;}
         }
-/* --- EXACT IMAGE STYLE BANNER --- */
-.ds-image-match-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 40px;
-  background: #3E2C23; /* Deep Brown from your palette */
-  border-radius: 40px;
-  padding: 60px 80px;
-  margin: 60px auto;
-  max-width: 1200px;
-  width: 90%;
-}
 
-.ds-image-match-content {
-  flex: 1;
-}
+        /* ── EXACT IMAGE STYLE BANNER ── */
+        .ds-image-match-banner {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 40px;
+          background: #3E2C23;
+          border-radius: 40px;
+          padding: 60px 80px;
+          margin: 60px auto;
+          max-width: 1200px;
+          width: 90%;
+        }
+        .ds-image-match-content { flex: 1; }
+        .ds-image-match-title {
+          font: 600 2.4rem/1.2 'Playfair Display', serif !important;
+          color: #FFFFFF !important;
+          margin-bottom: 12px;
+        }
+        .ds-image-match-sub {
+          font: 400 1.1rem 'Poppins', sans-serif !important;
+          color: rgba(255, 255, 255, 0.7) !important;
+          margin: 0;
+        }
+        .ds-image-match-btns {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+        }
+        .ds-btn-gold-pill {
+          background: #C8A96A;
+          color: #FFFFFF;
+          text-decoration: none;
+          font: 600 15px 'Poppins', sans-serif;
+          padding: 20px 40px;
+          border-radius: 100px;
+          transition: transform 0.2s;
+          white-space: nowrap;
+        }
+        .ds-btn-outline-pill {
+          background: transparent;
+          color: #FFFFFF;
+          text-decoration: none;
+          font: 600 15px 'Poppins', sans-serif;
+          padding: 20px 40px;
+          border-radius: 100px;
+          border: 1.5px solid rgba(255, 255, 255, 0.4);
+          transition: background 0.2s;
+          white-space: nowrap;
+        }
+        .ds-btn-gold-pill:hover { transform: scale(1.02); }
+        .ds-btn-outline-pill:hover { background: rgba(255,255,255,0.1); }
 
-.ds-image-match-title {
-  font: 600 2.4rem/1.2 'Playfair Display', serif !important;
-  color: #FFFFFF !important;
-  margin-bottom: 12px;
-}
-
-.ds-image-match-sub {
-  font: 400 1.1rem 'Poppins', sans-serif !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  margin: 0;
-}
-
-.ds-image-match-btns {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-/* Gold Button */
-.ds-btn-gold-pill {
-  background: #C8A96A;
-  color: #FFFFFF;
-  text-decoration: none;
-  font: 600 15px 'Poppins', sans-serif;
-  padding: 20px 40px;
-  border-radius: 100px;
-  transition: transform 0.2s;
-  white-space: nowrap;
-}
-
-/* Outline Button */
-.ds-btn-outline-pill {
-  background: transparent;
-  color: #FFFFFF;
-  text-decoration: none;
-  font: 600 15px 'Poppins', sans-serif;
-  padding: 20px 40px;
-  border-radius: 100px;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-
-.ds-btn-gold-pill:hover { transform: scale(1.02); }
-.ds-btn-outline-pill:hover { background: rgba(255,255,255,0.1); }
-
-/* Responsive */
-@media (max-width: 992px) {
-  .ds-image-match-banner {
-    flex-direction: column;
-    text-align: center;
-    padding: 40px 30px;
-    align-items: center;
-  }
-  .ds-image-match-btns {
-    flex-direction: column;
-    width: 100%;
-  }
-  .ds-btn-gold-pill, .ds-btn-outline-pill {
-    width: 100%;
-    text-align: center;
-  }
-}
+        @media (max-width: 992px) {
+          .ds-image-match-banner {
+            flex-direction: column;
+            text-align: center;
+            padding: 40px 30px;
+            align-items: center;
+          }
+          .ds-image-match-btns {
+            flex-direction: column;
+            width: 100%;
+          }
+          .ds-btn-gold-pill, .ds-btn-outline-pill {
+            width: 100%;
+            text-align: center;
+          }
+        }
       `}</style>
 
       <PageMeta
@@ -711,22 +738,24 @@ export default function Designer() {
           <p className="ds-eyebrow">Designer Outfits · Bangalore</p>
           <h1 className="ds-hero-h1">
             Designer Outfits in Bangalore for Modern Occasions
-            <span>  Customized gowns, Indo-western outfits, and party wear designed with
+            <span>Customized gowns, Indo-western outfits, and party wear designed with
             perfect fit, premium finishing and modern styling.</span>
           </h1>
-          
-<p className="ds-line">
-  <span className="ds-star">✦</span>
-  <span>Styled personally by Chief Designer Shruthi Ajith</span>
-</p>
 
-<p className="ds-line">
-  <span className="ds-star">✦</span>
-  <span>
-    Designer outfits starting at <strong>₹5000</strong> onwards
-  </span>
-  <br/>
-</p>  <br/>  <div className="ds-hero-btns">
+          <p className="ds-line">
+            <span className="ds-star">✦</span>
+            <span>Styled personally by Chief Designer Shruthi Ajith</span>
+          </p>
+
+          <p className="ds-line">
+            <span className="ds-star">✦</span>
+            <span>
+              Designer outfits starting at <strong>₹5000</strong> onwards
+            </span>
+            <br/>
+          </p>
+          <br/>
+          <div className="ds-hero-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-pri">
               <WaIcon size={18} /> WhatsApp Enquiry
             </a>
@@ -768,12 +797,7 @@ export default function Designer() {
         </div>
       </Reveal>
 
-      {/* ── 3. EXPLORE STYLES (STRICTLY STATIC — d1 to d12 only) ────────────── */}
-      {/*
-          SOURCE : staticDesignerOutfits array using d1–d12 imported at the top.
-          RULE   : This section must NEVER use any hook, API call, or dynamic data.
-                   Admin changes do NOT affect this section.
-      */}
+      {/* ── 3. EXPLORE STYLES (STRICTLY STATIC — clean image grid, no labels) ── */}
       <div className="ds-alt">
         <div className="ds-alt-inner">
           <p className="ds-sec-eyebrow">Explore Styles</p>
@@ -781,32 +805,29 @@ export default function Designer() {
           <p className="ds-sec-sub">
             Browse our customized designer outfits crafted for receptions, parties, and festive occasions.
           </p>
-          {/* DesignerOutfits renders ONLY the static d1–d12 images with filter pills */}
           <DesignerOutfits />
         </div>
       </div>
 
-      {/* ── 3b. LINKED IMAGE BANNER (above Services) ────────────────────────── */}
-{/* ── 3b. EXACT IMAGE STYLE BANNER ────────────────────────── */}
-<div className="ds-image-match-banner">
-  <div className="ds-image-match-content">
-    <h2 className="ds-image-match-title">
-      Join our happy clients — book your consultation today
-    </h2>
-    <p className="ds-image-match-sub">
-      Start your bridal consultation
-    </p>
-  </div>
-
-  <div className="ds-image-match-btns">
-    <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-gold-pill">
-      WhatsApp Enquiry
-    </a>
-    <a href={TEL_LINK} className="ds-btn-outline-pill">
-      Call Now
-    </a>
-  </div>
-</div>
+      {/* ── 3b. CTA BANNER ──────────────────────────────────────────────────── */}
+      <div className="ds-image-match-banner">
+        <div className="ds-image-match-content">
+          <h2 className="ds-image-match-title">
+            Join our happy clients — book your consultation today
+          </h2>
+          <p className="ds-image-match-sub">
+            Start your bridal consultation
+          </p>
+        </div>
+        <div className="ds-image-match-btns">
+          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-gold-pill">
+            WhatsApp Enquiry
+          </a>
+          <a href={TEL_LINK} className="ds-btn-outline-pill">
+            Call Now
+          </a>
+        </div>
+      </div>
 
       {/* ── 4. SERVICE SECTION ──────────────────────────────────────────────── */}
       <Reveal className="ds-shell" style={{ paddingTop: 0 }}>
@@ -837,15 +858,7 @@ export default function Designer() {
         </div>
       </div>
 
-      {/* ── 5. GALLERY (STRICTLY DYNAMIC — admin-uploaded images only) ──────── */}
-      {/*
-          SOURCE : useGallery('designer') hook — fetches ONLY admin-uploaded images.
-          RULE   : This section must NEVER include d1–d12 or any static import.
-                   Admin adds/removes images via the dashboard; changes reflect here.
-          NOTE   : If you previously used useMergedGallery here, that was wrong —
-                   useMergedGallery blends static + dynamic, causing cross-section mixing.
-                   useGallery fetches purely dynamic images with no static fallback.
-      */}
+      {/* ── 5. GALLERY — 11 static images + admin-uploaded images merged ─────── */}
       <div className="ds-alt">
         <div className="ds-alt-inner">
           <p className="ds-sec-eyebrow">Gallery</p>
@@ -855,7 +868,6 @@ export default function Designer() {
             with premium detailing and modern styling.
           </p>
           <div style={{ marginTop: 36 }}>
-            {/* DesignerGallery renders ONLY admin-uploaded images from useGallery hook */}
             <DesignerGallery images={designerGallery} loading={galleryLoading} />
           </div>
           <p className="ds-gallery-note">
@@ -905,7 +917,7 @@ export default function Designer() {
         </div>
       </div>
 
-      {/* ── 8. REVIEWS with badge ───────────────────────────────────────────── */}
+      {/* ── 8. REVIEWS ──────────────────────────────────────────────────────── */}
       <Reveal className="ds-shell">
         <div className="ds-reviews-badge">
           <span className="ds-reviews-badge-stars">★★★★★</span>
