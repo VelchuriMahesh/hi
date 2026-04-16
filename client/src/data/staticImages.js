@@ -1,18 +1,3 @@
-const modulesByCategory = {
-  bridal: import.meta.glob('../assets/images/bridal/*.{svg,png,jpg,jpeg,webp}', {
-    eager: true,
-    import: 'default'
-  }),
-  designer: import.meta.glob('../assets/images/designer/*.{svg,png,jpg,jpeg,webp}', {
-    eager: true,
-    import: 'default'
-  }),
-  kids: import.meta.glob('../assets/images/kids/*.{svg,png,jpg,jpeg,webp}', {
-    eager: true,
-    import: 'default'
-  })
-};
-
 const categoryDetails = {
   bridal: {
     label: 'Bridal Blouse',
@@ -64,38 +49,244 @@ const categoryDetails = {
   }
 };
 
-function sortModules(modules) {
-  return Object.entries(modules).sort(([left], [right]) => left.localeCompare(right));
-}
+const bridalImages = [
+  {
+    id: 'static-bridal-1',
+    category: 'bridal',
+    url: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
+    thumbUrl: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
+    title: 'Custom Fit Muhurtham Silk Saree Blouse',
+    alt: 'Custom fit muhurtham silk saree blouse Bangalore',
+    description: 'A bridal blouse designed with perfect fit and premium finishing for wedding wear.'
+  },
+  {
+    id: 'static-bridal-2',
+    category: 'bridal',
+    url: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',
+    thumbUrl: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',
+    title: 'Designer Bridal Blouse Back Neck Pattern',
+    alt: 'Designer bridal blouse back neck pattern Shrusara',
+    description: 'A statement back-neck bridal blouse with handcrafted detailing and premium fit.'
+  },
+  {
+    id: 'static-bridal-3',
+    category: 'bridal',
+    url: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
+    thumbUrl: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
+    title: 'Handcrafted Aari Work Wedding Blouse',
+    alt: 'Handcrafted Aari work wedding blouse Shrusara boutique',
+    description: 'Intricate aari embroidery for a luxurious bridal blouse finish.'
+  },
+  {
+    id: 'static-bridal-4',
+    category: 'bridal',
+    url: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
+    thumbUrl: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
+    title: 'Intricate Maggam Aari Bridal Wear',
+    alt: 'Intricate hand embroidery maggam aari bridal wear Mahalakshmipuram',
+    description: 'A premium bridal piece combining maggam and aari work for ceremony wear.'
+  },
+  {
+    id: 'static-bridal-5',
+    category: 'bridal',
+    url: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',
+    thumbUrl: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',
+    title: 'Premium Antique Gold Temple Work Blouse',
+    alt: 'Premium antique gold temple work bridal blouse Bangalore',
+    description: 'A refined bridal blouse with rich temple motif maggam work.'
+  },
+  {
+    id: 'static-bridal-6',
+    category: 'bridal',
+    url: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',
+    thumbUrl: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',
+    title: 'Premium Maggam Work Bridal Blouse',
+    alt: 'Premium maggam work bridal blouse Mahalakshmipuram Shrusara',
+    description: 'A rich maggam-work bridal blouse for beautifully detailed wedding wear.'
+  },
+  {
+    id: 'static-bridal-7',
+    category: 'bridal',
+    url: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
+    thumbUrl: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
+    title: 'Royal Heritage Style Bridal Maggam Blouse',
+    alt: 'Royal heritage style bridal maggam blouse Bangalore',
+    description: 'A heritage-inspired bridal blouse with royal maggam embroidery.'
+  },
+  {
+    id: 'static-bridal-8',
+    category: 'bridal',
+    url: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
+    thumbUrl: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
+    title: 'Traditional South Indian Wedding Blouse',
+    alt: 'Traditional south Indian wedding blouse gold zari work Shrusara boutique',
+    description: 'A classic South Indian bridal blouse with gold zari work and rich finish.'
+  },
+  {
+    id: 'static-bridal-9',
+    category: 'bridal',
+    url: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
+    thumbUrl: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
+    title: 'Luxury Bridal Lehenga Custom Design',
+    alt: 'Luxury bridal lehenga custom design Bangalore',
+    description: 'A premium bridal lehenga with custom finishing and luxurious embroidery.'
+  },
+  {
+    id: 'static-bridal-10',
+    category: 'bridal',
+    url: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
+    thumbUrl: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
+    title: 'Custom Muhurtham Bridal Lehenga',
+    alt: 'Custom made bridal muhurtham lehenga Shrusara',
+    description: 'A custom bridal lehenga tailored for muhurtham and wedding celebration.'
+  },
+  {
+    id: 'static-bridal-11',
+    category: 'bridal',
+    url: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
+    thumbUrl: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
+    title: 'Elegant Reception Gown',
+    alt: 'Elegant modern reception gown brides silhouette premium fabric',
+    description: 'A reception gown crafted with premium fabric and refined silhouette detail.'
+  }
+];
 
-function buildStaticCategoryImages(category) {
-  const entries = sortModules(modulesByCategory[category] || {});
-  const metadata = categoryDetails[category]?.titles || [];
+const designerImages = [
+  {
+    id: 'static-designer-1',
+    category: 'designer',
+    url: '/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',
+    thumbUrl: '/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',
+    title: 'Elegant Designer Evening Gown',
+    alt: 'Elegant designer evening gown for Shruthi Ajith Bangalore',
+    description: 'A premium designer evening gown with refined tailoring and a luxe finish.'
+  },
+  {
+    id: 'static-designer-2',
+    category: 'designer',
+    url: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp',
+    thumbUrl: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp',
+    title: 'Modern Bridal Reception Gown',
+    alt: 'Modern bridal reception gown with premium finishing Shrusara Bangalore',
+    description: 'A reception gown designed for modern bridal celebrations with premium finish.'
+  },
+  {
+    id: 'static-designer-3',
+    category: 'designer',
+    url: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp',
+    thumbUrl: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp',
+    title: 'Maternity Photoshoot Gown',
+    alt: 'Modern maternity photoshoot gown with premium finishing Shrusara Bangalore',
+    description: 'A premium maternity gown designed for elegant photoshoot styling and comfort.'
+  },
+  {
+    id: 'static-designer-4',
+    category: 'designer',
+    url: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',
+    thumbUrl: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',
+    title: 'Premium Designer Ball Gown',
+    alt: 'Premium designer ball gown for engagement in Bangalore',
+    description: 'A gala-ready ball gown tailored for engagement celebrations and premium styling.'
+  },
+  {
+    id: 'static-designer-5',
+    category: 'designer',
+    url: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp',
+    thumbUrl: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp',
+    title: 'Reception Gown for Brides',
+    alt: 'Reception gown for brides by Shrusara fashion boutique',
+    description: 'A bridal reception gown with premium structure and seamless finishing touches.'
+  },
+  {
+    id: 'static-designer-6',
+    category: 'designer',
+    url: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',
+    thumbUrl: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',
+    title: 'Contemporary Bridal Trousseau Outfit',
+    alt: 'Contemporary modern bridal trousseau outfit by Shruthi Ajith',
+    description: 'A contemporary indo-western look crafted for bridal trousseau styling.'
+  },
+  {
+    id: 'static-designer-7',
+    category: 'designer',
+    url: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',
+    thumbUrl: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',
+    title: 'Indo Western Fusion Wear',
+    alt: 'Indo western fusion bridal wear Bangalore Shrusara',
+    description: 'A fusion outfit combining bridal elegance with modern design lines.'
+  },
+  {
+    id: 'static-designer-8',
+    category: 'designer',
+    url: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',
+    thumbUrl: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',
+    title: 'Custom Photoshoot Red Gown',
+    alt: 'Custom photoshoot red gown reception wear Bangalore',
+    description: 'A statement red gown built for photoshoots and reception styling.'
+  },
+  {
+    id: 'static-designer-9',
+    category: 'designer',
+    url: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',
+    thumbUrl: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',
+    title: 'Designer Blouse Saree',
+    alt: 'Designer blouse saree Bangalore by Shrusara',
+    description: 'A ready-to-style designer blouse saree with premium craftsmanship.'
+  },
+  {
+    id: 'static-designer-10',
+    category: 'designer',
+    url: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',
+    thumbUrl: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',
+    title: 'Elegant Evening Designer Gown',
+    alt: 'Elegant evening designer gown for Shruthi Ajith Bangalore',
+    description: 'An elegant party wear gown with minimal yet impactful embroidery.'
+  },
+  {
+    id: 'static-designer-11',
+    category: 'designer',
+    url: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp',
+    thumbUrl: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp',
+    title: 'Modern Tail Gown',
+    alt: 'Modern tail gown reception premium finishing Shrusara Bangalore',
+    description: 'A modern tail gown perfect for party wear with polished finishing.'
+  }
+];
 
-  return entries.map(([path, url], index) => {
-    const [title, description] = metadata[index] || [];
-    const label = categoryDetails[category]?.label || category;
-
-    return {
-      id: `static-${category}-${index + 1}`,
-      category,
-      source: 'static',
-      filePath: path,
-      url,
-      thumbUrl: url,
-      title: title || `${label} ${index + 1}`,
-      alt: title || `${label} design ${index + 1}`,
-      description:
-        description ||
-        `A premium ${label.toLowerCase()} concept from the Shrusara static design collection.`
-    };
-  });
-}
+const kidsImages = [
+  {
+    id: 'static-kids-1',
+    category: 'kids',
+    url: '/videos/kids.png',
+    thumbUrl: '/videos/kids.png',
+    title: 'Kids Outfit Example',
+    alt: 'Kids outfit example',
+    description: 'A comfortable kids outfit designed for festive and celebratory occasions.'
+  },
+  {
+    id: 'static-kids-2',
+    category: 'kids',
+    url: '/videos/kids.png',
+    thumbUrl: '/videos/kids.png',
+    title: 'Kids Celebration Look',
+    alt: 'Kids celebration outfit example',
+    description: 'A to-style kids outfit for family celebrations and festive events.'
+  },
+  {
+    id: 'static-kids-3',
+    category: 'kids',
+    url: '/videos/kids.png',
+    thumbUrl: '/videos/kids.png',
+    title: 'Kids Fashion Set',
+    alt: 'Kids fashion outfit example',
+    description: 'A premium kids outfit with soft finishing and comfortable tailoring.'
+  }
+];
 
 export const staticCategoryImages = {
-  bridal: buildStaticCategoryImages('bridal'),
-  designer: buildStaticCategoryImages('designer'),
-  kids: buildStaticCategoryImages('kids')
+  bridal: bridalImages,
+  designer: designerImages,
+  kids: kidsImages
 };
 
 export const categoryPreviewCards = Object.entries(categoryDetails).map(([category, detail]) => ({

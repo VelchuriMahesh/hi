@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import HeroBanner from '../components/HeroBanner';
 import ImageGrid from '../components/ImageGrid';
 import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
 import SectionCta from '../components/SectionCta';
 import SectionHeading from '../components/SectionHeading';
-import designer04 from "../assets/images/designer/designer-04.jpeg";
-import designer06 from "../assets/images/designer/designer-06.jpeg";
 import {
   aboutHighlights,
   aboutStory,
@@ -17,7 +14,6 @@ import {
   heroContent,
   whyChooseUs
 } from '../data/content';
-import { categoryPreviewCards } from '../data/staticImages';
 import useMergedGallery from '../hooks/useMergedGallery';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
@@ -29,7 +25,7 @@ const homeServices = [
     title: 'Bridal Blouse Designing',
     description:
       'Custom necklines, perfect fitting & elegant finishing designed to complement your wedding saree.',
-    image: '/videos/1.jpeg',
+    image: '/videos/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
     whatsapp: true,
     to: '/bridal-blouse-designer-bangalore',
   },
@@ -37,7 +33,7 @@ const homeServices = [
     title: 'Maggam & Aari Work',
     description:
       'Premium handcrafted embroidery with rich detailing, creating a luxurious 3D finish for your bridal blouse.',
-    image: '/videos/2.jpeg',
+    image: '/videos/handcrafted-heavy-aari-work-wedding-blouse-backneck-shrusara-boutique.webp',
     whatsapp: true,
     to: '/bridal-blouse-designer-bangalore',
   },
@@ -45,7 +41,7 @@ const homeServices = [
     title: 'Lehenga & Gowns',
     description:
       'Elegant bridal lehengas and gowns designed with perfect structure, graceful flow and premium finishing.',
-    image: '/videos/3.jpeg',
+    image: '/videos/custom-made-bridal-reception-lehenga-shrusara.webp',
     whatsapp: true,
     to: '/bridal-blouse-designer-bangalore',
   },
@@ -53,7 +49,7 @@ const homeServices = [
     title: 'Designer Dresses',
     description:
       'Stylish outfits for receptions and special occasions, blending modern trends with boutique-level finishing.',
-    image: '/videos/4.jpeg',
+    image: '/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',
     whatsapp: true,
     to: '/designer-outfits-bangalore',
   },
@@ -61,15 +57,15 @@ const homeServices = [
     title: 'Indo-Western',
     description:
       'Fusion outfits combine traditional craftsmanship with modern styles for a unique and elegant look.',
-    image: '/videos/5.jpeg',
+    image: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',
     whatsapp: true,
     to: '/designer-outfits-bangalore',
   },
-    {
+  {
     title: 'Ready to Wear Saree',
     description:
       'Pre stitched ready-to-wear sarees crafted for effortless draping, perfect fit, and elegant styling for modern occasions.',
-    image: '/videos/6.jpeg',
+    image: '/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp',
     whatsapp: true,
     to: '/designer-outfits-bangalore',
   },
@@ -886,7 +882,7 @@ export default function Home() {
 
         <div className="sf-hero-img-wrap">
           <img
-            src="\videos\blouse.png"
+            src="/videos/homehero.webp"
             alt="Bridal blouse designer Bangalore – Shrusara Fashion Boutique"
             className="sf-hero-img"
           />
@@ -978,7 +974,7 @@ export default function Home() {
       <Link to="/bridal-blouse-designer-bangalore" className="sf-cat-card">
         {/* Background Image */}
         <img
-          src="/videos/cat1.jpeg"
+          src="/videos/cat1.webp"
           alt="Bridal Collection"
           className="sf-cat-img"
           loading="lazy"
@@ -1025,7 +1021,7 @@ export default function Home() {
       <Link to="/designer-outfits-bangalore" className="sf-cat-card">
         {/* Background Image */}
         <img
-          src="/videos/cat2.jpeg"
+          src="/videos/cat2.webp"
           alt="Designer Collection"
           className="sf-cat-img"
           loading="lazy"

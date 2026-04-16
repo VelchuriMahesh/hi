@@ -48,7 +48,7 @@ export default function ReviewsSection({
                   {(payload?.rating || 4.9).toFixed(1)}
                 </p>
                 <p className="text-sm text-stone-500">
-                  Based on {payload?.total || 120}+ boutique experiences
+                  Based on 229+ boutique experiences
                 </p>
               </>
             )}
@@ -86,4 +86,3 @@ export default function ReviewsSection({
     </section>
   );
 }
-

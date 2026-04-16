@@ -22,9 +22,9 @@ const staticDesignerOutfits = [
   {
     id: 1,
     tag: 'gowns',
-    title: 'Elegant Designer Evening Gown',
-    alt: 'Elegant designer evening gown for Shruthi Ajith Bangalore',
-    image: "/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp"
+    title: 'designer party wear designer evening gown shrusara',
+    alt: 'designer party wear designer evening gown shrusara',
+    image: "/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp"
   },
   {
     id: 2,
@@ -95,6 +95,13 @@ const staticDesignerOutfits = [
     title: 'Modern Tail Gown',
     alt: 'Modern tail gown for reception with premium finishing Shrusara Bangalore',
     image: "/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp"
+  },
+  {
+        id: 5,
+    tag: 'gowns',
+    title: 'elegant evening gown brides featuring modern silhouette premium fabric',
+    alt: 'elegant evening gown brides featuring modern silhouette premium fabric',
+    image: "/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp"
   }
 ];
 
@@ -766,7 +773,7 @@ export default function Designer() {
         </div>
         <div className="ds-hero-img-wrap">
           <img
-            src="/videos/designer.jpeg"
+            src="/videos/desingerhero.webp"
             alt="Designer outfits Bangalore – Shrusara Fashion Boutique"
             className="ds-hero-img"
           />

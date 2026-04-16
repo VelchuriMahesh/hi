@@ -979,7 +979,7 @@ body { background: var(--c-bg); }
 
         <div className="ab-hero-img-wrap">
           <video
-            src="/videos/about-hero.mp4"
+            src="/videos/about.mp4"
             autoPlay
             muted
             loop

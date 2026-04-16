@@ -1,18 +1,26 @@
 import { useState } from 'react';
-import heroBridal from '../assets/images/bridal/hero-bridal.jpeg';
-import b1 from '../assets/images/bridal/bridal-02.jpeg';
-import b2 from '../assets/images/bridal/bridal-03.jpeg';
-import b3 from '../assets/images/bridal/bridal-04.jpeg';
-import b4 from '../assets/images/bridal/bridal-08.jpeg';
-import b5 from '../assets/images/bridal/bridal-10.jpeg';
-import designer01 from '../assets/images/designer/designer-01.jpeg';
-import designer03 from '../assets/images/designer/designer-03.jpeg';
-import designer06 from '../assets/images/designer/designer-06.jpeg';
-import gown1 from "../assets/images/bridal/bridal/gown-1.jpeg";
-import gown3 from "../assets/images/bridal/bridal/gown-3.jpeg";
-import gown4 from "../assets/images/bridal/bridal/gown-4.jpeg";
-import img110 from '../assets/images/bridal/110.jpeg';
-import img120 from '../assets/images/bridal/120.jpeg';
+
+const heroBridal = '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp';
+const galleryItems = [
+  { src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp', tag: 'Bridal Blouse' },
+  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp', tag: 'Lehenga' },
+  { src: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp', tag: 'Lehenga' },
+  { src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp', tag: 'Gown' },
+  { src: '/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp', tag: 'Designer Gown' },
+  { src: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp', tag: 'Designer Gown' },
+  { src: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp', tag: 'Designer Gown' },
+  { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp', tag: 'Designer Gown' },
+  { src: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp', tag: 'Designer Gown' },
+  { src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp', tag: 'Indo-Western' },
+  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp', tag: 'Indo-Western' },
+];
 
 /**
  * SHRUSARA BRIDAL LANDING PAGE
@@ -46,23 +54,6 @@ const trustPoints = [
     title: 'On-Time Delivery Commitment',
     desc: 'Your bridal outfit will be ready well before your special day',
   },
-];
-
-const galleryItems = [
-  { src: '/videos/11.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/22.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/33.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/44.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/55.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/66.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/77.jpeg', tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/1.jpeg',  tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/2.jpeg',  tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: '/videos/3.jpeg',  tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b1,  tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b3,  tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b4,  tag: 'Bridal Blouse', aspect: '3/4' },
-  { src: b5,  tag: 'Bridal Blouse', aspect: '3/4' },
 ];
 
 const reviews = [
@@ -1064,13 +1055,13 @@ const BridalLandingPage = () => {
             </div>
             <div className="bl-craft-right">
               <div className="bl-craft-img-card">
-                <img src={b1} alt="Maggam work bridal blouse" />
+                <img src="/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp" alt="Maggam work bridal blouse" />
               </div>
               <div className="bl-craft-img-card">
-                <img src={img110} alt="Aari work bridal blouse" />
+                <img src="/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp" alt="Aari work bridal blouse" />
               </div>
               <div className="bl-craft-img-card">
-                <img src={img120} alt="Zari embroidery bridal blouse" />
+                <img src="/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp" alt="Zari embroidery bridal blouse" />
               </div>
             </div>
           </div>

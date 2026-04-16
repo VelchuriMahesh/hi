@@ -20,7 +20,7 @@ export default function Navbar() {
 
             {/* 🔥 LOGO */}
             <img 
-              src="/videos/Revised Logo PNG.png" 
+              src="/videos/Revisedlogo.webp" 
               alt="Shrusara Logo" 
               className="h-20 w-auto object-contain sm:h-28"
             />

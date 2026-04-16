@@ -27,30 +27,7 @@ function buildWaLink({ age = '', occasion = '', colors = '' } = {}) {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const offeringItems = [
-  {
-    number: '01',
-    title: 'Custom Kids Outfits',
-    description: 'Designed based on comfort, occasion, and movement.',
-  },
-  {
-    number: '02',
-    title: 'Occasion-Based Styling',
-    description: 'Outfits for birthdays, weddings, and festive events.',
-  },
-  {
-    number: '03',
-    title: 'Family Coordination',
-    description: 'Matching outfits aligned with bridal or event styling.',
-  },
-];
-
-const staticKidsImages = [
-  { src: '/images/kids/kids-1.jpg', alt: 'Kids outfit 1' },
-  { src: '/images/kids/kids-2.jpg', alt: 'Kids outfit 2' },
-  { src: '/images/kids/kids-3.jpg', alt: 'Kids outfit 3' },
-  { src: '/images/kids/kids-4.jpg', alt: 'Kids outfit 4' },
-  { src: '/images/kids/kids-5.jpg', alt: 'Kids outfit 5' },
-  { src: '/images/kids/kids-6.jpg', alt: 'Kids outfit 6' },
+  
 ];
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -133,7 +110,7 @@ export default function Kids() {
 
   const galleryImages = kidsGallery?.length > 0
     ? kidsGallery.slice(0, 9)
-    : staticKidsImages;
+    : [];
 
   return (
     <>
@@ -336,11 +313,11 @@ export default function Kids() {
         }
       `}</style>
 
-     <PageMeta
-  title="Kids Outfit Boutique in Bangalore | Customized Kids Wear"
-  description="Customized kids outfits in Bangalore designed for comfort, movement, and special occasions with premium fabrics and boutique finishing at Shrusara Fashion Boutique."
-  canonicalPath="/kids-outfits-bangalore"
-/>
+      <PageMeta
+        title="Kids Outfit Boutique in Bangalore | Customized Kids Wear"
+        description="Customized kids outfits in Bangalore designed for comfort, movement, and special occasions with premium fabrics and boutique finishing at Shrusara Fashion Boutique."
+        canonicalPath="/kids-outfits-bangalore"
+      />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="kd-hero">
@@ -365,10 +342,10 @@ export default function Kids() {
         </div>
         <div className="kd-hero-img-wrap">
           <img
-  src="/videos/kids.png"
-  alt="Kids outfits Bangalore – Shrusara Fashion Boutique"
-  className="kd-hero-img"
-/>
+            src="/videos/kidshero.webp"
+            alt="Kids outfits Bangalore – Shrusara Fashion Boutique"
+            className="kd-hero-img"
+          />
           <div className="kd-hero-fade" />
         </div>
       </section>
@@ -392,26 +369,29 @@ export default function Kids() {
       </Reveal>
 
       {/* ── 3. GALLERY ──────────────────────────────────────────────────────── */}
-      <div className="kd-alt">
-        <div className="kd-alt-inner">
-          <p className="kd-sec-eyebrow">Gallery</p>
-          <h2 className="kd-sec-h2">Kids Outfit Collection</h2>
-          <p className="kd-sec-sub">
-            A mix of custom designed and ready boutique styles for kids.
-          </p>
-          <div style={{ marginTop: 36 }}>
-            <ImageGrid
-              images={galleryImages}
-              loading={galleryLoading}
-              priority
-              columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-            />
+{/* ── 3. GALLERY ──────────────────────────────────────────────────────── */}
+      {(galleryImages.length > 0 || galleryLoading) && (
+        <div className="kd-alt">
+          <div className="kd-alt-inner">
+            <p className="kd-sec-eyebrow">Gallery</p>
+            <h2 className="kd-sec-h2">Kids Outfit Collection</h2>
+            <p className="kd-sec-sub">
+              A mix of custom designed and ready boutique styles for kids.
+            </p>
+            <div style={{ marginTop: 36 }}>
+              <ImageGrid
+                images={galleryImages}
+                loading={galleryLoading}
+                priority
+                columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+              />
+            </div>
+            <p className="kd-gallery-note">
+              Showing our latest kids outfits · Updated regularly with new work
+            </p>
           </div>
-          <p className="kd-gallery-note">
-            Showing our latest kids outfits · Updated regularly with new work
-          </p>
         </div>
-      </div>
+      )}
 
       {/* ── 4. TRUST LINE ───────────────────────────────────────────────────── */}
       <Reveal className="kd-shell">

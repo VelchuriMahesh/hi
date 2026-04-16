@@ -3,16 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-
   "engines": {
     "node": "18.x"
   },
-
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider node --watch server.js",
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider node server.js"
   },
-
   "dependencies": {
     "@google-cloud/firestore": "^8.3.0",
     "axios": "^1.13.6",
@@ -22,7 +19,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
-    "firebase-admin": "^13.7.0",
+    "firebase-admin": "^13.8.0",
     "form-data": "^4.0.5",
     "google-gax": "^5.0.6",
     "helmet": "^8.1.0",
