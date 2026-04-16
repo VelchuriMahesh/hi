@@ -110,13 +110,7 @@ const bridalOutfits = [
     image: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
   },
 
-    {
-    id: 13,
-    tag: 'bridal-blouse',
-    title: 'designer bridal blouse back neck pattern bangalore shrusara',
-    alt: 'designer bridal blouse back neck pattern bangalore shrusara',
-    image: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp',
-  },
+
 ];
 
 const FILTERS = [
