@@ -1,27 +1,27 @@
 import { useState } from 'react';
 
-const heroBridal = '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp';
+const heroBridal = 'bridal/bridalblow/hero-bridal.webp';
 const galleryItems = [
-  { src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp', tag: 'Bridal Blouse' },
-  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp', tag: 'Lehenga' },
-  { src: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp', tag: 'Lehenga' },
-  { src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp', tag: 'Gown' },
-  { src: '/designer/designer gown/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp', tag: 'Designer Gown' },
-  { src: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp', tag: 'Designer Gown' },
-  { src: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp', tag: 'Designer Gown' },
-  { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp', tag: 'Designer Gown' },
-  { src: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp', tag: 'Designer Gown' },
-  { src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp', tag: 'Indo-Western' },
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp', tag: 'Indo-Western' },
+  { src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp' },
+  { src: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp' },
+  { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp' },
+  { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp' },
+  { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp' },
+  { src: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp' },
+  { src: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp' },
+  { src: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp' },
+  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp' },
+  { src: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp' },
+  { src: '/landingpage/close-up-handcrafted-aari-work-embroidery-premium-bridal-silksaree-blouse.webp' },
+  { src: '/landingpage/custom-made-bridal-reception-lehenga-shrusara.webp' },
+  { src: '/landingpage/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp' },
+  { src: '/landingpage/heavy-hand-embroidery-reception-blouse-with-crystal-detailing-shrusara.webp' },
+  { src: '/landingpage/intricate-hand-embroidery-bridal-wear-shruthi-ajith-bangalore.webp' },
+  { src: '/landingpage/intricate-heavy-hand-embroidery-bridal-wear-bangalore.webp' },
+  { src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-bangalore.webp' },
+  { src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-mahalakshmipuram.webp' },
+  { src: '/landingpage/vintage-inspired-heavy-work-bridal-blouse-shruthi-ajith-bangalore.webp' },
 ];
-
 /**
  * SHRUSARA BRIDAL LANDING PAGE
  * Hero updated with new heading/subtext copy.
