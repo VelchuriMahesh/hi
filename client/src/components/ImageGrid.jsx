@@ -20,6 +20,9 @@ export default function ImageGrid({
 }) {
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // Filter out images without a valid URL
+  const validImages = images.filter(img => img.url || img.thumbUrl);
+
   if (loading) {
     return (
       <div className={`grid gap-5 ${columnsClassName}`}>
@@ -65,15 +68,15 @@ export default function ImageGrid({
             <span className="text-xs text-stone-500">Swipe gallery</span>
           </div>
           <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:hidden">
-            {images.map((image, index) => renderCard(image, index, true))}
+            {validImages.map((image, index) => renderCard(image, index, true))}
           </div>
           <div className={`hidden gap-5 sm:grid ${columnsClassName}`}>
-            {images.map((image, index) => renderCard(image, index))}
+            {validImages.map((image, index) => renderCard(image, index))}
           </div>
         </>
       ) : (
         <div className={`grid gap-5 ${columnsClassName}`}>
-          {images.map((image, index) => renderCard(image, index))}
+          {validImages.map((image, index) => renderCard(image, index))}
         </div>
       )}
 

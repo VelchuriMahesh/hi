@@ -6,19 +6,23 @@ export default function Contact() {
   return (
     <>
       <PageMeta
-  title="Contact Bridal Boutique in Bangalore | Shrusara Fashion Boutique"
-  description="Visit Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore or connect via WhatsApp or call to book your bridal and designer outfit consultation."
-  canonicalPath="/contact-shrusara-bangalore"
-/>
+        title="Contact Bridal Boutique in Bangalore | Shrusara Fashion Boutique"
+        description="Visit Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore or connect via WhatsApp or call to book your bridal and designer outfit consultation."
+        canonicalPath="/contact-shrusara-bangalore"
+      />
 
       <section className="section-shell pb-12 pt-8 sm:pb-16">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="glass-panel p-6 sm:p-8">
             <SectionHeading
               eyebrow="Contact"
-              title="Visit, call, or WhatsApp for a boutique consultation"
-              description="We keep the contact experience simple so high-intent visitors can enquire in one tap."
+              title="Start Your Bridal and Designer Outfit Consultation"
+              description="Share your occasion, outfit ideas, and design preferences to begin your custom boutique consultation."
             />
+            <p className="mt-4 text-sm font-medium text-cocoa">
+              Personal consultation by our Chief Designer Shruthi Ajith
+            </p>
+            
             <div className="mt-8 grid gap-4">
               {[
                 { label: 'Address', value: contactLinks.address, href: contactLinks.maps },
@@ -60,4 +64,3 @@ export default function Contact() {
     </>
   );
 }
-

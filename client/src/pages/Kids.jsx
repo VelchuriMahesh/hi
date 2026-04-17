@@ -10,12 +10,10 @@ const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 const TEL_LINK        = `tel:${PHONE_NUMBER}`;
 
-// Hero buttons use a simple default message
 const DEFAULT_WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   'Hi, I am looking for a customized kids outfit. Please share details.'
 )}`;
 
-// CTA form builds a prefilled message from the three input fields
 function buildWaLink({ age = '', occasion = '', colors = '' } = {}) {
   const msg =
     `Hi, I am looking for a customized kids outfit.\n` +
@@ -26,9 +24,7 @@ function buildWaLink({ age = '', occasion = '', colors = '' } = {}) {
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-const offeringItems = [
-  
-];
+const offeringItems = [];
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const WaIcon = ({ size = 18 }) => (
@@ -108,8 +104,9 @@ export default function Kids() {
   const { media: heroMedia }                              = useHeroMedia('kids');
   const { images: kidsGallery, loading: galleryLoading } = useMergedGallery('kids');
 
+  // KEY FIX: filter out images with no URL before slicing
   const galleryImages = kidsGallery?.length > 0
-    ? kidsGallery.slice(0, 9)
+    ? kidsGallery.filter(img => img.url || img.thumbUrl).slice(0, 9)
     : [];
 
   return (
@@ -369,7 +366,6 @@ export default function Kids() {
       </Reveal>
 
       {/* ── 3. GALLERY ──────────────────────────────────────────────────────── */}
-{/* ── 3. GALLERY ──────────────────────────────────────────────────────── */}
       {(galleryImages.length > 0 || galleryLoading) && (
         <div className="kd-alt">
           <div className="kd-alt-inner">

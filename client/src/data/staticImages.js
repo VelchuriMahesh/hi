@@ -37,7 +37,7 @@ const categoryDetails = {
     titles: [
       ['Festive Comfort Set', 'A kids outfit designed for celebration days with movement-first tailoring.'],
       ['Ready Festive Favorite', 'A practical boutique style that still feels premium and occasion-ready.'],
-      ['Mini Celebration Look', 'A polished children’s outfit with light detailing and soft finishing.'],
+      ['Mini Celebration Look', 'A polished children\u2019s outfit with light detailing and soft finishing.'],
       ['Soft Tailoring Studio', 'A comfortable festive kids design with boutique-level stitching quality.'],
       ['Family Coordination Pick', 'A kids look that can be color-matched to bridal and family outfits.'],
       ['Festive Twirl Edit', 'A playful silhouette created for memorable photos and all-day comfort.'],
@@ -253,35 +253,8 @@ const designerImages = [
   }
 ];
 
-const kidsImages = [
-  {
-    id: 'static-kids-1',
-    category: 'kids',
-    url: '/videos/kids.png',
-    thumbUrl: '/videos/kids.png',
-    title: 'Kids Outfit Example',
-    alt: 'Kids outfit example',
-    description: 'A comfortable kids outfit designed for festive and celebratory occasions.'
-  },
-  {
-    id: 'static-kids-2',
-    category: 'kids',
-    url: '/videos/kids.png',
-    thumbUrl: '/videos/kids.png',
-    title: 'Kids Celebration Look',
-    alt: 'Kids celebration outfit example',
-    description: 'A to-style kids outfit for family celebrations and festive events.'
-  },
-  {
-    id: 'static-kids-3',
-    category: 'kids',
-    url: '/videos/kids.png',
-    thumbUrl: '/videos/kids.png',
-    title: 'Kids Fashion Set',
-    alt: 'Kids fashion outfit example',
-    description: 'A premium kids outfit with soft finishing and comfortable tailoring.'
-  }
-];
+// ── Kids: intentionally empty until real photos are uploaded via admin panel ──
+const kidsImages = [];
 
 export const staticCategoryImages = {
   bridal: bridalImages,
@@ -291,7 +264,7 @@ export const staticCategoryImages = {
 
 export const categoryPreviewCards = Object.entries(categoryDetails).map(([category, detail]) => ({
   category,
-  title: detail.label,
+  title: detail.title,
   description: `Explore ${detail.label.toLowerCase()} with a premium boutique presentation.`,
   to: detail.route,
   image: staticCategoryImages[category][0]?.url || ''

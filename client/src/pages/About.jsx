@@ -1102,7 +1102,7 @@ Shruthi Ajith Founder & Chief Designer"
           {/* stats strip below card */}
           <div className="ab-designer-stats-row">
             <div className="ab-designer-stat-item">
-              <span className="ab-designer-stat-num">100+</span>
+              <span className="ab-designer-stat-num">250+</span>
               <span className="ab-designer-stat-label">Happy Clients</span>
             </div>
             <div className="ab-designer-stat-item">
