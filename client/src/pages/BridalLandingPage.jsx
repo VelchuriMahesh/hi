@@ -937,7 +937,7 @@ const BridalLandingPage = () => {
         <header className="bl-hdr">
           <div className="bl-hdr-brand">
             <img
-              src="/videos/logo.png"
+              src="/videos/Revisedlogo.webp"
               alt="Shrusara Logo"
               className="bl-hdr-logo"
             />
