@@ -1229,7 +1229,7 @@ Shruthi Ajith Founder & Chief Designer"
 
               <div className="ab-trust-stat">
                 <span className="ab-trust-stat-stars">★★★★★</span>
-                100+ Happy Clients in Bangalore
+                250+ Happy Clients in Bangalore
               </div>
 
               <ReviewsSection
