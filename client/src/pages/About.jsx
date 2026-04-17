@@ -1000,7 +1000,7 @@ body { background: var(--c-bg); }
             {/* ── left: image ── */}
             <div className="ab-designer-image-box">
               <img
-                src="/videos/shruthi-ajith.jpeg"
+                src="/videos/lead-of-shrusara.webp"
                 alt="Shruthi Ajith – Founder & Chief Designer, Shrusara Fashion Boutique"
                 className="ab-designer-img"
               />
