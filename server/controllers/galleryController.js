@@ -9,10 +9,8 @@ export async function createGalleryItem(req, res, next) {
 
     if (!req.file) return res.status(400).json({ message: 'Please select an image.' });
 
-    // 1. Upload to ImgBB
     const upload = await uploadToImgbb(req.file.buffer, req.file.originalname);
 
-    // 2. Prepare Payload
     const payload = {
       category: String(category || 'home').toLowerCase(),
       title: String(title || '').trim(),
@@ -23,17 +21,16 @@ export async function createGalleryItem(req, res, next) {
       deleteUrl: upload.deleteUrl,
       width: upload.width,
       height: upload.height,
-      createdAt: new Date().toISOString() 
+      createdAt: new Date().toISOString()
     };
 
-    // 3. Save to Firestore using Admin SDK (This bypasses all permission errors)
     const docRef = await db.collection('gallery').add(payload);
 
     res.status(201).json({
       item: { id: docRef.id, ...payload }
     });
   } catch (error) {
-    console.error("Upload Error:", error.message);
+    console.error('Upload Error:', error.message);
     res.status(500).json({ message: error.message });
   }
 }
@@ -52,6 +49,38 @@ export async function listGallery(req, res, next) {
     }));
     res.json({ items });
   } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateGalleryItemById(req, res, next) {
+  try {
+    const docRef = db.collection('gallery').doc(req.params.id);
+    const snapshot = await docRef.get();
+
+    if (!snapshot.exists) {
+      return res.status(404).json({ message: 'Gallery item not found.' });
+    }
+
+    const { category, title, alt, description } = req.body;
+
+    const updates = {
+      ...(category !== undefined && { category: String(category).toLowerCase() }),
+      ...(title !== undefined && { title: String(title).trim() }),
+      ...(alt !== undefined && { alt: String(alt).trim() }),
+      ...(description !== undefined && { description: String(description).trim() }),
+      updatedAt: new Date().toISOString()
+    };
+
+    await docRef.update(updates);
+
+    const updated = await docRef.get();
+
+    res.json({
+      item: { id: updated.id, ...serializeFirestore(updated.data()) }
+    });
+  } catch (error) {
+    console.error('Update Error:', error.message);
     next(error);
   }
 }

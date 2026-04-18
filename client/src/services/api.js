@@ -58,6 +58,13 @@ export const uploadGalleryItem = (token, formData) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
+export const updateGalleryItem = (token, id, data) =>
+  request(`/gallery/${id}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data)
+  });
+
 export const deleteGalleryItem = (token, id) =>
   request(`/gallery/${id}`, {
     method: 'DELETE',

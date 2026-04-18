@@ -1,21 +1,26 @@
 import {
-  addDoc,
   collection,
-  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
   serverTimestamp,
-  setDoc,
-  updateDoc
+  setDoc
 } from 'firebase/firestore/lite';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage } from './firebase';
-import { fetchGallery as fetchGalleryApi, fetchPosts as fetchPostsApi, fetchVideos as fetchVideosApi, createVideo as createVideoApi, updateVideo as updateVideoApi, deleteVideo as deleteVideoApi } from './api';
+import {
+  fetchGallery as fetchGalleryApi,
+  fetchPosts as fetchPostsApi,
+  fetchVideos as fetchVideosApi,
+  createVideo as createVideoApi,
+  updateVideo as updateVideoApi,
+  deleteVideo as deleteVideoApi,
+  updateGalleryItem
+} from './api';
+import { getAdminToken } from '../components/ProtectedRoute';
 
 const HERO_COLLECTION = 'heroMedia';
-const VIDEO_COLLECTION = 'videos';
 const GALLERY_COLLECTION = 'gallery';
 const BLOG_COLLECTION = 'posts';
 
@@ -80,7 +85,6 @@ export async function fetchGalleryDocuments() {
     const response = await fetchGalleryApi();
     return response.items || [];
   } catch (err) {
-    // fallback to Firestore directly if API is unavailable
     return fetchCollectionDocuments(GALLERY_COLLECTION);
   }
 }
@@ -90,16 +94,14 @@ export async function fetchBlogDocuments() {
     const response = await fetchPostsApi();
     return response.items || [];
   } catch (err) {
-    // fallback to Firestore directly if API is unavailable
     return fetchCollectionDocuments(BLOG_COLLECTION);
   }
 }
 
 export async function updateGalleryDocument(id, payload) {
-  await updateDoc(doc(db, GALLERY_COLLECTION, id), {
-    ...payload,
-    updatedAt: serverTimestamp()
-  });
+  const token = getAdminToken();
+  if (!token) throw new Error('Not authenticated. Please log in again.');
+  await updateGalleryItem(token, id, payload);
 }
 
 export async function fetchVideos() {
