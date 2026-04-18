@@ -20,89 +20,89 @@ const TEL_LINK = `tel:${PHONE_NUMBER}`;
 // ─── Static Designer outfits data (Strictly for the Explore Styles Section) ──
 const staticDesignerOutfits = [
   {
-    id: 1,
-    tag: 'gowns',
-    title: 'designer party wear designer evening gown shrusara',
-    alt: 'designer party wear designer evening gown shrusara',
-    image: "/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp"
-  },
-  {
-    id: 2,
-    tag: 'gowns',
-    title: 'Modern Bridal Reception Gown',
-    alt: 'Modern bridal reception gown with premium finishing by Shrusara Bangalore',
-    image: "/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp"
-  },
-  {
-    id: 3,
-    tag: 'gowns',
-    title: 'Maternity Photoshoot Gown',
-    alt: 'Modern maternity photoshoot gown with premium finishing Shrusara Bangalore',
-    image: "/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp"
-  },
-  {
-    id: 4,
-    tag: 'gowns',
-    title: 'Designer Ball Gown',
-    alt: 'Premium designer ball gown for engagement in Bangalore',
-    image: "/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp"
-  },
-  {
-    id: 5,
-    tag: 'gowns',
-    title: 'Reception Gown for Brides',
-    alt: 'Reception gown for brides by Shrusara fashion boutique',
-    image: "/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp"
-  },
-  {
-    id: 6,
-    tag: 'indo-western',
-    title: 'Contemporary Bridal Trousseau Outfit',
-    alt: 'Contemporary modern bridal trousseau outfit by Shruthi Ajith',
-    image: "/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp"
-  },
-  {
-    id: 7,
-    tag: 'indo-western',
-    title: 'Indo Western Fusion Bridal Wear',
-    alt: 'Indo western fusion bridal wear Bangalore Shrusara',
-    image: "/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp"
-  },
-  {
-    id: 8,
-    tag: 'party-wear',
-    title: 'Red Reception Gown',
-    alt: 'Custom photoshoot red gown for reception wear Bangalore',
-    image: "/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp"
-  },
-  {
-    id: 9,
-    tag: 'party-wear',
-    title: 'Designer Blouse Saree',
-    alt: 'Designer blouse saree Bangalore by Shrusara',
-    image: "/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp"
-  },
-  {
-    id: 10,
-    tag: 'party-wear',
-    title: 'Evening Designer Gown',
-    alt: 'Elegant evening designer gown for Shruthi Ajith Bangalore',
-    image: "/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp"
-  },
-  {
-    id: 11,
-    tag: 'party-wear',
-    title: 'Modern Tail Gown',
-    alt: 'Modern tail gown for reception with premium finishing Shrusara Bangalore',
-    image: "/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp"
-  },
-  {
-        id: 5,
-    tag: 'gowns',
-    title: 'elegant evening gown brides featuring modern silhouette premium fabric',
-    alt: 'elegant evening gown brides featuring modern silhouette premium fabric',
-    image: "/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp"
-  }
+  id: 1,
+  tag: 'gowns',
+  title: 'Midnight Wine Designer Gown',
+  alt: 'Midnight Wine Designer Gown',
+  image: "/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp"
+},
+{
+  id: 2,
+  tag: 'gowns',
+  title: 'Floral Trail Indo-Western Gown',
+  alt: 'Floral Trail Indo-Western Gown',
+  image: "/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp"
+},
+{
+  id: 3,
+  tag: 'gowns',
+  title: 'Royal Blue Maternity Gown',
+  alt: 'Royal Blue Maternity Gown',
+  image: "/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp"
+},
+{
+  id: 4,
+  tag: 'gowns',
+  title: 'Mint Luxe Designer Ball Gown',
+  alt: 'Mint Luxe Designer Ball Gown',
+  image: "/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp"
+},
+{
+  id: 5,
+  tag: 'gowns',
+  title: 'Floral Tail Couture Gown',
+  alt: 'Floral Tail Couture Gown',
+  image: "/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp"
+},
+{
+  id: 6,
+  tag: 'indo-western',
+  title: 'Gold Indo-Western Crop Top Lehenga',
+  alt: 'Gold Indo-Western Crop Top Lehenga',
+  image: "/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp"
+},
+{
+  id: 7,
+  tag: 'indo-western',
+  title: 'Ivory Indo-Western Crop Top Lehenga',
+  alt: 'Ivory Indo-Western Crop Top Lehenga',
+  image: "/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp"
+},
+{
+  id: 8,
+  tag: 'party-wear',
+  title: 'Scarlet Evening Designer Gown',
+  alt: 'Scarlet Evening Designer Gown',
+  image: "/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp"
+},
+{
+  id: 9,
+  tag: 'party-wear',
+  title: 'Contemporary Designer Blouse',
+  alt: 'Contemporary Designer Blouse',
+  image: "/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp"
+},
+{
+  id: 10,
+  tag: 'party-wear',
+  title: 'Crimson Trail Party Gown',
+  alt: 'Crimson Trail Party Gown',
+  image: "/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp"
+},
+{
+  id: 11,
+  tag: 'party-wear',
+  title: 'Rose Motion Couture Gown',
+  alt: 'Rose Motion Couture Gown',
+  image: "/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp"
+},
+{
+  id: 12, // FIXED duplicate ID
+  tag: 'gowns',
+  title: 'Elegant White Reception Gown',
+  alt: 'Elegant White Reception Gown',
+  image: "/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp"
+}
 ];
 
 // ─── Convert static outfits to ImageGrid-compatible format for Gallery ────────
