@@ -835,8 +835,8 @@ body { background: var(--c-bg); }
   .ab-hero-img-wrap {
     order: 1;
     width: 100%;
-    height: auto;             /* let aspect-ratio drive the height  */
-    aspect-ratio: 9 / 14;    /* portrait frame — shows full subject */
+    height: auto;
+    aspect-ratio: 9 / 14;
     min-height: 0;
     max-height: none;
     overflow: hidden;
@@ -851,14 +851,13 @@ body { background: var(--c-bg); }
   }
 
   .ab-hero-fade {
-    /* fade bottom-to-bg so text area merges smoothly */
     background: linear-gradient(to bottom, transparent 55%, var(--c-bg) 100%);
   }
 
   .ab-hero-text {
     order: 2;
     padding: 0 6vw 48px;
-    margin-top: -40px;          /* slight overlap with fade */
+    margin-top: -40px;
     background: var(--c-bg);
     position: relative;
     z-index: 10;
@@ -884,15 +883,29 @@ body { background: var(--c-bg); }
     grid-template-columns: 1fr;
     border-radius: 24px;
   }
+
+  /* ── KEY FIX: tall portrait frame so the full photo is visible ── */
   .ab-designer-image-box {
-    min-height: 260px;
-    aspect-ratio: 4 / 3;
+    min-height: 0;
     max-height: none;
     height: auto;
+    aspect-ratio: 3 / 4;   /* portrait ratio — shows full face + body */
+    overflow: hidden;
   }
+
+  /* image fills portrait frame, anchored top so face is always visible */
+  .ab-designer-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* overlay fades bottom into card background */
   .ab-designer-img-overlay {
-    background: linear-gradient(to bottom, transparent 40%, #2A1C15 100%);
+    background: linear-gradient(to bottom, transparent 55%, #2A1C15 100%);
   }
+
   .ab-designer-years-badge {
     bottom: 20px;
     padding: 8px 16px;
@@ -944,7 +957,8 @@ body { background: var(--c-bg); }
 @media (max-width: 480px) {
   .ab-diff-grid { grid-template-columns: 1fr; }
   .ab-trust-wrap { padding: 28px 20px; }
-  .ab-designer-image-box { aspect-ratio: 3 / 2; }
+  /* keep portrait ratio on very small screens */
+  .ab-designer-image-box { aspect-ratio: 3 / 4; }
 }
       `}</style>
 
