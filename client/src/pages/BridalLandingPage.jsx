@@ -22,16 +22,10 @@ const galleryItems = [
   { src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-mahalakshmipuram.webp' },
   { src: '/landingpage/vintage-inspired-heavy-work-bridal-blouse-shruthi-ajith-bangalore.webp' },
 ];
-/**
- * SHRUSARA BRIDAL LANDING PAGE
- * Hero updated with new heading/subtext copy.
- * Footer made compact and tight.
- */
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = '919741827558';
 const PHONE_NUMBER    = '+919741827558';
-
 const WA_PREFILL = `https://wa.me/919741827558?text=Hi%2C%20I%20am%20looking%20for%20a%20customized%20bridal%20outfit.%20My%20wedding%20date%20is%20%5Bdate%5D.%20I%20need%20consultation%20for%20blouse%20%2F%20lehenga%20%2F%20gown.%20I%20would%20like%20to%20consult%20with%20Chief%20Designer%20Shruthi%20Ajith.`;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -62,22 +56,28 @@ const reviews = [
   { text: 'They made my Pinterest dream into reality. Worth every penny!', name: 'Kavya Ramesh' },
 ];
 
+const googleReviews = [
+  {
+    name: 'Anusha R.',
+    ago: '2 weeks ago',
+    text: 'The blouse fitting was perfect and the maggam work looked premium in person. The consultation made the whole bridal styling process easier.',
+  },
+  {
+    name: 'Keerthana M.',
+    ago: '1 month ago',
+    text: 'Loved the finishing, delivery commitment, and how well they understood the reference I showed. The outfit felt custom in the best way.',
+  },
+  {
+    name: 'Pallavi S.',
+    ago: '1 month ago',
+    text: 'The boutique helped with blouse and kids outfit coordination for our family event. Everything looked polished and fit beautifully.',
+  },
+];
+
 const processSteps = [
-  {
-    step: '01',
-    title: 'Consultation',
-    desc: 'Discuss your wedding details, design ideas, and preferences',
-  },
-  {
-    step: '02',
-    title: 'Design Finalization',
-    desc: 'Finalize blouse and outfit design, fabrics, and embroidery details',
-  },
-  {
-    step: '03',
-    title: 'Trial & Perfect Fit',
-    desc: 'Ensure perfect fitting with trials and finishing touches',
-  },
+  { step: '01', title: 'Consultation', desc: 'Discuss your wedding details, design ideas, and preferences' },
+  { step: '02', title: 'Design Finalization', desc: 'Finalize blouse and outfit design, fabrics, and embroidery details' },
+  { step: '03', title: 'Trial & Perfect Fit', desc: 'Ensure perfect fitting with trials and finishing touches' },
 ];
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -107,11 +107,20 @@ const MailIcon = ({ size = 16 }) => (
   </svg>
 );
 
-// ─── CTA Form Component ───────────────────────────────────────────────────────
+const GoogleIcon = () => (
+  <svg viewBox="0 0 48 48" width="38" height="38" aria-label="Google" role="img" style={{ flexShrink: 0 }}>
+    <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
+    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/>
+    <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.6l6.2 5.2C36.9 36.8 44 31 44 24c0-1.3-.1-2.6-.4-3.9z"/>
+  </svg>
+);
+
+// ─── CTA Form ────────────────────────────────────────────────────────────────
 function BridalCtaForm() {
   const [weddingDate, setWeddingDate] = useState('');
   const [sareeDetails, setSareeDetails] = useState('');
-  const [designPref, setDesignPref]   = useState('');
+  const [designPref, setDesignPref] = useState('');
 
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hi, I am looking for a customized bridal outfit.\nMy wedding date is ${weddingDate || '[date]'}.\nSaree details: ${sareeDetails || '—'}.\nDesign preferences: ${designPref || '—'}.\nI would like to consult with Chief Designer Shruthi Ajith.`
@@ -122,36 +131,18 @@ function BridalCtaForm() {
       <div className="bl-form-fields">
         <div className="bl-form-group">
           <label className="bl-form-label" htmlFor="bl-date">Wedding Date</label>
-          <input
-            id="bl-date"
-            className="bl-form-input"
-            type="text"
-            placeholder="e.g. 15 Feb 2026"
-            value={weddingDate}
-            onChange={e => setWeddingDate(e.target.value)}
-          />
+          <input id="bl-date" className="bl-form-input" type="text" placeholder="e.g. 15 Feb 2026"
+            value={weddingDate} onChange={e => setWeddingDate(e.target.value)} />
         </div>
         <div className="bl-form-group">
           <label className="bl-form-label" htmlFor="bl-saree">Saree / Outfit Details</label>
-          <input
-            id="bl-saree"
-            className="bl-form-input"
-            type="text"
-            placeholder="e.g. Kanjivaram silk, deep red"
-            value={sareeDetails}
-            onChange={e => setSareeDetails(e.target.value)}
-          />
+          <input id="bl-saree" className="bl-form-input" type="text" placeholder="e.g. Kanjivaram silk, deep red"
+            value={sareeDetails} onChange={e => setSareeDetails(e.target.value)} />
         </div>
         <div className="bl-form-group">
           <label className="bl-form-label" htmlFor="bl-design">Design Preferences</label>
-          <input
-            id="bl-design"
-            className="bl-form-input"
-            type="text"
-            placeholder="e.g. Maggam work, heavy neck"
-            value={designPref}
-            onChange={e => setDesignPref(e.target.value)}
-          />
+          <input id="bl-design" className="bl-form-input" type="text" placeholder="e.g. Maggam work, heavy neck"
+            value={designPref} onChange={e => setDesignPref(e.target.value)} />
         </div>
       </div>
       <div className="bl-cta-btns">
@@ -162,9 +153,7 @@ function BridalCtaForm() {
           <PhoneIcon size={16} /> Call Now
         </a>
       </div>
-      <p className="bl-form-hint">
-        Your details will be pre-filled in WhatsApp — just hit send.
-      </p>
+      <p className="bl-form-hint">Your details will be pre-filled in WhatsApp — just hit send.</p>
     </div>
   );
 }
@@ -174,20 +163,16 @@ const BridalLandingPage = () => {
   return (
     <>
       <style>{`
-        /* ── Variables ── */
         :root {
           --bl-gold:      #B8935A;
           --bl-gold-lt:   #D4B483;
           --bl-gold-pale: #F5EDD9;
           --bl-dark:      #1C1410;
-          --bl-warm:      #2E2016;
           --bl-cream:     #FBF8F3;
           --bl-text:      #3A2E25;
           --bl-muted:     #7A6A5A;
           --bl-white:     #FFFFFF;
-          --bl-r-lg:      24px;
         }
-
         .bl-body {
           font-family: 'Jost', 'Poppins', sans-serif;
           background: var(--bl-cream);
@@ -198,101 +183,49 @@ const BridalLandingPage = () => {
         /* ── HEADER ── */
         .bl-hdr {
           position: sticky; top: 0; z-index: 100;
-          background: rgba(251,248,243,0.96);
-          backdrop-filter: blur(12px);
+          background: rgba(251,248,243,0.96); backdrop-filter: blur(12px);
           border-bottom: 1px solid rgba(184,147,90,.15);
-          padding: 0 5vw;
-          display: flex; align-items: center; justify-content: space-between;
+          padding: 0 5vw; display: flex; align-items: center; justify-content: space-between;
           height: 72px;
         }
-
-        /* ── LOGO BRAND BLOCK ── */
-        .bl-hdr-brand {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          text-decoration: none;
-        }
-        .bl-hdr-logo {
-          height: 52px;
-          width: auto;
-          object-fit: contain;
-          display: block;
-          flex-shrink: 0;
-        }
-        .bl-hdr-text {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          line-height: 1;
-        }
+        .bl-hdr-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .bl-hdr-logo { height: 52px; width: auto; object-fit: contain; display: block; flex-shrink: 0; }
+        .bl-hdr-text { display: flex; flex-direction: column; justify-content: center; line-height: 1; }
         .bl-hdr-name {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.85rem;
-          font-weight: 700;
-          color: #2b2118;
-          letter-spacing: 0.01em;
-          line-height: 1;
-          margin: 0;
+          font-size: 1.85rem; font-weight: 700; color: #2b2118; letter-spacing: 0.01em; line-height: 1; margin: 0;
         }
         .bl-hdr-sub {
-          font-size: 0.52rem;
-          letter-spacing: 0.32em;
-          text-transform: uppercase;
-          color: var(--bl-gold);
-          font-weight: 600;
-          margin-top: 5px;
-          line-height: 1;
-          word-spacing: 0.2em;
+          font-size: 0.52rem; letter-spacing: 0.32em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-top: 5px; line-height: 1; word-spacing: 0.2em;
         }
-
         .bl-hdr-badge {
           display: flex; align-items: center; gap: 6px;
-          font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
-          color: var(--bl-muted); font-weight: 500;
+          font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-muted); font-weight: 500;
         }
-        .bl-hdr-badge-dot {
-          width: 6px; height: 6px; border-radius: 50%; background: #4CAF50;
-          animation: bl-pulse 2s infinite;
-        }
+        .bl-hdr-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #4CAF50; animation: bl-pulse 2s infinite; }
         @keyframes bl-pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
         .bl-hdr-cta {
           display: inline-flex; align-items: center; gap: 8px;
           background: var(--bl-dark); color: var(--bl-white);
-          font-size: .62rem; font-weight: 600; letter-spacing: .18em;
-          text-transform: uppercase; padding: 11px 22px;
-          text-decoration: none; border: none; cursor: pointer;
-          transition: background .2s;
+          font-size: .62rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+          padding: 11px 22px; text-decoration: none; border: none; cursor: pointer; transition: background .2s;
         }
         .bl-hdr-cta:hover { background: var(--bl-gold); }
 
-        /* ── HERO (Home-page split layout) ── */
+        /* ── HERO ── */
         .bl-hero {
-          display: flex;
-          flex-direction: row;
-          align-items: stretch;
-          width: 100%;
-          min-height: 90vh;
-          background: var(--bl-cream);
-          position: relative;
-          overflow: hidden;
+          display: flex; flex-direction: row; align-items: stretch;
+          width: 100%; min-height: 90vh; background: var(--bl-cream);
+          position: relative; overflow: hidden;
         }
         .bl-hero::before {
-          content: '';
-          position: absolute;
-          inset: 0;
+          content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
           background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,0.08) 0%, transparent 70%);
-          pointer-events: none;
-          z-index: 1;
         }
         .bl-hero-text {
-          flex: 1.1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex-start;
-          padding: 80px 48px 80px 5vw;
-          z-index: 2;
+          flex: 1.1; display: flex; flex-direction: column; justify-content: center;
+          align-items: flex-start; padding: 80px 48px 80px 5vw; z-index: 2;
         }
         .bl-hero-eyebrow {
           display: inline-flex; align-items: center; gap: 10px;
@@ -300,75 +233,39 @@ const BridalLandingPage = () => {
           color: var(--bl-gold); font-weight: 600; margin-bottom: 22px;
         }
         .bl-hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--bl-gold); display: block; }
-
-        /* ── UPDATED HERO HEADINGS ── */
         .bl-hero-h1 {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(2rem, 3.4vw, 3.2rem);
-          font-weight: 700;
-          line-height: 1.12;
-          color: var(--bl-dark);
-          margin-bottom: 10px;
+          font-size: clamp(2rem, 3.4vw, 3.2rem); font-weight: 700; line-height: 1.12;
+          color: var(--bl-dark); margin-bottom: 10px;
         }
         .bl-hero-h1 em { font-style: italic; color: var(--bl-gold); }
         .bl-hero-h2 {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.1rem, 1.6vw, 1.5rem);
-          font-weight: 400;
-          font-style: italic;
-          color: var(--bl-muted);
-          margin-bottom: 20px;
-          line-height: 1.35;
+          font-size: clamp(1.1rem, 1.6vw, 1.5rem); font-weight: 400;
+          font-style: italic; color: var(--bl-muted); margin-bottom: 20px; line-height: 1.35;
         }
-        .bl-hero-sub {
-          font-size: .88rem;
-          line-height: 1.85;
-          color: var(--bl-muted);
-          max-width: 460px;
-          margin-bottom: 6px;
-          font-weight: 300;
-        }
+        .bl-hero-sub { font-size: .88rem; line-height: 1.85; color: var(--bl-muted); max-width: 460px; margin-bottom: 6px; font-weight: 300; }
         .bl-hero-designer {
           display: inline-flex; align-items: center; gap: 7px;
-          font-size: .72rem; font-weight: 600; letter-spacing: .06em;
-          color: var(--bl-dark); margin-bottom: 6px;
+          font-size: .72rem; font-weight: 600; letter-spacing: .06em; color: var(--bl-dark); margin-bottom: 6px;
         }
         .bl-hero-designer::before { content: '✦'; color: var(--bl-gold); font-size: .7rem; }
         .bl-hero-price { font-size: .76rem; color: var(--bl-muted); margin-bottom: 10px; }
         .bl-hero-price strong { color: var(--bl-dark); font-weight: 700; }
-
-        /* ── SCARCITY LINE UNDER PRICE ── */
         .bl-hero-scarcity {
           display: inline-flex; align-items: center; gap: 6px;
-          font-size: .68rem; color: rgba(184,147,90,.85);
-          font-weight: 500; letter-spacing: .04em;
-          margin-bottom: 28px;
+          font-size: .68rem; color: rgba(184,147,90,.85); font-weight: 500; letter-spacing: .04em; margin-bottom: 28px;
         }
         .bl-hero-scarcity::before { content: '⚑'; font-size: .65rem; }
-
         .bl-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-
-        /* Hero image panel */
-        .bl-hero-img-wrap {
-          flex: 1;
-          position: relative;
-          min-height: 90vh;
-          overflow: hidden;
-        }
-        .bl-hero-img-wrap img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center top;
-          display: block;
-        }
+        .bl-hero-img-wrap { flex: 1; position: relative; min-height: 90vh; overflow: hidden; }
+        .bl-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .bl-hero-img-fade {
-          position: absolute;
-          inset: 0;
+          position: absolute; inset: 0;
           background: linear-gradient(to right, var(--bl-cream) 0%, transparent 18%);
         }
 
-        /* Buttons */
+        /* ── BUTTONS ── */
         .bl-btn-pri {
           display: inline-flex; align-items: center; gap: 9px;
           background: var(--bl-dark); color: var(--bl-white);
@@ -388,32 +285,18 @@ const BridalLandingPage = () => {
 
         /* ── TRUST BAR ── */
         .bl-trust { padding: 0 5vw 64px; background: var(--bl-white); }
-        .bl-trust-grid {
-          display: grid; grid-template-columns: repeat(3,1fr);
-          gap: 1px; background: rgba(184,147,90,.12);
-        }
-        .bl-trust-item {
-          background: var(--bl-white); padding: 32px 28px;
-          display: flex; align-items: flex-start; gap: 16px;
-        }
+        .bl-trust-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(184,147,90,.12); }
+        .bl-trust-item { background: var(--bl-white); padding: 32px 28px; display: flex; align-items: flex-start; gap: 16px; }
         .bl-trust-icon {
           width: 40px; height: 40px; border-radius: 50%;
           background: var(--bl-gold-pale); display: flex; align-items: center;
-          justify-content: center; flex-shrink: 0;
-          font-size: 1rem; color: var(--bl-gold);
+          justify-content: center; flex-shrink: 0; font-size: 1rem; color: var(--bl-gold);
         }
-        .bl-trust-label {
-          font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
-          color: var(--bl-gold); font-weight: 600; margin-bottom: 6px;
-        }
-        .bl-trust-title {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.1rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 4px;
-        }
+        .bl-trust-label { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 6px; }
+        .bl-trust-title { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 4px; }
         .bl-trust-desc { font-size: .8rem; color: var(--bl-muted); line-height: 1.65; font-weight: 300; }
 
-        /* ── GALLERY ── */
-        .bl-gallery { padding: 80px 5vw; background: var(--bl-cream); }
+        /* ── SHARED SECTION LABELS ── */
         .bl-sec-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
@@ -426,36 +309,22 @@ const BridalLandingPage = () => {
           color: var(--bl-dark); margin-bottom: 10px; line-height: 1.2;
         }
         .bl-sec-sub { font-size: .87rem; color: var(--bl-muted); line-height: 1.75; max-width: 500px; font-weight: 300; }
-        .bl-gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(4,1fr);
-          gap: 14px; margin-top: 40px;
-        }
-        .bl-gallery-card {
-          overflow: hidden; background: var(--bl-gold-pale);
-          position: relative; aspect-ratio: 3/4;
-        }
-        .bl-gallery-card img {
-          width: 100%; height: 100%; object-fit: cover; display: block;
-          transition: transform .6s;
-        }
+
+        /* ── GALLERY ── */
+        .bl-gallery { padding: 80px 5vw; background: var(--bl-cream); }
+        .bl-gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 40px; }
+        .bl-gallery-card { overflow: hidden; background: var(--bl-gold-pale); position: relative; aspect-ratio: 3/4; }
+        .bl-gallery-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .bl-gallery-card:hover img { transform: scale(1.06); }
         .bl-gallery-tag {
-          position: absolute; bottom: 0; left: 0; right: 0;
-          padding: 14px 12px 12px;
+          position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 12px 12px;
           background: linear-gradient(to top, rgba(28,20,16,.65), transparent);
-          font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
-          color: rgba(255,255,255,.92); font-weight: 600;
+          font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.92); font-weight: 600;
         }
 
         /* ── CRAFTSMANSHIP ── */
         .bl-craft { padding: 80px 5vw; background: var(--bl-white); }
-        .bl-craft-inner {
-          max-width: 1100px; margin: 0 auto;
-          display: grid; grid-template-columns: 1fr 1fr;
-          gap: 80px; align-items: center;
-        }
-        .bl-craft-left {}
+        .bl-craft-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
         .bl-craft-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
@@ -464,51 +333,29 @@ const BridalLandingPage = () => {
         .bl-craft-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--bl-gold); display: block; }
         .bl-craft-h {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700;
-          color: var(--bl-dark); margin-bottom: 20px; line-height: 1.2;
+          font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700; color: var(--bl-dark); margin-bottom: 20px; line-height: 1.2;
         }
-        .bl-craft-desc {
-          font-size: .9rem; line-height: 1.85; color: var(--bl-muted);
-          font-weight: 300; margin-bottom: 16px;
-        }
+        .bl-craft-desc { font-size: .9rem; line-height: 1.85; color: var(--bl-muted); font-weight: 300; margin-bottom: 16px; }
         .bl-craft-note {
-          font-size: .85rem; line-height: 1.75; color: var(--bl-text);
-          font-weight: 400; margin-top: 20px; margin-bottom: 0;
-          border-left: 2px solid var(--bl-gold);
-          padding-left: 14px;
+          font-size: .85rem; line-height: 1.75; color: var(--bl-text); font-weight: 400;
+          margin-top: 20px; margin-bottom: 0; border-left: 2px solid var(--bl-gold); padding-left: 14px;
         }
-        .bl-craft-tags {
-          display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
-        }
+        .bl-craft-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
         .bl-craft-tag {
           display: inline-flex; align-items: center; gap: 6px;
           background: var(--bl-gold-pale); color: var(--bl-dark);
-          font-size: .62rem; font-weight: 600; letter-spacing: .12em;
-          text-transform: uppercase; padding: 8px 16px;
-          border: 1px solid rgba(184,147,90,.25);
+          font-size: .62rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+          padding: 8px 16px; border: 1px solid rgba(184,147,90,.25);
         }
         .bl-craft-tag::before { content: '✦'; color: var(--bl-gold); font-size: .55rem; }
-        .bl-craft-right {
-          display: grid; grid-template-columns: 1fr 1fr;
-          gap: 16px;
-        }
-        .bl-craft-img-card {
-          overflow: hidden; aspect-ratio: 3/4; background: var(--bl-gold-pale);
-        }
-        .bl-craft-img-card img {
-          width: 100%; height: 100%; object-fit: cover; display: block;
-          transition: transform .6s;
-        }
+        .bl-craft-right { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 14px; }
+        .bl-craft-img-card { overflow: hidden; aspect-ratio: 3/4; background: var(--bl-gold-pale); }
+        .bl-craft-img-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .bl-craft-img-card:hover img { transform: scale(1.06); }
-        .bl-craft-img-card:first-child {
-          grid-row: span 2; aspect-ratio: auto;
-        }
 
         /* ── DESIGNER TRUST ── */
         .bl-designer { padding: 80px 5vw; background: var(--bl-dark); }
-        .bl-designer-inner {
-          max-width: 960px; margin: 0 auto;
-        }
+        .bl-designer-inner { max-width: 960px; margin: 0 auto; }
         .bl-designer-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
@@ -517,115 +364,177 @@ const BridalLandingPage = () => {
         .bl-designer-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--bl-gold); display: block; }
         .bl-designer-sec-h {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700;
-          color: var(--bl-white); margin-bottom: 48px; line-height: 1.2;
+          font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight: 700; color: var(--bl-white); margin-bottom: 48px; line-height: 1.2;
         }
-        .bl-designer-layout {
-          display: grid; grid-template-columns: 1fr 2fr;
-          gap: 60px; align-items: center;
-        }
-        .bl-designer-accent {
-          position: relative; padding: 36px 32px;
-          border: 1px solid rgba(184,147,90,.3);
-        }
+        .bl-designer-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; }
+        .bl-designer-accent { position: relative; padding: 36px 32px; border: 1px solid rgba(184,147,90,.3); }
         .bl-designer-accent::before {
-          content: ''; position: absolute; top: -1px; left: 36px; right: 36px;
-          height: 2px; background: var(--bl-gold);
+          content: ''; position: absolute; top: -1px; left: 36px; right: 36px; height: 2px; background: var(--bl-gold);
         }
-        .bl-designer-name {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.5rem; font-weight: 700; color: var(--bl-white); margin-bottom: 6px;
-        }
-        .bl-designer-role {
-          font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
-          color: var(--bl-gold); font-weight: 600; margin-bottom: 14px;
-        }
+        .bl-designer-name { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--bl-white); margin-bottom: 6px; }
+        .bl-designer-role { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 14px; }
         .bl-designer-stars { color: var(--bl-gold); letter-spacing: 3px; font-size: .9rem; }
-        .bl-designer-right {}
         .bl-designer-text {
-          font-size: 1.05rem; line-height: 1.9; color: rgba(255,255,255,.75);
-          font-weight: 300;
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-style: italic; margin-bottom: 18px;
+          font-size: 1.05rem; line-height: 1.9; color: rgba(255,255,255,.75); font-weight: 300;
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-style: italic; margin-bottom: 18px;
         }
-        .bl-designer-sub {
-          font-size: .87rem; line-height: 1.75; color: rgba(255,255,255,.5);
-          font-weight: 300;
-        }
+        .bl-designer-sub { font-size: .87rem; line-height: 1.75; color: rgba(255,255,255,.5); font-weight: 300; }
         .bl-designer-trusted {
-          font-size: .82rem; line-height: 1.7; color: rgba(255,255,255,.45);
-          font-weight: 300; margin-top: 28px;
-          border-top: 1px solid rgba(184,147,90,.2);
-          padding-top: 20px;
+          font-size: .82rem; line-height: 1.7; color: rgba(255,255,255,.45); font-weight: 300;
+          margin-top: 28px; border-top: 1px solid rgba(184,147,90,.2); padding-top: 20px;
         }
 
         /* ── REVIEWS ── */
         .bl-reviews { padding: 80px 5vw; background: var(--bl-white); }
         .bl-reviews-hdr { margin-bottom: 12px; }
-        .bl-reviews-top-rated {
-          font-size: .72rem; font-weight: 700; letter-spacing: .1em;
-          text-transform: uppercase; color: var(--bl-gold);
-          margin-bottom: 10px; display: block;
-        }
+        .bl-reviews-top-rated { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--bl-gold); margin-bottom: 10px; display: block; }
         .bl-reviews-badge {
           display: inline-flex; align-items: center; gap: 10px;
           background: var(--bl-dark); color: var(--bl-white);
-          font-size: .62rem; font-weight: 600; letter-spacing: .15em;
-          text-transform: uppercase; padding: 10px 22px; margin-bottom: 16px;
+          font-size: .62rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase;
+          padding: 10px 22px; margin-bottom: 16px;
         }
         .bl-reviews-badge-stars { color: var(--bl-gold); letter-spacing: 2px; }
-        .bl-reviews-title {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.4rem,2.2vw,2rem); font-weight: 700;
-          color: var(--bl-dark); margin-bottom: 8px;
-        }
-        .bl-reviews-sub {
-          font-size: .87rem; color: var(--bl-muted); line-height: 1.75;
-          max-width: 520px; font-weight: 300; margin-bottom: 36px;
-        }
+        .bl-reviews-title { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: clamp(1.4rem,2.2vw,2rem); font-weight: 700; color: var(--bl-dark); margin-bottom: 8px; }
+        .bl-reviews-sub { font-size: .87rem; color: var(--bl-muted); line-height: 1.75; max-width: 520px; font-weight: 300; margin-bottom: 36px; }
         .bl-reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-        .bl-review-card {
-          background: var(--bl-cream); padding: 32px 28px;
-          border: 1px solid rgba(184,147,90,.12);
-          position: relative;
-        }
+        .bl-review-card { background: var(--bl-cream); padding: 32px 28px; border: 1px solid rgba(184,147,90,.12); position: relative; }
         .bl-review-card::before {
           content: '"'; position: absolute; top: 16px; right: 20px;
-          font-family: 'Cormorant Garamond', serif; font-size: 4rem;
-          color: rgba(184,147,90,.15); line-height: 1;
+          font-family: 'Cormorant Garamond', serif; font-size: 4rem; color: rgba(184,147,90,.15); line-height: 1;
         }
-        .bl-review-text {
-          font-size: .87rem; line-height: 1.75; color: var(--bl-text);
-          font-style: italic; margin-bottom: 16px; font-weight: 300;
-        }
+        .bl-review-text { font-size: .87rem; line-height: 1.75; color: var(--bl-text); font-style: italic; margin-bottom: 16px; font-weight: 300; }
         .bl-review-name { font-size: .72rem; font-weight: 700; color: var(--bl-dark); letter-spacing: .06em; }
         .bl-review-stars { color: var(--bl-gold); font-size: .75rem; margin-bottom: 12px; }
 
+        /* ═══════════════════════════════════════════════
+           GOOGLE REVIEWS SECTION
+        ═══════════════════════════════════════════════ */
+        .bl-grev {
+          padding: 80px 5vw;
+          background: var(--bl-cream);
+        }
+        .bl-grev-inner { max-width: 1100px; margin: 0 auto; }
+
+        /* heading */
+        .bl-grev-top-label {
+          display: inline-flex; align-items: center; gap: 8px;
+          font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-bottom: 14px;
+        }
+        .bl-grev-top-label::before { content: ''; width: 22px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-grev-heading {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700;
+          color: var(--bl-dark); line-height: 1.15; margin-bottom: 8px;
+        }
+        .bl-grev-sub { font-size: .87rem; color: var(--bl-muted); line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+
+        /* white badge card — Google icon + rating + "View on Google" */
+        .bl-grev-badge-card {
+          background: var(--bl-white);
+          border: 1px solid rgba(184,147,90,.14);
+          border-radius: 14px;
+          padding: 22px 28px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 18px rgba(28,20,16,.07);
+        }
+        .bl-grev-rating-block { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 240px; }
+        .bl-grev-rating-texts { display: flex; flex-direction: column; gap: 4px; }
+        .bl-grev-rating-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .bl-grev-rating-num {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: 2rem; font-weight: 700; color: var(--bl-dark); line-height: 1;
+        }
+        .bl-grev-stars { display: flex; gap: 2px; }
+        .bl-grev-star { color: #FFC107; font-size: .95rem; line-height: 1; }
+        .bl-grev-rating-label { font-size: .78rem; font-weight: 700; color: var(--bl-dark); letter-spacing: .04em; }
+        .bl-grev-verified { font-size: .72rem; color: var(--bl-muted); font-weight: 300; }
+        .bl-grev-vdivider { width: 1px; height: 44px; background: rgba(184,147,90,.2); flex-shrink: 0; }
+        .bl-grev-view-btn {
+          display: inline-flex; align-items: center; gap: 7px;
+          font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+          color: #1a73e8; text-decoration: none;
+          border: 1.5px solid #1a73e8; border-radius: 100px;
+          padding: 10px 22px; transition: background .2s, color .2s; white-space: nowrap;
+        }
+        .bl-grev-view-btn:hover { background: #1a73e8; color: var(--bl-white); }
+        .bl-grev-view-btn:hover .bl-grev-arrow { transform: translateX(3px); }
+        .bl-grev-arrow { transition: transform .2s; display: inline-flex; align-items: center; }
+
+        /* 250+ pill */
+        .bl-grev-clients-pill {
+          display: inline-flex; align-items: center; gap: 10px;
+          background: var(--bl-dark); color: var(--bl-white);
+          font-size: .76rem; font-weight: 700; letter-spacing: .06em;
+          padding: 12px 24px; border-radius: 4px; margin-bottom: 44px;
+        }
+        .bl-grev-clients-stars { color: var(--bl-gold); letter-spacing: 2px; font-size: .9rem; }
+
+        /* social proof row */
+        .bl-grev-proof-row {
+          display: flex; align-items: flex-start; gap: 48px; margin-bottom: 32px; flex-wrap: wrap;
+        }
+        .bl-grev-proof-left { flex: 1; min-width: 200px; }
+        .bl-grev-proof-eyebrow {
+          font-size: .58rem; letter-spacing: .28em; text-transform: uppercase;
+          color: var(--bl-muted); font-weight: 600; margin-bottom: 10px;
+        }
+        .bl-grev-proof-title {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1.4rem,2vw,1.9rem); font-weight: 700;
+          color: var(--bl-dark); line-height: 1.2; margin-bottom: 10px;
+        }
+        .bl-grev-proof-desc { font-size: .82rem; color: var(--bl-muted); font-weight: 300; line-height: 1.65; max-width: 360px; }
+
+        /* rating mini card */
+        .bl-grev-mini-rating {
+          background: var(--bl-gold-pale); border: 1px solid rgba(184,147,90,.22);
+          border-radius: 14px; padding: 26px 30px; min-width: 190px;
+          display: flex; flex-direction: column; gap: 6px;
+        }
+        .bl-grev-mini-stars { display: flex; gap: 4px; margin-bottom: 2px; }
+        .bl-grev-mini-star { color: var(--bl-gold); font-size: .82rem; }
+        .bl-grev-mini-label { font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--bl-muted); font-weight: 600; }
+        .bl-grev-mini-num {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: 3rem; font-weight: 700; color: var(--bl-dark); line-height: 1;
+        }
+        .bl-grev-mini-based { font-size: .72rem; color: var(--bl-muted); font-weight: 300; line-height: 1.45; }
+
+        /* review cards */
+        .bl-grev-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+        .bl-grev-card {
+          background: var(--bl-white); border-radius: 12px;
+          border: 1px solid rgba(184,147,90,.10); padding: 24px 22px;
+          box-shadow: 0 2px 14px rgba(28,20,16,.05);
+        }
+        .bl-grev-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; gap: 8px; }
+        .bl-grev-card-name { font-size: .9rem; font-weight: 700; color: var(--bl-dark); line-height: 1.2; }
+        .bl-grev-card-ago { font-size: .72rem; color: var(--bl-muted); font-weight: 300; margin-top: 3px; }
+        .bl-grev-card-stars { display: flex; gap: 3px; flex-shrink: 0; }
+        .bl-grev-card-star { color: #FFC107; font-size: .82rem; }
+        .bl-grev-card-text { font-size: .82rem; line-height: 1.72; color: var(--bl-text); font-weight: 300; }
+
         /* ── PROCESS ── */
-        .bl-process { padding: 80px 5vw; background: var(--bl-cream); }
+        .bl-process { padding: 80px 5vw; background: var(--bl-white); }
         .bl-process-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 40px; }
         .bl-process-card {
-          background: var(--bl-white); padding: 36px 28px;
-          border: 1px solid rgba(184,147,90,.12);
-          position: relative; overflow: hidden;
+          background: var(--bl-cream); padding: 36px 28px;
+          border: 1px solid rgba(184,147,90,.12); position: relative; overflow: hidden;
         }
         .bl-process-card::before {
           content: attr(data-step); position: absolute; top: -12px; right: 14px;
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 5rem; font-weight: 700; color: rgba(184,147,90,.1);
-          pointer-events: none; line-height: 1;
+          font-size: 5rem; font-weight: 700; color: rgba(184,147,90,.1); pointer-events: none; line-height: 1;
         }
-        .bl-process-step {
-          display: inline-block; font-size: .62rem; font-weight: 700;
-          letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); margin-bottom: 14px;
-        }
-        .bl-process-title {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.3rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 10px;
-        }
-        .bl-process-desc {
-          font-size: .82rem; color: var(--bl-muted); line-height: 1.7; font-weight: 300;
-        }
+        .bl-process-step { display: inline-block; font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); margin-bottom: 14px; }
+        .bl-process-title { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 10px; }
+        .bl-process-desc { font-size: .82rem; color: var(--bl-muted); line-height: 1.7; font-weight: 300; }
 
         /* ── FINAL CTA ── */
         .bl-cta-wrap { padding: 80px 5vw; background: var(--bl-cream); }
@@ -647,27 +556,18 @@ const BridalLandingPage = () => {
         .bl-cta-eyebrow::after  { content: ''; width: 20px; height: 1px; background: var(--bl-gold); display: block; }
         .bl-cta-h {
           font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700;
-          color: var(--bl-white); margin-bottom: 14px; line-height: 1.2;
+          font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; color: var(--bl-white); margin-bottom: 14px; line-height: 1.2;
         }
-        .bl-cta-sub {
-          font-size: .9rem; line-height: 1.75; color: rgba(255,255,255,.7);
-          max-width: 480px; margin: 0 auto 12px; font-weight: 300;
-        }
+        .bl-cta-sub { font-size: .9rem; line-height: 1.75; color: rgba(255,255,255,.7); max-width: 480px; margin: 0 auto 12px; font-weight: 300; }
         .bl-cta-scarcity {
           display: inline-flex; align-items: center; gap: 6px;
           font-size: .72rem; color: rgba(255,255,255,.45); margin-bottom: 36px;
         }
         .bl-cta-scarcity::before { content: '⚑'; font-size: .7rem; }
-
-        /* CTA FORM */
         .bl-cta-form { margin-top: 32px; position: relative; z-index: 1; }
         .bl-form-fields { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
         .bl-form-group { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-        .bl-form-label {
-          font-size: .62rem; font-weight: 600; letter-spacing: .14em;
-          text-transform: uppercase; color: rgba(255,255,255,.5);
-        }
+        .bl-form-label { font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
         .bl-form-input {
           background: rgba(255,255,255,.09); border: 1.5px solid rgba(255,255,255,.18);
           padding: 12px 16px; font-size: .87rem; color: var(--bl-white);
@@ -693,195 +593,60 @@ const BridalLandingPage = () => {
           border: 2px solid rgba(255,255,255,.3); transition: background .2s;
         }
         .bl-cta-btn-sec:hover { background: rgba(255,255,255,.08); }
-        .bl-form-hint {
-          font-size: .72rem; color: rgba(255,255,255,.38); margin-top: 16px;
-          font-style: italic;
-        }
+        .bl-form-hint { font-size: .72rem; color: rgba(255,255,255,.38); margin-top: 16px; font-style: italic; }
 
-        /* ──────────────────────────────────────────────────
-           FOOTER — compact, tight layout
-        ────────────────────────────────────────────────── */
-        .bl-footer {
-          background: var(--bl-dark);
-          border-top: 1px solid rgba(184,147,90,.18);
-          padding: 36px 5vw 24px;
-          color: rgba(255,255,255,.65);
-        }
-        .bl-footer-inner {
-          max-width: 1100px;
-          margin: 0 auto;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: flex-start;
-          gap: 32px 60px;
-        }
-
-        /* Brand column */
-        .bl-footer-brand {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          min-width: 200px;
-          flex: 1.2;
-        }
-        .bl-footer-brand-name {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: var(--bl-white);
-          letter-spacing: .02em;
-          line-height: 1;
-          margin: 0;
-        }
-        .bl-footer-brand-tag {
-          font-size: .52rem;
-          letter-spacing: .2em;
-          text-transform: uppercase;
-          color: var(--bl-gold);
-          font-weight: 600;
-          margin-bottom: 10px;
-        }
-        .bl-footer-desc {
-          font-size: .76rem;
-          line-height: 1.7;
-          color: rgba(255,255,255,.42);
-          font-weight: 300;
-          max-width: 300px;
-          margin: 0;
-        }
-        .bl-footer-seo {
-          font-size: .72rem;
-          line-height: 1.7;
-          color: rgba(255,255,255,.28);
-          font-weight: 300;
-          max-width: 340px;
-          margin: 10px 0 0;
-        }
-
-        /* Divider between columns */
-        .bl-footer-divider-v {
-          width: 1px;
-          align-self: stretch;
-          background: rgba(184,147,90,.15);
-          flex-shrink: 0;
-        }
-
-        /* Contact column */
-        .bl-footer-contact {
-          flex: 1;
-          min-width: 200px;
-        }
-        .bl-footer-contact-title {
-          font-size: .56rem;
-          letter-spacing: .2em;
-          text-transform: uppercase;
-          color: var(--bl-gold);
-          font-weight: 600;
-          margin-bottom: 14px;
-        }
-        .bl-footer-contact-list {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .bl-footer-contact-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 8px;
-          font-size: .76rem;
-          color: rgba(255,255,255,.52);
-          line-height: 1.45;
-          text-decoration: none;
-          transition: color .2s;
-        }
+        /* ── FOOTER ── */
+        .bl-footer { background: var(--bl-dark); border-top: 1px solid rgba(184,147,90,.18); padding: 36px 5vw 24px; color: rgba(255,255,255,.65); }
+        .bl-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px 60px; }
+        .bl-footer-brand { display: flex; flex-direction: column; gap: 4px; min-width: 200px; flex: 1.2; }
+        .bl-footer-brand-name { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--bl-white); letter-spacing: .02em; line-height: 1; margin: 0; }
+        .bl-footer-brand-tag { font-size: .52rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 10px; }
+        .bl-footer-desc { font-size: .76rem; line-height: 1.7; color: rgba(255,255,255,.42); font-weight: 300; max-width: 300px; margin: 0; }
+        .bl-footer-seo { font-size: .72rem; line-height: 1.7; color: rgba(255,255,255,.28); font-weight: 300; max-width: 340px; margin: 10px 0 0; }
+        .bl-footer-divider-v { width: 1px; align-self: stretch; background: rgba(184,147,90,.15); flex-shrink: 0; }
+        .bl-footer-contact { flex: 1; min-width: 200px; }
+        .bl-footer-contact-title { font-size: .56rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 14px; }
+        .bl-footer-contact-list { display: flex; flex-direction: column; gap: 10px; }
+        .bl-footer-contact-item { display: flex; align-items: flex-start; gap: 8px; font-size: .76rem; color: rgba(255,255,255,.52); line-height: 1.45; text-decoration: none; transition: color .2s; }
         .bl-footer-contact-item:hover { color: var(--bl-gold); }
-        .bl-footer-contact-icon {
-          color: var(--bl-gold);
-          flex-shrink: 0;
-          margin-top: 2px;
-        }
+        .bl-footer-contact-icon { color: var(--bl-gold); flex-shrink: 0; margin-top: 2px; }
         .bl-footer-map-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          margin-top: 14px;
-          font-size: .6rem;
-          font-weight: 600;
-          letter-spacing: .14em;
-          text-transform: uppercase;
-          color: var(--bl-gold);
-          text-decoration: none;
-          border: 1px solid rgba(184,147,90,.3);
-          padding: 7px 14px;
-          transition: background .2s, border-color .2s;
+          display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+          font-size: .6rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+          color: var(--bl-gold); text-decoration: none; border: 1px solid rgba(184,147,90,.3);
+          padding: 7px 14px; transition: background .2s, border-color .2s;
         }
-        .bl-footer-map-link:hover {
-          background: rgba(184,147,90,.1);
-          border-color: var(--bl-gold);
-        }
-
-        /* Bottom bar */
+        .bl-footer-map-link:hover { background: rgba(184,147,90,.1); border-color: var(--bl-gold); }
         .bl-footer-bottom {
-          max-width: 1100px;
-          margin: 20px auto 0;
-          padding-top: 16px;
+          max-width: 1100px; margin: 20px auto 0; padding-top: 16px;
           border-top: 1px solid rgba(255,255,255,.06);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 8px;
+          display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
         }
-        .bl-footer-copy {
-          font-size: .65rem;
-          color: rgba(255,255,255,.22);
-        }
-        .bl-footer-copy-right {
-          font-size: .65rem;
-          color: rgba(255,255,255,.22);
-        }
+        .bl-footer-copy { font-size: .65rem; color: rgba(255,255,255,.22); }
+        .bl-footer-copy-right { font-size: .65rem; color: rgba(255,255,255,.22); }
 
         /* ── FLOATING CALL ── */
-        .bl-float-call {
-          position: fixed;
-          bottom: 100px;
-          right: 24px;
-          z-index: 200;
-        }
+        .bl-float-call { position: fixed; bottom: 100px; right: 24px; z-index: 200; }
         .bl-float-call a {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          background: #000;
-          color: #fff;
-          box-shadow: 0 6px 28px rgba(0,0,0,.4);
-          text-decoration: none;
+          display: flex; align-items: center; justify-content: center;
+          width: 60px; height: 60px; border-radius: 50%;
+          background: #000; color: #fff; box-shadow: 0 6px 28px rgba(0,0,0,.4); text-decoration: none;
         }
         .bl-float-call a:hover { background: #B8935A; }
 
         /* ── FLOATING WA ── */
-        .bl-float-wa {
-          position: fixed; bottom: 28px; right: 24px; z-index: 200;
-        }
+        .bl-float-wa { position: fixed; bottom: 28px; right: 24px; z-index: 200; }
         .bl-float-wa a {
           display: flex; align-items: center; justify-content: center;
           width: 60px; height: 60px; border-radius: 50%;
           background: #25D366; color: var(--bl-white);
-          box-shadow: 0 6px 28px rgba(37,211,102,.45); position: relative;
-          text-decoration: none;
+          box-shadow: 0 6px 28px rgba(37,211,102,.45); position: relative; text-decoration: none;
         }
         .bl-float-wa a::before {
           content: ''; position: absolute; inset: 0; border-radius: 50%;
-          background: #25D366; opacity: .55;
-          animation: bl-ring 2s infinite;
+          background: #25D366; opacity: .55; animation: bl-ring 2s infinite;
         }
-        @keyframes bl-ring {
-          0%   { transform: scale(1); opacity: .55; }
-          100% { transform: scale(1.75); opacity: 0; }
-        }
+        @keyframes bl-ring { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(1.75); opacity: 0; } }
 
         /* ── RESPONSIVE ── */
         @media(max-width:1024px) {
@@ -889,26 +654,21 @@ const BridalLandingPage = () => {
           .bl-craft-inner { grid-template-columns: 1fr; gap: 40px; }
           .bl-designer-layout { grid-template-columns: 1fr; gap: 32px; }
           .bl-footer-divider-v { display: none; }
+          .bl-grev-cards { grid-template-columns: repeat(2,1fr); }
         }
         @media(max-width:768px) {
           .bl-hdr-badge { display: none; }
-
-          /* Hero responsive */
           .bl-hero { flex-direction: column; min-height: auto; }
           .bl-hero-text { padding: 50px 5vw 32px; order: 2; align-items: flex-start; }
           .bl-hero-img-wrap { order: 1; height: 55vw; min-height: 300px; min-width: 100%; }
           .bl-hero-img-wrap img { min-height: 300px; }
-          .bl-hero-img-fade {
-            background: linear-gradient(to bottom, transparent 60%, var(--bl-cream) 100%);
-          }
+          .bl-hero-img-fade { background: linear-gradient(to bottom, transparent 60%, var(--bl-cream) 100%); }
           .bl-hero-btns { flex-direction: column; }
           .bl-btn-pri, .bl-btn-sec { width: 100%; justify-content: center; }
-
           .bl-trust-grid { grid-template-columns: 1fr; }
           .bl-gallery-grid { grid-template-columns: repeat(2,1fr); }
           .bl-craft-inner { grid-template-columns: 1fr; gap: 40px; }
           .bl-craft-right { grid-template-columns: repeat(2,1fr); }
-          .bl-craft-img-card:first-child { grid-row: auto; aspect-ratio: 3/4; }
           .bl-designer-layout { grid-template-columns: 1fr; gap: 32px; }
           .bl-reviews-grid { grid-template-columns: 1fr; }
           .bl-process-grid { grid-template-columns: 1fr; }
@@ -916,15 +676,16 @@ const BridalLandingPage = () => {
           .bl-form-fields { grid-template-columns: 1fr; }
           .bl-cta-btns { flex-direction: column; align-items: center; }
           .bl-cta-btn-pri, .bl-cta-btn-sec { width: 100%; justify-content: center; }
-
           .bl-footer { padding: 28px 5vw 20px; }
           .bl-footer-inner { flex-direction: column; gap: 24px; }
           .bl-footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
-
-          /* Logo responsive on mobile */
           .bl-hdr-logo { height: 40px; }
           .bl-hdr-name { font-size: 1.4rem; }
           .bl-hdr-sub { font-size: 0.45rem; letter-spacing: 0.25em; }
+          .bl-grev-cards { grid-template-columns: 1fr; }
+          .bl-grev-proof-row { flex-direction: column; gap: 24px; }
+          .bl-grev-badge-card { flex-direction: column; align-items: flex-start; gap: 16px; }
+          .bl-grev-vdivider { display: none; }
         }
         @media(max-width:480px) {
           .bl-gallery-grid { grid-template-columns: 1fr; }
@@ -933,14 +694,10 @@ const BridalLandingPage = () => {
 
       <div className="bl-body">
 
-        {/* ── HEADER ──────────────────────────────────────────────────────────── */}
+        {/* ── HEADER ── */}
         <header className="bl-hdr">
           <div className="bl-hdr-brand">
-            <img
-              src="/videos/Revisedlogo.webp"
-              alt="Shrusara Logo"
-              className="bl-hdr-logo"
-            />
+            <img src="/videos/Revisedlogo.webp" alt="Shrusara Logo" className="bl-hdr-logo" />
             <div className="bl-hdr-text">
               <div className="bl-hdr-name">Shrusara</div>
               <div className="bl-hdr-sub">FASHION&nbsp;&nbsp;BOUTIQUE</div>
@@ -955,7 +712,7 @@ const BridalLandingPage = () => {
           </a>
         </header>
 
-        {/* ── HERO ────────────────────────────────────────────────────────────── */}
+        {/* ── HERO ── */}
         <section className="bl-hero">
           <div className="bl-hero-text">
             <p className="bl-hero-eyebrow">Bridal Specialist · Bangalore</p>
@@ -980,17 +737,13 @@ const BridalLandingPage = () => {
               </a>
             </div>
           </div>
-
           <div className="bl-hero-img-wrap">
-            <img
-              src={heroBridal}
-              alt="Bridal blouse by Shrusara Fashion Boutique Bangalore"
-            />
+            <img src={heroBridal} alt="Bridal blouse by Shrusara Fashion Boutique Bangalore" />
             <div className="bl-hero-img-fade" />
           </div>
         </section>
 
-        {/* ── TRUST BAR ───────────────────────────────────────────────────────── */}
+        {/* ── TRUST BAR ── */}
         <section className="bl-trust">
           <div className="bl-trust-grid">
             {trustPoints.map(item => (
@@ -1006,7 +759,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ── GALLERY ─────────────────────────────────────────────────────────── */}
+        {/* ── GALLERY ── */}
         <section className="bl-gallery">
           <p className="bl-sec-eyebrow">Gallery</p>
           <h2 className="bl-sec-h">Customized Bridal Blouse Designs in Bangalore</h2>
@@ -1017,25 +770,22 @@ const BridalLandingPage = () => {
           <div className="bl-gallery-grid">
             {galleryItems.map((item, i) => (
               <div key={i} className="bl-gallery-card">
-                <img src={item.src} alt={item.tag} loading={i < 4 ? 'eager' : 'lazy'} />
+                <img src={item.src} alt={item.tag || 'Bridal outfit Shrusara Bangalore'} loading={i < 4 ? 'eager' : 'lazy'} />
                 <div className="bl-gallery-tag">{item.tag}</div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── CRAFTSMANSHIP ───────────────────────────────────────────────────── */}
+        {/* ── CRAFTSMANSHIP — 4 images ── */}
         <section className="bl-craft">
           <div className="bl-craft-inner">
             <div className="bl-craft-left">
               <p className="bl-craft-eyebrow">Craftsmanship</p>
-              <h2 className="bl-craft-h">
-                Intricate Hand Embroidery –<br />Crafted to Perfection
-              </h2>
+              <h2 className="bl-craft-h">Intricate Hand Embroidery –<br />Crafted to Perfection</h2>
               <p className="bl-craft-desc">
                 Every bridal outfit at Shrusara is detailed with precision using maggam work,
-                aari work, zari, and handcrafted embroidery techniques to create timeless,
-                elegant designs.
+                aari work, zari, and handcrafted embroidery techniques to create timeless, elegant designs.
               </p>
               <p className="bl-craft-desc">
                 From heavy bridal blouses to complete bridal outfits, each piece reflects
@@ -1055,19 +805,22 @@ const BridalLandingPage = () => {
             </div>
             <div className="bl-craft-right">
               <div className="bl-craft-img-card">
-                <img src="/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp" alt="Maggam work bridal blouse" />
+                <img src="/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp" alt="Handcrafted aari work bridal blouse" />
               </div>
               <div className="bl-craft-img-card">
-                <img src="/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp" alt="Aari work bridal blouse" />
+                <img src="/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp" alt="Intricate maggam aari bridal wear" />
               </div>
               <div className="bl-craft-img-card">
-                <img src="/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp" alt="Zari embroidery bridal blouse" />
+                <img src="/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp" alt="Premium antique gold temple work blouse" />
+              </div>
+              <div className="bl-craft-img-card">
+                <img src="/videos/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp" alt="Premium maggam work bridal blouse" />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── DESIGNER TRUST ──────────────────────────────────────────────────── */}
+        {/* ── DESIGNER TRUST ── */}
         <section className="bl-designer">
           <div className="bl-designer-inner">
             <p className="bl-designer-eyebrow">Designer</p>
@@ -1095,7 +848,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ── REVIEWS ─────────────────────────────────────────────────────────── */}
+        {/* ── REVIEWS ── */}
         <section className="bl-reviews">
           <div className="bl-reviews-hdr">
             <span className="bl-reviews-top-rated">Top Rated Bridal Boutique in Bangalore</span>
@@ -1118,7 +871,97 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ── PROCESS ─────────────────────────────────────────────────────────── */}
+        {/* ══════════════════════════════════════════════════
+            GOOGLE REVIEWS SECTION — above How It Works
+        ══════════════════════════════════════════════════ */}
+        <section className="bl-grev">
+          <div className="bl-grev-inner">
+
+            {/* Section heading */}
+            <p className="bl-grev-top-label">Trusted by Brides</p>
+            <h2 className="bl-grev-heading">Trusted by Brides Across Bangalore</h2>
+            <p className="bl-grev-sub">100+ happy clients with consistent quality and service.</p>
+
+            {/* White badge card */}
+            <div className="bl-grev-badge-card">
+              <div className="bl-grev-rating-block">
+                <GoogleIcon />
+                <div className="bl-grev-rating-texts">
+                  <div className="bl-grev-rating-row">
+                    <span className="bl-grev-rating-num">5.0</span>
+                    <div className="bl-grev-stars">
+                      {[1,2,3,4,5].map(s => <span key={s} className="bl-grev-star">★</span>)}
+                    </div>
+                    <span className="bl-grev-rating-label">Google Reviews</span>
+                  </div>
+                  <p className="bl-grev-verified">Based on 100+ verified reviews on Google</p>
+                </div>
+              </div>
+              <div className="bl-grev-vdivider" />
+              <a
+                href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bl-grev-view-btn"
+              >
+                View on Google
+                <span className="bl-grev-arrow">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+
+            {/* 250+ clients pill */}
+            <div>
+              <span className="bl-grev-clients-pill">
+                <span className="bl-grev-clients-stars">★★★★★</span>
+                250+ Happy Clients in Bangalore
+              </span>
+            </div>
+
+            {/* Social proof header + mini rating card */}
+            <div className="bl-grev-proof-row">
+              <div className="bl-grev-proof-left">
+                <p className="bl-grev-proof-eyebrow">Social Proof</p>
+                <h3 className="bl-grev-proof-title">Google Reviews</h3>
+                <p className="bl-grev-proof-desc">
+                  Real experiences from brides and clients who trusted Shrusara for their special occasions.
+                </p>
+              </div>
+              <div className="bl-grev-mini-rating">
+                <div className="bl-grev-mini-stars">
+                  {[1,2,3,4,5].map(s => <span key={s} className="bl-grev-mini-star">★</span>)}
+                </div>
+                <p className="bl-grev-mini-label">Google rating</p>
+                <p className="bl-grev-mini-num">4.9</p>
+                <p className="bl-grev-mini-based">Based on 229+<br />boutique experiences</p>
+              </div>
+            </div>
+
+            {/* Google review cards */}
+            <div className="bl-grev-cards">
+              {googleReviews.map((r, i) => (
+                <div key={i} className="bl-grev-card">
+                  <div className="bl-grev-card-header">
+                    <div>
+                      <p className="bl-grev-card-name">{r.name}</p>
+                      <p className="bl-grev-card-ago">{r.ago}</p>
+                    </div>
+                    <div className="bl-grev-card-stars">
+                      {[1,2,3,4,5].map(s => <span key={s} className="bl-grev-card-star">★</span>)}
+                    </div>
+                  </div>
+                  <p className="bl-grev-card-text">{r.text}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+        {/* ── PROCESS / HOW IT WORKS ── */}
         <section className="bl-process">
           <p className="bl-sec-eyebrow">How It Works</p>
           <h2 className="bl-sec-h">Simple Bridal Outfit Design Process</h2>
@@ -1133,7 +976,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ── FINAL CTA ───────────────────────────────────────────────────────── */}
+        {/* ── FINAL CTA ── */}
         <section className="bl-cta-wrap">
           <div className="bl-cta-box">
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
@@ -1149,11 +992,9 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ── FOOTER ──────────────────────────────────────────────────────────── */}
+        {/* ── FOOTER ── */}
         <footer className="bl-footer">
           <div className="bl-footer-inner">
-
-            {/* Brand column */}
             <div className="bl-footer-brand">
               <p className="bl-footer-brand-name">Shrusara Fashion Boutique</p>
               <p className="bl-footer-brand-tag">Bridal Boutique · Bangalore</p>
@@ -1167,11 +1008,7 @@ const BridalLandingPage = () => {
                 bridal outfits including lehengas and gowns.
               </p>
             </div>
-
-            {/* Vertical divider */}
             <div className="bl-footer-divider-v" />
-
-{/* Contact column */}
             <div className="bl-footer-contact">
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
@@ -1188,9 +1025,7 @@ const BridalLandingPage = () => {
                   help@shrusara.com
                 </a>
               </div>
-              
-              {/* FIXED LINE BELOW: Added the opening <a tag */}
-              <a 
+              <a
                 href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1200,22 +1035,20 @@ const BridalLandingPage = () => {
               </a>
             </div>
           </div>
-
-          {/* Bottom bar */}
           <div className="bl-footer-bottom">
             <p className="bl-footer-copy">© {new Date().getFullYear()} Shrusara Fashion Boutique. All rights reserved.</p>
             <p className="bl-footer-copy-right">Bangalore's Bridal Studio</p>
           </div>
         </footer>
 
-        {/* ── FLOATING CALL ────────────────────────────────────────────────────── */}
+        {/* ── FLOATING CALL ── */}
         <div className="bl-float-call">
           <a href={`tel:${PHONE_NUMBER}`} aria-label="Call">
             <PhoneIcon size={26} />
           </a>
         </div>
 
-        {/* ── FLOATING WHATSAPP ────────────────────────────────────────────────── */}
+        {/* ── FLOATING WHATSAPP ── */}
         <div className="bl-float-wa">
           <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
             <WaIcon size={28} />

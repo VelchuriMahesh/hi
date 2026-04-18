@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import ImageGrid from '../components/ImageGrid';
 import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
@@ -23,7 +22,7 @@ const BRIDAL_MSG      = encodeURIComponent(
 const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${BRIDAL_MSG}`;
 const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
-// ─── Bridal outfits data — ALL IDs must be unique ────────────────────────────
+// ─── Bridal outfits data ────────────────────────────────────────────────────
 const bridalOutfits = [
   {
     id: 1,
@@ -109,8 +108,6 @@ const bridalOutfits = [
     alt: 'Elegant modern reception gown brides silhouette premium fabric',
     image: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
   },
-
-
 ];
 
 const FILTERS = [
@@ -171,10 +168,9 @@ const PhoneIcon = () => (
   </svg>
 );
 
-// ─── Bridal Outfits Filter Section — styled to match ImageGrid ───────────────
+// ─── Bridal Outfits Filter Section ───────────────────────────────────────────
 function BridalOutfits() {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const filteredData =
     activeFilter === 'all'
@@ -196,17 +192,10 @@ function BridalOutfits() {
         ))}
       </div>
 
-      {/* Grid — styled exactly like ImageGrid cards */}
+      {/* Grid */}
       <div className="br-outfit-grid">
         {filteredData.map((item, index) => (
-          <motion.button
-            key={`${item.id}-${item.tag}`}
-            type="button"
-            whileHover={{ y: -6 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setSelectedItem(item)}
-            className="br-outfit-card-btn"
-          >
+          <div key={`${item.id}-${item.tag}`} className="br-outfit-card-btn">
             <div className="br-outfit-card-inner">
               <div className="br-outfit-img-wrap">
                 <img
@@ -217,20 +206,9 @@ function BridalOutfits() {
                 />
               </div>
             </div>
-          </motion.button>
+          </div>
         ))}
       </div>
-
-      {/* Lightbox modal */}
-      {selectedItem && (
-        <div className="br-modal-overlay" onClick={() => setSelectedItem(null)}>
-          <div className="br-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button className="br-modal-close" onClick={() => setSelectedItem(null)} aria-label="Close">✕</button>
-            <img src={selectedItem.image} alt={selectedItem.alt} className="br-modal-img" />
-            <p className="br-modal-title">{selectedItem.title}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -393,26 +371,18 @@ export default function Bridal() {
         .br-filter-pill:hover { background: rgba(62,44,35,.06); }
         .br-filter-pill.active { background: var(--c-primary); color: #fff; border-color: var(--c-primary); }
 
-        /* Outfit grid — matches ImageGrid exactly */
+        /* Outfit grid */
         .br-outfit-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 20px;
         }
-        /* Button reset — same as ImageGrid motion.button */
         .br-outfit-card-btn {
-          background: none; border: none; padding: 0; cursor: pointer;
           overflow: hidden; border-radius: 28px;
           border: 1px solid rgba(255,255,255,.6);
           background: rgba(255,255,255,.8);
           padding: 12px;
-          text-align: left;
           box-shadow: 0 4px 24px rgba(62,44,35,.10);
-          transition: box-shadow .3s;
-          display: block; width: 100%;
-        }
-        .br-outfit-card-btn:hover {
-          box-shadow: 0 12px 36px rgba(62,44,35,.16);
         }
         .br-outfit-card-inner { border-radius: 22px; overflow: hidden; }
         .br-outfit-img-wrap {
@@ -424,35 +394,6 @@ export default function Bridal() {
         .br-outfit-img {
           width: 100%; height: 100%;
           object-fit: cover; display: block;
-          transition: transform .35s ease;
-        }
-        .br-outfit-card-btn:hover .br-outfit-img { transform: scale(1.03); }
-
-        /* ── LIGHTBOX MODAL ── */
-        .br-modal-overlay {
-          position: fixed; inset: 0; z-index: 1000;
-          background: rgba(0,0,0,.75); backdrop-filter: blur(4px);
-          display: flex; align-items: center; justify-content: center;
-          padding: 20px;
-        }
-        .br-modal-box {
-          position: relative; max-width: 640px; width: 100%;
-          background: var(--c-white); border-radius: 24px; overflow: hidden;
-          box-shadow: 0 24px 80px rgba(0,0,0,.3);
-        }
-        .br-modal-close {
-          position: absolute; top: 14px; right: 14px; z-index: 10;
-          background: rgba(0,0,0,.5); color: #fff; border: none;
-          border-radius: 50%; width: 36px; height: 36px; font-size: 16px;
-          cursor: pointer; display: flex; align-items: center; justify-content: center;
-          transition: background .2s;
-        }
-        .br-modal-close:hover { background: rgba(0,0,0,.8); }
-        .br-modal-img { width: 100%; max-height: 70vh; object-fit: contain; display: block; }
-        .br-modal-title {
-          padding: 16px 20px;
-          font: 600 .9rem/1.4 'Poppins',sans-serif; color: var(--c-primary);
-          text-align: center;
         }
 
         /* ── IMAGE BANNER ── */
@@ -658,16 +599,14 @@ export default function Bridal() {
         canonicalPath="/bridal-blouse-bangalore"
       />
 
-      {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
+      {/* ── 1. HERO ── */}
       <section className="br-hero">
         <div className="br-hero-text">
           <p className="br-eyebrow">Bridal Specialist · Bangalore</p>
-
           <h1 className="br-hero-h1">
             Customized Bridal Blouses &amp; Outfits in Bangalore
             <span>with Perfect Fit &amp; Premium Aari Work</span>
           </h1>
-
           <p className="br-hero-sub br-sub-flex">
             <span className="br-star">✦</span>
             <span className="br-text">
@@ -675,19 +614,16 @@ export default function Bridal() {
               premium finishing, and personalized styling.
             </span>
           </p>
-
           <p className="br-hero-designer br-sub-flex">
             <span className="br-star">✦</span>
             <span className="br-text">Designed personally by Chief Designer Shruthi Ajith</span>
           </p>
-
           <p className="br-hero-price br-sub-flex">
             <span className="br-star">✦</span>
             <span className="br-text">
               Bridal designs starting at <strong>₹6000</strong>
             </span>
           </p>
-
           <div className="br-hero-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-pri">
               <WaIcon size={18} /> Book Bridal Consultation
@@ -697,14 +633,13 @@ export default function Bridal() {
             </a>
           </div>
         </div>
-
         <div className="br-hero-img-wrap">
           <img src={heroBridal} alt="Bridal Blouse Bangalore" className="br-hero-img" />
           <div className="br-hero-fade" />
         </div>
       </section>
 
-      {/* ── 2. TRUST BAR ────────────────────────────────────────────────────── */}
+      {/* ── 2. TRUST BAR ── */}
       <Reveal className="br-shell">
         <div className="br-trust-grid">
           {[
@@ -721,7 +656,7 @@ export default function Bridal() {
         </div>
       </Reveal>
 
-      {/* ── 3. BRIDAL OUTFITS WITH FILTER ───────────────────────────────────── */}
+      {/* ── 3. BRIDAL OUTFITS WITH FILTER ── */}
       <div className="br-alt">
         <div className="br-alt-inner">
           <p className="br-sec-eyebrow">Bridal Outfits</p>
@@ -733,7 +668,7 @@ export default function Bridal() {
         </div>
       </div>
 
-      {/* ── 3b. CTA BANNER ──────────────────────────────────────────────────── */}
+      {/* ── 3b. CTA BANNER ── */}
       <div className="br-shell" style={{ paddingBottom: 0 }}>
         <div className="br-image-match-banner">
           <div className="br-image-match-content">
@@ -755,7 +690,7 @@ export default function Bridal() {
         </div>
       </div>
 
-      {/* ── 4. SERVICE SECTION ──────────────────────────────────────────────── */}
+      {/* ── 4. SERVICE SECTION ── */}
       <Reveal className="br-shell" style={{ paddingTop: 0 }}>
         <div className="br-svc-grid">
           <div className="br-svc-intro">
@@ -776,7 +711,7 @@ export default function Bridal() {
         </div>
       </Reveal>
 
-      {/* ── 5. GALLERY ──────────────────────────────────────────────────────── */}
+      {/* ── 5. GALLERY ── */}
       <div className="br-alt">
         <div className="br-alt-inner">
           <p className="br-sec-eyebrow">Gallery</p>
@@ -798,7 +733,7 @@ export default function Bridal() {
         </div>
       </div>
 
-      {/* ── 6. WHY SHRUSARA ─────────────────────────────────────────────────── */}
+      {/* ── 6. WHY SHRUSARA ── */}
       <Reveal className="br-shell">
         <div className="br-why-wrap">
           <p className="br-sec-eyebrow">Why Shrusara</p>
@@ -818,7 +753,7 @@ export default function Bridal() {
         </div>
       </Reveal>
 
-      {/* ── 7. PROCESS ──────────────────────────────────────────────────────── */}
+      {/* ── 7. PROCESS ── */}
       <div className="br-alt">
         <div className="br-alt-inner">
           <p className="br-sec-eyebrow">Process</p>
@@ -838,7 +773,7 @@ export default function Bridal() {
         </div>
       </div>
 
-      {/* ── 8. REVIEWS ──────────────────────────────────────────────────────── */}
+      {/* ── 8. REVIEWS ── */}
       <Reveal className="br-shell">
         <div className="br-reviews-badge">
           <span className="br-reviews-badge-stars">★★★★★</span>
@@ -851,7 +786,7 @@ export default function Bridal() {
         />
       </Reveal>
 
-      {/* ── 9. FINAL CTA ────────────────────────────────────────────────────── */}
+      {/* ── 9. FINAL CTA ── */}
       <div className="br-shell" style={{ paddingTop: 0 }}>
         <div className="br-cta-wrap">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
