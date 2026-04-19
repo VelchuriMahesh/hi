@@ -50,114 +50,116 @@ const categoryDetails = {
 };
 
 const bridalImages = [
+
   {
-  id: 'static-bridal-8',
-  category: 'bridal',
-  url: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
-  thumbUrl: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
-  title: 'Silk Saree Floral Beadwork Blouse',
-  alt: 'Silk Saree Floral Beadwork Blouse',
-  description: 'A designer silk saree blouse highlighted with floral beadwork and rich handcrafted detailing.'
-},
-{
-  id: 'static-bridal-9',
-  category: 'bridal',
-  url: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
-  thumbUrl: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
-  title: 'Traditional Deep Back Bridal Blouse',
-  alt: 'Traditional Deep Back Bridal Blouse',
-  description: 'A traditional bridal blouse featuring a graceful deep back pattern and elegant embroidery accents.'
-},
+    id: 'static-bridal-1',
+    category: 'bridal',
+    url: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
+    thumbUrl: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
+    title: 'Custom Fit Muhurtham Silk Saree Blouse',
+    alt: 'Custom fit muhurtham silk saree blouse Bangalore',
+    description: 'Custom fit muhurtham silk saree blouse with premium stitching and bridal finishing.'
+  },
+  {
+    id: 'static-bridal-2',
+    category: 'bridal',
+    url: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',
+    thumbUrl: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',
+    title: 'Designer Bridal Blouse Back Neck Pattern',
+    alt: 'Designer bridal blouse back neck pattern Shrusara',
+    description: 'A designer bridal blouse with an elegant back neck pattern and premium finishing.'
+  },
+  {
+    id: 'static-bridal-3',
+    category: 'bridal',
+    url: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
+    thumbUrl: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
+    title: 'Handcrafted Aari Work Wedding Blouse',
+    alt: 'Handcrafted Aari work wedding blouse Shrusara boutique',
+    description: 'A handcrafted aari work wedding blouse with fine detailing and boutique finishing.'
+  },
+  {
+    id: 'static-bridal-4',
+    category: 'bridal',
+    url: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
+    thumbUrl: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
+    title: 'Intricate Maggam Embroidery Bridal Blouse',
+    alt: 'Intricate maggam embroidery bridal blouse Mahalakshmipuram',
+    description: 'Intricate hand embroidery maggam aari bridal wear with rich detailing.'
+  },
+  {
+    id: 'static-bridal-5',
+    category: 'bridal',
+    url: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',
+    thumbUrl: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',
+    title: 'Premium Antique Gold Temple Work Blouse',
+    alt: 'Premium antique gold temple work bridal blouse Bangalore',
+    description: 'A premium antique gold temple work bridal blouse with traditional craftsmanship.'
+  },
+  {
+    id: 'static-bridal-6',
+    category: 'bridal',
+    url: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',
+    thumbUrl: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',
+    title: 'Premium Maggam Work Bridal Blouse',
+    alt: 'Premium maggam work bridal blouse Mahalakshmipuram Shrusara',
+    description: 'A premium maggam work bridal blouse with boutique-level stitching and finishing.'
+  },
+  {
+    id: 'static-bridal-7',
+    category: 'bridal',
+    url: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
+    thumbUrl: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
+    title: 'Royal Heritage Style Bridal Blouse',
+    alt: 'Royal heritage style bridal maggam blouse Bangalore',
+    description: 'A heritage-inspired bridal blouse featuring royal maggam embroidery and timeless handcrafted elegance.'
+  },
+  {
+    id: 'static-bridal-8',
+    category: 'bridal',
+    url: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
+    thumbUrl: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
+    title: 'Traditional South Indian Wedding Blouse',
+    alt: 'Traditional South Indian wedding blouse gold zari work Shrusara boutique',
+    description: 'A designer silk saree blouse highlighted with floral beadwork and rich handcrafted detailing.'
+  },
+  {
+    id: 'static-bridal-9',
+    category: 'bridal',
+    url: '/bridal/bridalblow/custom-made-bridal-reception-lehenga-shrusara.webp',
+    thumbUrl: '/bridal/bridalblow/custom-made-bridal-reception-lehenga-shrusara.webp',
+    title: 'Custom Made Bridal Reception Lehenga',
+    alt: 'Custom made bridal reception lehenga Shrusara',
+    description: 'A custom made bridal reception lehenga designed with elegant detailing and premium finishing.'
+  },
+  {
+    id: 'static-bridal-10',
+    category: 'bridal',
+    url: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
+    thumbUrl: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
+    title: 'Luxury Bridal Lehenga',
+    alt: 'Luxury bridal lehenga custom design Bangalore',
+    description: 'A reception bridal ensemble crafted for modern elegance with premium finishing and refined styling.'
+  },
+  {
+    id: 'static-bridal-11',
+    category: 'bridal',
+    url: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
+    thumbUrl: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
+    title: 'Custom Muhurtham Bridal Lehenga',
+    alt: 'Custom made bridal muhurtham lehenga Shrusara',
+    description: 'A customized pastel bridal lehenga designed with couture detailing and handcrafted embellishment.'
+  },
+  {
+    id: 'static-bridal-12',
+    category: 'bridal',
+    url: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
+    thumbUrl: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
+    title: 'Elegant Reception Gown',
+    alt: 'Elegant modern reception gown brides silhouette premium fabric',
+    description: 'A graceful white reception gown designed with elegant silhouettes and premium bridal finishing.'
+  },
 
-// Row 4
-
-{
-  id: 'static-bridal-10',
-  category: 'bridal',
-  url: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
-  thumbUrl: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
-  title: 'Pastel Maggam Bridal Blouse',
-  alt: 'Pastel Maggam Bridal Blouse',
-  description: 'A pastel-toned bridal blouse crafted with premium maggam embroidery and rich bridal detailing.'
-},
-{
-  id: 'static-bridal-11',
-  category: 'bridal',
-  url: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
-  thumbUrl: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
-  title: 'Pink Stone Work Bridal Blouse',
-  alt: 'Pink Stone Work Bridal Blouse',
-  description: 'A bridal blouse enhanced with stone work and intricate hand embroidery for a luxurious finish.'
-},
-{
-  id: 'static-bridal-12',
-  category: 'bridal',
-  url: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
-  thumbUrl: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
-  title: 'Royal Heritage Style Bridal Blouse',
-  alt: 'Royal Heritage Style Bridal Blouse',
-  description: 'A heritage-inspired bridal blouse featuring royal maggam embroidery and timeless handcrafted elegance.'
-},
-
-// Row 5
-
-{
-  id: 'static-bridal-13',
-  category: 'bridal',
-  url: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
-  thumbUrl: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
-  title: 'Muhurtham Designer Bridal Blouse',
-  alt: 'Muhurtham Designer Bridal Blouse',
-  description: 'A designer bridal blouse styled for muhurtham with traditional detailing and premium finishing.'
-},
-{
-  id: 'static-bridal-14',
-  category: 'bridal',
-  url: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
-  thumbUrl: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
-  title: 'Purple Heritage Bridal Blouse',
-  alt: 'Purple Heritage Bridal Blouse',
-  description: 'A rich purple bridal blouse inspired by heritage craftsmanship and detailed hand embroidery.'
-},
-{
-  id: 'static-bridal-15',
-  category: 'bridal',
-  url: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
-  thumbUrl: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
-  title: 'Traditional Silk Wedding Blouse',
-  alt: 'Traditional Silk Wedding Blouse',
-  description: 'A classic silk wedding blouse designed with elegant traditional detailing for timeless bridal styling.'
-},
-
-// Row 6
-
-{
-  id: 'static-bridal-16',
-  category: 'bridal',
-  url: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
-  thumbUrl: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
-  title: 'Luxury Reception Bridal Look',
-  alt: 'Luxury Reception Bridal Look',
-  description: 'A reception bridal ensemble crafted for modern elegance with premium finishing and refined styling.'
-},
-{
-  id: 'static-bridal-17',
-  category: 'bridal',
-  url: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
-  thumbUrl: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
-  title: 'Pastel Bridal Lehenga Couture',
-  alt: 'Pastel Bridal Lehenga Couture',
-  description: 'A customized pastel bridal lehenga designed with couture detailing and handcrafted embellishment.'
-},
-{
-  id: 'static-bridal-18',
-  category: 'bridal',
-  url: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
-  thumbUrl: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
-  title: 'Elegant White Reception Gown',
-  alt: 'Elegant White Reception Gown',
-  description: 'A graceful white reception gown designed with elegant silhouettes and premium bridal finishing.'
-}
 ];
 
 const designerImages = [

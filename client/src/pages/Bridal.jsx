@@ -721,11 +721,14 @@ export default function Bridal() {
           </p>
           <div style={{ marginTop: 36 }}>
             <ImageGrid
-              images={bridalGallery.slice(0, 100)}
-              loading={galleryLoading}
-              priority
-              columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-            />
+  images={[
+    ...bridalOutfits.map((o) => ({ src: o.image, alt: o.alt, title: o.title })),
+    ...bridalGallery,
+  ].slice(0, 100)}
+  loading={galleryLoading}
+  priority
+  columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+/>
           </div>
           <p className="br-gallery-note">
             Showing our latest bridal designs · Updated regularly with new work
