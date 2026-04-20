@@ -50,21 +50,18 @@ function AppRoutes() {
     <Suspense fallback={<LoadingPage />}>
       <Routes>
         {/* ROUTES WITH NAVBAR/FOOTER */}
-        <Route element={<SiteLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/bridal-blouse-designer-bangalore" element={<Bridal />} />
-          <Route path="/designer-outfits-bangalore" element={<Designer />} />
-          <Route path="/kids-outfits-bangalore" element={<Kids />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/blog" element={<Blog />} />
-        </Route>
+       <Route element={<SiteLayout />}>
+  <Route path="/" element={<Home />} />
+  <Route path="/bridal-blouse-bangalore" element={<Bridal />} />
+  <Route path="/designer-outfits-bangalore" element={<Designer />} />
+  <Route path="/kids-outfits-bangalore" element={<Kids />} />
+  <Route path="/about-shrusara-boutique" element={<About />} />
+  <Route path="/contact-shrusara-bangalore" element={<Contact />} />
+  <Route path="/bridal-fashion-blog-bangalore" element={<Blog />} />
+</Route>
 
-        {/* 
-            CONVERSION LANDING PAGE 
-            Placed outside SiteLayout to ensure NO Navbar, NO Footer, and NO global WhatsApp button 
-        */}
-        <Route path="/bridal-blouse-bangalore" element={<BridalLandingPage />} />
+{/* Landing Page (NO layout) */}
+<Route path="/bridal-blouse-bangalore/landing" element={<BridalLandingPage />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />

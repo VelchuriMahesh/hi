@@ -73,12 +73,12 @@ export const heroContent = {
 
 export const navLinks = [
   { label: 'Home', to: '/' },
-  { label: 'Bridal', to: '/bridal-blouse-designer-bangalore' },
+  { label: 'Bridal', to: '/bridal-blouse-bangalore' },
   { label: 'Designer', to: '/designer-outfits-bangalore' },
   { label: 'Kids', to: '/kids-outfits-bangalore' },
-  { label: 'About', to: '/about' },
-  { label: 'Contact', to: '/contact' },
-  { label: 'Blog', to: '/blog' }
+  { label: 'About', to: '/about-shrusara-boutique' },
+  { label: 'Contact', to: '/contact-shrusara-bangalore' },
+  { label: 'Blog', to: '/bridal-fashion-blog-bangalore' }
 ];
 
 export const homeServices = [

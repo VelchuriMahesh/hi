@@ -177,6 +177,16 @@ function BridalOutfits() {
       ? bridalOutfits
       : bridalOutfits.filter((o) => o.tag === activeFilter);
 
+  // Map to the shape ImageGrid expects
+  const mappedImages = filteredData.map((o) => ({
+    id: String(o.id),
+    url: o.image,
+    thumbUrl: o.image,
+    alt: o.alt,
+    title: o.title,
+    description: o.alt,
+  }));
+
   return (
     <div className="br-outfits">
       {/* Filter pills */}
@@ -192,27 +202,16 @@ function BridalOutfits() {
         ))}
       </div>
 
-      {/* Grid */}
-      <div className="br-outfit-grid">
-        {filteredData.map((item, index) => (
-          <div key={`${item.id}-${item.tag}`} className="br-outfit-card-btn">
-            <div className="br-outfit-card-inner">
-              <div className="br-outfit-img-wrap">
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  loading={index < 6 ? 'eager' : 'lazy'}
-                  className="br-outfit-img"
-                />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Grid — reuses ImageGrid so modal works automatically */}
+      <ImageGrid
+        images={mappedImages}
+        loading={false}
+        priority
+        columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+      />
     </div>
   );
 }
-
 // ─── Page Component ───────────────────────────────────────────────────────────
 export default function Bridal() {
   const [reviews, setReviews]               = useState(fallbackReviews);

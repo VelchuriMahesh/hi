@@ -180,6 +180,15 @@ function DesignerOutfits() {
       ? staticDesignerOutfits
       : staticDesignerOutfits.filter(o => o.tag === activeFilter);
 
+  const mappedImages = filteredData.map((o) => ({
+    id: String(o.id),
+    url: o.image,
+    thumbUrl: o.image,
+    alt: o.alt,
+    title: o.title,
+    description: o.alt,
+  }));
+
   return (
     <div className="ds-outfits">
       <div className="ds-filters">
@@ -194,23 +203,15 @@ function DesignerOutfits() {
         ))}
       </div>
 
-      <div className="ds-outfit-grid">
-        {filteredData.map(item => (
-          <div key={item.id} className="ds-outfit-card">
-            <img
-              src={item.image}
-              alt={item.alt}
-              loading="lazy"
-              className="ds-outfit-img"
-            />
-            {/* No label rendered — clean image only */}
-          </div>
-        ))}
-      </div>
+      <ImageGrid
+        images={mappedImages}
+        loading={false}
+        priority
+        columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+      />
     </div>
   );
 }
-
 // ─── 2. Gallery Section — static 11 images + admin-uploaded images merged ──────
 function DesignerGallery({ images, loading }) {
   // Merge: 11 static images first, then admin-uploaded images appended after
