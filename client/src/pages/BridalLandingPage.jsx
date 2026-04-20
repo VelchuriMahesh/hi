@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const heroBridal = 'bridal/bridalblow/hero-bridal.webp';
+const heroBridal = '/bridal/bridalblow/hero-bridal.webp';
 const galleryItems = [
   {
     src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
