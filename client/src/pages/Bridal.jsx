@@ -30,6 +30,7 @@ const bridalOutfits = [
     title: 'Custom Fit Muhurtham Silk Saree Blouse Bangalore',
     alt: 'Custom fit muhurtham silk saree blouse Bangalore',
     image: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
+    description: 'Custom fit muhurtham silk saree blouse with premium stitching and bridal finishing.',
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const bridalOutfits = [
     title: 'Designer Bridal Blouse Back Neck Pattern',
     alt: 'Designer bridal blouse back neck pattern Shrusara',
     image: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',
+    description: 'A designer bridal blouse with an elegant back neck pattern and premium finishing.',
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const bridalOutfits = [
     title: 'Handcrafted Aari Work Wedding Blouse',
     alt: 'Handcrafted Aari work wedding blouse Shrusara boutique',
     image: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
+    description: 'A handcrafted aari work wedding blouse with fine detailing and boutique finishing.',
   },
   {
     id: 4,
@@ -51,6 +54,7 @@ const bridalOutfits = [
     title: 'Intricate Maggam Embroidery Bridal Blouse',
     alt: 'Intricate maggam embroidery bridal blouse Mahalakshmipuram',
     image: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
+    description: 'Intricate hand embroidery maggam aari bridal wear with rich detailing.',
   },
   {
     id: 5,
@@ -58,6 +62,7 @@ const bridalOutfits = [
     title: 'Premium Antique Gold Temple Work Blouse',
     alt: 'Premium antique gold temple work bridal blouse Bangalore',
     image: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',
+    description: 'A premium antique gold temple work bridal blouse with traditional craftsmanship.',
   },
   {
     id: 6,
@@ -65,6 +70,7 @@ const bridalOutfits = [
     title: 'Premium Maggam Work Bridal Blouse',
     alt: 'Premium maggam work bridal blouse Mahalakshmipuram Shrusara',
     image: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',
+    description: 'A premium maggam work bridal blouse with boutique-level stitching and finishing.',
   },
   {
     id: 7,
@@ -72,6 +78,7 @@ const bridalOutfits = [
     title: 'Royal Heritage Bridal Maggam Blouse',
     alt: 'Royal heritage style bridal maggam blouse Bangalore',
     image: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
+    description: 'A heritage-inspired bridal blouse featuring royal maggam embroidery and timeless handcrafted elegance.',
   },
   {
     id: 8,
@@ -79,6 +86,7 @@ const bridalOutfits = [
     title: 'Traditional South Indian Wedding Blouse',
     alt: 'Traditional South Indian wedding blouse gold zari work Shrusara boutique',
     image: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
+    description: 'A designer silk saree blouse highlighted with floral beadwork and rich handcrafted detailing.',
   },
   {
     id: 9,
@@ -86,6 +94,7 @@ const bridalOutfits = [
     title: 'Custom Made Bridal Reception Lehenga Shrusara',
     alt: 'Custom made bridal reception lehenga Shrusara',
     image: '/bridal/bridalblow/custom-made-bridal-reception-lehenga-shrusara.webp',
+    description: 'A custom made bridal reception lehenga designed with elegant detailing and premium finishing.',
   },
   {
     id: 10,
@@ -93,6 +102,7 @@ const bridalOutfits = [
     title: 'Luxury Bridal Lehenga',
     alt: 'Luxury bridal lehenga custom design Bangalore',
     image: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
+    description: 'A reception bridal ensemble crafted for modern elegance with premium finishing and refined styling.',
   },
   {
     id: 11,
@@ -100,6 +110,7 @@ const bridalOutfits = [
     title: 'Custom Muhurtham Bridal Lehenga',
     alt: 'Custom made bridal muhurtham lehenga Shrusara',
     image: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
+    description: 'A customized pastel bridal lehenga designed with couture detailing and handcrafted embellishment.',
   },
   {
     id: 12,
@@ -107,6 +118,7 @@ const bridalOutfits = [
     title: 'Elegant Reception Gown',
     alt: 'Elegant modern reception gown brides silhouette premium fabric',
     image: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
+    description: 'A graceful white reception gown designed with elegant silhouettes and premium bridal finishing.',
   },
 ];
 
@@ -169,6 +181,8 @@ const PhoneIcon = () => (
 );
 
 // ─── Bridal Outfits Filter Section ───────────────────────────────────────────
+
+
 function BridalOutfits() {
   const [activeFilter, setActiveFilter] = useState('all');
 
@@ -177,19 +191,17 @@ function BridalOutfits() {
       ? bridalOutfits
       : bridalOutfits.filter((o) => o.tag === activeFilter);
 
-  // Map to the shape ImageGrid expects
-  const mappedImages = filteredData.map((o) => ({
-    id: String(o.id),
-    url: o.image,
-    thumbUrl: o.image,
-    alt: o.alt,
-    title: o.title,
-    description: o.alt,
-  }));
+const mappedImages = filteredData.map((o) => ({
+  id: String(o.id),
+  url: o.image,
+  thumbUrl: o.image,
+  alt: o.alt,
+  title: o.title,
+  description: o.description,  // ✅ use actual description
+}));
 
   return (
     <div className="br-outfits">
-      {/* Filter pills */}
       <div className="br-filters">
         {FILTERS.map((f) => (
           <button
@@ -201,8 +213,6 @@ function BridalOutfits() {
           </button>
         ))}
       </div>
-
-      {/* Grid — reuses ImageGrid so modal works automatically */}
       <ImageGrid
         images={mappedImages}
         loading={false}
@@ -719,11 +729,8 @@ export default function Bridal() {
             A collection of bridal blouse, lehenga, and gown designs crafted with premium detailing and perfect fit.
           </p>
           <div style={{ marginTop: 36 }}>
-            <ImageGrid
-  images={[
-    ...bridalOutfits.map((o) => ({ src: o.image, alt: o.alt, title: o.title })),
-    ...bridalGallery,
-  ].slice(0, 100)}
+<ImageGrid
+  images={bridalGallery.slice(0, 100)}
   loading={galleryLoading}
   priority
   columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
