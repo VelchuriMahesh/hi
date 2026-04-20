@@ -303,18 +303,33 @@ export function getStaticGallery(category) {
   if (category === 'home') {
     return [
       ...staticCategoryImages.bridal.slice(0, 4).map((item) => ({
-        ...item,
         id: `home-${item.id}`,
+        category: item.category,
+        url: item.url,
+        thumbUrl: item.thumbUrl,
+        title: item.title,
+        alt: item.alt,
+        description: item.description,  // ✅ explicitly carry description
         section: 'home'
       })),
       ...staticCategoryImages.designer.slice(0, 3).map((item) => ({
-        ...item,
         id: `home-${item.id}`,
+        category: item.category,
+        url: item.url,
+        thumbUrl: item.thumbUrl,
+        title: item.title,
+        alt: item.alt,
+        description: item.description,  // ✅ explicitly carry description
         section: 'home'
       })),
       ...staticCategoryImages.kids.slice(0, 3).map((item) => ({
-        ...item,
         id: `home-${item.id}`,
+        category: item.category,
+        url: item.url,
+        thumbUrl: item.thumbUrl,
+        title: item.title,
+        alt: item.alt,
+        description: item.description,  // ✅ explicitly carry description
         section: 'home'
       }))
     ];
@@ -334,30 +349,23 @@ export function getStaticGallery(category) {
 export function mergeGalleryImages(staticImages = [], firebaseImages = []) {
   const seen = new Set();
 
-  // Show dynamic admin uploads first so they are visible in tight grid limits,
-  // then fall back to static portfolio images.
   return [...firebaseImages, ...staticImages]
     .filter((item) => {
       const key = item.id?.startsWith('static-')
         ? item.id
         : item.url || item.thumbUrl || item.id || JSON.stringify(item);
 
-      if (seen.has(key)) {
-        return false;
-      }
-
+      if (seen.has(key)) return false;
       seen.add(key);
       return true;
     })
     .map((item, index) => ({
+      ...item,                                           // ✅ spread first
       id: item.id || `image-${index + 1}`,
       title: item.title || item.alt || 'Boutique design',
       alt: item.alt || item.title || 'Boutique design',
-      description:
-        item.description ||
-        item.alt ||
-        'A premium boutique design with tailored fit and celebration-ready finishing.',
+      description: item.description || item.alt || 'A premium boutique design with tailored fit and celebration-ready finishing.',
       thumbUrl: item.thumbUrl || item.url,
-      ...item
+      url: item.url || item.thumbUrl,
     }));
 }

@@ -953,11 +953,11 @@ export default function Home() {
         <p className="sf-eyebrow">Gallery</p>
         <h2 className="sf-heading">Our Bridal &amp; Designer Collection</h2>
         <div style={{ marginTop: 32 }}>
-          <ImageGrid
-            images={homeGallery.filter(img => img.category === 'home')} 
-            loading={galleryLoading}
-            columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-          />
+<ImageGrid
+  images={homeGallery}
+  loading={galleryLoading}
+  columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+/>
         </div>
       </div>
 

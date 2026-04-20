@@ -30,7 +30,7 @@ const staticDesignerOutfits = [
   { id: 9, tag: 'party-wear', title: 'Contemporary Designer Blouse', alt: 'Contemporary Designer Blouse', image: "/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp", description: 'A customized designer blouse crafted with modern styling and premium couture detailing.' },
   { id: 10, tag: 'party-wear', title: 'Crimson Trail Party Gown', alt: 'Crimson Trail Party Gown', image: "/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp", description: 'A dramatic party gown featuring a flowing trail and statement fashion-forward silhouette.' },
   { id: 11, tag: 'party-wear', title: 'Rose Motion Couture Gown', alt: 'Rose Motion Couture Gown', image: "/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp", description: 'A couture-inspired designer gown styled with movement, elegance, and premium occasion wear detailing.' },
-  { id: 12, tag: 'gowns', title: 'Elegant White Reception Gown', alt: 'Elegant White Reception Gown', image: "/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp", description: 'A graceful white reception gown designed with elegant silhouettes and premium bridal finishing.' },
+  { id: 12, tag: 'gowns', title: 'Noir Evening Couple Couture', alt: 'Noir Evening Couple Couture', image: "/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp", description: 'A coordinated designer couple look crafted for evening occasions with elegant contemporary styling.' },
 ];
 
 // ─── Convert static outfits to ImageGrid-compatible format for Gallery ────────

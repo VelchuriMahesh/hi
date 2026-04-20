@@ -730,7 +730,19 @@ export default function Bridal() {
           </p>
           <div style={{ marginTop: 36 }}>
 <ImageGrid
-  images={bridalGallery.slice(0, 100)}
+  images={[
+    ...bridalOutfits.map((o) => ({
+      id: `filter-${o.id}`,
+      url: o.image,
+      thumbUrl: o.image,
+      alt: o.alt,
+      title: o.title,
+      description: o.description,
+    })),
+    ...bridalGallery.filter(
+      (img) => !bridalOutfits.some((o) => o.image === (img.url || img.thumbUrl))
+    ),
+  ].slice(0, 100)}
   loading={galleryLoading}
   priority
   columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"

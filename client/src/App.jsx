@@ -61,7 +61,7 @@ function AppRoutes() {
 </Route>
 
 {/* Landing Page (NO layout) */}
-<Route path="/bridal-blouse-bangalore/landing" element={<BridalLandingPage />} />
+<Route path="/bridal-blouse-bangalore/consultation" element={<BridalLandingPage />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />
