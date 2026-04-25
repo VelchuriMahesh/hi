@@ -14,7 +14,7 @@ import {
   heroContent,
   whyChooseUs
 } from '../data/content';
-import useMergedGallery from '../hooks/useMergedGallery';
+import useGallery from '../hooks/useGallery';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
 
@@ -163,7 +163,7 @@ export default function Home() {
   const [reviews, setReviews] = useState(fallbackReviews);
   const [reviewsLoading, setReviewsLoading] = useState(true);
   const { media: heroMedia } = useHeroMedia('home');
-  const { images: homeGallery, loading: galleryLoading } = useMergedGallery('home');
+const { images: homeGallery, loading: galleryLoading } = useGallery('home');
 
   useEffect(() => {
     let mounted = true;

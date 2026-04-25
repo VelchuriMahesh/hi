@@ -303,35 +303,27 @@ export function getStaticGallery(category) {
   if (category === 'home') {
     return [
       ...staticCategoryImages.bridal.slice(0, 4).map((item) => ({
+        ...item,
         id: `home-${item.id}`,
-        category: item.category,
         url: item.url,
         thumbUrl: item.thumbUrl,
         title: item.title,
         alt: item.alt,
-        description: item.description,  // ✅ explicitly carry description
-        section: 'home'
+        description: item.description,
+        section: 'home',
+        category: 'home',        // ✅ set category to 'home' so dedup works
       })),
       ...staticCategoryImages.designer.slice(0, 3).map((item) => ({
+        ...item,
         id: `home-${item.id}`,
-        category: item.category,
         url: item.url,
         thumbUrl: item.thumbUrl,
         title: item.title,
         alt: item.alt,
-        description: item.description,  // ✅ explicitly carry description
-        section: 'home'
+        description: item.description,
+        section: 'home',
+        category: 'home',        // ✅ set category to 'home' so dedup works
       })),
-      ...staticCategoryImages.kids.slice(0, 3).map((item) => ({
-        id: `home-${item.id}`,
-        category: item.category,
-        url: item.url,
-        thumbUrl: item.thumbUrl,
-        title: item.title,
-        alt: item.alt,
-        description: item.description,  // ✅ explicitly carry description
-        section: 'home'
-      }))
     ];
   }
 
@@ -351,16 +343,14 @@ export function mergeGalleryImages(staticImages = [], firebaseImages = []) {
 
   return [...firebaseImages, ...staticImages]
     .filter((item) => {
-      const key = item.id?.startsWith('static-')
-        ? item.id
-        : item.url || item.thumbUrl || item.id || JSON.stringify(item);
+      const key = item.url || item.thumbUrl || item.id || JSON.stringify(item);
 
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     })
     .map((item, index) => ({
-      ...item,                                           // ✅ spread first
+      ...item,                          // ✅ spread first so explicit fields below win
       id: item.id || `image-${index + 1}`,
       title: item.title || item.alt || 'Boutique design',
       alt: item.alt || item.title || 'Boutique design',
