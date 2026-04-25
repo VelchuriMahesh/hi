@@ -1,3 +1,8 @@
+// ✅ STEP 4: Lead Tracking — Phone clicks, WhatsApp clicks, Form submissions
+// Every event fires window.gtag() so GA4 records it under Events → Conversions.
+// To mark any event as a Conversion: GA4 → Events → toggle "Mark as conversion"
+// Recommended conversions to mark: whatsapp_click, phone_call_click, consultation_form_submit
+
 import { useState } from 'react';
 
 const heroBridal = '/bridal/bridalblow/hero-bridal.webp';
@@ -127,6 +132,55 @@ const processSteps = [
   { step: '03', title: 'Trial & Perfect Fit', desc: 'Ensure perfect fitting with trials and finishing touches' },
 ];
 
+// ─── GA4 Tracking Helpers ─────────────────────────────────────────────────────
+// All lead events are tracked here. Mark these as conversions in GA4:
+//   GA4 → Reports → Events → find event → toggle "Mark as conversion"
+
+/**
+ * Track a WhatsApp click.
+ * @param {string} location - Where on the page the click happened (e.g. 'hero', 'header', 'cta_form', 'floating_button')
+ */
+function trackWhatsApp(location = 'unknown') {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'whatsapp_click', {
+    event_category: 'Lead',
+    event_label: location,
+    // value helps GA4 calculate conversion value; set to 1 for lead counting
+    value: 1,
+  });
+}
+
+/**
+ * Track a phone call click.
+ * @param {string} location - Where on the page (e.g. 'hero', 'header', 'floating_button')
+ */
+function trackPhoneCall(location = 'unknown') {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'phone_call_click', {
+    event_category: 'Lead',
+    event_label: location,
+    value: 1,
+  });
+}
+
+/**
+ * Track consultation form WhatsApp submission.
+ * Fires when the user fills fields and clicks "WhatsApp Consultation".
+ * @param {object} formData - { weddingDate, sareeDetails, designPref }
+ */
+function trackFormSubmit(formData = {}) {
+  if (typeof window.gtag !== 'function') return;
+  window.gtag('event', 'consultation_form_submit', {
+    event_category: 'Lead',
+    event_label: 'bridal_landing_page',
+    // Pass filled fields so you can see in GA4 what brides are requesting
+    wedding_date: formData.weddingDate || 'not_filled',
+    saree_details: formData.sareeDetails ? 'filled' : 'not_filled',
+    design_pref: formData.designPref ? 'filled' : 'not_filled',
+    value: 1,
+  });
+}
+
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const WaIcon = ({ size = 18 }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
@@ -158,10 +212,8 @@ const GoogleIcon = () => (
 );
 
 // ─── Image Modal ──────────────────────────────────────────────────────────────
-// ─── Image Modal ──────────────────────────────────────────────────────────────
 function ImageModal({ item, onClose }) {
   if (!item) return null;
-  
   return (
     <div className="blm-overlay" onClick={onClose}>
       <div className="blm-box" onClick={e => e.stopPropagation()}>
@@ -174,21 +226,29 @@ function ImageModal({ item, onClose }) {
           <h3 className="blm-title">{item.title}</h3>
           <p className="blm-desc">{item.desc}</p>
           <button className="blm-btn-cont" onClick={onClose}>Close Preview</button>
-          {/* WhatsApp Button Removed as requested */}
         </div>
       </div>
     </div>
   );
 }
 
-// ─── CTA Form ────────────────────────────────────────────────────────────────
+// ─── CTA Form ─────────────────────────────────────────────────────────────────
+// ✅ STEP 4: Form submission tracking is inside this component
 function BridalCtaForm() {
   const [weddingDate, setWeddingDate] = useState('');
   const [sareeDetails, setSareeDetails] = useState('');
   const [designPref, setDesignPref] = useState('');
+
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hi, I am looking for a customized bridal outfit.\nMy wedding date is ${weddingDate || '[date]'}.\nSaree details: ${sareeDetails || '—'}.\nDesign preferences: ${designPref || '—'}.\nI would like to consult with Chief Designer Shruthi Ajith.`
   )}`;
+
+  // ✅ Fires both the form submit event AND the WhatsApp click event
+  const handleWhatsAppClick = () => {
+    trackFormSubmit({ weddingDate, sareeDetails, designPref });
+    trackWhatsApp('cta_form');
+  };
+
   return (
     <div className="bl-cta-form">
       <div className="bl-form-fields">
@@ -206,8 +266,24 @@ function BridalCtaForm() {
         </div>
       </div>
       <div className="bl-cta-btns">
-        <a href={waLink} target="_blank" rel="noopener noreferrer" className="bl-cta-btn-pri"><WaIcon size={18} /> WhatsApp Consultation</a>
-        <a href={`tel:${PHONE_NUMBER}`} className="bl-cta-btn-sec"><PhoneIcon size={16} /> Call Now</a>
+        {/* ✅ onClick fires form tracking + whatsapp tracking */}
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bl-cta-btn-pri"
+          onClick={handleWhatsAppClick}
+        >
+          <WaIcon size={18} /> WhatsApp Consultation
+        </a>
+        {/* ✅ Phone click tracked */}
+        <a
+          href={`tel:${PHONE_NUMBER}`}
+          className="bl-cta-btn-sec"
+          onClick={() => trackPhoneCall('cta_form')}
+        >
+          <PhoneIcon size={16} /> Call Now
+        </a>
       </div>
       <p className="bl-form-hint">Your details will be pre-filled in WhatsApp — just hit send.</p>
     </div>
@@ -286,22 +362,10 @@ const BridalLandingPage = () => {
         .bl-sec-h { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-dark);margin-bottom:10px;line-height:1.2; }
         .bl-sec-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.75;max-width:500px;font-weight:300; }
 
-        /* ═══════════════════════════════
-           GALLERY — clean cards, no text
-        ═══════════════════════════════ */
+        /* GALLERY */
         .bl-gallery { padding:80px 5vw;background:var(--bl-cream); }
         .bl-gallery-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px; }
-        .bl-gallery-card {
-          overflow:hidden;border-radius:28px;
-          border:1px solid rgba(255,255,255,.6);
-          background:rgba(255,255,255,.82);
-          padding:12px;
-          box-shadow:0 4px 24px rgba(28,20,16,.10);
-          transition:transform .3s,box-shadow .3s;
-          cursor:pointer;width:100%;
-          text-align:left;appearance:none;-webkit-appearance:none;
-          display:block;
-        }
+        .bl-gallery-card { overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.82);padding:12px;box-shadow:0 4px 24px rgba(28,20,16,.10);transition:transform .3s,box-shadow .3s;cursor:pointer;width:100%;text-align:left;appearance:none;-webkit-appearance:none;display:block; }
         .bl-gallery-card:hover { transform:translateY(-6px);box-shadow:0 12px 36px rgba(28,20,16,.16); }
         .bl-gallery-card-inner { border-radius:22px;overflow:hidden;background:var(--bl-gold-pale);aspect-ratio:4/5; }
         .bl-gallery-card-inner img { width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease; }
@@ -462,72 +526,22 @@ const BridalLandingPage = () => {
         .bl-float-wa a::before { content:'';position:absolute;inset:0;border-radius:50%;background:#25D366;opacity:.55;animation:bl-ring 2s infinite; }
         @keyframes bl-ring { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.75);opacity:0} }
 
-       /* ═══════════════════════════════
-           IMAGE MODAL - FULL IMAGE VERSION
-        ═══════════════════════════════ */
-        .blm-overlay {
-          position:fixed;inset:0;z-index:1000;
-          background:rgba(0,0,0,0.85); /* Darker background for focus */
-          backdrop-filter:blur(8px);
-          display:flex;align-items:center;justify-content:center;
-          padding:20px;
-          animation:blm-fade .2s ease;
-        }
+        /* IMAGE MODAL */
+        .blm-overlay { position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:blm-fade .2s ease; }
         @keyframes blm-fade { from{opacity:0} to{opacity:1} }
-        
-        .blm-box {
-          background:#FAF8F5;
-          border-radius:20px;
-          max-width:900px; /* Increased width */
-          width:100%;
-          max-height:95vh; /* Ensure it fits on screen */
-          overflow-y:auto; /* Scroll if content is very long */
-          position:relative;
-          box-shadow:0 32px 80px rgba(0,0,0,0.5);
-          animation:blm-up .25s ease;
-        }
+        .blm-box { background:#FAF8F5;border-radius:20px;max-width:900px;width:100%;max-height:95vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5);animation:blm-up .25s ease; }
         @keyframes blm-up { from{transform:translateY(24px);opacity:0} to{transform:translateY(0);opacity:1} }
-        
-        .blm-close {
-          position:absolute;top:15px;right:15px;
-          width:40px;height:40px;border-radius:50%;
-          background:#fff;border:none;cursor:pointer;
-          display:flex;align-items:center;justify-content:center;
-          font-size:1.2rem;color:#1C1410;
-          box-shadow:0 4px 12px rgba(0,0,0,0.2);
-          transition:transform .2s;z-index:10;
-        }
+        .blm-close { position:absolute;top:15px;right:15px;width:40px;height:40px;border-radius:50%;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1C1410;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:transform .2s;z-index:10; }
         .blm-close:hover { transform:scale(1.1); }
-
-        .blm-img-wrap { 
-          width:100%;
-          background:#000;
-          display:flex;
-          justify-content:center;
-        }
-        .blm-img-wrap img { 
-          width:100%; 
-          height:auto; /* Allow full height */
-          max-height:70vh; /* Don't let image push text off screen */
-          object-fit:contain; /* Shows full image without cropping */
-          display:block; 
-        }
-
-        .blm-body { padding:24px 30px; text-align:center; }
+        .blm-img-wrap { width:100%;background:#000;display:flex;justify-content:center; }
+        .blm-img-wrap img { width:100%;height:auto;max-height:70vh;object-fit:contain;display:block; }
+        .blm-body { padding:24px 30px;text-align:center; }
         .blm-eyebrow { font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#B8935A;margin-bottom:8px; }
         .blm-title { font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:#1C1410;line-height:1.2;margin-bottom:10px; }
-        .blm-desc { font-size:.9rem;line-height:1.6;color:#7A6A5A;font-weight:300;margin:0 auto 24px; max-width:600px; }
-        
-        .blm-btn-cont {
-          display:inline-block;
-          padding:14px 40px;
-          background:#1C1410;
-          color:#fff;border:none;border-radius:100px;
-          font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
-          cursor:pointer;transition:background .2s;
-          font-family:'Jost',sans-serif;
-        }
+        .blm-desc { font-size:.9rem;line-height:1.6;color:#7A6A5A;font-weight:300;margin:0 auto 24px;max-width:600px; }
+        .blm-btn-cont { display:inline-block;padding:14px 40px;background:#1C1410;color:#fff;border:none;border-radius:100px;font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s;font-family:'Jost',sans-serif; }
         .blm-btn-cont:hover { background:#B8935A; }
+
         /* RESPONSIVE */
         @media(max-width:1024px) {
           .bl-gallery-grid{grid-template-columns:repeat(2,1fr)}
@@ -585,7 +599,14 @@ const BridalLandingPage = () => {
             </div>
           </div>
           <div className="bl-hdr-badge"><span className="bl-hdr-badge-dot" />Bangalore's Bridal Studio</div>
-          <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-hdr-cta">
+          {/* ✅ Header WhatsApp button tracked */}
+          <a
+            href={WA_PREFILL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bl-hdr-cta"
+            onClick={() => trackWhatsApp('header')}
+          >
             <WaIcon size={14} /> Book Consultation
           </a>
         </header>
@@ -601,8 +622,24 @@ const BridalLandingPage = () => {
             <p className="bl-hero-price">Bridal designs starting from <strong>₹6,000</strong></p>
             <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
-              <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-btn-pri"><WaIcon size={17} /> Book Your Bridal Consultation</a>
-              <a href={`tel:${PHONE_NUMBER}`} className="bl-btn-sec"><PhoneIcon size={15} /> Call Now</a>
+              {/* ✅ Hero WhatsApp tracked */}
+              <a
+                href={WA_PREFILL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bl-btn-pri"
+                onClick={() => trackWhatsApp('hero')}
+              >
+                <WaIcon size={17} /> Book Your Bridal Consultation
+              </a>
+              {/* ✅ Hero phone tracked */}
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                className="bl-btn-sec"
+                onClick={() => trackPhoneCall('hero')}
+              >
+                <PhoneIcon size={15} /> Call Now
+              </a>
             </div>
           </div>
           <div className="bl-hero-img-wrap">
@@ -627,7 +664,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* GALLERY — tap card → modal, no text on images */}
+        {/* GALLERY */}
         <section className="bl-gallery">
           <p className="bl-sec-eyebrow">Gallery</p>
           <h2 className="bl-sec-h">Customized Bridal Blouse Designs in Bangalore</h2>
@@ -778,7 +815,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* FINAL CTA */}
+        {/* FINAL CTA — form submit + WhatsApp + phone tracked inside BridalCtaForm */}
         <section className="bl-cta-wrap">
           <div className="bl-cta-box">
             <div style={{display:'flex',justifyContent:'center',marginBottom:20}}>
@@ -805,8 +842,13 @@ const BridalLandingPage = () => {
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
                 <span className="bl-footer-contact-item"><span className="bl-footer-contact-icon"><MapPinIcon size={13}/></span>106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086</span>
-                <a href="tel:+919741827558" className="bl-footer-contact-item"><span className="bl-footer-contact-icon"><PhoneIcon size={13}/></span>9741827558</a>
-                <a href="mailto:help@shrusara.com" className="bl-footer-contact-item"><span className="bl-footer-contact-icon"><MailIcon size={13}/></span>help@shrusara.com</a>
+                {/* ✅ Footer phone tracked */}
+                <a href="tel:+919741827558" className="bl-footer-contact-item" onClick={() => trackPhoneCall('footer')}>
+                  <span className="bl-footer-contact-icon"><PhoneIcon size={13}/></span>9741827558
+                </a>
+                <a href="mailto:help@shrusara.com" className="bl-footer-contact-item">
+                  <span className="bl-footer-contact-icon"><MailIcon size={13}/></span>help@shrusara.com
+                </a>
               </div>
               <a href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore" target="_blank" rel="noopener noreferrer" className="bl-footer-map-link">
                 <MapPinIcon size={11}/> View on Google Maps
@@ -819,11 +861,29 @@ const BridalLandingPage = () => {
           </div>
         </footer>
 
-        <div className="bl-float-call"><a href={`tel:${PHONE_NUMBER}`} aria-label="Call"><PhoneIcon size={26}/></a></div>
-        <div className="bl-float-wa"><a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WaIcon size={28}/></a></div>
+        {/* ✅ Floating phone button tracked */}
+        <div className="bl-float-call">
+          <a href={`tel:${PHONE_NUMBER}`} aria-label="Call" onClick={() => trackPhoneCall('floating_button')}>
+            <PhoneIcon size={26}/>
+          </a>
+        </div>
+
+        {/* ✅ Floating WhatsApp button tracked */}
+        <div className="bl-float-wa">
+          <a
+            href={WA_PREFILL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
+            onClick={() => trackWhatsApp('floating_button')}
+          >
+            <WaIcon size={28}/>
+          </a>
+        </div>
+
       </div>
 
-      {/* MODAL — outside bl-body for clean z-index stacking */}
+      {/* MODAL */}
       <ImageModal item={modalItem} onClose={() => setModalItem(null)} />
     </>
   );

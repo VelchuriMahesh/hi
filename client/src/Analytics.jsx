@@ -1,3 +1,7 @@
+// ✅ STEP 2 + 3: Google Analytics GA4 — SPA Page Tracking
+// gtag.js is already loaded in index.html, so this file ONLY sends page_view events.
+// It runs on every route change, which is what GA4 needs for React SPA apps.
+
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -7,33 +11,17 @@ export default function Analytics() {
   const location = useLocation();
 
   useEffect(() => {
-    // Load script ONLY once
-    if (!window.gtag) {
-      const script = document.createElement("script");
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-      script.async = true;
-      document.head.appendChild(script);
+    // Guard: if gtag isn't ready yet (very rare), skip silently
+    if (typeof window.gtag !== "function") return;
 
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () {
-        window.dataLayer.push(arguments);
-      };
-
-      window.gtag("js", new Date());
-
-      // IMPORTANT: disable auto pageview
-      window.gtag("config", GA_ID, {
-        send_page_view: false,
-      });
-    }
-
-    // MANUAL PAGE TRACKING (SPA FIX)
+    // Fire a manual page_view on every route change
+    // This is required for React SPAs because the browser doesn't reload on navigation
     window.gtag("event", "page_view", {
-      page_path: location.pathname,
+      page_path: location.pathname + location.search,
       page_location: window.location.href,
       page_title: document.title,
+      send_to: GA_ID,
     });
-
   }, [location]);
 
   return null;
