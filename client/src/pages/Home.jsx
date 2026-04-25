@@ -27,7 +27,7 @@ const homeServices = [
       'Custom necklines, perfect fitting & elegant finishing designed to complement your wedding saree.',
     image: '/videos/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
     whatsapp: true,
-    to: '/bridal-blouse-designer-bangalore',
+    to: '/bridal-blouse-bangalore',
   },
   {
     title: 'Maggam & Aari Work',
@@ -35,7 +35,7 @@ const homeServices = [
       'Premium handcrafted embroidery with rich detailing, creating a luxurious 3D finish for your bridal blouse.',
     image: '/videos/handcrafted-heavy-aari-work-wedding-blouse-backneck-shrusara-boutique.webp',
     whatsapp: true,
-    to: '/bridal-blouse-designer-bangalore',
+    to: '/bridal-blouse-bangalore',
   },
   {
     title: 'Lehenga & Gowns',
@@ -43,7 +43,7 @@ const homeServices = [
       'Elegant bridal lehengas and gowns designed with perfect structure, graceful flow and premium finishing.',
     image: '/videos/custom-made-bridal-reception-lehenga-shrusara.webp',
     whatsapp: true,
-    to: '/bridal-blouse-designer-bangalore',
+    to: '/bridal-blouse-bangalore',
   },
   {
     title: 'Designer Dresses',
