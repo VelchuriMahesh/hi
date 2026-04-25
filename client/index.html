@@ -6,11 +6,6 @@
     <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <!-- ✅ STEP 1: Google Search Console Verification -->
-    <!-- Replace the content value below with your actual verification code from:
-         Google Search Console → Add Property → HTML Tag method -->
-    <meta name="google-site-verification" content="REPLACE_WITH_YOUR_SEARCH_CONSOLE_CODE" />
-
     <!-- PRIMARY SEO -->
     <title>Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique</title>
     <meta name="description"
@@ -43,24 +38,16 @@
     <link rel="icon" href="/videos/Revised Logo PNG.png" type="image/png" />
     <link rel="apple-touch-icon" href="/videos/logo.png" />
 
-    <!-- ✅ STEP 3: Google Tag (gtag.js) — loaded here ONCE for fastest tracking -->
-    <!-- This single script powers both GA4 and Google Ads -->
+    <!-- ✅ Google Tag (gtag.js) — powers GA4 tracking -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T1D96GDB0K"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
-
-      // Configure GA4 — disable auto page_view here because
-      // Analytics.jsx fires manual page_view on every route change (SPA fix)
-      gtag('config', 'G-T1D96GDB0K', {
-        send_page_view: false,
-        // Enables enhanced measurement for scroll, outbound clicks, etc.
-        enhanced_measurements: true
-      });
+      gtag('config', 'G-T1D96GDB0K', { send_page_view: false });
     </script>
 
-    <!-- STRUCTURED DATA (STRONG LOCAL SEO) -->
+    <!-- STRUCTURED DATA -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -79,14 +66,11 @@
       },
       "description": "Shrusara Fashion Boutique in Bangalore specializes in bridal blouse designing, maggam work, and custom designer outfits.",
       "areaServed": "Bangalore",
-      "sameAs": [
-        "https://www.instagram.com/"
-      ]
+      "sameAs": ["https://www.instagram.com/"]
     }
     </script>
 
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
