@@ -13,16 +13,19 @@ export default function Contact() {
 
       <section className="section-shell pb-12 pt-8 sm:pb-16">
         <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+
+          {/* LEFT SIDE */}
           <div className="glass-panel p-6 sm:p-8">
             <SectionHeading
               eyebrow="Contact"
               title="Start Your Bridal and Designer Outfit Consultation"
               description="Share your occasion, outfit ideas, and design preferences to begin your custom boutique consultation."
             />
+
             <p className="mt-4 text-sm font-medium text-cocoa">
               Personal consultation by our Chief Designer Shruthi Ajith
             </p>
-            
+
             <div className="mt-8 grid gap-4">
               {[
                 { label: 'Address', value: contactLinks.address, href: contactLinks.maps },
@@ -37,6 +40,23 @@ export default function Contact() {
                 <a
                   key={item.label}
                   href={item.href}
+                  onClick={() => {
+                    if (!window.gtag) return;
+
+                    if (item.label === 'Phone') {
+                      window.gtag('event', 'call_click', {
+                        event_category: 'contact',
+                        event_label: 'contact_page_phone'
+                      });
+                    }
+
+                    if (item.label === 'WhatsApp') {
+                      window.gtag('event', 'whatsapp_click', {
+                        event_category: 'contact',
+                        event_label: 'contact_page_whatsapp'
+                      });
+                    }
+                  }}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
                   rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
                   className="rounded-[24px] border border-ink/8 bg-white/90 px-5 py-6 shadow-card transition hover:-translate-y-0.5"
@@ -44,12 +64,15 @@ export default function Contact() {
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cocoa">
                     {item.label}
                   </p>
-                  <p className="mt-3 text-base leading-7 text-ink">{item.value}</p>
+                  <p className="mt-3 text-base leading-7 text-ink">
+                    {item.value}
+                  </p>
                 </a>
               ))}
             </div>
           </div>
 
+          {/* MAP */}
           <div className="overflow-hidden rounded-[34px] border border-white/60 bg-white/85 shadow-soft">
             <iframe
               title="Shrusara Fashion Boutique Map"
@@ -59,6 +82,7 @@ export default function Contact() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
+
         </div>
       </section>
     </>

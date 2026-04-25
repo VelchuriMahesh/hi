@@ -18,7 +18,6 @@ export default function Navbar() {
         <NavLink className="min-w-0" to="/">
           <div className="flex items-center gap-3">
 
-            {/* 🔥 LOGO */}
             <img 
               src="/videos/Revisedlogo.webp" 
               alt="Shrusara Logo" 
@@ -32,6 +31,7 @@ export default function Navbar() {
           </div>
         </NavLink>
 
+        {/* NAV LINKS */}
         <nav className="hidden items-center gap-2 lg:flex">
           {navLinks.map((link) => (
             <NavLink key={link.to} className={navLinkClass} to={link.to}>
@@ -40,16 +40,43 @@ export default function Navbar() {
           ))}
         </nav>
 
+        {/* DESKTOP BUTTONS */}
         <div className="hidden items-center gap-3 lg:flex">
-          <a className="button-secondary" href={contactLinks.call}>
-  Call Now
-</a>
-          <a className="button-primary" href={contactLinks.whatsapp}>
+
+          {/* CALL */}
+          <a
+            className="button-secondary"
+            href={contactLinks.call}
+            onClick={() => {
+              if (window.gtag) {
+                window.gtag('event', 'call_click', {
+                  event_category: 'contact',
+                  event_label: 'navbar_call'
+                });
+              }
+            }}
+          >
+            Call Now
+          </a>
+
+          {/* WHATSAPP */}
+          <a
+            className="button-primary"
+            href={contactLinks.whatsapp}
+            onClick={() => {
+              if (window.gtag) {
+                window.gtag('event', 'whatsapp_click', {
+                  event_category: 'contact',
+                  event_label: 'navbar_whatsapp'
+                });
+              }
+            }}
+          >
             Book on WhatsApp
           </a>
         </div>
 
-        {/* 🔥 BIGGER 3-LINE MENU BUTTON */}
+        {/* MOBILE MENU BUTTON */}
         <button
           type="button"
           aria-label="Toggle menu"
@@ -69,9 +96,11 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* MOBILE MENU */}
       {open ? (
         <div className="section-shell pb-5 lg:hidden">
           <div className="glass-panel space-y-2 p-3">
+
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -86,13 +115,41 @@ export default function Navbar() {
                 {link.label}
               </NavLink>
             ))}
+
             <div className="grid gap-2 pt-2 sm:grid-cols-2">
-              <a className="button-secondary text-center py-4" href={contactLinks.call}>
+
+              {/* MOBILE CALL */}
+              <a
+                className="button-secondary text-center py-4"
+                href={contactLinks.call}
+                onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'call_click', {
+                      event_category: 'contact',
+                      event_label: 'mobile_call'
+                    });
+                  }
+                }}
+              >
                 Call Now
               </a>
-              <a className="button-primary text-center py-4" href={contactLinks.whatsapp}>
+
+              {/* MOBILE WHATSAPP */}
+              <a
+                className="button-primary text-center py-4"
+                href={contactLinks.whatsapp}
+                onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'whatsapp_click', {
+                      event_category: 'contact',
+                      event_label: 'mobile_whatsapp'
+                    });
+                  }
+                }}
+              >
                 WhatsApp Us
               </a>
+
             </div>
           </div>
         </div>

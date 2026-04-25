@@ -982,10 +982,34 @@ body { background: var(--c-bg); }
           </p>
           <p className="ab-hero-designer">Designed personally by Chief Designer Shruthi Ajith</p>
           <div className="ab-hero-btns">
-            <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-btn-pri">
+            <a
+              href={CONSULT_WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ab-btn-pri"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'whatsapp_click', {
+                    event_category: 'contact',
+                    event_label: 'about_hero_whatsapp'
+                  });
+                }
+              }}
+            >
               <WaIcon size={18} /> Book Consultation on WhatsApp
             </a>
-            <a href={TEL_LINK} className="ab-btn-sec">
+            <a
+              href={TEL_LINK}
+              className="ab-btn-sec"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'call_click', {
+                    event_category: 'contact',
+                    event_label: 'about_hero_call'
+                  });
+                }
+              }}
+            >
               <PhoneIcon /> Call Now
             </a>
           </div>
@@ -1272,7 +1296,18 @@ Shruthi Ajith Founder & Chief Designer"
             <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-cta-btn-pri">
               <WaIcon size={18} /> WhatsApp Consultation
             </a>
-            <a href={TEL_LINK} className="ab-cta-btn-sec">
+            <a
+              href={TEL_LINK}
+              className="ab-cta-btn-sec"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'call_click', {
+                    event_category: 'contact',
+                    event_label: 'about_cta_call'
+                  });
+                }
+              }}
+            >
               <PhoneIcon /> Call Now
             </a>
           </div>
