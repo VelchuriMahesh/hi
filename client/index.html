@@ -1,47 +1,70 @@
 <!doctype html>
 <html lang="en">
   <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
-  <!-- Google Analytics (MUST BE FIRST SCRIPT) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EQFWWQ61H4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T1D96GDB0K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    gtag('config', 'G-T1D96GDB0K');
-  </script>
+      gtag('config', 'G-T1D96GDB0K');
+    </script>
 
-  <!-- SEO Meta Tags -->
-  <title>Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique</title>
-  <meta
-    name="description"
-    content="Customized bridal blouses, designer outfits, lehengas, and gowns in Bangalore with perfect fit, premium finishing, and personalized styling by Shrusara Fashion Boutique."
-  />
-  <meta
-    name="keywords"
-    content="Bridal blouse designer Bangalore, Maggam work blouse, Boutique Bangalore, Designer boutique Bangalore, Shrusara Fashion Boutique"
-  />
+    <!-- SEO Meta Tags -->
+    <title>Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique</title>
+    <meta
+      name="description"
+      content="Customized bridal blouses, designer outfits, lehengas, and gowns in Bangalore with perfect fit, premium finishing, and personalized styling by Shrusara Fashion Boutique."
+    />
+    <meta
+      name="keywords"
+      content="Bridal blouse designer Bangalore, Maggam work blouse, Boutique Bangalore, Designer boutique Bangalore, Shrusara Fashion Boutique"
+    />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique" />
-  <meta property="og:description" content="Customized bridal blouses, designer outfits, and gowns with premium finishing in Bangalore." />
-  <meta property="og:image" content="/videos/logo.png" />
-  <meta property="og:type" content="website" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique" />
+    <meta property="og:description" content="Customized bridal blouses, designer outfits, and gowns with premium finishing in Bangalore." />
+    <meta property="og:image" content="/videos/logo.png" />
+    <meta property="og:type" content="website" />
 
-  <meta name="theme-color" content="#f7f2eb" />
+    <meta name="theme-color" content="#f7f2eb" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="/videos/Revised Logo PNG.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/videos/logo.png" />
-</head>
+    <!-- Favicon -->
+    <link rel="icon" href="/videos/Revised Logo PNG.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/videos/logo.png" />
+  </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- CALL BUTTON -->
+    <a href="tel:9741827558"
+       onclick="gtag('event', 'call_click', {
+         event_category: 'contact',
+         event_label: 'call_button'
+       });"
+       style="position:fixed;bottom:90px;left:20px;z-index:999;">
+       📞 Call Now
+    </a>
+
+    <!-- WHATSAPP BUTTON -->
+    <a href="https://wa.me/919741827558"
+       onclick="gtag('event', 'whatsapp_click', {
+         event_category: 'contact',
+         event_label: 'whatsapp_button'
+       });"
+       target="_blank"
+       style="position:fixed;bottom:20px;left:20px;z-index:999;">
+       💬 WhatsApp
+    </a>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
