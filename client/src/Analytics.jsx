@@ -7,7 +7,7 @@ export default function Analytics() {
   const location = useLocation();
 
   useEffect(() => {
-    // Load script once
+    // Load script ONLY once
     if (!window.gtag) {
       const script = document.createElement("script");
       script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
@@ -15,21 +15,25 @@ export default function Analytics() {
       document.head.appendChild(script);
 
       window.dataLayer = window.dataLayer || [];
-      function gtag(){window.dataLayer.push(arguments);}
-      window.gtag = gtag;
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
 
-      gtag("js", new Date());
-      gtag("config", GA_ID);
-    }
-  }, []);
+      window.gtag("js", new Date());
 
-  // Track page views on route change
-  useEffect(() => {
-    if (window.gtag) {
+      // IMPORTANT: disable auto pageview
       window.gtag("config", GA_ID, {
-        page_path: location.pathname,
+        send_page_view: false,
       });
     }
+
+    // MANUAL PAGE TRACKING (SPA FIX)
+    window.gtag("event", "page_view", {
+      page_path: location.pathname,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+
   }, [location]);
 
   return null;

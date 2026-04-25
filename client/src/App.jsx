@@ -119,8 +119,9 @@ export default function App() {
 
   return (
     <>
+     <Analytics />
       <ScrollToTop />
-        <Analytics />
+       
       <AppRoutes />
     </>
   );

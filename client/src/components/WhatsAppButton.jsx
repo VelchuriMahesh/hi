@@ -27,14 +27,15 @@ export default function WhatsAppButton() {
           href={contactLinks.call}
           label="Call Now"
           className="animate-pulse-ring border border-white/70 bg-white/95 text-ink"
-          onClick={() => {
-            if (window.gtag) {
-              window.gtag('event', 'call_click', {
-                event_category: 'contact',
-                event_label: 'floating_call_button'
-              });
-            }
-          }}
+         onClick={() => {
+  if (window.gtag) {
+    window.gtag('event', 'call_click', {
+      event_category: 'contact',
+      event_label: 'floating_call_button',
+      value: 1
+    });
+  }
+}}
         >
           {/* CALL ICON */}
           <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
@@ -49,14 +50,15 @@ export default function WhatsAppButton() {
           href={contactLinks.whatsapp}
           label="WhatsApp"
           className="animate-float bg-[#25D366] text-white"
-          onClick={() => {
-            if (window.gtag) {
-              window.gtag('event', 'whatsapp_click', {
-                event_category: 'contact',
-                event_label: 'floating_whatsapp_button'
-              });
-            }
-          }}
+         onClick={() => {
+  if (window.gtag) {
+    window.gtag('event', 'whatsapp_click', {
+      event_category: 'contact',
+      event_label: 'floating_whatsapp_button',
+      value: 1
+    });
+  }
+}}
         >
           {/* WHATSAPP ICON */}
           <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">

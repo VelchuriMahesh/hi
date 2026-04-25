@@ -2,43 +2,60 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
 
-    <!-- Google Analytics -->
+    <!-- RESPONSIVE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-
-    <!-- SEO Meta Tags -->
+    <!-- PRIMARY SEO -->
     <title>Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique</title>
-    <meta
-      name="description"
-      content="Customized bridal blouses, designer outfits, lehengas, and gowns in Bangalore with perfect fit, premium finishing, and personalized styling by Shrusara Fashion Boutique."
-    />
-    <meta
-      name="keywords"
-      content="Bridal blouse designer Bangalore, Maggam work blouse, Boutique Bangalore, Designer boutique Bangalore, Shrusara Fashion Boutique"
-    />
+    <meta name="description"
+      content="Customized bridal blouses, designer outfits, lehengas, and gowns in Bangalore with perfect fit, premium finishing, and personalized styling by Shrusara Fashion Boutique." />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique" />
-    <meta property="og:description" content="Customized bridal blouses, designer outfits, and gowns with premium finishing in Bangalore." />
-    <meta property="og:image" content="/videos/logo.png" />
+    <!-- IMPORTANT: REMOVE KEYWORDS (Google ignores it) -->
+    <!-- <meta name="keywords" ... /> -->
+
+    <!-- CANONICAL -->
+    <link rel="canonical" href="https://shrusara.com/" />
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Shrusara Fashion Boutique Bangalore" />
+    <meta property="og:description"
+      content="Premium bridal blouse designer & boutique in Bangalore with custom stitching and maggam work." />
+    <meta property="og:image" content="https://shrusara.com/videos/logo.png" />
+    <meta property="og:url" content="https://shrusara.com/" />
     <meta property="og:type" content="website" />
 
+    <!-- TWITTER -->
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- THEME -->
     <meta name="theme-color" content="#f7f2eb" />
 
-    <!-- Favicon -->
+    <!-- FAVICON -->
     <link rel="icon" href="/videos/Revised Logo PNG.png" type="image/png" />
     <link rel="apple-touch-icon" href="/videos/logo.png" />
+
+    <!-- STRUCTURED DATA (BIG SEO BOOST) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Shrusara Fashion Boutique",
+      "image": "https://shrusara.com/videos/logo.png",
+      "url": "https://shrusara.com",
+      "telephone": "+91XXXXXXXXXX",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bangalore",
+        "addressCountry": "India"
+      },
+      "description": "Bridal blouse designer and boutique in Bangalore specializing in custom stitching and maggam work."
+    }
+    </script>
   </head>
 
   <body>
     <div id="root"></div>
-
-    <!-- Floating Call Button -->
-  
 
     <script type="module" src="/src/main.jsx"></script>
   </body>
