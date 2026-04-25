@@ -6,6 +6,7 @@ import LoadingPage from './components/LoadingPage';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import WhatsAppButton from './components/WhatsAppButton';
+import Analytics from './Analytics';
 
 // Existing Lazy Imports
 const Home = lazy(() => import('./pages/Home'));
@@ -119,6 +120,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+        <Analytics />
       <AppRoutes />
     </>
   );
