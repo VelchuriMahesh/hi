@@ -17,13 +17,11 @@ export default function Navbar() {
       <div className="section-shell flex min-h-[84px] items-center justify-between gap-4">
         <NavLink className="min-w-0" to="/">
           <div className="flex items-center gap-3">
-
-            <img 
-              src="/videos/Revisedlogo.webp" 
-              alt="Shrusara Logo" 
+            <img
+              src="/videos/Revisedlogo.webp"
+              alt="Shrusara Logo"
               className="h-20 w-auto object-contain sm:h-28"
             />
-
             <div>
               <p className="font-heading text-xl text-ink sm:text-2xl">Shrusara</p>
               <p className="text-xs uppercase tracking-[0.28em] text-cocoa">Fashion Boutique</p>
@@ -43,15 +41,16 @@ export default function Navbar() {
         {/* DESKTOP BUTTONS */}
         <div className="hidden items-center gap-3 lg:flex">
 
-          {/* CALL */}
+          {/* DESKTOP CALL */}
           <a
             className="button-secondary"
             href={contactLinks.call}
             onClick={() => {
               if (window.gtag) {
-                window.gtag('event', 'call_click', {
-                  event_category: 'contact',
-                  event_label: 'navbar_call'
+                window.gtag('event', 'phone_call_click', {
+                  event_category: 'Lead',
+                  event_label: 'navbar',
+                  value: 1,
                 });
               }
             }}
@@ -59,15 +58,16 @@ export default function Navbar() {
             Call Now
           </a>
 
-          {/* WHATSAPP */}
+          {/* DESKTOP WHATSAPP */}
           <a
             className="button-primary"
             href={contactLinks.whatsapp}
             onClick={() => {
               if (window.gtag) {
                 window.gtag('event', 'whatsapp_click', {
-                  event_category: 'contact',
-                  event_label: 'navbar_whatsapp'
+                  event_category: 'Lead',
+                  event_label: 'navbar',
+                  value: 1,
                 });
               }
             }}
@@ -83,8 +83,8 @@ export default function Navbar() {
           onClick={() => setOpen((value) => !value)}
           className="inline-flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink/20 bg-white shadow-md text-ink lg:hidden"
         >
-          <svg 
-            viewBox="0 0 24 24" 
+          <svg
+            viewBox="0 0 24 24"
             className="h-8 w-8 fill-none stroke-current stroke-[2.5]"
           >
             {open ? (
@@ -124,9 +124,10 @@ export default function Navbar() {
                 href={contactLinks.call}
                 onClick={() => {
                   if (window.gtag) {
-                    window.gtag('event', 'call_click', {
-                      event_category: 'contact',
-                      event_label: 'mobile_call'
+                    window.gtag('event', 'phone_call_click', {
+                      event_category: 'Lead',
+                      event_label: 'navbar_mobile',
+                      value: 1,
                     });
                   }
                 }}
@@ -141,8 +142,9 @@ export default function Navbar() {
                 onClick={() => {
                   if (window.gtag) {
                     window.gtag('event', 'whatsapp_click', {
-                      event_category: 'contact',
-                      event_label: 'mobile_whatsapp'
+                      event_category: 'Lead',
+                      event_label: 'navbar_mobile',
+                      value: 1,
                     });
                   }
                 }}
