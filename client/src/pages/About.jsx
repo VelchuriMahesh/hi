@@ -988,14 +988,14 @@ body { background: var(--c-bg); }
               target="_blank"
               rel="noopener noreferrer"
               className="ab-btn-pri"
-             onClick={() => trackWhatsApp('about_hero')}
+              onClick={() => trackWhatsApp('about_hero')}
             >
               <WaIcon size={18} /> Book Consultation on WhatsApp
             </a>
             <a
               href={TEL_LINK}
               className="ab-btn-sec"
-             onClick={() => trackPhoneCall('about_hero')}
+              onClick={() => trackPhoneCall('about_hero')}
             >
               <PhoneIcon /> Call Now
             </a>
@@ -1054,7 +1054,6 @@ body { background: var(--c-bg); }
               {/* highlighted heritage strip */}
               <div className="ab-designer-heritage">
                 <div className="ab-designer-heritage-icon">
-                  {/* needle & thread icon */}
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                     <path d="M12 2a5 5 0 0 1 5 5c0 5-5 11-5 11S7 12 7 7a5 5 0 0 1 5-5z"/>
                     <circle cx="12" cy="7" r="1.5" fill="currentColor" stroke="none"/>
@@ -1090,20 +1089,27 @@ Shruthi Ajith Founder & Chief Designer"
 
               {/* CTA buttons inside card */}
               <div className="ab-designer-cta-row">
-                <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-designer-cta-pri"
-   onClick={() => trackWhatsApp('about_designer_card')}>
-  <WaIcon size={16} /> Book Consultation
-</a>
-<a href={TEL_LINK} className="ab-designer-cta-sec"
-   onClick={() => trackPhoneCall('about_designer_card')}>
-  <PhoneIcon /> Call Now
-</a>
+                <a
+                  href={CONSULT_WA_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ab-designer-cta-pri"
+                  onClick={() => trackWhatsApp('about_designer_card')}
+                >
+                  <WaIcon size={16} /> Book Consultation
+                </a>
+                <a
+                  href={TEL_LINK}
+                  className="ab-designer-cta-sec"
+                  onClick={() => trackPhoneCall('about_designer_card')}
+                >
+                  <PhoneIcon /> Call Now
+                </a>
               </div>
 
               {/* Google reviews badge row */}
               <div className="ab-google-reviews-strip">
                 <div className="ab-google-badge">
-                  {/* Google G SVG */}
                   <svg className="ab-google-icon" viewBox="0 0 48 48" aria-label="Google" role="img">
                     <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
                     <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
@@ -1282,18 +1288,19 @@ Shruthi Ajith Founder & Chief Designer"
           </p>
           <p className="ab-cta-scarcity">Limited consultation slots available</p>
           <div className="ab-cta-btns">
-           onClick={() => trackPhoneCall('about_cta')}
+            <a
+              href={CONSULT_WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ab-cta-btn-pri"
+              onClick={() => trackWhatsApp('about_cta')}
+            >
+              <WaIcon size={18} /> WhatsApp Consultation
+            </a>
             <a
               href={TEL_LINK}
               className="ab-cta-btn-sec"
-              onClick={() => {
-                if (window.gtag) {
-                  window.gtag('event', 'call_click', {
-                    event_category: 'contact',
-                    event_label: 'about_cta_call'
-                  });
-                }
-              }}
+              onClick={() => trackPhoneCall('about_cta')}
             >
               <PhoneIcon /> Call Now
             </a>
