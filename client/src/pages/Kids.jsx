@@ -4,6 +4,7 @@ import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import useMergedGallery from '../hooks/useMergedGallery';
 import useHeroMedia from '../hooks/useHeroMedia';
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -85,12 +86,14 @@ function KidsCtaForm() {
         </div>
       </div>
       <div className="kd-cta-btns">
-        <a href={waLink} target="_blank" rel="noopener noreferrer" className="kd-cta-btn-pri">
-          <WaIcon size={18} /> WhatsApp Order
-        </a>
-        <a href={TEL_LINK} className="kd-cta-btn-sec">
-          <PhoneIcon /> Call Now
-        </a>
+       <a href={waLink} target="_blank" rel="noopener noreferrer" className="kd-cta-btn-pri"
+   onClick={() => trackWhatsApp('kids_form')}>
+  <WaIcon size={18} /> WhatsApp Order
+</a>
+<a href={TEL_LINK} className="kd-cta-btn-sec"
+   onClick={() => trackPhoneCall('kids_form')}>
+  <PhoneIcon /> Call Now
+</a>
       </div>
       <p className="kd-form-hint">
         Your details will be pre-filled in WhatsApp — just hit send.
@@ -329,12 +332,12 @@ export default function Kids() {
             and perfect finishing for special occasions.
           </p>
           <div className="kd-hero-btns">
-            <a href={DEFAULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="kd-btn-pri">
-              <WaIcon size={18} /> Order on WhatsApp
-            </a>
-            <a href={TEL_LINK} className="kd-btn-sec">
-              <PhoneIcon /> Call Now
-            </a>
+            <a href={DEFAULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="kd-btn-pri" onClick={() => trackWhatsApp('kids_hero')}>
+  <WaIcon size={18} /> Order on WhatsApp
+</a>
+            <a href={TEL_LINK} className="kd-btn-sec" onClick={() => trackPhoneCall('kids_hero')}>
+  <PhoneIcon /> Call Now
+</a>
           </div>
         </div>
         <div className="kd-hero-img-wrap">

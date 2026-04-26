@@ -3,6 +3,7 @@ import ImageGrid from '../components/ImageGrid';
 import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 import {
   fallbackReviews,
@@ -634,12 +635,12 @@ export default function Bridal() {
             </span>
           </p>
           <div className="br-hero-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-pri">
-              <WaIcon size={18} /> Book Bridal Consultation
-            </a>
-            <a href={TEL_LINK} className="br-btn-sec">
-              <PhoneIcon /> Call Now
-            </a>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-pri" onClick={() => trackWhatsApp('bridal_hero')}>
+  <WaIcon size={18} /> Book Bridal Consultation
+</a>
+<a href={TEL_LINK} className="br-btn-sec" onClick={() => trackPhoneCall('bridal_hero')}>
+  <PhoneIcon /> Call Now
+</a>
           </div>
         </div>
         <div className="br-hero-img-wrap">
@@ -689,9 +690,9 @@ export default function Bridal() {
             </p>
           </div>
           <div className="br-image-match-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-gold-pill">
-              <WaIcon size={18} /> WhatsApp Enquiry
-            </a>
+           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-gold-pill" onClick={() => trackWhatsApp('bridal_banner')}>
+  <WaIcon size={18} /> WhatsApp Enquiry
+</a>
             <a href={TEL_LINK} className="br-btn-outline-pill">
               Call Now
             </a>
@@ -822,9 +823,9 @@ export default function Bridal() {
           </p>
           <p className="br-cta-scarcity">Limited bridal slots available each month</p>
           <div className="br-cta-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-cta-btn-pri">
-              <WaIcon size={18} /> Book Bridal Consultation
-            </a>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-cta-btn-pri" onClick={() => trackWhatsApp('bridal_cta')}>
+  <WaIcon size={18} /> Book Bridal Consultation
+</a>
             <a href={TEL_LINK} className="br-cta-btn-sec">
               <PhoneIcon /> Call Now
             </a>

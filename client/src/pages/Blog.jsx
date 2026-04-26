@@ -4,6 +4,7 @@ import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import { fallbackBlogPosts } from '../data/content';
 import { fetchPosts } from '../services/api';
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -445,12 +446,12 @@ export default function Blog() {
             Connect with our Chief Designer Shruthi Ajith for a personalized consultation.
           </p>
           <div className="blg-cta-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="blg-cta-btn-pri">
-              <WaIcon size={18} /> WhatsApp Enquiry
-            </a>
-            <a href={TEL_LINK} className="blg-cta-btn-sec">
-              <PhoneIcon /> Call Now
-            </a>
+           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="blg-cta-btn-pri" onClick={() => trackWhatsApp('blog_cta')}>
+  <WaIcon size={18} /> WhatsApp Enquiry
+</a>
+            <a href={TEL_LINK} className="blg-cta-btn-sec" onClick={() => trackPhoneCall('blog_cta')}>
+  <PhoneIcon /> Call Now
+</a>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import PageMeta from '../components/PageMeta';
 import SectionHeading from '../components/SectionHeading';
 import { contactLinks } from '../data/content';
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 export default function Contact() {
   return (
@@ -44,17 +45,11 @@ export default function Contact() {
                     if (!window.gtag) return;
 
                     if (item.label === 'Phone') {
-                      window.gtag('event', 'call_click', {
-                        event_category: 'contact',
-                        event_label: 'contact_page_phone'
-                      });
+                     trackPhoneCall('contact_page');
                     }
 
                     if (item.label === 'WhatsApp') {
-                      window.gtag('event', 'whatsapp_click', {
-                        event_category: 'contact',
-                        event_label: 'contact_page_whatsapp'
-                      });
+                      trackWhatsApp('contact_page');
                     }
                   }}
                   target={item.href.startsWith('http') ? '_blank' : undefined}

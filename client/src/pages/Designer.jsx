@@ -7,6 +7,7 @@ import { fallbackReviews } from '../data/content';
 import useGallery from '../hooks/useGallery';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -701,12 +702,12 @@ export default function Designer() {
           </p>
           <br/>
           <div className="ds-hero-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-pri">
-              <WaIcon size={18} /> WhatsApp Enquiry
-            </a>
-            <a href={TEL_LINK} className="ds-btn-sec">
-              <PhoneIcon /> Call Now
-            </a>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-pri" onClick={() => trackWhatsApp('designer_hero')}>
+  <WaIcon size={18} /> WhatsApp Enquiry
+</a>
+           <a href={TEL_LINK} className="ds-btn-sec" onClick={() => trackPhoneCall('designer_hero')}>
+  <PhoneIcon /> Call Now
+</a>
           </div>
         </div>
         <div className="ds-hero-img-wrap">
@@ -765,9 +766,9 @@ export default function Designer() {
           </p>
         </div>
         <div className="ds-image-match-btns">
-          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-gold-pill">
-            WhatsApp Enquiry
-          </a>
+         <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-gold-pill" onClick={() => trackWhatsApp('designer_banner')}>
+  WhatsApp Enquiry
+</a>
           <a href={TEL_LINK} className="ds-btn-outline-pill">
             Call Now
           </a>
@@ -793,9 +794,9 @@ export default function Designer() {
             <p className="ds-consult-sub">Book Your Designer Outfit Consultation Today</p>
           </div>
           <div className="ds-consult-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-primary-light">
-              WhatsApp Enquiry
-            </a>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-btn-primary-light" onClick={() => trackWhatsApp('designer_consult_banner')}>
+  WhatsApp Enquiry
+</a>
             <a href={TEL_LINK} className="ds-btn-secondary-light">
               Call Now
             </a>
@@ -891,9 +892,9 @@ export default function Designer() {
           </p>
           <p className="ds-cta-scarcity">Limited slots available each week</p>
           <div className="ds-cta-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-cta-btn-pri">
-              <WaIcon size={18} /> WhatsApp Enquiry
-            </a>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="ds-cta-btn-pri" onClick={() => trackWhatsApp('designer_cta')}>
+  <WaIcon size={18} /> WhatsApp Enquiry
+</a>
             <a href={TEL_LINK} className="ds-cta-btn-sec">
               <PhoneIcon /> Call Now
             </a>

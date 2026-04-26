@@ -7,6 +7,7 @@ import { fallbackReviews } from '../data/content';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
 import { fetchVideos } from '../services/cms';
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -987,28 +988,14 @@ body { background: var(--c-bg); }
               target="_blank"
               rel="noopener noreferrer"
               className="ab-btn-pri"
-              onClick={() => {
-                if (window.gtag) {
-                  window.gtag('event', 'whatsapp_click', {
-                    event_category: 'contact',
-                    event_label: 'about_hero_whatsapp'
-                  });
-                }
-              }}
+             onClick={() => trackWhatsApp('about_hero')}
             >
               <WaIcon size={18} /> Book Consultation on WhatsApp
             </a>
             <a
               href={TEL_LINK}
               className="ab-btn-sec"
-              onClick={() => {
-                if (window.gtag) {
-                  window.gtag('event', 'call_click', {
-                    event_category: 'contact',
-                    event_label: 'about_hero_call'
-                  });
-                }
-              }}
+             onClick={() => trackPhoneCall('about_hero')}
             >
               <PhoneIcon /> Call Now
             </a>
@@ -1103,12 +1090,14 @@ Shruthi Ajith Founder & Chief Designer"
 
               {/* CTA buttons inside card */}
               <div className="ab-designer-cta-row">
-                <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-designer-cta-pri">
-                  <WaIcon size={16} /> Book Consultation
-                </a>
-                <a href={TEL_LINK} className="ab-designer-cta-sec">
-                  <PhoneIcon /> Call Now
-                </a>
+                <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-designer-cta-pri"
+   onClick={() => trackWhatsApp('about_designer_card')}>
+  <WaIcon size={16} /> Book Consultation
+</a>
+<a href={TEL_LINK} className="ab-designer-cta-sec"
+   onClick={() => trackPhoneCall('about_designer_card')}>
+  <PhoneIcon /> Call Now
+</a>
               </div>
 
               {/* Google reviews badge row */}
@@ -1293,9 +1282,7 @@ Shruthi Ajith Founder & Chief Designer"
           </p>
           <p className="ab-cta-scarcity">Limited consultation slots available</p>
           <div className="ab-cta-btns">
-            <a href={CONSULT_WA_LINK} target="_blank" rel="noopener noreferrer" className="ab-cta-btn-pri">
-              <WaIcon size={18} /> WhatsApp Consultation
-            </a>
+           onClick={() => trackPhoneCall('about_cta')}
             <a
               href={TEL_LINK}
               className="ab-cta-btn-sec"
