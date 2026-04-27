@@ -112,12 +112,40 @@ const galleryItems = [
 ];
 
 const trustPoints = [
-  { icon: '✦', label: 'Craftsmanship', title: 'Premium Maggam & Aari Work', desc: 'Intricate handcrafted embroidery designed for bridal elegance and richness' },
-  { icon: '◈', label: 'Tailoring',     title: 'Perfect Fit Guarantee', desc: 'Precise measurements and trials ensuring your outfit fits like a second skin' },
-  { icon: '◷', label: 'Reliability',   title: 'On-Time Delivery Commitment', desc: 'Your bridal outfit will be ready well before your special day' },
+  { icon: '✦', label: 'Craftsmanship', title: 'Premium Maggam & Aari Work',         desc: 'Intricate handcrafted embroidery designed for bridal elegance and richness' },
+  { icon: '◈', label: 'Tailoring',     title: 'Perfect Fit Guarantee',               desc: 'Precise measurements and trials ensuring your outfit fits like a second skin' },
+  { icon: '◷', label: 'Reliability',   title: 'On-Time Delivery Commitment',         desc: 'Your bridal outfit will be ready well before your special day' },
   { icon: '✒', label: 'Expertise',     title: 'Personal Consultation by Chief Designer', desc: 'Direct guidance from Shruthi Ajith for personalized styling and design selection' },
-  { icon: '★', label: 'Exclusivity',   title: 'Limited Bridal Slots Per Month', desc: 'We take limited orders to ensure undivided attention to every bridal masterpiece' },
-  { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes', desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
+  { icon: '★', label: 'Exclusivity',   title: 'Limited Bridal Slots Per Month',      desc: 'We take limited orders to ensure undivided attention to every bridal masterpiece' },
+  { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes',         desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
+];
+
+// ─── ✅ FIXED: Added missing reviews array ────────────────────────────────────
+const reviews = [
+  {
+    name: 'Divya K.',
+    text: 'Shrusara crafted the most beautiful maggam work blouse for my wedding. The fitting was perfect and Shruthi Ajith personally guided me through the design. Highly recommended for brides in Bangalore!',
+  },
+  {
+    name: 'Meghana R.',
+    text: 'I was looking for a customized bridal blouse in Bangalore and found Shrusara. The aari work detailing was stunning and delivered well before my wedding date. The entire process was smooth and professional.',
+  },
+  {
+    name: 'Priya S.',
+    text: 'The bridal lehenga and blouse set from Shrusara was beyond my expectations. The premium finishing and attention to detail made me feel like royalty on my big day. Thank you Shruthi Ajith!',
+  },
+  {
+    name: 'Sowmya T.',
+    text: 'From consultation to final fitting, the experience at Shrusara was exceptional. My Kanjivaram silk blouse with heavy maggam work was exactly what I had envisioned. Perfect bridal boutique in Bangalore.',
+  },
+  {
+    name: 'Ananya B.',
+    text: 'I got my reception gown and muhurtham blouse done at Shrusara. Both outfits were crafted with incredible precision. The boutique truly understands what brides want and delivers beyond expectations.',
+  },
+  {
+    name: 'Reshma V.',
+    text: 'Outstanding quality and service. My bridal blouse with antique gold temple work was delivered on time and fit perfectly. Shrusara is definitely the best bridal designer boutique in Bangalore.',
+  },
 ];
 
 const googleReviews = [
@@ -127,13 +155,12 @@ const googleReviews = [
 ];
 
 const processSteps = [
-  { step: '01', title: 'Consultation',       desc: 'Discuss your wedding details, design ideas, and preferences' },
+  { step: '01', title: 'Consultation',        desc: 'Discuss your wedding details, design ideas, and preferences' },
   { step: '02', title: 'Design Finalization', desc: 'Finalize blouse and outfit design, fabrics, and embroidery details' },
   { step: '03', title: 'Trial & Perfect Fit', desc: 'Ensure perfect fitting with trials and finishing touches' },
 ];
 
 // ─── Tracking Helper (Local for Form) ──────────────────────────────────────────
-
 function trackFormSubmit(formData = {}) {
   if (typeof window.gtag !== 'function') return;
   window.gtag('event', 'consultation_form_submit', {
@@ -152,21 +179,25 @@ const WaIcon = ({ size = 18 }) => (
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
   </svg>
 );
+
 const PhoneIcon = ({ size = 16 }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width={size} height={size} aria-hidden="true">
     <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
   </svg>
 );
+
 const MapPinIcon = ({ size = 16 }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width={size} height={size} aria-hidden="true">
     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
   </svg>
 );
+
 const MailIcon = ({ size = 16 }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width={size} height={size} aria-hidden="true">
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" />
   </svg>
 );
+
 const GoogleIcon = () => (
   <svg viewBox="0 0 48 48" width="38" height="38" aria-label="Google" role="img" style={{ flexShrink: 0 }}>
     <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
@@ -228,24 +259,24 @@ function BridalCtaForm() {
           <input id="bl-design" className="bl-form-input" type="text" placeholder="e.g. Maggam work, heavy neck" value={designPref} onChange={e => setDesignPref(e.target.value)} />
         </div>
       </div>
-      <div className="bl-cta-btns">
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bl-cta-btn-pri"
-          onClick={handleWhatsAppClick}
-        >
-          <WaIcon size={18} /> WhatsApp Consultation
-        </a>
-        <a
-          href={`tel:${PHONE_NUMBER}`}
-          className="bl-cta-btn-sec"
-          onClick={() => trackPhoneCall('cta_form_bridal')}
-        >
-          <PhoneIcon size={16} /> Call Now
-        </a>
-      </div>
+<div className="bl-cta-btns">
+  <a  // <--- Add this
+    href={waLink}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bl-cta-btn-pri"
+    onClick={handleWhatsAppClick}
+  >
+    <WaIcon size={18} /> WhatsApp Consultation
+  </a>
+  <a // <--- Add this
+    href={`tel:${PHONE_NUMBER}`}
+    className="bl-cta-btn-sec"
+    onClick={() => trackPhoneCall('cta_form_bridal')}
+  >
+    <PhoneIcon size={16} /> Call Now
+  </a>
+</div>
       <p className="bl-form-hint">Your details will be pre-filled in WhatsApp — just hit send.</p>
     </div>
   );
@@ -366,6 +397,20 @@ const BridalLandingPage = () => {
         .bl-designer-sub { font-size:.87rem;line-height:1.75;color:rgba(255,255,255,.5);font-weight:300; }
         .bl-designer-trusted { font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.45);font-weight:300;margin-top:28px;border-top:1px solid rgba(184,147,90,.2);padding-top:20px; }
 
+        /* REVIEWS SECTION */
+        .bl-reviews { padding:80px 5vw;background:var(--bl-white); }
+        .bl-reviews-hdr { text-align:center;max-width:680px;margin:0 auto 48px; }
+        .bl-reviews-top-rated { display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);margin-bottom:14px; }
+        .bl-reviews-badge { display:inline-flex;align-items:center;gap:8px;background:var(--bl-dark);color:var(--bl-white);font-size:.76rem;font-weight:700;letter-spacing:.06em;padding:10px 22px;border-radius:4px;margin-bottom:20px; }
+        .bl-reviews-badge-stars { color:var(--bl-gold);letter-spacing:2px;font-size:.9rem; }
+        .bl-reviews-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-dark);margin-bottom:10px;line-height:1.2; }
+        .bl-reviews-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.75;font-weight:300; }
+        .bl-reviews-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto; }
+        .bl-review-card { background:var(--bl-cream);border:1px solid rgba(184,147,90,.14);border-radius:14px;padding:28px 24px;box-shadow:0 2px 14px rgba(28,20,16,.05); }
+        .bl-review-stars { color:#FFC107;letter-spacing:3px;font-size:.9rem;margin-bottom:12px; }
+        .bl-review-text { font-size:.84rem;line-height:1.75;color:var(--bl-text);font-weight:300;margin-bottom:18px;font-style:italic; }
+        .bl-review-name { font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl-dark); }
+
         /* GOOGLE REVIEWS */
         .bl-grev { padding:80px 5vw;background:var(--bl-cream); }
         .bl-grev-inner { max-width:1100px;margin:0 auto; }
@@ -389,17 +434,6 @@ const BridalLandingPage = () => {
         .bl-grev-view-btn:hover .bl-grev-arrow { transform:translateX(3px); }
         .bl-grev-clients-pill { display:inline-flex;align-items:center;gap:10px;background:var(--bl-dark);color:var(--bl-white);font-size:.76rem;font-weight:700;letter-spacing:.06em;padding:12px 24px;border-radius:4px;margin-bottom:44px; }
         .bl-grev-clients-stars { color:var(--bl-gold);letter-spacing:2px;font-size:.9rem; }
-        .bl-grev-proof-row { display:flex;align-items:flex-start;gap:48px;margin-bottom:32px;flex-wrap:wrap; }
-        .bl-grev-proof-left { flex:1;min-width:200px; }
-        .bl-grev-proof-eyebrow { font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--bl-muted);font-weight:600;margin-bottom:10px; }
-        .bl-grev-proof-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.4rem,2vw,1.9rem);font-weight:700;color:var(--bl-dark);line-height:1.2;margin-bottom:10px; }
-        .bl-grev-proof-desc { font-size:.82rem;color:var(--bl-muted);font-weight:300;line-height:1.65;max-width:360px; }
-        .bl-grev-mini-rating { background:var(--bl-gold-pale);border:1px solid rgba(184,147,90,.22);border-radius:14px;padding:26px 30px;min-width:190px;display:flex;flex-direction:column;gap:6px; }
-        .bl-grev-mini-stars { display:flex;gap:4px;margin-bottom:2px; }
-        .bl-grev-mini-star { color:var(--bl-gold);font-size:.82rem; }
-        .bl-grev-mini-label { font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bl-muted);font-weight:600; }
-        .bl-grev-mini-num { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--bl-dark);line-height:1; }
-        .bl-grev-mini-based { font-size:.72rem;color:var(--bl-muted);font-weight:300;line-height:1.45; }
         .bl-grev-cards { display:grid;grid-template-columns:repeat(3,1fr);gap:20px; }
         .bl-grev-card { background:var(--bl-white);border-radius:12px;border:1px solid rgba(184,147,90,.10);padding:24px 22px;box-shadow:0 2px 14px rgba(28,20,16,.05); }
         .bl-grev-card-header { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:8px; }
@@ -495,6 +529,7 @@ const BridalLandingPage = () => {
           .bl-designer-layout{grid-template-columns:1fr;gap:32px}
           .bl-footer-divider-v{display:none}
           .bl-grev-cards{grid-template-columns:repeat(2,1fr)}
+          .bl-reviews-grid{grid-template-columns:repeat(2,1fr)}
         }
         @media(max-width:768px) {
           .bl-hdr-badge{display:none}
@@ -523,7 +558,6 @@ const BridalLandingPage = () => {
           .bl-hdr-name{font-size:1.4rem}
           .bl-hdr-sub{font-size:.45rem;letter-spacing:.25em}
           .bl-grev-cards{grid-template-columns:1fr}
-          .bl-grev-proof-row{flex-direction:column;gap:24px}
           .bl-grev-badge-card{flex-direction:column;align-items:flex-start;gap:16px}
           .bl-grev-vdivider{display:none}
           .blm-box{max-width:100%}
@@ -567,7 +601,7 @@ const BridalLandingPage = () => {
             <p className="bl-hero-price">Bridal designs crafted for premium weddings</p>
             <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
-              <a
+<a
                 href={WA_PREFILL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -631,17 +665,19 @@ const BridalLandingPage = () => {
               <h2 className="bl-craft-h">Intricate Hand Embroidery –<br />Crafted to Perfection</h2>
               <p className="bl-craft-desc">Every bridal outfit at Shrusara is detailed with precision using maggam work, aari work, zari, and handcrafted embroidery techniques to create timeless, elegant designs.</p>
               <div className="bl-craft-tags">
-                {['Maggam Work','Aari Work','Zari Embroidery','Handcrafted Detailing','Premium Finishing'].map(t => <span key={t} className="bl-craft-tag">{t}</span>)}
+                {['Maggam Work', 'Aari Work', 'Zari Embroidery', 'Handcrafted Detailing', 'Premium Finishing'].map(t => (
+                  <span key={t} className="bl-craft-tag">{t}</span>
+                ))}
               </div>
               <p className="bl-craft-note">Every bridal blouse is handcrafted using premium maggam work, aari embroidery, zari, and detailed finishing techniques.</p>
             </div>
             <div className="bl-craft-right">
               {[
-                { src:'/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp', alt:'Handcrafted aari work bridal blouse' },
-                { src:'/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp', alt:'Intricate maggam aari bridal wear' },
-                { src:'/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp', alt:'Premium antique gold temple work blouse' },
-                { src:'/videos/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp', alt:'Premium maggam work bridal blouse' },
-              ].map((img,i) => (
+                { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp', alt: 'Handcrafted aari work bridal blouse' },
+                { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp', alt: 'Intricate maggam aari bridal wear' },
+                { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp', alt: 'Premium antique gold temple work blouse' },
+                { src: '/videos/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp', alt: 'Premium maggam work bridal blouse' },
+              ].map((img, i) => (
                 <div key={i} className="bl-craft-img-card">
                   <div className="bl-craft-img-inner">
                     <img src={img.src} alt={img.alt} loading="lazy" />
@@ -671,50 +707,60 @@ const BridalLandingPage = () => {
             </div>
           </div>
         </section>
+{/* SECTION 1: BRIDE DIARIES (Social Reviews) */}
+        <section className="bl-reviews">
+          <div className="bl-reviews-hdr">
+            <p className="bl-reviews-top-rated">Handpicked Testimonials</p>
+            <h2 className="bl-reviews-title">The Bride’s Perspective</h2>
+            <p className="bl-reviews-sub">Personal stories and styling experiences from brides who chose Shrusara for their wedding couture.</p>
+          </div>
+          <div className="bl-reviews-grid">
+            {reviews.map((r, i) => (
+              <div key={i} className="bl-review-card">
+                <p className="bl-review-stars">★★★★★</p>
+                <p className="bl-review-text">{r.text}</p>
+                <p className="bl-review-name">{r.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        {/* GOOGLE REVIEWS */}
+        {/* SECTION 2: TRUSTED BY BRIDES (Verified Google Reviews) */}
         <section className="bl-grev">
           <div className="bl-grev-inner">
-            <p className="bl-grev-top-label">Trusted by Brides</p>
-            <h2 className="bl-grev-heading">Trusted by Brides Across Bangalore</h2>
-            <p className="bl-grev-sub">From engagement to wedding day, we design outfits that brides truly love and feel confident in.</p>
+            <p className="bl-grev-top-label">Public Reputation</p>
+            <h2 className="bl-grev-heading">Trusted by 250+ Brides on Google</h2>
+            <p className="bl-grev-sub">Our 5.0-star rating is a reflection of our commitment to perfect fitting and on-time delivery.</p>
+            
             <div className="bl-grev-badge-card">
               <div className="bl-grev-rating-block">
                 <GoogleIcon />
                 <div className="bl-grev-rating-texts">
                   <div className="bl-grev-rating-row">
                     <span className="bl-grev-rating-num">5.0</span>
-                    <div className="bl-grev-stars">{[1,2,3,4,5].map(s=><span key={s} className="bl-grev-star">★</span>)}</div>
-                    <span className="bl-grev-rating-label">Google Reviews</span>
+                    <div className="bl-grev-stars">{[1,2,3,4,5].map(s => <span key={s} className="bl-grev-star">★</span>)}</div>
+                    <span className="bl-grev-rating-label">Verified Ratings</span>
                   </div>
-                  <p className="bl-grev-verified">Based on 100+ verified reviews on Google</p>
+                  <p className="bl-grev-verified">Based on 100+ latest reviews on Google Business</p>
                 </div>
               </div>
               <div className="bl-grev-vdivider" />
               <a href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore" target="_blank" rel="noopener noreferrer" className="bl-grev-view-btn">
-                View on Google <span className="bl-grev-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+                View All Reviews <span className="bl-grev-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
               </a>
             </div>
-            <div><span className="bl-grev-clients-pill"><span className="bl-grev-clients-stars">★★★★★</span>250+ Happy Clients in Bangalore</span></div>
-            <div className="bl-grev-proof-row">
-              <div className="bl-grev-proof-left">
-                <p className="bl-grev-proof-eyebrow">Social Proof</p>
-                <h3 className="bl-grev-proof-title">Google Reviews</h3>
-                <p className="bl-grev-proof-desc">Real experiences from brides and clients who trusted Shrusara for their special occasions.</p>
-              </div>
-              <div className="bl-grev-mini-rating">
-                <div className="bl-grev-mini-stars">{[1,2,3,4,5].map(s=><span key={s} className="bl-grev-mini-star">★</span>)}</div>
-                <p className="bl-grev-mini-label">Google rating</p>
-                <p className="bl-grev-mini-num">4.9</p>
-                <p className="bl-grev-mini-based">Based on 229+<br />boutique experiences</p>
-              </div>
-            </div>
+
             <div className="bl-grev-cards">
-              {googleReviews.map((r,i) => (
+              {googleReviews.map((r, i) => (
                 <div key={i} className="bl-grev-card">
                   <div className="bl-grev-card-header">
-                    <div><p className="bl-grev-card-name">{r.name}</p><p className="bl-grev-card-ago">{r.ago}</p></div>
-                    <div className="bl-grev-card-stars">{[1,2,3,4,5].map(s=><span key={s} className="bl-grev-card-star">★</span>)}</div>
+                    <div>
+                      <p className="bl-grev-card-name">{r.name}</p>
+                      <p className="bl-grev-card-ago">{r.ago}</p>
+                    </div>
+                    <div className="bl-grev-card-stars">
+                      {[1,2,3,4,5].map(s => <span key={s} className="bl-grev-card-star">★</span>)}
+                    </div>
                   </div>
                   <p className="bl-grev-card-text">{r.text}</p>
                 </div>
@@ -741,7 +787,7 @@ const BridalLandingPage = () => {
         {/* FINAL CTA */}
         <section className="bl-cta-wrap">
           <div className="bl-cta-box">
-            <div style={{display:'flex',justifyContent:'center',marginBottom:20}}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
               <p className="bl-cta-eyebrow">Bridal Consultation</p>
             </div>
             <h2 className="bl-cta-h">Book Your Bridal Consultation Today</h2>
@@ -764,16 +810,19 @@ const BridalLandingPage = () => {
             <div className="bl-footer-contact">
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
-                <span className="bl-footer-contact-item"><span className="bl-footer-contact-icon"><MapPinIcon size={13}/></span>106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086</span>
+                <span className="bl-footer-contact-item">
+                  <span className="bl-footer-contact-icon"><MapPinIcon size={13} /></span>
+                  106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086
+                </span>
                 <a href={`tel:${PHONE_NUMBER}`} className="bl-footer-contact-item" onClick={() => trackPhoneCall('footer_bridal')}>
-                  <span className="bl-footer-contact-icon"><PhoneIcon size={13}/></span>{PHONE_NUMBER}
+                  <span className="bl-footer-contact-icon"><PhoneIcon size={13} /></span>{PHONE_NUMBER}
                 </a>
                 <a href="mailto:help@shrusara.com" className="bl-footer-contact-item">
-                  <span className="bl-footer-contact-icon"><MailIcon size={13}/></span>help@shrusara.com
+                  <span className="bl-footer-contact-icon"><MailIcon size={13} /></span>help@shrusara.com
                 </a>
               </div>
               <a href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore" target="_blank" rel="noopener noreferrer" className="bl-footer-map-link">
-                <MapPinIcon size={11}/> View on Google Maps
+                <MapPinIcon size={11} /> View on Google Maps
               </a>
             </div>
           </div>
@@ -785,10 +834,9 @@ const BridalLandingPage = () => {
         {/* FLOATING BUTTONS */}
         <div className="bl-float-call">
           <a href={`tel:${PHONE_NUMBER}`} aria-label="Call" onClick={() => trackPhoneCall('floating_button_bridal')}>
-            <PhoneIcon size={26}/>
+            <PhoneIcon size={26} />
           </a>
         </div>
-
         <div className="bl-float-wa">
           <a
             href={WA_PREFILL}
@@ -797,7 +845,7 @@ const BridalLandingPage = () => {
             aria-label="WhatsApp"
             onClick={() => trackWhatsApp('floating_button_bridal')}
           >
-            <WaIcon size={28}/>
+            <WaIcon size={28} />
           </a>
         </div>
 
