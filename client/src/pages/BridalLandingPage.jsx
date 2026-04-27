@@ -1,11 +1,18 @@
-// ✅ STEP 4: Lead Tracking — Phone clicks, WhatsApp clicks, Form submissions
-// Every event fires window.gtag() so GA4 records it under Events → Conversions.
-// To mark any event as a Conversion: GA4 → Events → toggle "Mark as conversion"
-// Recommended conversions to mark: whatsapp_click, phone_call_click, consultation_form_submit
-
 import { useState } from 'react';
+// ✅ Imported tracking utilities
+import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
+
+// ─── Constants (Synced with Home.jsx) ──────────────────────────────────────────
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
+const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 
 const heroBridal = '/bridal/bridalblow/hero-bridal.webp';
+
+const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  'Hi, I am looking for a customized bridal outfit. I would like to consult with Chief Designer Shruthi Ajith.'
+)}`;
+
+// ─── Data ────────────────────────────────────────────────────────────────────
 const galleryItems = [
   {
     src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
@@ -104,20 +111,13 @@ const galleryItems = [
   },
 ];
 
-const WHATSAPP_NUMBER = '919741827558';
-const PHONE_NUMBER    = '+919741827558';
-const WA_PREFILL = `https://wa.me/919741827558?text=Hi%2C%20I%20am%20looking%20for%20a%20customized%20bridal%20outfit.%20My%20wedding%20date%20is%20%5Bdate%5D.%20I%20need%20consultation%20for%20blouse%20%2F%20lehenga%20%2F%20gown.%20I%20would%20like%20to%20consult%20with%20Chief%20Designer%20Shruthi%20Ajith.`;
-
 const trustPoints = [
   { icon: '✦', label: 'Craftsmanship', title: 'Premium Maggam & Aari Work', desc: 'Intricate handcrafted embroidery designed for bridal elegance and richness' },
-  { icon: '◈', label: 'Fit Promise',   title: 'Perfect Fit – Tailored for You', desc: 'Every measurement is customized to your body type for flawless fitting' },
+  { icon: '◈', label: 'Tailoring',     title: 'Perfect Fit Guarantee', desc: 'Precise measurements and trials ensuring your outfit fits like a second skin' },
   { icon: '◷', label: 'Reliability',   title: 'On-Time Delivery Commitment', desc: 'Your bridal outfit will be ready well before your special day' },
-];
-
-const reviews = [
-  { text: 'The fit was like a second skin. Best bridal boutique in Bangalore!', name: 'Priya Rao' },
-  { text: 'Highly professional service and timely delivery. Shruthi Ajith is incredibly talented.', name: 'Meghana V.' },
-  { text: 'They made my Pinterest dream into reality. Worth every penny!', name: 'Kavya Ramesh' },
+  { icon: '✒', label: 'Expertise',     title: 'Personal Consultation by Chief Designer', desc: 'Direct guidance from Shruthi Ajith for personalized styling and design selection' },
+  { icon: '★', label: 'Exclusivity',   title: 'Limited Bridal Slots Per Month', desc: 'We take limited orders to ensure undivided attention to every bridal masterpiece' },
+  { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes', desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
 ];
 
 const googleReviews = [
@@ -132,48 +132,13 @@ const processSteps = [
   { step: '03', title: 'Trial & Perfect Fit', desc: 'Ensure perfect fitting with trials and finishing touches' },
 ];
 
-// ─── GA4 Tracking Helpers ─────────────────────────────────────────────────────
-// All lead events are tracked here. Mark these as conversions in GA4:
-//   GA4 → Reports → Events → find event → toggle "Mark as conversion"
+// ─── Tracking Helper (Local for Form) ──────────────────────────────────────────
 
-/**
- * Track a WhatsApp click.
- * @param {string} location - Where on the page the click happened (e.g. 'hero', 'header', 'cta_form', 'floating_button')
- */
-function trackWhatsApp(location = 'unknown') {
-  if (typeof window.gtag !== 'function') return;
-  window.gtag('event', 'whatsapp_click', {
-    event_category: 'Lead',
-    event_label: location,
-    // value helps GA4 calculate conversion value; set to 1 for lead counting
-    value: 1,
-  });
-}
-
-/**
- * Track a phone call click.
- * @param {string} location - Where on the page (e.g. 'hero', 'header', 'floating_button')
- */
-function trackPhoneCall(location = 'unknown') {
-  if (typeof window.gtag !== 'function') return;
-  window.gtag('event', 'phone_call_click', {
-    event_category: 'Lead',
-    event_label: location,
-    value: 1,
-  });
-}
-
-/**
- * Track consultation form WhatsApp submission.
- * Fires when the user fills fields and clicks "WhatsApp Consultation".
- * @param {object} formData - { weddingDate, sareeDetails, designPref }
- */
 function trackFormSubmit(formData = {}) {
   if (typeof window.gtag !== 'function') return;
   window.gtag('event', 'consultation_form_submit', {
     event_category: 'Lead',
     event_label: 'bridal_landing_page',
-    // Pass filled fields so you can see in GA4 what brides are requesting
     wedding_date: formData.weddingDate || 'not_filled',
     saree_details: formData.sareeDetails ? 'filled' : 'not_filled',
     design_pref: formData.designPref ? 'filled' : 'not_filled',
@@ -233,7 +198,6 @@ function ImageModal({ item, onClose }) {
 }
 
 // ─── CTA Form ─────────────────────────────────────────────────────────────────
-// ✅ STEP 4: Form submission tracking is inside this component
 function BridalCtaForm() {
   const [weddingDate, setWeddingDate] = useState('');
   const [sareeDetails, setSareeDetails] = useState('');
@@ -243,10 +207,9 @@ function BridalCtaForm() {
     `Hi, I am looking for a customized bridal outfit.\nMy wedding date is ${weddingDate || '[date]'}.\nSaree details: ${sareeDetails || '—'}.\nDesign preferences: ${designPref || '—'}.\nI would like to consult with Chief Designer Shruthi Ajith.`
   )}`;
 
-  // ✅ Fires both the form submit event AND the WhatsApp click event
   const handleWhatsAppClick = () => {
     trackFormSubmit({ weddingDate, sareeDetails, designPref });
-    trackWhatsApp('cta_form');
+    trackWhatsApp('cta_form_bridal');
   };
 
   return (
@@ -266,7 +229,6 @@ function BridalCtaForm() {
         </div>
       </div>
       <div className="bl-cta-btns">
-        {/* ✅ onClick fires form tracking + whatsapp tracking */}
         <a
           href={waLink}
           target="_blank"
@@ -276,11 +238,10 @@ function BridalCtaForm() {
         >
           <WaIcon size={18} /> WhatsApp Consultation
         </a>
-        {/* ✅ Phone click tracked */}
         <a
           href={`tel:${PHONE_NUMBER}`}
           className="bl-cta-btn-sec"
-          onClick={() => trackPhoneCall('cta_form')}
+          onClick={() => trackPhoneCall('cta_form_bridal')}
         >
           <PhoneIcon size={16} /> Call Now
         </a>
@@ -404,21 +365,6 @@ const BridalLandingPage = () => {
         .bl-designer-text { font-size:1.05rem;line-height:1.9;color:rgba(255,255,255,.75);font-weight:300;font-family:'Cormorant Garamond','Playfair Display',serif;font-style:italic;margin-bottom:18px; }
         .bl-designer-sub { font-size:.87rem;line-height:1.75;color:rgba(255,255,255,.5);font-weight:300; }
         .bl-designer-trusted { font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.45);font-weight:300;margin-top:28px;border-top:1px solid rgba(184,147,90,.2);padding-top:20px; }
-
-        /* REVIEWS */
-        .bl-reviews { padding:80px 5vw;background:var(--bl-white); }
-        .bl-reviews-hdr { margin-bottom:12px; }
-        .bl-reviews-top-rated { font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bl-gold);margin-bottom:10px;display:block; }
-        .bl-reviews-badge { display:inline-flex;align-items:center;gap:10px;background:var(--bl-dark);color:var(--bl-white);font-size:.62rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:10px 22px;margin-bottom:16px; }
-        .bl-reviews-badge-stars { color:var(--bl-gold);letter-spacing:2px; }
-        .bl-reviews-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.4rem,2.2vw,2rem);font-weight:700;color:var(--bl-dark);margin-bottom:8px; }
-        .bl-reviews-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.75;max-width:520px;font-weight:300;margin-bottom:36px; }
-        .bl-reviews-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px; }
-        .bl-review-card { background:var(--bl-cream);padding:32px 28px;border:1px solid rgba(184,147,90,.12);position:relative; }
-        .bl-review-card::before { content:'"';position:absolute;top:16px;right:20px;font-family:'Cormorant Garamond',serif;font-size:4rem;color:rgba(184,147,90,.15);line-height:1; }
-        .bl-review-text { font-size:.87rem;line-height:1.75;color:var(--bl-text);font-style:italic;margin-bottom:16px;font-weight:300; }
-        .bl-review-name { font-size:.72rem;font-weight:700;color:var(--bl-dark);letter-spacing:.06em; }
-        .bl-review-stars { color:var(--bl-gold);font-size:.75rem;margin-bottom:12px; }
 
         /* GOOGLE REVIEWS */
         .bl-grev { padding:80px 5vw;background:var(--bl-cream); }
@@ -599,13 +545,12 @@ const BridalLandingPage = () => {
             </div>
           </div>
           <div className="bl-hdr-badge"><span className="bl-hdr-badge-dot" />Bangalore's Bridal Studio</div>
-          {/* ✅ Header WhatsApp button tracked */}
           <a
             href={WA_PREFILL}
             target="_blank"
             rel="noopener noreferrer"
             className="bl-hdr-cta"
-            onClick={() => trackWhatsApp('header')}
+            onClick={() => trackWhatsApp('header_bridal')}
           >
             <WaIcon size={14} /> Book Consultation
           </a>
@@ -622,21 +567,19 @@ const BridalLandingPage = () => {
             <p className="bl-hero-price">Bridal designs starting from <strong>₹6,000</strong></p>
             <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
-              {/* ✅ Hero WhatsApp tracked */}
               <a
                 href={WA_PREFILL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bl-btn-pri"
-                onClick={() => trackWhatsApp('hero')}
+                onClick={() => trackWhatsApp('hero_bridal')}
               >
                 <WaIcon size={17} /> Book Your Bridal Consultation
               </a>
-              {/* ✅ Hero phone tracked */}
               <a
                 href={`tel:${PHONE_NUMBER}`}
                 className="bl-btn-sec"
-                onClick={() => trackPhoneCall('hero')}
+                onClick={() => trackPhoneCall('hero_bridal')}
               >
                 <PhoneIcon size={15} /> Call Now
               </a>
@@ -687,7 +630,6 @@ const BridalLandingPage = () => {
               <p className="bl-craft-eyebrow">Craftsmanship</p>
               <h2 className="bl-craft-h">Intricate Hand Embroidery –<br />Crafted to Perfection</h2>
               <p className="bl-craft-desc">Every bridal outfit at Shrusara is detailed with precision using maggam work, aari work, zari, and handcrafted embroidery techniques to create timeless, elegant designs.</p>
-              <p className="bl-craft-desc">From heavy bridal blouses to complete bridal outfits, each piece reflects careful craftsmanship and premium finishing.</p>
               <div className="bl-craft-tags">
                 {['Maggam Work','Aari Work','Zari Embroidery','Handcrafted Detailing','Premium Finishing'].map(t => <span key={t} className="bl-craft-tag">{t}</span>)}
               </div>
@@ -727,25 +669,6 @@ const BridalLandingPage = () => {
                 <p className="bl-designer-trusted">One of the trusted bridal blouse designers in Bangalore, known for customized designs and perfect fitting.</p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* REVIEWS */}
-        <section className="bl-reviews">
-          <div className="bl-reviews-hdr">
-            <span className="bl-reviews-top-rated">Top Rated Bridal Boutique in Bangalore</span>
-            <div className="bl-reviews-badge"><span className="bl-reviews-badge-stars">★★★★★</span> 100+ Happy Brides in Bangalore</div>
-            <h2 className="bl-reviews-title">Trusted by Brides Across Bangalore</h2>
-            <p className="bl-reviews-sub">From engagement to wedding day, we design outfits that brides truly love and feel confident in.</p>
-          </div>
-          <div className="bl-reviews-grid">
-            {reviews.map((r,i) => (
-              <div key={i} className="bl-review-card">
-                <p className="bl-review-stars">★★★★★</p>
-                <p className="bl-review-text">{r.text}</p>
-                <p className="bl-review-name">{r.name}</p>
-              </div>
-            ))}
           </div>
         </section>
 
@@ -815,14 +738,14 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* FINAL CTA — form submit + WhatsApp + phone tracked inside BridalCtaForm */}
+        {/* FINAL CTA */}
         <section className="bl-cta-wrap">
           <div className="bl-cta-box">
             <div style={{display:'flex',justifyContent:'center',marginBottom:20}}>
               <p className="bl-cta-eyebrow">Bridal Consultation</p>
             </div>
             <h2 className="bl-cta-h">Book Your Bridal Consultation Today</h2>
-            <p className="bl-cta-sub">Share your wedding date, outfit details, and design preferences to get started with your customized bridal outfit.</p>
+            <p className="bl-cta-sub">Share your wedding date, outfit details, and design preferences to get started.</p>
             <p className="bl-cta-scarcity">Limited bridal consultation slots available for upcoming wedding season</p>
             <BridalCtaForm />
           </div>
@@ -835,16 +758,15 @@ const BridalLandingPage = () => {
               <p className="bl-footer-brand-name">Shrusara Fashion Boutique</p>
               <p className="bl-footer-brand-tag">Bridal Boutique · Bangalore</p>
               <p className="bl-footer-desc">Customized bridal blouses, lehengas, and gowns crafted with premium fit, detailed handwork, and elegant finishing.</p>
-              <p className="bl-footer-seo">Shrusara Fashion Boutique is a leading bridal boutique in Bangalore specializing in customized bridal blouses, maggam work designs, aari embroidery, and complete bridal outfits including lehengas and gowns.</p>
+              <p className="bl-footer-seo">Shrusara Fashion Boutique is a leading bridal boutique in Bangalore specializing in customized bridal blouses, maggam work designs, aari embroidery, and complete bridal outfits.</p>
             </div>
             <div className="bl-footer-divider-v" />
             <div className="bl-footer-contact">
               <p className="bl-footer-contact-title">Contact Us</p>
               <div className="bl-footer-contact-list">
                 <span className="bl-footer-contact-item"><span className="bl-footer-contact-icon"><MapPinIcon size={13}/></span>106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086</span>
-                {/* ✅ Footer phone tracked */}
-                <a href="tel:+919741827558" className="bl-footer-contact-item" onClick={() => trackPhoneCall('footer')}>
-                  <span className="bl-footer-contact-icon"><PhoneIcon size={13}/></span>9741827558
+                <a href={`tel:${PHONE_NUMBER}`} className="bl-footer-contact-item" onClick={() => trackPhoneCall('footer_bridal')}>
+                  <span className="bl-footer-contact-icon"><PhoneIcon size={13}/></span>{PHONE_NUMBER}
                 </a>
                 <a href="mailto:help@shrusara.com" className="bl-footer-contact-item">
                   <span className="bl-footer-contact-icon"><MailIcon size={13}/></span>help@shrusara.com
@@ -857,25 +779,23 @@ const BridalLandingPage = () => {
           </div>
           <div className="bl-footer-bottom">
             <p className="bl-footer-copy">© {new Date().getFullYear()} Shrusara Fashion Boutique. All rights reserved.</p>
-            <p className="bl-footer-copy">Bangalore's Bridal Studio</p>
           </div>
         </footer>
 
-        {/* ✅ Floating phone button tracked */}
+        {/* FLOATING BUTTONS */}
         <div className="bl-float-call">
-          <a href={`tel:${PHONE_NUMBER}`} aria-label="Call" onClick={() => trackPhoneCall('floating_button')}>
+          <a href={`tel:${PHONE_NUMBER}`} aria-label="Call" onClick={() => trackPhoneCall('floating_button_bridal')}>
             <PhoneIcon size={26}/>
           </a>
         </div>
 
-        {/* ✅ Floating WhatsApp button tracked */}
         <div className="bl-float-wa">
           <a
             href={WA_PREFILL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"
-            onClick={() => trackWhatsApp('floating_button')}
+            onClick={() => trackWhatsApp('floating_button_bridal')}
           >
             <WaIcon size={28}/>
           </a>
@@ -883,7 +803,6 @@ const BridalLandingPage = () => {
 
       </div>
 
-      {/* MODAL */}
       <ImageModal item={modalItem} onClose={() => setModalItem(null)} />
     </>
   );
