@@ -123,11 +123,16 @@ const aboutCards = [
   },
 ];
 
-const WHATSAPP_NUMBER = '9741827558'; 
+// ─── Constants (Match Designer.jsx) ──────────────────────────────────────────
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
+const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
+
 const WHATSAPP_MSG = encodeURIComponent(
   'Hi, I’m interested in customized bridal outfits. I would like to consult with Chief Designer Shruthi Ajith.'
 );
-const WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
+
+const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
+const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -872,7 +877,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
               </svg>
               Book Bridal Consultation
             </a>
-           <a href={`tel:${contactLinks.phone}`} className="sf-btn-secondary" onClick={() => trackPhoneCall('home_hero')}>
+           <a href={TEL_LINK} className="sf-btn-secondary" onClick={() => trackPhoneCall('home_hero')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17" height="17">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
               </svg>
@@ -922,9 +927,9 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light" onClick={() => trackWhatsApp('home_banner_1')}>
   WhatsApp Enquiry
 </a>
-            <a href={`tel:${contactLinks.phone}`} className="sf-btn-secondary-light">
-              Call Now
-            </a>
+           <a href={TEL_LINK} className="sf-btn-secondary-light">
+  Call Now
+</a>
           </div>
         </div>
       </div>
@@ -1113,9 +1118,9 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light" onClick={() => trackWhatsApp('home_banner_2')}>
   WhatsApp Enquiry
 </a>
-            <a href={`tel:${contactLinks.phone}`} className="sf-btn-secondary-light">
-              Call Now
-            </a>
+            <a href={TEL_LINK} className="sf-btn-secondary-light">
+  Call Now
+</a>
           </div>
         </div>
       </div>
