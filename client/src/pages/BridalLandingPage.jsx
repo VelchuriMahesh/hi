@@ -677,7 +677,7 @@ const BridalLandingPage = () => {
           <div className="bl-grev-inner">
             <p className="bl-grev-top-label">Trusted by Brides</p>
             <h2 className="bl-grev-heading">Trusted by Brides Across Bangalore</h2>
-            <p className="bl-grev-sub">100+ happy clients with consistent quality and service.</p>
+            <p className="bl-grev-sub">From engagement to wedding day, we design outfits that brides truly love and feel confident in.</p>
             <div className="bl-grev-badge-card">
               <div className="bl-grev-rating-block">
                 <GoogleIcon />
