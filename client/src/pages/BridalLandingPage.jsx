@@ -564,7 +564,7 @@ const BridalLandingPage = () => {
             <h2 className="bl-hero-h2">Perfect Fit. Handcrafted Maggam &amp; Aari Work. Designed for Your Big Day.</h2>
             <p className="bl-hero-sub">Customized bridal blouses, bridal lehengas, and gowns tailored to your body type and wedding style by experienced bridal designers.</p>
             <p className="bl-hero-designer">Designed personally by Chief Designer Shruthi Ajith</p>
-            <p className="bl-hero-price">Bridal designs starting from <strong>₹6,000</strong></p>
+            <p className="bl-hero-price">Bridal designs crafted for premium weddings</p>
             <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
               <a

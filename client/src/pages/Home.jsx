@@ -1019,7 +1019,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           textTransform: 'uppercase',
           letterSpacing: '1.5px'
         }}>
-          Bridal designs crafted for premium weddings
+          Bridal designs starting at ₹6000
         </div>
       </Link>
 
