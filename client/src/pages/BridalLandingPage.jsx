@@ -2,7 +2,7 @@ import { useState } from 'react';
 // ✅ Imported tracking utilities
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
-// ─── Constants (Synced with Home.jsx) ──────────────────────────────────────────
+// ─── Constants ───────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 
@@ -120,7 +120,6 @@ const trustPoints = [
   { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes',         desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
 ];
 
-// ─── ✅ FIXED: Added missing reviews array ────────────────────────────────────
 const reviews = [
   {
     name: 'Divya K.',
@@ -148,19 +147,13 @@ const reviews = [
   },
 ];
 
-const googleReviews = [
-  { name: 'Anusha R.',    ago: '2 weeks ago', text: 'The blouse fitting was perfect and the maggam work looked premium in person. The consultation made the whole bridal styling process easier.' },
-  { name: 'Keerthana M.', ago: '1 month ago', text: 'Loved the finishing, delivery commitment, and how well they understood the reference I showed. The outfit felt custom in the best way.' },
-  { name: 'Pallavi S.',   ago: '1 month ago', text: 'The boutique helped with blouse and kids outfit coordination for our family event. Everything looked polished and fit beautifully.' },
-];
-
 const processSteps = [
   { step: '01', title: 'Consultation',        desc: 'Discuss your wedding details, design ideas, and preferences' },
   { step: '02', title: 'Design Finalization', desc: 'Finalize blouse and outfit design, fabrics, and embroidery details' },
   { step: '03', title: 'Trial & Perfect Fit', desc: 'Ensure perfect fitting with trials and finishing touches' },
 ];
 
-// ─── Tracking Helper (Local for Form) ──────────────────────────────────────────
+// ─── Tracking Helper ──────────────────────────────────────────────────────────
 function trackFormSubmit(formData = {}) {
   if (typeof window.gtag !== 'function') return;
   window.gtag('event', 'consultation_form_submit', {
@@ -198,8 +191,8 @@ const MailIcon = ({ size = 16 }) => (
   </svg>
 );
 
-const GoogleIcon = () => (
-  <svg viewBox="0 0 48 48" width="38" height="38" aria-label="Google" role="img" style={{ flexShrink: 0 }}>
+const GoogleIcon = ({ size = 38 }) => (
+  <svg viewBox="0 0 48 48" width={size} height={size} aria-label="Google" role="img" style={{ flexShrink: 0 }}>
     <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
     <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
     <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/>
@@ -260,7 +253,7 @@ function BridalCtaForm() {
         </div>
       </div>
 <div className="bl-cta-btns">
-  <a  // <--- Add this
+  <a  
     href={waLink}
     target="_blank"
     rel="noopener noreferrer"
@@ -269,7 +262,7 @@ function BridalCtaForm() {
   >
     <WaIcon size={18} /> WhatsApp Consultation
   </a>
-  <a // <--- Add this
+  <a 
     href={`tel:${PHONE_NUMBER}`}
     className="bl-cta-btn-sec"
     onClick={() => trackPhoneCall('cta_form_bridal')}
@@ -297,6 +290,7 @@ const BridalLandingPage = () => {
           --bl-text:      #3A2E25;
           --bl-muted:     #7A6A5A;
           --bl-white:     #FFFFFF;
+          --bl-gray-light:#928981;
         }
         .bl-body { font-family:'Jost','Poppins',sans-serif; background:var(--bl-cream); color:var(--bl-text); overflow-x:hidden; }
 
@@ -397,12 +391,9 @@ const BridalLandingPage = () => {
         .bl-designer-sub { font-size:.87rem;line-height:1.75;color:rgba(255,255,255,.5);font-weight:300; }
         .bl-designer-trusted { font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.45);font-weight:300;margin-top:28px;border-top:1px solid rgba(184,147,90,.2);padding-top:20px; }
 
-        /* REVIEWS SECTION */
+        /* REVIEWS SECTION (BRIDE DIARIES) */
         .bl-reviews { padding:80px 5vw;background:var(--bl-white); }
         .bl-reviews-hdr { text-align:center;max-width:680px;margin:0 auto 48px; }
-        .bl-reviews-top-rated { display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);margin-bottom:14px; }
-        .bl-reviews-badge { display:inline-flex;align-items:center;gap:8px;background:var(--bl-dark);color:var(--bl-white);font-size:.76rem;font-weight:700;letter-spacing:.06em;padding:10px 22px;border-radius:4px;margin-bottom:20px; }
-        .bl-reviews-badge-stars { color:var(--bl-gold);letter-spacing:2px;font-size:.9rem; }
         .bl-reviews-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-dark);margin-bottom:10px;line-height:1.2; }
         .bl-reviews-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.75;font-weight:300; }
         .bl-reviews-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto; }
@@ -411,39 +402,66 @@ const BridalLandingPage = () => {
         .bl-review-text { font-size:.84rem;line-height:1.75;color:var(--bl-text);font-weight:300;margin-bottom:18px;font-style:italic; }
         .bl-review-name { font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl-dark); }
 
-        /* GOOGLE REVIEWS */
-        .bl-grev { padding:80px 5vw;background:var(--bl-cream); }
-        .bl-grev-inner { max-width:1100px;margin:0 auto; }
-        .bl-grev-top-label { display:inline-flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:14px; }
-        .bl-grev-top-label::before { content:'';width:22px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-grev-heading { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--bl-dark);line-height:1.15;margin-bottom:8px; }
-        .bl-grev-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.7;font-weight:300;margin-bottom:32px; }
-        .bl-grev-badge-card { background:var(--bl-white);border:1px solid rgba(184,147,90,.14);border-radius:14px;padding:22px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:20px;box-shadow:0 2px 18px rgba(28,20,16,.07); }
-        .bl-grev-rating-block { display:flex;align-items:center;gap:16px;flex:1;min-width:240px; }
-        .bl-grev-rating-texts { display:flex;flex-direction:column;gap:4px; }
-        .bl-grev-rating-row { display:flex;align-items:center;gap:8px;flex-wrap:wrap; }
-        .bl-grev-rating-num { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--bl-dark);line-height:1; }
-        .bl-grev-stars { display:flex;gap:2px; }
-        .bl-grev-star { color:#FFC107;font-size:.95rem;line-height:1; }
-        .bl-grev-rating-label { font-size:.78rem;font-weight:700;color:var(--bl-dark);letter-spacing:.04em; }
-        .bl-grev-verified { font-size:.72rem;color:var(--bl-muted);font-weight:300; }
-        .bl-grev-vdivider { width:1px;height:44px;background:rgba(184,147,90,.2);flex-shrink:0; }
-        .bl-grev-view-btn { display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#1a73e8;text-decoration:none;border:1.5px solid #1a73e8;border-radius:100px;padding:10px 22px;transition:background .2s,color .2s;white-space:nowrap; }
-        .bl-grev-view-btn:hover { background:#1a73e8;color:var(--bl-white); }
-        .bl-grev-arrow { transition:transform .2s;display:inline-flex;align-items:center; }
-        .bl-grev-view-btn:hover .bl-grev-arrow { transform:translateX(3px); }
-        .bl-grev-clients-pill { display:inline-flex;align-items:center;gap:10px;background:var(--bl-dark);color:var(--bl-white);font-size:.76rem;font-weight:700;letter-spacing:.06em;padding:12px 24px;border-radius:4px;margin-bottom:44px; }
-        .bl-grev-clients-stars { color:var(--bl-gold);letter-spacing:2px;font-size:.9rem; }
-        .bl-grev-cards { display:grid;grid-template-columns:repeat(3,1fr);gap:20px; }
-        .bl-grev-card { background:var(--bl-white);border-radius:12px;border:1px solid rgba(184,147,90,.10);padding:24px 22px;box-shadow:0 2px 14px rgba(28,20,16,.05); }
-        .bl-grev-card-header { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:8px; }
-        .bl-grev-card-name { font-size:.9rem;font-weight:700;color:var(--bl-dark);line-height:1.2; }
-        .bl-grev-card-ago { font-size:.72rem;color:var(--bl-muted);font-weight:300;margin-top:3px; }
-        .bl-grev-card-stars { display:flex;gap:3px;flex-shrink:0; }
-        .bl-grev-card-star { color:#FFC107;font-size:.82rem; }
-        .bl-grev-card-text { font-size:.82rem;line-height:1.72;color:var(--bl-text);font-weight:300; }
+        /* ─── NEW IMAGE-ACCURATE TRUST SECTION ─── */
+        .bl-trust-sec { padding: 100px 5vw; background: var(--bl-cream); text-align: center; }
+        
+        .bl-img-top-label { 
+          display: flex; align-items: center; justify-content: center; gap: 15px; 
+          margin-bottom: 25px; 
+        }
+        .bl-img-top-label span { 
+          font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--bl-gold); 
+        }
+        .bl-img-line { width: 45px; height: 1px; background: var(--bl-gold); opacity: 0.6; }
+        
+        .bl-img-main-h { 
+          font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4.2vw, 3.8rem); 
+          color: #2b2118; margin: 0 0 15px; font-weight: 700; letter-spacing: -0.01em;
+        }
+        .bl-img-main-sub { 
+          font-size: 1.1rem; color: var(--bl-muted); line-height: 1.6; max-width: 600px; 
+          margin: 0 auto 50px; font-weight: 300; 
+        }
 
-        /* PROCESS */
+        /* The Card */
+        .bl-img-google-card { 
+          background: white; border-radius: 35px; padding: 25px 45px; max-width: 880px; margin: 0 auto 35px;
+          display: flex; align-items: center; justify-content: space-between; gap: 30px;
+          box-shadow: 0 15px 45px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); flex-wrap: wrap;
+        }
+        .bl-img-card-div { width: 1px; height: 50px; background: #eee; flex-shrink: 0; }
+        
+        .bl-img-rating-wrap { display: flex; align-items: center; gap: 18px; text-align: left; }
+        .bl-img-big-num { font-size: 4.2rem; font-weight: 700; color: #2b2118; line-height: 1; font-family: 'Jost', sans-serif; }
+        .bl-img-stars-group { display: flex; flex-direction: column; gap: 2px; }
+        .bl-img-stars-row { color: #FFB400; font-size: 1.65rem; letter-spacing: 2px; line-height: 1; }
+        .bl-img-source-lbl { font-size: 1.05rem; font-weight: 600; color: #444; }
+        
+        .bl-img-sub-row { font-size: 0.95rem; color: var(--bl-muted); text-align: left; }
+        .bl-img-sub-row strong { color: #2b2118; font-weight: 700; }
+
+        .bl-img-pill-btn { 
+          border: 1px solid var(--bl-gold); border-radius: 100px; padding: 15px 32px;
+          color: var(--bl-gold); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; 
+          text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 12px;
+          transition: all 0.2s ease;
+        }
+        .bl-img-pill-btn:hover { background: var(--bl-gold); color: white; }
+
+        /* The Black Badge */
+        .bl-img-black-badge { 
+          background: #251D18; border-radius: 14px; padding: 25px 40px; max-width: 520px; margin: 0 auto;
+          display: flex; align-items: center; gap: 30px; text-align: left; position: relative;
+        }
+        .bl-img-black-badge::after { content: ""; position: absolute; bottom: 0; left: 15%; right: 15%; height: 3px; background: var(--bl-gold); border-radius: 10px 10px 0 0; opacity: 0.8; }
+        
+        .bl-img-people-icon { color: var(--bl-gold); flex-shrink: 0; opacity: 0.85; }
+        .bl-img-badge-div { width: 1px; height: 50px; background: rgba(255,255,255,0.12); }
+        .bl-img-badge-content h3 { color: white; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; margin: 0 0 4px; }
+        .bl-img-badge-content p { color: rgba(255,255,255,0.5); font-size: 0.82rem; margin: 0; font-weight: 300; }
+        .bl-img-badge-stars { color: var(--bl-gold); font-size: 1.1rem; letter-spacing: 4px; margin-bottom: 8px; line-height: 1; }
+
+        /* ─── PROCESS ─── */
         .bl-process { padding:80px 5vw;background:var(--bl-white); }
         .bl-process-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px; }
         .bl-process-card { background:var(--bl-cream);padding:36px 28px;border:1px solid rgba(184,147,90,.12);position:relative;overflow:hidden; }
@@ -506,21 +524,16 @@ const BridalLandingPage = () => {
         .bl-float-wa a::before { content:'';position:absolute;inset:0;border-radius:50%;background:#25D366;opacity:.55;animation:bl-ring 2s infinite; }
         @keyframes bl-ring { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.75);opacity:0} }
 
-        /* IMAGE MODAL */
-        .blm-overlay { position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:blm-fade .2s ease; }
-        @keyframes blm-fade { from{opacity:0} to{opacity:1} }
-        .blm-box { background:#FAF8F5;border-radius:20px;max-width:900px;width:100%;max-height:95vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5);animation:blm-up .25s ease; }
-        @keyframes blm-up { from{transform:translateY(24px);opacity:0} to{transform:translateY(0);opacity:1} }
-        .blm-close { position:absolute;top:15px;right:15px;width:40px;height:40px;border-radius:50%;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1C1410;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:transform .2s;z-index:10; }
-        .blm-close:hover { transform:scale(1.1); }
+        /* MODAL */
+        .blm-overlay { position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px; }
+        .blm-box { background:#FAF8F5;border-radius:20px;max-width:900px;width:100%;max-height:95vh;overflow-y:auto;position:relative; }
+        .blm-close { position:absolute;top:15px;right:15px;width:40px;height:40px;border-radius:50%;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1C1410;z-index:10; }
         .blm-img-wrap { width:100%;background:#000;display:flex;justify-content:center; }
         .blm-img-wrap img { width:100%;height:auto;max-height:70vh;object-fit:contain;display:block; }
         .blm-body { padding:24px 30px;text-align:center; }
-        .blm-eyebrow { font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#B8935A;margin-bottom:8px; }
-        .blm-title { font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:#1C1410;line-height:1.2;margin-bottom:10px; }
-        .blm-desc { font-size:.9rem;line-height:1.6;color:#7A6A5A;font-weight:300;margin:0 auto 24px;max-width:600px; }
-        .blm-btn-cont { display:inline-block;padding:14px 40px;background:#1C1410;color:#fff;border:none;border-radius:100px;font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s;font-family:'Jost',sans-serif; }
-        .blm-btn-cont:hover { background:#B8935A; }
+        .blm-title { font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:#1C1410;margin-bottom:10px; }
+        .blm-desc { font-size:.9rem;line-height:1.6;color:#7A6A5A;margin:0 auto 24px;max-width:600px; }
+        .blm-btn-cont { padding:14px 40px;background:#1C1410;color:#fff;border:none;border-radius:100px;font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;cursor:pointer; }
 
         /* RESPONSIVE */
         @media(max-width:1024px) {
@@ -528,7 +541,6 @@ const BridalLandingPage = () => {
           .bl-craft-inner{grid-template-columns:1fr;gap:40px}
           .bl-designer-layout{grid-template-columns:1fr;gap:32px}
           .bl-footer-divider-v{display:none}
-          .bl-grev-cards{grid-template-columns:repeat(2,1fr)}
           .bl-reviews-grid{grid-template-columns:repeat(2,1fr)}
         }
         @media(max-width:768px) {
@@ -536,31 +548,22 @@ const BridalLandingPage = () => {
           .bl-hero{flex-direction:column;min-height:auto}
           .bl-hero-text{padding:50px 5vw 32px;order:2}
           .bl-hero-img-wrap{order:1;height:55vw;min-height:300px;min-width:100%}
-          .bl-hero-img-wrap img{min-height:300px}
           .bl-hero-img-fade{background:linear-gradient(to bottom,transparent 60%,var(--bl-cream) 100%)}
           .bl-hero-btns{flex-direction:column}
-          .bl-btn-pri,.bl-btn-sec{width:100%;justify-content:center}
           .bl-trust-grid{grid-template-columns:1fr}
           .bl-gallery-grid{grid-template-columns:repeat(2,1fr)}
-          .bl-craft-inner{grid-template-columns:1fr;gap:40px}
-          .bl-craft-right{grid-template-columns:repeat(2,1fr)}
-          .bl-designer-layout{grid-template-columns:1fr;gap:32px}
           .bl-reviews-grid{grid-template-columns:1fr}
           .bl-process-grid{grid-template-columns:1fr}
           .bl-cta-box{padding:48px 24px}
           .bl-form-fields{grid-template-columns:1fr}
-          .bl-cta-btns{flex-direction:column;align-items:center}
-          .bl-cta-btn-pri,.bl-cta-btn-sec{width:100%;justify-content:center}
-          .bl-footer{padding:28px 5vw 20px}
-          .bl-footer-inner{flex-direction:column;gap:24px}
-          .bl-footer-bottom{flex-direction:column;align-items:flex-start;gap:6px}
-          .bl-hdr-logo{height:40px}
-          .bl-hdr-name{font-size:1.4rem}
-          .bl-hdr-sub{font-size:.45rem;letter-spacing:.25em}
-          .bl-grev-cards{grid-template-columns:1fr}
-          .bl-grev-badge-card{flex-direction:column;align-items:flex-start;gap:16px}
-          .bl-grev-vdivider{display:none}
-          .blm-box{max-width:100%}
+          
+          .bl-img-google-card { flex-direction: column; padding: 35px 25px; text-align: center; }
+          .bl-img-card-div { display: none; }
+          .bl-img-rating-wrap { flex-direction: column; text-align: center; }
+          .bl-img-sub-row { text-align: center; }
+          .bl-img-pill-btn { width: 100%; justify-content: center; }
+          .bl-img-black-badge { flex-direction: column; text-align: center; padding: 30px; }
+          .bl-img-badge-div { display: none; }
         }
         @media(max-width:480px) {
           .bl-gallery-grid{grid-template-columns:1fr}
@@ -625,7 +628,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* TRUST BAR */}
+        {/* TRUST BAR (Craftsmanship points) */}
         <section className="bl-trust">
           <div className="bl-trust-grid">
             {trustPoints.map(item => (
@@ -654,6 +657,56 @@ const BridalLandingPage = () => {
                 </div>
               </button>
             ))}
+          </div>
+        </section>
+
+        {/* ─── NEW IMAGE-MATCHED TRUST SECTION ─── */}
+        <section className="bl-trust-sec">
+          <div className="bl-img-top-label">
+            <div className="bl-img-line"></div>
+            <span>Top Rated Bridal Boutique in Bangalore</span>
+            <div className="bl-img-line"></div>
+          </div>
+          <h2 className="bl-img-main-h">Trusted by Brides Across Bangalore</h2>
+          <p className="bl-img-main-sub">From engagement to wedding day, we design outfits that brides truly love and feel confident in.</p>
+
+          <div className="bl-img-google-card">
+            <GoogleIcon size={44} />
+            <div className="bl-img-card-div"></div>
+            
+            <div className="bl-img-rating-wrap">
+              <span className="bl-img-big-num">4.9</span>
+              <div className="bl-img-stars-group">
+                <div className="bl-img-stars-row">★★★★★</div>
+                <div className="bl-img-source-lbl">Google Reviews</div>
+              </div>
+            </div>
+
+            <div className="bl-img-card-div"></div>
+            
+            <div className="bl-img-sub-row">
+              Based on <strong>250+</strong> verified reviews on Google
+            </div>
+
+            <div className="bl-img-card-div"></div>
+
+            <a href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore" target="_blank" rel="noopener noreferrer" className="bl-img-pill-btn">
+              VIEW ON GOOGLE <span style={{ fontSize: '1.2rem', marginTop: '-2px' }}>→</span>
+            </a>
+          </div>
+
+          <div className="bl-img-black-badge">
+            <div className="bl-img-people-icon">
+              <svg width="45" height="45" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+              </svg>
+            </div>
+            <div className="bl-img-badge-div"></div>
+            <div className="bl-img-badge-content">
+              <div className="bl-img-badge-stars">★★★★★</div>
+              <h3>250+ HAPPY BRIDES IN BANGALORE</h3>
+              <p>Loved by brides. Chosen for perfection.</p>
+            </div>
           </div>
         </section>
 
@@ -707,10 +760,10 @@ const BridalLandingPage = () => {
             </div>
           </div>
         </section>
-{/* SECTION 1: BRIDE DIARIES (Social Reviews) */}
+
+        {/* REVIEWS SECTION */}
         <section className="bl-reviews">
           <div className="bl-reviews-hdr">
-            <p className="bl-reviews-top-rated">Handpicked Testimonials</p>
             <h2 className="bl-reviews-title">The Bride’s Perspective</h2>
             <p className="bl-reviews-sub">Personal stories and styling experiences from brides who chose Shrusara for their wedding couture.</p>
           </div>
@@ -722,50 +775,6 @@ const BridalLandingPage = () => {
                 <p className="bl-review-name">{r.name}</p>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* SECTION 2: TRUSTED BY BRIDES (Verified Google Reviews) */}
-        <section className="bl-grev">
-          <div className="bl-grev-inner">
-            <p className="bl-grev-top-label">Public Reputation</p>
-            <h2 className="bl-grev-heading">Trusted by 250+ Brides on Google</h2>
-            <p className="bl-grev-sub">Our 5.0-star rating is a reflection of our commitment to perfect fitting and on-time delivery.</p>
-            
-            <div className="bl-grev-badge-card">
-              <div className="bl-grev-rating-block">
-                <GoogleIcon />
-                <div className="bl-grev-rating-texts">
-                  <div className="bl-grev-rating-row">
-                    <span className="bl-grev-rating-num">5.0</span>
-                    <div className="bl-grev-stars">{[1,2,3,4,5].map(s => <span key={s} className="bl-grev-star">★</span>)}</div>
-                    <span className="bl-grev-rating-label">Verified Ratings</span>
-                  </div>
-                  <p className="bl-grev-verified">Based on 100+ latest reviews on Google Business</p>
-                </div>
-              </div>
-              <div className="bl-grev-vdivider" />
-              <a href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore" target="_blank" rel="noopener noreferrer" className="bl-grev-view-btn">
-                View All Reviews <span className="bl-grev-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-              </a>
-            </div>
-
-            <div className="bl-grev-cards">
-              {googleReviews.map((r, i) => (
-                <div key={i} className="bl-grev-card">
-                  <div className="bl-grev-card-header">
-                    <div>
-                      <p className="bl-grev-card-name">{r.name}</p>
-                      <p className="bl-grev-card-ago">{r.ago}</p>
-                    </div>
-                    <div className="bl-grev-card-stars">
-                      {[1,2,3,4,5].map(s => <span key={s} className="bl-grev-card-star">★</span>)}
-                    </div>
-                  </div>
-                  <p className="bl-grev-card-text">{r.text}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
