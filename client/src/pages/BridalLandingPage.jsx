@@ -1,8 +1,7 @@
 import { useState } from 'react';
-// ✅ Imported tracking utilities
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
-// ─── Constants ───────────────────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 
@@ -12,139 +11,45 @@ const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   'Hi, I am looking for a customized bridal outfit. I would like to consult with Chief Designer Shruthi Ajith.'
 )}`;
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const galleryItems = [
-  {
-    src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',
-    title: 'Muhurtham Designer Bridal Blouse',
-    desc: 'A designer bridal blouse styled for muhurtham with traditional detailing and premium finishing.',
-  },
-  {
-    src: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',
-    title: 'Designer Bridal Blouse Back Neck Pattern',
-    desc: 'Elegant back neck design with intricate detailing, crafted to complement your bridal saree.',
-  },
-  {
-    src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',
-    title: 'Purple Heritage Bridal Blouse',
-    desc: 'A rich purple bridal blouse inspired by heritage craftsmanship and detailed hand embroidery.',
-  },
-  {
-    src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',
-    title: 'Traditional Silk Wedding Blouse',
-    desc: 'A classic silk wedding blouse designed with elegant traditional detailing for timeless bridal styling.',
-  },
-  {
-    src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',
-    title: 'Royal Heritage Style Bridal Maggam Blouse',
-    desc: 'A heritage-inspired bridal blouse crafted with intricate maggam embroidery, rich detailing, and premium finishing.',
-  },
-  {
-    src: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',
-    title: 'Premium Maggam Work Bridal Blouse',
-    desc: 'Rich maggam work bridal blouse with premium stone and bead detailing for muhurtham.',
-  },
-  {
-    src: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',
-    title: 'Royal Heritage Style Bridal Blouse',
-    desc: 'A heritage-inspired bridal blouse featuring royal maggam embroidery and timeless handcrafted elegance.',
-  },
-  {
-    src: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp',
-    title: 'Silk Saree Floral Beadwork Blouse',
-    desc: 'A designer silk saree blouse highlighted with floral beadwork and rich handcrafted detailing.',
-  },
-  {
-    src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
-    title: 'Traditional Deep Back Bridal Blouse',
-    desc: 'A traditional bridal blouse featuring a graceful deep back pattern and elegant embroidery accents.',
-  },
-  {
-    src: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',
-    title: 'Pastel Maggam Bridal Blouse',
-    desc: 'A pastel-toned bridal blouse crafted with premium maggam embroidery and rich bridal detailing.',
-  },
-  {
-    src: '/landingpage/close-up-handcrafted-aari-work-embroidery-premium-bridal-silksaree-blouse.webp',
-    title: 'Bridal Couple Couture Look',
-    desc: 'A custom bridal couture look styled for couples with elegant coordination and premium finishing.',
-  },
-  {
-    src: '/landingpage/custom-made-bridal-reception-lehenga-shrusara.webp',
-    title: 'Luxury Reception Bridal Look',
-    desc: 'A reception bridal ensemble crafted for modern elegance with premium finishing and refined styling.',
-  },
-  {
-    src: '/landingpage/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp',
-    title: 'Classic Bridal Back Neck Pair',
-    desc: 'A coordinated bridal blouse pair featuring elegant back neck detailing and handcrafted wedding embroidery.',
-  },
-  {
-    src: '/landingpage/heavy-hand-embroidery-reception-blouse-with-crystal-detailing-shrusara.webp',
-    title: 'Temple Heritage Bridal Blouse',
-    desc: 'A heritage-inspired bridal blouse crafted with intricate embroidery, classic elegance, and refined finishing.',
-  },
-  {
-    src: '/landingpage/intricate-hand-embroidery-bridal-wear-shruthi-ajith-bangalore.webp',
-    title: 'Temple Heritage Bridal Blouse',
-    desc: 'A traditional bridal blouse inspired by temple motifs and classic South Indian craftsmanship.',
-  },
-  {
-    src: '/landingpage/intricate-heavy-hand-embroidery-bridal-wear-bangalore.webp',
-    title: 'Heavy Hand Embroidery Bridal Wear',
-    desc: 'Rich and heavy hand embroidery bridal wear crafted for the discerning Bangalore bride.',
-  },
-  {
-    src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-bangalore.webp',
-    title: 'Red Bridal Maggam Work Muhurtham Blouse',
-    desc: 'Bold red muhurtham blouse with heavy maggam work, stone and bead detailing for a striking look.',
-  },
-  {
-    src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-mahalakshmipuram.webp',
-    title: 'Regal Reception Couture',
-    desc: 'A graceful reception outfit designed with rich detailing, elegant styling, and premium finishing.',
-  },
-  {
-    src: '/landingpage/vintage-inspired-heavy-work-bridal-blouse-shruthi-ajith-bangalore.webp',
-    title: 'Vintage Inspired Heavy Work Bridal Blouse',
-    desc: 'Vintage-style bridal blouse with heavy work detailing, designed by Chief Designer Shruthi Ajith.',
-  },
+  { src: '/bridal/bridalblow/custom-fit-muhurtham-silk-saree-blouse-bangalore.webp',                              title: 'Muhurtham Designer Bridal Blouse',         desc: 'A designer bridal blouse styled for muhurtham with traditional detailing and premium finishing.' },
+  { src: '/bridal/bridalblow/designer-bridal-blouse-back-neck-pattern-shrusara.webp',                            title: 'Designer Bridal Blouse Back Neck Pattern', desc: 'Elegant back neck design with intricate detailing, crafted to complement your bridal saree.' },
+  { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',             title: 'Purple Heritage Bridal Blouse',            desc: 'A rich purple bridal blouse inspired by heritage craftsmanship and detailed hand embroidery.' },
+  { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',           title: 'Traditional Silk Wedding Blouse',          desc: 'A classic silk wedding blouse designed with elegant traditional detailing for timeless bridal styling.' },
+  { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',            title: 'Royal Heritage Style Bridal Maggam Blouse',desc: 'A heritage-inspired bridal blouse crafted with intricate maggam embroidery, rich detailing, and premium finishing.' },
+  { src: '/bridal/bridalblow/premium-maggam-work-bridal-blouse-mahalakshmipuram-shrusara.webp',                  title: 'Premium Maggam Work Bridal Blouse',        desc: 'Rich maggam work bridal blouse with premium stone and bead detailing for muhurtham.' },
+  { src: '/bridal/bridalblow/royal-heritage-style-bridal-maggam-blouse-bangalore.webp',                         title: 'Royal Heritage Style Bridal Blouse',       desc: 'A heritage-inspired bridal blouse featuring royal maggam embroidery and timeless handcrafted elegance.' },
+  { src: '/bridal/bridalblow/traditional-south-indian-wedding-blouse-gold-zari-work-designed-shrusara-boutique.webp', title: 'Silk Saree Floral Beadwork Blouse',    desc: 'A designer silk saree blouse highlighted with floral beadwork and rich handcrafted detailing.' },
+  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',                                   title: 'Traditional Deep Back Bridal Blouse',      desc: 'A traditional bridal blouse featuring a graceful deep back pattern and elegant embroidery accents.' },
+  { src: '/bridal/Lehenga/custom-made-bridal-muhurtham-lehenga-shrusara.webp',                                   title: 'Pastel Maggam Bridal Blouse',              desc: 'A pastel-toned bridal blouse crafted with premium maggam embroidery and rich bridal detailing.' },
+  { src: '/landingpage/close-up-handcrafted-aari-work-embroidery-premium-bridal-silksaree-blouse.webp',          title: 'Bridal Couple Couture Look',               desc: 'A custom bridal couture look styled for couples with elegant coordination and premium finishing.' },
+  { src: '/landingpage/custom-made-bridal-reception-lehenga-shrusara.webp',                                      title: 'Luxury Reception Bridal Look',             desc: 'A reception bridal ensemble crafted for modern elegance with premium finishing and refined styling.' },
+  { src: '/landingpage/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp',                        title: 'Classic Bridal Back Neck Pair',            desc: 'A coordinated bridal blouse pair featuring elegant back neck detailing and handcrafted wedding embroidery.' },
+  { src: '/landingpage/heavy-hand-embroidery-reception-blouse-with-crystal-detailing-shrusara.webp',             title: 'Temple Heritage Bridal Blouse',            desc: 'A heritage-inspired bridal blouse crafted with intricate embroidery, classic elegance, and refined finishing.' },
+  { src: '/landingpage/intricate-hand-embroidery-bridal-wear-shruthi-ajith-bangalore.webp',                      title: 'Temple Heritage Bridal Blouse',            desc: 'A traditional bridal blouse inspired by temple motifs and classic South Indian craftsmanship.' },
+  { src: '/landingpage/intricate-heavy-hand-embroidery-bridal-wear-bangalore.webp',                              title: 'Heavy Hand Embroidery Bridal Wear',        desc: 'Rich and heavy hand embroidery bridal wear crafted for the discerning Bangalore bride.' },
+  { src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-bangalore.webp',    title: 'Red Bridal Maggam Work Muhurtham Blouse', desc: 'Bold red muhurtham blouse with heavy maggam work, stone and bead detailing for a striking look.' },
+  { src: '/landingpage/red-bridal-maggam-work-blouse-featuring-heavy-stone-bead-detailing-muhurtham-mahalakshmipuram.webp', title: 'Regal Reception Couture',          desc: 'A graceful reception outfit designed with rich detailing, elegant styling, and premium finishing.' },
+  { src: '/landingpage/vintage-inspired-heavy-work-bridal-blouse-shruthi-ajith-bangalore.webp',                  title: 'Vintage Inspired Heavy Work Bridal Blouse',desc: 'Vintage-style bridal blouse with heavy work detailing, designed by Chief Designer Shruthi Ajith.' },
 ];
 
 const trustPoints = [
-  { icon: '✦', label: 'Craftsmanship', title: 'Premium Maggam & Aari Work',         desc: 'Intricate handcrafted embroidery designed for bridal elegance and richness' },
-  { icon: '◈', label: 'Tailoring',     title: 'Perfect Fit Guarantee',               desc: 'Precise measurements and trials ensuring your outfit fits like a second skin' },
-  { icon: '◷', label: 'Reliability',   title: 'On-Time Delivery Commitment',         desc: 'Your bridal outfit will be ready well before your special day' },
+  { icon: '✦', label: 'Craftsmanship', title: 'Premium Maggam & Aari Work',          desc: 'Intricate handcrafted embroidery designed for bridal elegance and richness' },
+  { icon: '◈', label: 'Tailoring',     title: 'Perfect Fit Guarantee',                desc: 'Precise measurements and trials ensuring your outfit fits like a second skin' },
+  { icon: '◷', label: 'Reliability',   title: 'On-Time Delivery Commitment',          desc: 'Your bridal outfit will be ready well before your special day' },
   { icon: '✒', label: 'Expertise',     title: 'Personal Consultation by Chief Designer', desc: 'Direct guidance from Shruthi Ajith for personalized styling and design selection' },
-  { icon: '★', label: 'Exclusivity',   title: 'Limited Bridal Slots Per Month',      desc: 'We take limited orders to ensure undivided attention to every bridal masterpiece' },
-  { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes',         desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
+  { icon: '★', label: 'Exclusivity',   title: 'Limited Bridal Slots Per Month',       desc: 'We take limited orders to ensure undivided attention to every bridal masterpiece' },
+  { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes',          desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
 ];
 
 const reviews = [
-  {
-    name: 'Divya K.',
-    text: 'Shrusara crafted the most beautiful maggam work blouse for my wedding. The fitting was perfect and Shruthi Ajith personally guided me through the design. Highly recommended for brides in Bangalore!',
-  },
-  {
-    name: 'Meghana R.',
-    text: 'I was looking for a customized bridal blouse in Bangalore and found Shrusara. The aari work detailing was stunning and delivered well before my wedding date. The entire process was smooth and professional.',
-  },
-  {
-    name: 'Priya S.',
-    text: 'The bridal lehenga and blouse set from Shrusara was beyond my expectations. The premium finishing and attention to detail made me feel like royalty on my big day. Thank you Shruthi Ajith!',
-  },
-  {
-    name: 'Sowmya T.',
-    text: 'From consultation to final fitting, the experience at Shrusara was exceptional. My Kanjivaram silk blouse with heavy maggam work was exactly what I had envisioned. Perfect bridal boutique in Bangalore.',
-  },
-  {
-    name: 'Ananya B.',
-    text: 'I got my reception gown and muhurtham blouse done at Shrusara. Both outfits were crafted with incredible precision. The boutique truly understands what brides want and delivers beyond expectations.',
-  },
-  {
-    name: 'Reshma V.',
-    text: 'Outstanding quality and service. My bridal blouse with antique gold temple work was delivered on time and fit perfectly. Shrusara is definitely the best bridal designer boutique in Bangalore.',
-  },
+  { name: 'Divya K.',   text: 'Shrusara crafted the most beautiful maggam work blouse for my wedding. The fitting was perfect and Shruthi Ajith personally guided me through the design. Highly recommended for brides in Bangalore!' },
+  { name: 'Meghana R.', text: 'I was looking for a customized bridal blouse in Bangalore and found Shrusara. The aari work detailing was stunning and delivered well before my wedding date. The entire process was smooth and professional.' },
+  { name: 'Priya S.',   text: 'The bridal lehenga and blouse set from Shrusara was beyond my expectations. The premium finishing and attention to detail made me feel like royalty on my big day. Thank you Shruthi Ajith!' },
+  { name: 'Sowmya T.',  text: 'From consultation to final fitting, the experience at Shrusara was exceptional. My Kanjivaram silk blouse with heavy maggam work was exactly what I had envisioned. Perfect bridal boutique in Bangalore.' },
+  { name: 'Ananya B.',  text: 'I got my reception gown and muhurtham blouse done at Shrusara. Both outfits were crafted with incredible precision. The boutique truly understands what brides want and delivers beyond expectations.' },
+  { name: 'Reshma V.',  text: 'Outstanding quality and service. My bridal blouse with antique gold temple work was delivered on time and fit perfectly. Shrusara is definitely the best bridal designer boutique in Bangalore.' },
 ];
 
 const processSteps = [
@@ -223,9 +128,9 @@ function ImageModal({ item, onClose }) {
 
 // ─── CTA Form ─────────────────────────────────────────────────────────────────
 function BridalCtaForm() {
-  const [weddingDate, setWeddingDate] = useState('');
+  const [weddingDate, setWeddingDate]   = useState('');
   const [sareeDetails, setSareeDetails] = useState('');
-  const [designPref, setDesignPref] = useState('');
+  const [designPref, setDesignPref]     = useState('');
 
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hi, I am looking for a customized bridal outfit.\nMy wedding date is ${weddingDate || '[date]'}.\nSaree details: ${sareeDetails || '—'}.\nDesign preferences: ${designPref || '—'}.\nI would like to consult with Chief Designer Shruthi Ajith.`
@@ -252,24 +157,14 @@ function BridalCtaForm() {
           <input id="bl-design" className="bl-form-input" type="text" placeholder="e.g. Maggam work, heavy neck" value={designPref} onChange={e => setDesignPref(e.target.value)} />
         </div>
       </div>
-<div className="bl-cta-btns">
-  <a  
-    href={waLink}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="bl-cta-btn-pri"
-    onClick={handleWhatsAppClick}
-  >
-    <WaIcon size={18} /> WhatsApp Consultation
-  </a>
-  <a 
-    href={`tel:${PHONE_NUMBER}`}
-    className="bl-cta-btn-sec"
-    onClick={() => trackPhoneCall('cta_form_bridal')}
-  >
-    <PhoneIcon size={16} /> Call Now
-  </a>
-</div>
+      <div className="bl-cta-btns">
+        <a href={waLink} target="_blank" rel="noopener noreferrer" className="bl-cta-btn-pri" onClick={handleWhatsAppClick}>
+          <WaIcon size={18} /> WhatsApp Consultation
+        </a>
+        <a href={`tel:${PHONE_NUMBER}`} className="bl-cta-btn-sec" onClick={() => trackPhoneCall('cta_form_bridal')}>
+          <PhoneIcon size={16} /> Call Now
+        </a>
+      </div>
       <p className="bl-form-hint">Your details will be pre-filled in WhatsApp — just hit send.</p>
     </div>
   );
@@ -282,6 +177,8 @@ const BridalLandingPage = () => {
   return (
     <>
       <style>{`
+        /* ── RESET & BASE ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
           --bl-gold:      #B8935A;
           --bl-gold-pale: #F5EDD9;
@@ -290,317 +187,471 @@ const BridalLandingPage = () => {
           --bl-text:      #3A2E25;
           --bl-muted:     #7A6A5A;
           --bl-white:     #FFFFFF;
-          --bl-gray-light:#928981;
         }
-        .bl-body { font-family:'Jost','Poppins',sans-serif; background:var(--bl-cream); color:var(--bl-text); overflow-x:hidden; }
-
-        /* HEADER */
-        .bl-hdr { position:sticky;top:0;z-index:100;background:rgba(251,248,243,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,147,90,.15);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:72px; }
-        .bl-hdr-brand { display:flex;align-items:center;gap:14px;text-decoration:none; }
-        .bl-hdr-logo { height:52px;width:auto;object-fit:contain;display:block;flex-shrink:0; }
-        .bl-hdr-name { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:1.85rem;font-weight:700;color:#2b2118;letter-spacing:.01em;line-height:1;margin:0; }
-        .bl-hdr-sub { font-size:.52rem;letter-spacing:.32em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-top:5px;line-height:1; }
-        .bl-hdr-badge { display:flex;align-items:center;gap:6px;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bl-muted);font-weight:500; }
-        .bl-hdr-badge-dot { width:6px;height:6px;border-radius:50%;background:#4CAF50;animation:bl-pulse 2s infinite; }
-        @keyframes bl-pulse { 0%,100%{opacity:1}50%{opacity:.4} }
-        .bl-hdr-cta { display:inline-flex;align-items:center;gap:8px;background:var(--bl-dark);color:var(--bl-white);font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:11px 22px;text-decoration:none;border:none;cursor:pointer;transition:background .2s; }
-        .bl-hdr-cta:hover { background:var(--bl-gold); }
-
-        /* HERO */
-        .bl-hero { display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:90vh;background:var(--bl-cream);position:relative;overflow:hidden; }
-        .bl-hero::before { content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 60% 70% at 30% 50%,rgba(184,147,90,.08) 0%,transparent 70%); }
-        .bl-hero-text { flex:1.1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:80px 48px 80px 5vw;z-index:2; }
-        .bl-hero-eyebrow { display:inline-flex;align-items:center;gap:10px;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:22px; }
-        .bl-hero-eyebrow::before { content:'';width:28px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-hero-h1 { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(2rem,3.4vw,3.2rem);font-weight:700;line-height:1.12;color:var(--bl-dark);margin-bottom:10px; }
-        .bl-hero-h1 em { font-style:italic;color:var(--bl-gold); }
-        .bl-hero-h2 { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.1rem,1.6vw,1.5rem);font-weight:400;font-style:italic;color:var(--bl-muted);margin-bottom:20px;line-height:1.35; }
-        .bl-hero-sub { font-size:.88rem;line-height:1.85;color:var(--bl-muted);max-width:460px;margin-bottom:6px;font-weight:300; }
-        .bl-hero-designer { display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--bl-dark);margin-bottom:6px; }
-        .bl-hero-designer::before { content:'✦';color:var(--bl-gold);font-size:.7rem; }
-        .bl-hero-price { font-size:.76rem;color:var(--bl-muted);margin-bottom:10px; }
-        .bl-hero-price strong { color:var(--bl-dark);font-weight:700; }
-        .bl-hero-scarcity { display:inline-flex;align-items:center;gap:6px;font-size:.68rem;color:rgba(184,147,90,.85);font-weight:500;letter-spacing:.04em;margin-bottom:28px; }
-        .bl-hero-scarcity::before { content:'⚑';font-size:.65rem; }
-        .bl-hero-btns { display:flex;gap:14px;flex-wrap:wrap; }
-        .bl-hero-img-wrap { flex:1;position:relative;min-height:90vh;overflow:hidden; }
-        .bl-hero-img-wrap img { width:100%;height:100%;object-fit:cover;object-position:center top;display:block; }
-        .bl-hero-img-fade { position:absolute;inset:0;background:linear-gradient(to right,var(--bl-cream) 0%,transparent 18%); }
-
-        /* BUTTONS */
-        .bl-btn-pri { display:inline-flex;align-items:center;gap:9px;background:var(--bl-dark);color:var(--bl-white);font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:15px 28px;text-decoration:none;border:2px solid var(--bl-dark);transition:transform .2s,box-shadow .2s; }
-        .bl-btn-pri:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(28,20,16,.2); }
-        .bl-btn-sec { display:inline-flex;align-items:center;gap:9px;background:transparent;color:var(--bl-dark);font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:15px 28px;text-decoration:none;border:2px solid var(--bl-dark);transition:background .2s,color .2s; }
-        .bl-btn-sec:hover { background:var(--bl-dark);color:var(--bl-white); }
-
-        /* TRUST BAR */
-        .bl-trust { padding:0 5vw 64px;background:var(--bl-white); }
-        .bl-trust-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,147,90,.12); }
-        .bl-trust-item { background:var(--bl-white);padding:32px 28px;display:flex;align-items:flex-start;gap:16px; }
-        .bl-trust-icon { width:40px;height:40px;border-radius:50%;background:var(--bl-gold-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:var(--bl-gold); }
-        .bl-trust-label { font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:6px; }
-        .bl-trust-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--bl-dark);margin-bottom:4px; }
-        .bl-trust-desc { font-size:.8rem;color:var(--bl-muted);line-height:1.65;font-weight:300; }
-
-        /* SECTION LABELS */
-        .bl-sec-eyebrow { display:inline-flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:14px; }
-        .bl-sec-eyebrow::before { content:'';width:22px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-sec-h { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-dark);margin-bottom:10px;line-height:1.2; }
-        .bl-sec-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.75;max-width:500px;font-weight:300; }
-
-        /* GALLERY */
-        .bl-gallery { padding:80px 5vw;background:var(--bl-cream); }
-        .bl-gallery-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px; }
-        .bl-gallery-card { overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.82);padding:12px;box-shadow:0 4px 24px rgba(28,20,16,.10);transition:transform .3s,box-shadow .3s;cursor:pointer;width:100%;text-align:left;appearance:none;-webkit-appearance:none;display:block; }
-        .bl-gallery-card:hover { transform:translateY(-6px);box-shadow:0 12px 36px rgba(28,20,16,.16); }
-        .bl-gallery-card-inner { border-radius:22px;overflow:hidden;background:var(--bl-gold-pale);aspect-ratio:4/5; }
-        .bl-gallery-card-inner img { width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease; }
-        .bl-gallery-card:hover .bl-gallery-card-inner img { transform:scale(1.05); }
-
-        /* CRAFTSMANSHIP */
-        .bl-craft { padding:80px 5vw;background:var(--bl-white); }
-        .bl-craft-inner { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center; }
-        .bl-craft-eyebrow { display:inline-flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:14px; }
-        .bl-craft-eyebrow::before { content:'';width:22px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-craft-h { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-dark);margin-bottom:20px;line-height:1.2; }
-        .bl-craft-desc { font-size:.9rem;line-height:1.85;color:var(--bl-muted);font-weight:300;margin-bottom:16px; }
-        .bl-craft-note { font-size:.85rem;line-height:1.75;color:var(--bl-text);font-weight:400;margin-top:20px;border-left:2px solid var(--bl-gold);padding-left:14px; }
-        .bl-craft-tags { display:flex;flex-wrap:wrap;gap:10px;margin-top:28px; }
-        .bl-craft-tag { display:inline-flex;align-items:center;gap:6px;background:var(--bl-gold-pale);color:var(--bl-dark);font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(184,147,90,.25); }
-        .bl-craft-tag::before { content:'✦';color:var(--bl-gold);font-size:.55rem; }
-        .bl-craft-right { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
-        .bl-craft-img-card { overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.82);padding:10px;box-shadow:0 4px 20px rgba(28,20,16,.09);transition:transform .3s,box-shadow .3s; }
-        .bl-craft-img-card:hover { transform:translateY(-4px);box-shadow:0 10px 30px rgba(28,20,16,.15); }
-        .bl-craft-img-inner { border-radius:16px;overflow:hidden;background:var(--bl-gold-pale);aspect-ratio:3/4; }
-        .bl-craft-img-inner img { width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s; }
-        .bl-craft-img-card:hover .bl-craft-img-inner img { transform:scale(1.05); }
-
-        /* DESIGNER */
-        .bl-designer { padding:80px 5vw;background:var(--bl-dark); }
-        .bl-designer-inner { max-width:960px;margin:0 auto; }
-        .bl-designer-eyebrow { display:inline-flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:14px; }
-        .bl-designer-eyebrow::before { content:'';width:22px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-designer-sec-h { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-white);margin-bottom:48px;line-height:1.2; }
-        .bl-designer-layout { display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:center; }
-        .bl-designer-accent { position:relative;padding:36px 32px;border:1px solid rgba(184,147,90,.3); }
-        .bl-designer-accent::before { content:'';position:absolute;top:-1px;left:36px;right:36px;height:2px;background:var(--bl-gold); }
-        .bl-designer-name { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--bl-white);margin-bottom:6px; }
-        .bl-designer-role { font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:14px; }
-        .bl-designer-stars { color:var(--bl-gold);letter-spacing:3px;font-size:.9rem; }
-        .bl-designer-text { font-size:1.05rem;line-height:1.9;color:rgba(255,255,255,.75);font-weight:300;font-family:'Cormorant Garamond','Playfair Display',serif;font-style:italic;margin-bottom:18px; }
-        .bl-designer-sub { font-size:.87rem;line-height:1.75;color:rgba(255,255,255,.5);font-weight:300; }
-        .bl-designer-trusted { font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.45);font-weight:300;margin-top:28px;border-top:1px solid rgba(184,147,90,.2);padding-top:20px; }
-
-        /* REVIEWS SECTION (BRIDE DIARIES) */
-        .bl-reviews { padding:80px 5vw;background:var(--bl-white); }
-        .bl-reviews-hdr { text-align:center;max-width:680px;margin:0 auto 48px; }
-        .bl-reviews-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:700;color:var(--bl-dark);margin-bottom:10px;line-height:1.2; }
-        .bl-reviews-sub { font-size:.87rem;color:var(--bl-muted);line-height:1.75;font-weight:300; }
-        .bl-reviews-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto; }
-        .bl-review-card { background:var(--bl-cream);border:1px solid rgba(184,147,90,.14);border-radius:14px;padding:28px 24px;box-shadow:0 2px 14px rgba(28,20,16,.05); }
-        .bl-review-stars { color:#FFC107;letter-spacing:3px;font-size:.9rem;margin-bottom:12px; }
-        .bl-review-text { font-size:.84rem;line-height:1.75;color:var(--bl-text);font-weight:300;margin-bottom:18px;font-style:italic; }
-        .bl-review-name { font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl-dark); }
-
-        /* ─── IMAGE-ACCURATE TRUST SECTION ─── */
-        .bl-trust-sec { padding: 100px 5vw; background: var(--bl-cream); text-align: center; }
-        
-        .bl-img-top-label { 
-          display: flex; align-items: center; justify-content: center; gap: 15px; 
-          margin-bottom: 25px; 
-        }
-        .bl-img-top-label span { 
-          font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--bl-gold); 
-        }
-        .bl-img-line { width: 45px; height: 1px; background: var(--bl-gold); opacity: 0.6; }
-        
-        .bl-img-main-h { 
-          font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4.2vw, 3.8rem); 
-          color: #2b2118; margin: 0 0 15px; font-weight: 700; letter-spacing: -0.01em;
-        }
-        .bl-img-main-sub { 
-          font-size: 1.1rem; color: var(--bl-muted); line-height: 1.6; max-width: 600px; 
-          margin: 0 auto 50px; font-weight: 300; 
+        .bl-body {
+          font-family: 'Jost', 'Poppins', sans-serif;
+          background: var(--bl-cream);
+          color: var(--bl-text);
+          overflow-x: hidden;
+          width: 100%;
+          max-width: 100vw;
         }
 
-        /* The Card */
-        .bl-img-google-card { 
-          background: white; border-radius: 35px; padding: 25px 45px; max-width: 880px; margin: 0 auto 35px;
-          display: flex; align-items: center; justify-content: space-between; gap: 30px;
-          box-shadow: 0 15px 45px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); flex-wrap: wrap;
+        /* ── HEADER ── */
+        .bl-hdr {
+          position: sticky; top: 0; z-index: 100;
+          background: rgba(251,248,243,.97);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(184,147,90,.15);
+          padding: 0 4vw;
+          display: flex; align-items: center; justify-content: space-between;
+          height: 64px;
+          gap: 8px;
         }
-        .bl-img-card-div { width: 1px; height: 50px; background: #eee; flex-shrink: 0; }
-        
-        .bl-img-rating-wrap { display: flex; align-items: center; gap: 18px; text-align: left; }
-        .bl-img-big-num { font-size: 4.2rem; font-weight: 700; color: #2b2118; line-height: 1; font-family: 'Jost', sans-serif; }
+        .bl-hdr-brand {
+          display: flex; align-items: center; gap: 10px;
+          text-decoration: none; flex-shrink: 0;
+        }
+        .bl-hdr-logo { height: 44px; width: auto; object-fit: contain; display: block; }
+        .bl-hdr-name {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: 1.5rem; font-weight: 700; color: #2b2118;
+          line-height: 1; white-space: nowrap;
+        }
+        .bl-hdr-sub {
+          font-size: .48rem; letter-spacing: .28em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-top: 4px; line-height: 1;
+        }
+        .bl-hdr-badge {
+          display: flex; align-items: center; gap: 6px;
+          font-size: .56rem; letter-spacing: .15em; text-transform: uppercase;
+          color: var(--bl-muted); font-weight: 500; white-space: nowrap;
+        }
+        .bl-hdr-badge-dot {
+          width: 6px; height: 6px; border-radius: 50%; background: #4CAF50;
+          animation: bl-pulse 2s infinite; flex-shrink: 0;
+        }
+        @keyframes bl-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+        .bl-hdr-cta {
+          display: inline-flex; align-items: center; gap: 7px;
+          background: var(--bl-dark); color: var(--bl-white);
+          font-size: .58rem; font-weight: 600; letter-spacing: .14em;
+          text-transform: uppercase; padding: 10px 16px;
+          text-decoration: none; white-space: nowrap; flex-shrink: 0;
+          transition: background .2s;
+        }
+        .bl-hdr-cta:hover { background: var(--bl-gold); }
+
+        /* ── HERO ── */
+        .bl-hero {
+          display: flex; flex-direction: row;
+          align-items: stretch; width: 100%;
+          min-height: 88vh;
+          background: var(--bl-cream);
+          position: relative; overflow: hidden;
+        }
+        .bl-hero::before {
+          content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+          background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,.08) 0%, transparent 70%);
+        }
+        .bl-hero-text {
+          flex: 1.1; display: flex; flex-direction: column;
+          justify-content: center; align-items: flex-start;
+          padding: 72px 40px 72px 5vw; z-index: 2;
+        }
+        .bl-hero-eyebrow {
+          display: inline-flex; align-items: center; gap: 10px;
+          font-size: .6rem; letter-spacing: .24em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-bottom: 18px;
+        }
+        .bl-hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-hero-h1 {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1.75rem, 3vw, 3.2rem);
+          font-weight: 700; line-height: 1.12;
+          color: var(--bl-dark); margin-bottom: 10px;
+        }
+        .bl-hero-h1 em { font-style: italic; color: var(--bl-gold); }
+        .bl-hero-h2 {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1rem, 1.5vw, 1.5rem);
+          font-weight: 400; font-style: italic;
+          color: var(--bl-muted); margin-bottom: 18px; line-height: 1.35;
+        }
+        .bl-hero-sub {
+          font-size: .86rem; line-height: 1.8; color: var(--bl-muted);
+          max-width: 440px; margin-bottom: 6px; font-weight: 300;
+        }
+        .bl-hero-designer {
+          display: inline-flex; align-items: center; gap: 7px;
+          font-size: .7rem; font-weight: 600; letter-spacing: .06em;
+          color: var(--bl-dark); margin-bottom: 6px;
+        }
+        .bl-hero-designer::before { content: '✦'; color: var(--bl-gold); font-size: .68rem; }
+        .bl-hero-price { font-size: .74rem; color: var(--bl-muted); margin-bottom: 10px; }
+        .bl-hero-price strong { color: var(--bl-dark); font-weight: 700; }
+        .bl-hero-scarcity {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-size: .66rem; color: rgba(184,147,90,.85);
+          font-weight: 500; letter-spacing: .04em; margin-bottom: 24px;
+        }
+        .bl-hero-scarcity::before { content: '⚑'; font-size: .63rem; }
+        .bl-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+        .bl-hero-img-wrap { flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
+        .bl-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        .bl-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--bl-cream) 0%, transparent 18%); }
+
+        /* ── BUTTONS ── */
+        .bl-btn-pri {
+          display: inline-flex; align-items: center; gap: 9px;
+          background: var(--bl-dark); color: var(--bl-white);
+          font-size: .68rem; font-weight: 600; letter-spacing: .14em;
+          text-transform: uppercase; padding: 14px 24px;
+          text-decoration: none; border: 2px solid var(--bl-dark);
+          transition: transform .2s, box-shadow .2s;
+        }
+        .bl-btn-pri:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,20,16,.2); }
+        .bl-btn-sec {
+          display: inline-flex; align-items: center; gap: 9px;
+          background: transparent; color: var(--bl-dark);
+          font-size: .68rem; font-weight: 600; letter-spacing: .14em;
+          text-transform: uppercase; padding: 14px 24px;
+          text-decoration: none; border: 2px solid var(--bl-dark);
+          transition: background .2s, color .2s;
+        }
+        .bl-btn-sec:hover { background: var(--bl-dark); color: var(--bl-white); }
+
+        /* ── TRUST BAR ── */
+        .bl-trust { padding: 0 4vw 56px; background: var(--bl-white); }
+        .bl-trust-grid {
+          display: grid; grid-template-columns: repeat(3, 1fr);
+          gap: 1px; background: rgba(184,147,90,.12);
+        }
+        .bl-trust-item { background: var(--bl-white); padding: 28px 22px; display: flex; align-items: flex-start; gap: 14px; }
+        .bl-trust-icon {
+          width: 38px; height: 38px; border-radius: 50%;
+          background: var(--bl-gold-pale); display: flex;
+          align-items: center; justify-content: center;
+          flex-shrink: 0; font-size: .95rem; color: var(--bl-gold);
+        }
+        .bl-trust-label { font-size: .56rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 5px; }
+        .bl-trust-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 4px; }
+        .bl-trust-desc { font-size: .78rem; color: var(--bl-muted); line-height: 1.6; font-weight: 300; }
+
+        /* ── SECTION LABELS ── */
+        .bl-sec-eyebrow {
+          display: inline-flex; align-items: center; gap: 8px;
+          font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+          color: var(--bl-gold); font-weight: 600; margin-bottom: 12px;
+        }
+        .bl-sec-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-sec-h {
+          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+          font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+          font-weight: 700; color: var(--bl-dark); margin-bottom: 10px; line-height: 1.2;
+        }
+        .bl-sec-sub { font-size: .85rem; color: var(--bl-muted); line-height: 1.75; max-width: 500px; font-weight: 300; }
+
+        /* ── GALLERY ── */
+        .bl-gallery { padding: 64px 4vw; background: var(--bl-cream); }
+        .bl-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
+        .bl-gallery-card {
+          overflow: hidden; border-radius: 22px;
+          border: 1px solid rgba(255,255,255,.6);
+          background: rgba(255,255,255,.82); padding: 10px;
+          box-shadow: 0 4px 20px rgba(28,20,16,.10);
+          transition: transform .3s, box-shadow .3s;
+          cursor: pointer; width: 100%; text-align: left;
+          appearance: none; -webkit-appearance: none; display: block;
+        }
+        .bl-gallery-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(28,20,16,.16); }
+        .bl-gallery-card-inner { border-radius: 16px; overflow: hidden; background: var(--bl-gold-pale); aspect-ratio: 4/5; }
+        .bl-gallery-card-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+        .bl-gallery-card:hover .bl-gallery-card-inner img { transform: scale(1.05); }
+
+        /* ── CRAFTSMANSHIP ── */
+        .bl-craft { padding: 64px 4vw; background: var(--bl-white); }
+        .bl-craft-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+        .bl-craft-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
+        .bl-craft-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-craft-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 2.6vw, 2.4rem); font-weight: 700; color: var(--bl-dark); margin-bottom: 18px; line-height: 1.2; }
+        .bl-craft-desc { font-size: .88rem; line-height: 1.82; color: var(--bl-muted); font-weight: 300; margin-bottom: 14px; }
+        .bl-craft-note { font-size: .83rem; line-height: 1.72; color: var(--bl-text); font-weight: 400; margin-top: 18px; border-left: 2px solid var(--bl-gold); padding-left: 14px; }
+        .bl-craft-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+        .bl-craft-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--bl-gold-pale); color: var(--bl-dark); font-size: .6rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 7px 14px; border: 1px solid rgba(184,147,90,.25); }
+        .bl-craft-tag::before { content: '✦'; color: var(--bl-gold); font-size: .52rem; }
+        .bl-craft-right { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .bl-craft-img-card { overflow: hidden; border-radius: 18px; border: 1px solid rgba(255,255,255,.6); background: rgba(255,255,255,.82); padding: 8px; box-shadow: 0 4px 18px rgba(28,20,16,.09); transition: transform .3s, box-shadow .3s; }
+        .bl-craft-img-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(28,20,16,.14); }
+        .bl-craft-img-inner { border-radius: 14px; overflow: hidden; background: var(--bl-gold-pale); aspect-ratio: 3/4; }
+        .bl-craft-img-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+        .bl-craft-img-card:hover .bl-craft-img-inner img { transform: scale(1.05); }
+
+        /* ── DESIGNER ── */
+        .bl-designer { padding: 64px 4vw; background: var(--bl-dark); }
+        .bl-designer-inner { max-width: 960px; margin: 0 auto; }
+        .bl-designer-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
+        .bl-designer-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-designer-sec-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 2.6vw, 2.4rem); font-weight: 700; color: var(--bl-white); margin-bottom: 40px; line-height: 1.2; }
+        .bl-designer-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: center; }
+        .bl-designer-accent { position: relative; padding: 30px 26px; border: 1px solid rgba(184,147,90,.3); }
+        .bl-designer-accent::before { content: ''; position: absolute; top: -1px; left: 32px; right: 32px; height: 2px; background: var(--bl-gold); }
+        .bl-designer-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 700; color: var(--bl-white); margin-bottom: 5px; }
+        .bl-designer-role { font-size: .56rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
+        .bl-designer-stars { color: var(--bl-gold); letter-spacing: 3px; font-size: .88rem; }
+        .bl-designer-text { font-size: 1rem; line-height: 1.88; color: rgba(255,255,255,.75); font-weight: 300; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-bottom: 16px; }
+        .bl-designer-sub { font-size: .85rem; line-height: 1.72; color: rgba(255,255,255,.5); font-weight: 300; }
+        .bl-designer-trusted { font-size: .8rem; line-height: 1.68; color: rgba(255,255,255,.42); font-weight: 300; margin-top: 24px; border-top: 1px solid rgba(184,147,90,.2); padding-top: 18px; }
+
+        /* ── REVIEWS ── */
+        .bl-reviews { padding: 64px 4vw; background: var(--bl-white); }
+        .bl-reviews-hdr { text-align: center; max-width: 680px; margin: 0 auto 40px; }
+        .bl-reviews-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 2.6vw, 2.4rem); font-weight: 700; color: var(--bl-dark); margin-bottom: 10px; line-height: 1.2; }
+        .bl-reviews-sub { font-size: .85rem; color: var(--bl-muted); line-height: 1.72; font-weight: 300; }
+        .bl-reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1100px; margin: 0 auto; }
+        .bl-review-card { background: var(--bl-cream); border: 1px solid rgba(184,147,90,.14); border-radius: 14px; padding: 24px 20px; box-shadow: 0 2px 12px rgba(28,20,16,.05); }
+        .bl-review-stars { color: #FFC107; letter-spacing: 3px; font-size: .88rem; margin-bottom: 10px; }
+        .bl-review-text { font-size: .82rem; line-height: 1.72; color: var(--bl-text); font-weight: 300; margin-bottom: 16px; font-style: italic; }
+        .bl-review-name { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--bl-dark); }
+
+        /* ── TRUST SECTION ── */
+        .bl-trust-sec { padding: 80px 4vw; background: var(--bl-cream); text-align: center; }
+        .bl-img-top-label { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 22px; }
+        .bl-img-top-label span { font-size: .62rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--bl-gold); }
+        .bl-img-line { width: 40px; height: 1px; background: var(--bl-gold); opacity: .6; }
+        .bl-img-main-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.9rem, 3.8vw, 3.6rem); color: #2b2118; margin: 0 0 14px; font-weight: 700; }
+        .bl-img-main-sub { font-size: 1rem; color: var(--bl-muted); line-height: 1.6; max-width: 560px; margin: 0 auto 44px; font-weight: 300; }
+        .bl-img-google-card {
+          background: white; border-radius: 30px; padding: 22px 40px;
+          max-width: 860px; margin: 0 auto 28px;
+          display: flex; align-items: center; justify-content: space-between; gap: 24px;
+          box-shadow: 0 12px 40px rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.03); flex-wrap: wrap;
+        }
+        .bl-img-card-div { width: 1px; height: 46px; background: #eee; flex-shrink: 0; }
+        .bl-img-rating-wrap { display: flex; align-items: center; gap: 16px; text-align: left; }
+        .bl-img-big-num { font-size: 3.8rem; font-weight: 700; color: #2b2118; line-height: 1; font-family: 'Jost', sans-serif; }
         .bl-img-stars-group { display: flex; flex-direction: column; gap: 2px; }
-        .bl-img-stars-row { color: #FFB400; font-size: 1.65rem; letter-spacing: 2px; line-height: 1; }
-        .bl-img-source-lbl { font-size: 1.05rem; font-weight: 600; color: #444; }
-        
-        .bl-img-sub-row { font-size: 0.95rem; color: var(--bl-muted); text-align: left; }
+        .bl-img-stars-row { color: #FFB400; font-size: 1.5rem; letter-spacing: 2px; line-height: 1; }
+        .bl-img-source-lbl { font-size: 1rem; font-weight: 600; color: #444; }
+        .bl-img-sub-row { font-size: .92rem; color: var(--bl-muted); text-align: left; }
         .bl-img-sub-row strong { color: #2b2118; font-weight: 700; }
-
-        .bl-img-pill-btn { 
-          border: 1px solid var(--bl-gold); border-radius: 100px; padding: 15px 32px;
-          color: var(--bl-gold); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; 
-          text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 12px;
-          transition: all 0.2s ease;
-        }
+        .bl-img-pill-btn { border: 1px solid var(--bl-gold); border-radius: 100px; padding: 13px 28px; color: var(--bl-gold); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: all .2s; }
         .bl-img-pill-btn:hover { background: var(--bl-gold); color: white; }
-
-        /* ─── UPDATED BLACK BADGE COLOR ─── */
-        .bl-img-black-badge { 
-          background: #251D18; /* Dark brown from screenshot */
-          border-radius: 20px; 
-          padding: 25px 45px; 
-          max-width: 650px; 
-          margin: 0 auto;
-          display: flex; 
-          align-items: center; 
-          gap: 35px; 
-          text-align: left; 
-          position: relative;
-        }
-        /* Bottom accent bar from screenshot */
-        .bl-img-black-badge::after { 
-          content: ""; position: absolute; bottom: 0; left: 12%; right: 45%; height: 4px; 
-          background: #A88A64; border-radius: 10px 10px 0 0;
-        }
-        
+        .bl-img-black-badge { background: #251D18; border-radius: 18px; padding: 22px 40px; max-width: 620px; margin: 0 auto; display: flex; align-items: center; gap: 30px; text-align: left; position: relative; }
+        .bl-img-black-badge::after { content: ""; position: absolute; bottom: 0; left: 12%; right: 45%; height: 4px; background: #A88A64; border-radius: 10px 10px 0 0; }
         .bl-img-people-icon { color: #A88A64; flex-shrink: 0; }
-        .bl-img-badge-div { width: 1px; height: 60px; background: rgba(168, 138, 100, 0.2); }
-        
-        .bl-img-badge-stars { 
-          color: #A88A64; /* Muted Gold from screenshot */
-          font-size: 1.4rem; 
-          letter-spacing: 4px; 
-          margin-bottom: 12px; 
-          line-height: 1; 
-        }
-        
-        .bl-img-badge-content h3 { 
-          color: #A88A64; /* Matching Gold for Title */
-          font-size: 1.05rem; 
-          font-weight: 700; 
-          letter-spacing: 0.05em; 
-          margin: 0 0 6px; 
-          text-transform: uppercase;
-        }
-        
-        .bl-img-badge-content p { 
-          color: #9C9C9C; /* Muted Greyish from screenshot */
-          font-size: 1rem; 
-          margin: 0; 
-          font-weight: 300; 
-          letter-spacing: 0.01em;
-        }
+        .bl-img-badge-div { width: 1px; height: 56px; background: rgba(168,138,100,.2); }
+        .bl-img-badge-stars { color: #A88A64; font-size: 1.3rem; letter-spacing: 4px; margin-bottom: 10px; line-height: 1; }
+        .bl-img-badge-content h3 { color: #A88A64; font-size: 1rem; font-weight: 700; letter-spacing: .05em; margin: 0 0 5px; text-transform: uppercase; }
+        .bl-img-badge-content p { color: #9C9C9C; font-size: .95rem; margin: 0; font-weight: 300; }
 
-        /* ─── PROCESS ─── */
-        .bl-process { padding:80px 5vw;background:var(--bl-white); }
-        .bl-process-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px; }
-        .bl-process-card { background:var(--bl-cream);padding:36px 28px;border:1px solid rgba(184,147,90,.12);position:relative;overflow:hidden; }
-        .bl-process-card::before { content:attr(data-step);position:absolute;top:-12px;right:14px;font-family:'Cormorant Garamond','Playfair Display',serif;font-size:5rem;font-weight:700;color:rgba(184,147,90,.1);pointer-events:none;line-height:1; }
-        .bl-process-step { display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--bl-gold);margin-bottom:14px; }
-        .bl-process-title { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--bl-dark);margin-bottom:10px; }
-        .bl-process-desc { font-size:.82rem;color:var(--bl-muted);line-height:1.7;font-weight:300; }
+        /* ── PROCESS ── */
+        .bl-process { padding: 64px 4vw; background: var(--bl-white); }
+        .bl-process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 36px; }
+        .bl-process-card { background: var(--bl-cream); padding: 30px 24px; border: 1px solid rgba(184,147,90,.12); position: relative; overflow: hidden; }
+        .bl-process-card::before { content: attr(data-step); position: absolute; top: -12px; right: 12px; font-family: 'Cormorant Garamond', serif; font-size: 4.5rem; font-weight: 700; color: rgba(184,147,90,.1); pointer-events: none; line-height: 1; }
+        .bl-process-step { display: inline-block; font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); margin-bottom: 12px; }
+        .bl-process-title { font-family: 'Cormorant Garamond', serif; font-size: 1.22rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 8px; }
+        .bl-process-desc { font-size: .8rem; color: var(--bl-muted); line-height: 1.68; font-weight: 300; }
 
-        /* FINAL CTA */
-        .bl-cta-wrap { padding:80px 5vw;background:var(--bl-cream); }
-        .bl-cta-box { background:var(--bl-dark);padding:72px 60px;text-align:center;position:relative;overflow:hidden;max-width:960px;margin:0 auto; }
-        .bl-cta-box::before { content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 50% 100%,rgba(184,147,90,.12) 0%,transparent 70%); }
-        .bl-cta-eyebrow { display:inline-flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:20px; }
-        .bl-cta-eyebrow::before { content:'';width:20px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-cta-eyebrow::after  { content:'';width:20px;height:1px;background:var(--bl-gold);display:block; }
-        .bl-cta-h { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--bl-white);margin-bottom:14px;line-height:1.2; }
-        .bl-cta-sub { font-size:.9rem;line-height:1.75;color:rgba(255,255,255,.7);max-width:480px;margin:0 auto 12px;font-weight:300; }
-        .bl-cta-scarcity { display:inline-flex;align-items:center;gap:6px;font-size:.72rem;color:rgba(255,255,255,.45);margin-bottom:36px; }
-        .bl-cta-scarcity::before { content:'⚑';font-size:.7rem; }
-        .bl-cta-form { margin-top:32px;position:relative;z-index:1; }
-        .bl-form-fields { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px; }
-        .bl-form-group { display:flex;flex-direction:column;gap:8px;text-align:left; }
-        .bl-form-label { font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5); }
-        .bl-form-input { background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.18);padding:12px 16px;font-size:.87rem;color:var(--bl-white);outline:none;transition:border-color .2s,background .2s;width:100%;font-family:'Jost','Poppins',sans-serif; }
-        .bl-form-input::placeholder { color:rgba(255,255,255,.32); }
-        .bl-form-input:focus { border-color:var(--bl-gold);background:rgba(255,255,255,.13); }
-        .bl-cta-btns { display:flex;justify-content:center;gap:14px;flex-wrap:wrap; }
-        .bl-cta-btn-pri { display:inline-flex;align-items:center;gap:9px;background:var(--bl-gold);color:var(--bl-white);font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:16px 32px;text-decoration:none;border:2px solid var(--bl-gold);transition:transform .2s,box-shadow .2s; }
-        .bl-cta-btn-pri:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,147,90,.35); }
-        .bl-cta-btn-sec { display:inline-flex;align-items:center;gap:9px;background:transparent;color:var(--bl-white);font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:16px 32px;text-decoration:none;border:2px solid rgba(255,255,255,.3);transition:background .2s; }
-        .bl-cta-btn-sec:hover { background:rgba(255,255,255,.08); }
-        .bl-form-hint { font-size:.72rem;color:rgba(255,255,255,.38);margin-top:16px;font-style:italic; }
+        /* ── FINAL CTA ── */
+        .bl-cta-wrap { padding: 64px 4vw; background: var(--bl-cream); }
+        .bl-cta-box { background: var(--bl-dark); padding: 60px 48px; text-align: center; position: relative; overflow: hidden; max-width: 960px; margin: 0 auto; }
+        .bl-cta-box::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 55% at 50% 100%, rgba(184,147,90,.12) 0%, transparent 70%); }
+        .bl-cta-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 18px; }
+        .bl-cta-eyebrow::before, .bl-cta-eyebrow::after { content: ''; width: 18px; height: 1px; background: var(--bl-gold); display: block; }
+        .bl-cta-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 2.8vw, 2.6rem); font-weight: 700; color: var(--bl-white); margin-bottom: 12px; line-height: 1.2; }
+        .bl-cta-sub { font-size: .88rem; line-height: 1.72; color: rgba(255,255,255,.7); max-width: 480px; margin: 0 auto 10px; font-weight: 300; }
+        .bl-cta-scarcity { display: inline-flex; align-items: center; gap: 6px; font-size: .7rem; color: rgba(255,255,255,.45); margin-bottom: 32px; }
+        .bl-cta-scarcity::before { content: '⚑'; font-size: .68rem; }
+        .bl-cta-form { margin-top: 28px; position: relative; z-index: 1; }
+        .bl-form-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+        .bl-form-group { display: flex; flex-direction: column; gap: 7px; text-align: left; }
+        .bl-form-label { font-size: .6rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+        .bl-form-input { background: rgba(255,255,255,.09); border: 1.5px solid rgba(255,255,255,.18); padding: 11px 14px; font-size: .85rem; color: var(--bl-white); outline: none; transition: border-color .2s, background .2s; width: 100%; font-family: 'Jost', 'Poppins', sans-serif; }
+        .bl-form-input::placeholder { color: rgba(255,255,255,.32); }
+        .bl-form-input:focus { border-color: var(--bl-gold); background: rgba(255,255,255,.13); }
+        .bl-cta-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .bl-cta-btn-pri { display: inline-flex; align-items: center; gap: 9px; background: var(--bl-gold); color: var(--bl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 28px; text-decoration: none; border: 2px solid var(--bl-gold); transition: transform .2s, box-shadow .2s; }
+        .bl-cta-btn-pri:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,147,90,.35); }
+        .bl-cta-btn-sec { display: inline-flex; align-items: center; gap: 9px; background: transparent; color: var(--bl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 28px; text-decoration: none; border: 2px solid rgba(255,255,255,.3); transition: background .2s; }
+        .bl-cta-btn-sec:hover { background: rgba(255,255,255,.08); }
+        .bl-form-hint { font-size: .7rem; color: rgba(255,255,255,.38); margin-top: 14px; font-style: italic; }
 
-        /* FOOTER */
-        .bl-footer { background:var(--bl-dark);border-top:1px solid rgba(184,147,90,.18);padding:36px 5vw 24px;color:rgba(255,255,255,.65); }
-        .bl-footer-inner { max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-start;gap:32px 60px; }
-        .bl-footer-brand { display:flex;flex-direction:column;gap:4px;min-width:200px;flex:1.2; }
-        .bl-footer-brand-name { font-family:'Cormorant Garamond','Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--bl-white);letter-spacing:.02em;line-height:1;margin:0; }
-        .bl-footer-brand-tag { font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:10px; }
-        .bl-footer-desc { font-size:.76rem;line-height:1.7;color:rgba(255,255,255,.42);font-weight:300;max-width:300px;margin:0; }
-        .bl-footer-seo { font-size:.72rem;line-height:1.7;color:rgba(255,255,255,.28);font-weight:300;max-width:340px;margin:10px 0 0; }
-        .bl-footer-divider-v { width:1px;align-self:stretch;background:rgba(184,147,90,.15);flex-shrink:0; }
-        .bl-footer-contact { flex:1;min-width:200px; }
-        .bl-footer-contact-title { font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bl-gold);font-weight:600;margin-bottom:14px; }
-        .bl-footer-contact-list { display:flex;flex-direction:column;gap:10px; }
-        .bl-footer-contact-item { display:flex;align-items:flex-start;gap:8px;font-size:.76rem;color:rgba(255,255,255,.52);line-height:1.45;text-decoration:none;transition:color .2s; }
-        .bl-footer-contact-item:hover { color:var(--bl-gold); }
-        .bl-footer-contact-icon { color:var(--bl-gold);flex-shrink:0;margin-top:2px; }
-        .bl-footer-map-link { display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--bl-gold);text-decoration:none;border:1px solid rgba(184,147,90,.3);padding:7px 14px;transition:background .2s,border-color .2s; }
-        .bl-footer-map-link:hover { background:rgba(184,147,90,.1);border-color:var(--bl-gold); }
-        .bl-footer-bottom { max-width:1100px;margin:20px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px; }
-        .bl-footer-copy { font-size:.65rem;color:rgba(255,255,255,.22); }
+        /* ── FOOTER ── */
+        .bl-footer { background: var(--bl-dark); border-top: 1px solid rgba(184,147,90,.18); padding: 32px 4vw 20px; color: rgba(255,255,255,.65); }
+        .bl-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 48px; }
+        .bl-footer-brand { display: flex; flex-direction: column; gap: 4px; min-width: 180px; flex: 1.2; }
+        .bl-footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--bl-white); margin: 0; }
+        .bl-footer-brand-tag { font-size: .5rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 8px; }
+        .bl-footer-desc { font-size: .74rem; line-height: 1.68; color: rgba(255,255,255,.42); font-weight: 300; max-width: 280px; margin: 0; }
+        .bl-footer-seo { font-size: .7rem; line-height: 1.68; color: rgba(255,255,255,.26); font-weight: 300; max-width: 320px; margin: 8px 0 0; }
+        .bl-footer-divider-v { width: 1px; align-self: stretch; background: rgba(184,147,90,.15); flex-shrink: 0; }
+        .bl-footer-contact { flex: 1; min-width: 180px; }
+        .bl-footer-contact-title { font-size: .54rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
+        .bl-footer-contact-list { display: flex; flex-direction: column; gap: 9px; }
+        .bl-footer-contact-item { display: flex; align-items: flex-start; gap: 8px; font-size: .74rem; color: rgba(255,255,255,.52); line-height: 1.44; text-decoration: none; transition: color .2s; }
+        .bl-footer-contact-item:hover { color: var(--bl-gold); }
+        .bl-footer-contact-icon { color: var(--bl-gold); flex-shrink: 0; margin-top: 2px; }
+        .bl-footer-map-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: .58rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--bl-gold); text-decoration: none; border: 1px solid rgba(184,147,90,.3); padding: 6px 12px; transition: background .2s; }
+        .bl-footer-map-link:hover { background: rgba(184,147,90,.1); }
+        .bl-footer-bottom { max-width: 1100px; margin: 18px auto 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .bl-footer-copy { font-size: .62rem; color: rgba(255,255,255,.22); }
 
-        /* FLOATING */
-        .bl-float-call { position:fixed;bottom:100px;right:24px;z-index:200; }
-        .bl-float-call a { display:flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:50%;background:#000;color:#fff;box-shadow:0 6px 28px rgba(0,0,0,.4);text-decoration:none; }
-        .bl-float-call a:hover { background:#B8935A; }
-        .bl-float-wa { position:fixed;bottom:28px;right:24px;z-index:200; }
-        .bl-float-wa a { display:flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:50%;background:#25D366;color:var(--bl-white);box-shadow:0 6px 28px rgba(37,211,102,.45);position:relative;text-decoration:none; }
-        .bl-float-wa a::before { content:'';position:absolute;inset:0;border-radius:50%;background:#25D366;opacity:.55;animation:bl-ring 2s infinite; }
+        /* ── FLOATING BUTTONS ── */
+        .bl-float-call { position: fixed; bottom: 96px; right: 20px; z-index: 200; }
+        .bl-float-call a { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #000; color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.4); text-decoration: none; }
+        .bl-float-call a:hover { background: #B8935A; }
+        .bl-float-wa { position: fixed; bottom: 24px; right: 20px; z-index: 200; }
+        .bl-float-wa a { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #25D366; color: var(--bl-white); box-shadow: 0 6px 24px rgba(37,211,102,.45); position: relative; text-decoration: none; }
+        .bl-float-wa a::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25D366; opacity: .55; animation: bl-ring 2s infinite; }
         @keyframes bl-ring { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.75);opacity:0} }
 
-        /* MODAL */
-        .blm-overlay { position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px; }
-        .blm-box { background:#FAF8F5;border-radius:20px;max-width:900px;width:100%;max-height:95vh;overflow-y:auto;position:relative; }
-        .blm-close { position:absolute;top:15px;right:15px;width:40px;height:40px;border-radius:50%;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1C1410;z-index:10; }
-        .blm-img-wrap { width:100%;background:#000;display:flex;justify-content:center; }
-        .blm-img-wrap img { width:100%;height:auto;max-height:70vh;object-fit:contain;display:block; }
-        .blm-body { padding:24px 30px;text-align:center; }
-        .blm-title { font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:#1C1410;margin-bottom:10px; }
-        .blm-desc { font-size:.9rem;line-height:1.6;color:#7A6A5A;margin:0 auto 24px;max-width:600px; }
-        .blm-btn-cont { padding:14px 40px;background:#1C1410;color:#fff;border:none;border-radius:100px;font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;cursor:pointer; }
+        /* ── MODAL ── */
+        .blm-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.86); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .blm-box { background: #FAF8F5; border-radius: 18px; max-width: 860px; width: 100%; max-height: 92vh; overflow-y: auto; position: relative; }
+        .blm-close { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #1C1410; z-index: 10; }
+        .blm-img-wrap { width: 100%; background: #000; display: flex; justify-content: center; }
+        .blm-img-wrap img { width: 100%; height: auto; max-height: 65vh; object-fit: contain; display: block; }
+        .blm-body { padding: 20px 24px; text-align: center; }
+        .blm-eyebrow { font-size: .56rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 5px; }
+        .blm-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #1C1410; margin-bottom: 8px; }
+        .blm-desc { font-size: .88rem; line-height: 1.58; color: #7A6A5A; margin: 0 auto 20px; max-width: 560px; }
+        .blm-btn-cont { padding: 12px 36px; background: #1C1410; color: #fff; border: none; border-radius: 100px; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
 
-        /* RESPONSIVE */
-        @media(max-width:1024px) {
-          .bl-gallery-grid{grid-template-columns:repeat(2,1fr)}
-          .bl-craft-inner{grid-template-columns:1fr;gap:40px}
-          .bl-designer-layout{grid-template-columns:1fr;gap:32px}
-          .bl-footer-divider-v{display:none}
-          .bl-reviews-grid{grid-template-columns:repeat(2,1fr)}
+        /* ══════════════════════════════════════════
+           RESPONSIVE — TABLET  (max 1024px)
+        ══════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+          .bl-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+          .bl-craft-inner  { grid-template-columns: 1fr; gap: 36px; }
+          .bl-designer-layout { grid-template-columns: 1fr; gap: 28px; }
+          .bl-footer-divider-v { display: none; }
+          .bl-reviews-grid { grid-template-columns: repeat(2, 1fr); }
+          .bl-trust-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        @media(max-width:768px) {
-          .bl-hdr-badge{display:none}
-          .bl-hero{flex-direction:column;min-height:auto}
-          .bl-hero-text{padding:50px 5vw 32px;order:2}
-          .bl-hero-img-wrap{order:1;height:55vw;min-height:300px;min-width:100%}
-          .bl-hero-img-fade{background:linear-gradient(to bottom,transparent 60%,var(--bl-cream) 100%)}
-          .bl-hero-btns{flex-direction:column}
-          .bl-trust-grid{grid-template-columns:1fr}
-          .bl-gallery-grid{grid-template-columns:repeat(2,1fr)}
-          .bl-reviews-grid{grid-template-columns:1fr}
-          .bl-process-grid{grid-template-columns:1fr}
-          .bl-cta-box{padding:48px 24px}
-          .bl-form-fields{grid-template-columns:1fr}
-          
-          .bl-img-google-card { flex-direction: column; padding: 35px 25px; text-align: center; }
+
+        /* ══════════════════════════════════════════
+           RESPONSIVE — MOBILE  (max 768px)
+        ══════════════════════════════════════════ */
+        @media (max-width: 768px) {
+          /* Header */
+          .bl-hdr { height: 60px; padding: 0 16px; gap: 6px; }
+          .bl-hdr-logo { height: 38px; }
+          .bl-hdr-name { font-size: 1.25rem; }
+          .bl-hdr-sub { font-size: .42rem; letter-spacing: .22em; }
+          .bl-hdr-badge { display: none; }
+          .bl-hdr-cta { font-size: .54rem; padding: 9px 12px; letter-spacing: .1em; gap: 5px; }
+
+          /* Hero — stack image above text */
+          .bl-hero { flex-direction: column; min-height: auto; }
+          .bl-hero-img-wrap { order: 1; height: 56vw; min-height: 240px; width: 100%; min-height: unset; }
+          .bl-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--bl-cream) 100%); }
+          .bl-hero-text { order: 2; padding: 32px 16px 40px; }
+          .bl-hero-eyebrow { font-size: .56rem; margin-bottom: 12px; }
+          .bl-hero-h1 { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 8px; }
+          .bl-hero-h2 { font-size: clamp(.95rem, 3.5vw, 1.2rem); margin-bottom: 14px; }
+          .bl-hero-sub { font-size: .82rem; max-width: 100%; margin-bottom: 5px; }
+          .bl-hero-designer { font-size: .66rem; }
+          .bl-hero-price { font-size: .7rem; }
+          .bl-hero-scarcity { font-size: .63rem; margin-bottom: 20px; }
+          .bl-hero-btns { flex-direction: column; gap: 10px; }
+          .bl-btn-pri, .bl-btn-sec { width: 100%; justify-content: center; padding: 14px 20px; font-size: .66rem; }
+
+          /* Trust bar */
+          .bl-trust { padding: 0 16px 40px; }
+          .bl-trust-grid { grid-template-columns: 1fr; }
+          .bl-trust-item { padding: 20px 16px; }
+
+          /* Gallery */
+          .bl-gallery { padding: 48px 16px; }
+          .bl-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
+          .bl-gallery-card { padding: 8px; border-radius: 16px; }
+          .bl-gallery-card-inner { border-radius: 12px; }
+
+          /* Trust section (Google) */
+          .bl-trust-sec { padding: 60px 16px; }
+          .bl-img-top-label { gap: 10px; }
+          .bl-img-top-label span { font-size: .56rem; letter-spacing: .18em; }
+          .bl-img-main-h { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+          .bl-img-main-sub { font-size: .88rem; margin-bottom: 32px; }
+          .bl-img-google-card {
+            flex-direction: column; padding: 24px 20px;
+            text-align: center; gap: 16px;
+            border-radius: 20px;
+          }
           .bl-img-card-div { display: none; }
-          .bl-img-rating-wrap { flex-direction: column; text-align: center; }
-          .bl-img-sub-row { text-align: center; }
-          .bl-img-pill-btn { width: 100%; justify-content: center; }
-          .bl-img-black-badge { flex-direction: column; text-align: center; padding: 30px; }
+          .bl-img-rating-wrap { flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+          .bl-img-big-num { font-size: 3.2rem; }
+          .bl-img-stars-row { font-size: 1.3rem; }
+          .bl-img-source-lbl { font-size: .9rem; }
+          .bl-img-sub-row { text-align: center; font-size: .85rem; }
+          .bl-img-pill-btn { width: 100%; justify-content: center; padding: 12px 20px; font-size: .68rem; }
+          .bl-img-black-badge {
+            flex-direction: column; text-align: center;
+            padding: 24px 20px; gap: 16px;
+            border-radius: 16px; max-width: 100%;
+          }
           .bl-img-badge-div { display: none; }
+          .bl-img-badge-stars { font-size: 1.2rem; }
+          .bl-img-badge-content h3 { font-size: .9rem; }
+          .bl-img-badge-content p { font-size: .88rem; }
+          .bl-img-people-icon svg { width: 48px; height: 48px; }
+
+          /* Craft */
+          .bl-craft { padding: 48px 16px; }
+          .bl-craft-inner { gap: 28px; }
+          .bl-craft-right { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+          .bl-craft-tags { gap: 6px; }
+
+          /* Designer */
+          .bl-designer { padding: 48px 16px; }
+          .bl-designer-layout { grid-template-columns: 1fr; gap: 20px; }
+
+          /* Reviews */
+          .bl-reviews { padding: 48px 16px; }
+          .bl-reviews-grid { grid-template-columns: 1fr; gap: 14px; }
+          .bl-reviews-hdr { margin-bottom: 28px; }
+
+          /* Process */
+          .bl-process { padding: 48px 16px; }
+          .bl-process-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
+
+          /* Final CTA */
+          .bl-cta-wrap { padding: 48px 16px; }
+          .bl-cta-box { padding: 36px 20px; }
+          .bl-cta-h { font-size: clamp(1.4rem, 5.5vw, 2rem); }
+          .bl-cta-sub { font-size: .84rem; }
+          .bl-form-fields { grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
+          .bl-cta-btns { flex-direction: column; gap: 10px; }
+          .bl-cta-btn-pri, .bl-cta-btn-sec { width: 100%; justify-content: center; padding: 14px 20px; font-size: .66rem; }
+
+          /* Footer */
+          .bl-footer { padding: 28px 16px 18px; }
+          .bl-footer-inner { gap: 20px 0; flex-direction: column; }
+          .bl-footer-desc, .bl-footer-seo { max-width: 100%; }
+
+          /* Modal */
+          .blm-body { padding: 16px 18px; }
+          .blm-title { font-size: 1.35rem; }
+          .blm-desc { font-size: .82rem; }
+
+          /* Floating */
+          .bl-float-call { bottom: 90px; right: 16px; }
+          .bl-float-call a { width: 50px; height: 50px; }
+          .bl-float-wa { bottom: 20px; right: 16px; }
+          .bl-float-wa a { width: 50px; height: 50px; }
         }
-        @media(max-width:480px) {
-          .bl-gallery-grid{grid-template-columns:1fr}
+
+        /* ══════════════════════════════════════════
+           RESPONSIVE — SMALL MOBILE  (max 480px)
+        ══════════════════════════════════════════ */
+        @media (max-width: 480px) {
+          .bl-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+          .bl-hdr-name { font-size: 1.1rem; }
+          .bl-hdr-cta { padding: 8px 10px; font-size: .5rem; }
+          .bl-hero-img-wrap { height: 64vw; }
+          .bl-img-black-badge::after { left: 8%; right: 40%; }
         }
       `}</style>
 
@@ -616,14 +667,8 @@ const BridalLandingPage = () => {
             </div>
           </div>
           <div className="bl-hdr-badge"><span className="bl-hdr-badge-dot" />Bangalore's Bridal Studio</div>
-          <a
-            href={WA_PREFILL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bl-hdr-cta"
-            onClick={() => trackWhatsApp('header_bridal')}
-          >
-            <WaIcon size={14} /> Book Consultation
+          <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-hdr-cta" onClick={() => trackWhatsApp('header_bridal')}>
+            <WaIcon size={13} /> Book Consultation
           </a>
         </header>
 
@@ -638,21 +683,11 @@ const BridalLandingPage = () => {
             <p className="bl-hero-price">Bridal designs crafted for premium weddings</p>
             <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
-<a
-                href={WA_PREFILL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bl-btn-pri"
-                onClick={() => trackWhatsApp('hero_bridal')}
-              >
-                <WaIcon size={17} /> Book Your Bridal Consultation
+              <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-btn-pri" onClick={() => trackWhatsApp('hero_bridal')}>
+                <WaIcon size={16} /> Book Your Bridal Consultation
               </a>
-              <a
-                href={`tel:${PHONE_NUMBER}`}
-                className="bl-btn-sec"
-                onClick={() => trackPhoneCall('hero_bridal')}
-              >
-                <PhoneIcon size={15} /> Call Now
+              <a href={`tel:${PHONE_NUMBER}`} className="bl-btn-sec" onClick={() => trackPhoneCall('hero_bridal')}>
+                <PhoneIcon size={14} /> Call Now
               </a>
             </div>
           </div>
@@ -662,7 +697,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* TRUST BAR (Craftsmanship points) */}
+        {/* TRUST BAR */}
         <section className="bl-trust">
           <div className="bl-trust-grid">
             {trustPoints.map(item => (
@@ -694,7 +729,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ─── IMAGE-MATCHED TRUST SECTION ─── */}
+        {/* TRUST SECTION */}
         <section className="bl-trust-sec">
           <div className="bl-img-top-label">
             <div className="bl-img-line"></div>
@@ -703,11 +738,9 @@ const BridalLandingPage = () => {
           </div>
           <h2 className="bl-img-main-h">Trusted by Brides Across Bangalore</h2>
           <p className="bl-img-main-sub">From engagement to wedding day, we design outfits that brides truly love and feel confident in.</p>
-
           <div className="bl-img-google-card">
-            <GoogleIcon size={44} />
+            <GoogleIcon size={42} />
             <div className="bl-img-card-div"></div>
-            
             <div className="bl-img-rating-wrap">
               <span className="bl-img-big-num">4.9</span>
               <div className="bl-img-stars-group">
@@ -715,23 +748,16 @@ const BridalLandingPage = () => {
                 <div className="bl-img-source-lbl">Google Reviews</div>
               </div>
             </div>
-
             <div className="bl-img-card-div"></div>
-            
-            <div className="bl-img-sub-row">
-              Based on <strong>250+</strong> verified reviews on Google
-            </div>
-
+            <div className="bl-img-sub-row">Based on <strong>250+</strong> verified reviews on Google</div>
             <div className="bl-img-card-div"></div>
-
             <a href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore" target="_blank" rel="noopener noreferrer" className="bl-img-pill-btn">
-              VIEW ON GOOGLE <span style={{ fontSize: '1.2rem', marginTop: '-2px' }}>→</span>
+              VIEW ON GOOGLE <span style={{ fontSize: '1.1rem' }}>→</span>
             </a>
           </div>
-
           <div className="bl-img-black-badge">
             <div className="bl-img-people-icon">
-              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
               </svg>
             </div>
@@ -760,10 +786,10 @@ const BridalLandingPage = () => {
             </div>
             <div className="bl-craft-right">
               {[
-                { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp', alt: 'Handcrafted aari work bridal blouse' },
-                { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp', alt: 'Intricate maggam aari bridal wear' },
-                { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp', alt: 'Premium antique gold temple work blouse' },
-                { src: '/videos/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp', alt: 'Premium maggam work bridal blouse' },
+                { src: '/bridal/bridalblow/handcrafted-aari-work-wedding-blouse-shrusara-bangalore-boutique.webp',    alt: 'Handcrafted aari work bridal blouse' },
+                { src: '/bridal/bridalblow/intricate-hand-embroidery-maggam-aari-bridal-wear-mahalakshmipuram.webp',  alt: 'Intricate maggam aari bridal wear' },
+                { src: '/bridal/bridalblow/premium-antique-gold-temple-work-bridal-blouse-shrusara-bangalore.webp',   alt: 'Premium antique gold temple work blouse' },
+                { src: '/videos/designer-bridal-blouse-back-neck-pattern-bangalore-shrusara.webp',                    alt: 'Premium maggam work bridal blouse' },
               ].map((img, i) => (
                 <div key={i} className="bl-craft-img-card">
                   <div className="bl-craft-img-inner">
@@ -795,10 +821,10 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* REVIEWS SECTION */}
+        {/* REVIEWS */}
         <section className="bl-reviews">
           <div className="bl-reviews-hdr">
-            <h2 className="bl-reviews-title">The Bride’s Perspective</h2>
+            <h2 className="bl-reviews-title">The Bride's Perspective</h2>
             <p className="bl-reviews-sub">Personal stories and styling experiences from brides who chose Shrusara for their wedding couture.</p>
           </div>
           <div className="bl-reviews-grid">
@@ -830,7 +856,7 @@ const BridalLandingPage = () => {
         {/* FINAL CTA */}
         <section className="bl-cta-wrap">
           <div className="bl-cta-box">
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
               <p className="bl-cta-eyebrow">Bridal Consultation</p>
             </div>
             <h2 className="bl-cta-h">Book Your Bridal Consultation Today</h2>
@@ -877,18 +903,12 @@ const BridalLandingPage = () => {
         {/* FLOATING BUTTONS */}
         <div className="bl-float-call">
           <a href={`tel:${PHONE_NUMBER}`} aria-label="Call" onClick={() => trackPhoneCall('floating_button_bridal')}>
-            <PhoneIcon size={26} />
+            <PhoneIcon size={24} />
           </a>
         </div>
         <div className="bl-float-wa">
-          <a
-            href={WA_PREFILL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp"
-            onClick={() => trackWhatsApp('floating_button_bridal')}
-          >
-            <WaIcon size={28} />
+          <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" onClick={() => trackWhatsApp('floating_button_bridal')}>
+            <WaIcon size={26} />
           </a>
         </div>
 
