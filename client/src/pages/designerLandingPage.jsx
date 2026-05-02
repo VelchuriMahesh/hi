@@ -10,31 +10,176 @@ const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
 )}`;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
+
+// Updated gallery items with new filters & correct image paths
 const galleryItems = [
-  { category: 'Designer Gowns',           src: '/designer/gowns/designer-gown-party-wear-bangalore-shrusara.webp',            title: 'Designer Party Gown',              desc: 'An elegant designer party gown crafted with premium fabric and refined finishing for special occasions.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/custom-reception-gown-shrusara-bangalore-boutique.webp',      title: 'Custom Reception Gown',            desc: 'A stunning reception gown designed with modern silhouettes and luxurious detailing.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/luxury-evening-gown-custom-design-bangalore.webp',            title: 'Luxury Evening Gown',              desc: 'A flowing luxury evening gown tailored for grace, elegance, and a perfect fit.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/floor-length-designer-gown-occasion-wear-shrusara.webp',      title: 'Floor-Length Occasion Gown',       desc: 'A floor-length occasion gown styled with elegant draping and premium finishing.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/off-shoulder-gown-custom-designer-shrusara-bangalore.webp',   title: 'Off-Shoulder Designer Gown',       desc: 'A chic off-shoulder gown designed for receptions, parties, and formal events.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/embellished-evening-gown-custom-tailored-bangalore.webp',     title: 'Embellished Evening Gown',         desc: 'An embellished evening gown with intricate detailing and a tailored fit.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/indo-western-outfit-designer-shrusara-bangalore.webp',  title: 'Indo-Western Designer Set',        desc: 'A fusion Indo-Western outfit blending modern styling with traditional sensibilities.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/crop-top-lehenga-festive-wear-shrusara-boutique.webp',  title: 'Crop Top & Lehenga Set',           desc: 'A beautifully crafted crop top and lehenga set designed for festive and wedding events.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/kurtha-set-contemporary-design-bangalore-shrusara.webp',title: 'Contemporary Kurtha Set',           desc: 'An elegant contemporary kurtha set with modern cuts and refined stitching.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/indo-western-fusion-wear-designer-bangalore.webp',      title: 'Fusion Party Wear',                desc: 'A stylish fusion party wear ensemble crafted for modern women on the go.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/mother-daughter-matching-outfit-shrusara-bangalore.webp',title: 'Mother & Daughter Matching Set',   desc: 'Coordinated mother and daughter matching outfits for special occasions and celebrations.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/ready-to-wear-saree-one-minute-drape-shrusara.webp',    title: 'Ready-to-Wear Saree',              desc: 'An innovative 1-minute ready-to-wear saree concept combining elegance and convenience.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/maxi-dress-designer-custom-fit-bangalore-shrusara.webp',      title: 'Maxi Designer Dress',              desc: 'A custom-fitted maxi dress designed for parties, events, and evening occasions.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/printed-co-ord-set-designer-shrusara-boutique.webp',    title: 'Printed Co-Ord Set',               desc: 'A trendy printed co-ord set tailored to your body type for stylish everyday wear.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/ethnic-fusion-outfit-designer-wear-bangalore.webp',     title: 'Ethnic Fusion Outfit',             desc: 'An ethnic fusion outfit that merges traditional patterns with contemporary design.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/halter-neck-gown-custom-tailored-shrusara-bangalore.webp',    title: 'Halter-Neck Designer Gown',        desc: 'A halter-neck designer gown tailored for modern women who love bold fashion.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/sharara-set-designer-festive-shrusara-boutique.webp',   title: 'Designer Sharara Set',             desc: 'A designer sharara set crafted with intricate detailing for festive occasions.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/v-neck-trail-gown-custom-shrusara-bangalore.webp',            title: 'V-Neck Trail Gown',                desc: 'A dramatic V-neck trail gown designed for receptions and grand occasions.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/palazzo-kurtha-set-designer-bangalore-shrusara.webp',   title: 'Palazzo Kurtha Set',               desc: 'An elegant palazzo and kurtha set combining comfort with stylish modern design.' },
-  { category: 'Designer Gowns',           src: '/designer/gowns/cocktail-dress-custom-designer-shrusara-boutique.webp',       title: 'Custom Cocktail Dress',            desc: 'A chic cocktail dress designed with modern cuts and premium fabric for evening events.' },
-  { category: 'Indo-Western & Party Wear',src: '/designer/indowestern/anarkali-suit-designer-custom-bangalore-shrusara.webp', title: 'Designer Anarkali Suit',           desc: 'A premium designer Anarkali suit with elegant embroidery and a flawless tailored fit.' },
+
+  // ── Western & Indo-Western ──
+  {
+    category: 'Western & Indo-Western',
+    src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',
+    title: 'Gold Indo-Western Crop Top Lehenga',
+    alt: 'Gold Indo-Western Crop Top Lehenga',
+    desc: 'An indo-western crop top lehenga designed with fusion styling and handcrafted premium finishing.',
+  },
+  {
+    category: 'Western & Indo-Western',
+    src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',
+    title: 'Ivory Indo-Western Crop Top Lehenga',
+    alt: 'Ivory Indo-Western Crop Top Lehenga',
+    desc: 'A contemporary crop top lehenga styled with elegant drape and indo-western bridal fusion.',
+  },
+  {
+    category: 'Western & Indo-Western',
+    src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',
+    title: 'Midnight Wine Designer Gown',
+    alt: 'Midnight Wine Designer Gown',
+    desc: 'An elegant designer gown crafted with flowing silhouettes and premium finishing for statement occasion wear.',
+  },
+  {
+    category: 'Western & Indo-Western',
+    src: '/videos/handcrafted-heavy-aari-work-wedding-blouse-backneck-shrusara-boutique.webp',
+    title: 'Midnight Wine Couture Gown',
+    alt: 'Midnight Wine Couture Gown',
+    desc: 'A statement designer gown created with flowing silhouette, couture detailing, and elegant evening appeal.',
+  },
+
+  // ── Designer Gowns ──
+  {
+    category: 'Designer Gowns',
+    src: '/videos/desingerhero.webp',
+    title: 'Ruby One-Shoulder Designer Gown',
+    alt: 'Ruby One-Shoulder Designer Gown',
+    desc: 'A modern one-shoulder gown designed with bold styling and premium designer finishing.',
+  },
+  {
+    category: 'Designer Gowns',
+    src: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',
+    title: 'Crimson Trail Party Gown',
+    alt: 'Crimson Trail Party Gown',
+    desc: 'A dramatic party gown featuring a flowing trail and statement fashion-forward silhouette.',
+  },
+  {
+    category: 'Designer Gowns',
+    src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',
+    title: 'Elegant Reception Gown',
+    alt: 'Elegant Reception Gown',
+    desc: 'A graceful white reception gown designed with elegant silhouettes and premium bridal finishing.',
+  },
+  {
+    category: 'Designer Gowns',
+    src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',
+    title: 'Mint Luxe Designer Ball Gown',
+    alt: 'Mint Luxe Designer Ball Gown',
+    desc: 'A voluminous designer ball gown crafted for engagement, reception, and luxury occasion wear.',
+  },
+  {
+    category: 'Designer Gowns',
+    src: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp',
+    title: 'Royal Blue Maternity Gown',
+    alt: 'Royal Blue Maternity Gown',
+    desc: 'A graceful maternity gown designed with elegant drape, comfort, and premium photoshoot styling.',
+  },
+
+  // ── Party Wear ──
+  {
+    category: 'Party Wear',
+    src: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',
+    title: 'Scarlet Evening Designer Gown',
+    alt: 'Scarlet Evening Designer Gown',
+    desc: 'A refined evening gown designed with sleek silhouettes and premium occasion wear finishing.',
+  },
+  {
+    category: 'Party Wear',
+    src: '/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp',
+    title: 'Noir Evening Couple Couture',
+    alt: 'Noir Evening Couple Couture',
+    desc: 'A coordinated designer couple look crafted for evening occasions with elegant contemporary styling.',
+  },
+  {
+    category: 'Party Wear',
+    src: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp',
+    title: 'Floral Trail Indo-Western Gown',
+    alt: 'Floral Trail Indo-Western Gown',
+    desc: 'A dramatic indo-western gown designed with a flowing trail and modern couture-inspired styling.',
+  },
+  {
+    category: 'Party Wear',
+    src: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',
+    title: 'Contemporary Designer Blouse',
+    alt: 'Contemporary Designer Blouse',
+    desc: 'A customized designer blouse crafted with modern styling and premium couture detailing.',
+  },
+  {
+    category: 'Party Wear',
+    src: '/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp',
+    title: 'Ready-to-Wear Designer Saree',
+    alt: 'Ready-to-Wear Designer Saree',
+    desc: 'A ready-to-wear designer saree crafted for elegant drape, comfort, and effortless occasion styling.',
+  },
+  {
+    category: 'Party Wear',
+    src: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp',
+    title: 'Floral Tail Couture Gown',
+    alt: 'Floral Tail Couture Gown',
+    desc: 'A statement couture gown featuring a dramatic tail silhouette and modern designer detailing.',
+  },
+  {
+    category: 'Party Wear',
+    src: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp',
+    title: 'Rose Motion Couture Gown',
+    alt: 'Rose Motion Couture Gown',
+    desc: 'A couture-inspired designer gown styled with movement, elegance, and premium occasion wear detailing.',
+  },
+
+  // ── Crop Top & Lehenga Sets ──
+  {
+    category: 'Crop Top & Lehenga Sets',
+    src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',
+    title: 'Designer Crop Top Lehenga',
+    alt: 'Designer Crop Top Lehenga',
+    desc: 'A stylish designer crop top lehenga set crafted with modern detailing and festive elegance.',
+  },
+  {
+    category: 'Crop Top & Lehenga Sets',
+    src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',
+    title: 'Luxury Bridal Lehenga',
+    alt: 'Luxury Bridal Lehenga',
+    desc: 'A reception bridal ensemble crafted for modern elegance with premium finishing and refined styling.',
+  },
+  {
+    category: 'Crop Top & Lehenga Sets',
+    src: '/bridal/bridalblow/custom-made-bridal-reception-lehenga-shrusara.webp',
+    title: 'Custom Made Bridal Reception Lehenga Shrusara',
+    alt: 'Custom Made Bridal Reception Lehenga Shrusara',
+    desc: 'A custom made bridal reception lehenga designed with elegant detailing and premium finishing.',
+  },
+
+  // ── Mother & Daughter Outfits ──
+  {
+    category: 'Mother & Daughter Outfits',
+    src: '/videos/mother-and-daughter-premium-matching-frock-shrusara-boutique.webp',
+    title: 'Mother Daughter Heritage Set',
+    alt: 'Mother Daughter Heritage Set',
+    desc: 'A couture-inspired designer gown styled with movement, elegance, and premium occasion wear detailing.',
+  },
+  {
+    category: 'Mother & Daughter Outfits',
+    src: '/videos/mother-and-daughter-matching-frock-shrusara-boutique.webp',
+    title: 'Mommy & Me Princess Set',
+    alt: 'Mommy & Me Princess Set',
+    desc: 'Traditional matching outfits designed for beautiful family festive moments.',
+  },
 ];
 
-const CATEGORIES = ['All', 'Designer Gowns', 'Indo-Western & Party Wear'];
+const CATEGORIES = [
+  'All',
+  'Western & Indo-Western',
+  'Party Wear',
+  'Designer Gowns',
+  'Crop Top & Lehenga Sets',
+  'Mother & Daughter Outfits',
+];
 
 const trustPoints = [
   { icon: '◈', label: 'Made for You',   title: 'Designed for Your Body',     desc: 'Each outfit is designed based on your body type, event, and personal style' },
@@ -63,9 +208,9 @@ const reviews = [
 ];
 
 const processSteps = [
-  { step: '01', title: 'Consultation',          desc: 'Share your occasion, style preferences, and design ideas. Our Chief Designer will guide you personally.' },
-  { step: '02', title: 'Design Selection',      desc: 'We finalize the outfit design, fabric, pattern, and styling based on your requirement.' },
-  { step: '03', title: 'Trial & Final Delivery',desc: 'Trial and fitting adjustments ensure your outfit is delivered perfectly before your event.' },
+  { step: '01', title: 'Consultation',           desc: 'Share your occasion, style preferences, and design ideas. Our Chief Designer will guide you personally.' },
+  { step: '02', title: 'Design Selection',       desc: 'We finalize the outfit design, fabric, pattern, and styling based on your requirement.' },
+  { step: '03', title: 'Trial & Final Delivery', desc: 'Trial and fitting adjustments ensure your outfit is delivered perfectly before your event.' },
 ];
 
 const whyPoints = [
@@ -131,7 +276,7 @@ function ImageModal({ item, onClose }) {
       <div className="dlm-box" onClick={e => e.stopPropagation()}>
         <button className="dlm-close" onClick={onClose} aria-label="Close">✕</button>
         <div className="dlm-img-wrap">
-          <img src={item.src} alt={item.title} />
+          <img src={item.src} alt={item.alt} />
         </div>
         <div className="dlm-body">
           <p className="dlm-eyebrow">Design Preview</p>
@@ -190,7 +335,7 @@ function DesignerCtaForm() {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const DesignerLandingPage = () => {
-  const [modalItem, setModalItem]         = useState(null);
+  const [modalItem, setModalItem]           = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredGallery = activeCategory === 'All'
@@ -482,7 +627,7 @@ const DesignerLandingPage = () => {
         }
 
         /* ══════════════════════════════════════
-           MOBILE  ≤ 768px   ← ALL THE FIXES
+           MOBILE  ≤ 768px
         ══════════════════════════════════════ */
         @media (max-width: 768px) {
 
@@ -650,7 +795,7 @@ const DesignerLandingPage = () => {
             </div>
           </div>
           <div className="dl-hero-img-wrap">
-            <img src="/designer/hero-designer.webp" alt="Designer outfit by Shrusara Fashion Boutique Bangalore" />
+            <img src="/videos/desingerhero.webp" alt="Designer outfit by Shrusara Fashion Boutique Bangalore" />
             <div className="dl-hero-img-fade" />
           </div>
         </section>
@@ -711,9 +856,14 @@ const DesignerLandingPage = () => {
           </div>
           <div className="dl-gallery-grid">
             {filteredGallery.map((item, i) => (
-              <button key={i} className="dl-gallery-card" onClick={() => setModalItem(item)} aria-label={`View ${item.title}`}>
+              <button
+                key={`${item.category}-${i}`}
+                className="dl-gallery-card"
+                onClick={() => setModalItem(item)}
+                aria-label={`View ${item.title}`}
+              >
                 <div className="dl-gallery-card-inner">
-                  <img src={item.src} alt={item.title} loading={i < 4 ? 'eager' : 'lazy'} />
+                  <img src={item.src} alt={item.alt} loading={i < 4 ? 'eager' : 'lazy'} />
                 </div>
               </button>
             ))}
@@ -738,10 +888,10 @@ const DesignerLandingPage = () => {
             </div>
             <div className="dl-why-right">
               {[
-                { src: '/designer/gowns/designer-gown-party-wear-bangalore-shrusara.webp',           alt: 'Designer gown Bangalore' },
-                { src: '/designer/indowestern/indo-western-outfit-designer-shrusara-bangalore.webp', alt: 'Indo-western designer outfit' },
-                { src: '/designer/indowestern/crop-top-lehenga-festive-wear-shrusara-boutique.webp', alt: 'Crop top lehenga set' },
-                { src: '/designer/gowns/custom-reception-gown-shrusara-bangalore-boutique.webp',     alt: 'Custom reception gown' },
+                { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',           alt: 'Designer gown Bangalore' },
+                { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',             alt: 'Indo-western designer outfit' },
+                { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',                         alt: 'Crop top lehenga set' },
+                { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',          alt: 'Custom reception gown' },
               ].map((img, i) => (
                 <div key={i} className="dl-why-img-card">
                   <div className="dl-why-img-inner">
