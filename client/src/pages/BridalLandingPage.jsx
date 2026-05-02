@@ -402,7 +402,7 @@ const BridalLandingPage = () => {
         .bl-review-text { font-size:.84rem;line-height:1.75;color:var(--bl-text);font-weight:300;margin-bottom:18px;font-style:italic; }
         .bl-review-name { font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bl-dark); }
 
-        /* ─── NEW IMAGE-ACCURATE TRUST SECTION ─── */
+        /* ─── IMAGE-ACCURATE TRUST SECTION ─── */
         .bl-trust-sec { padding: 100px 5vw; background: var(--bl-cream); text-align: center; }
         
         .bl-img-top-label { 
@@ -448,18 +448,52 @@ const BridalLandingPage = () => {
         }
         .bl-img-pill-btn:hover { background: var(--bl-gold); color: white; }
 
-        /* The Black Badge */
+        /* ─── UPDATED BLACK BADGE COLOR ─── */
         .bl-img-black-badge { 
-          background: #251D18; border-radius: 14px; padding: 25px 40px; max-width: 520px; margin: 0 auto;
-          display: flex; align-items: center; gap: 30px; text-align: left; position: relative;
+          background: #251D18; /* Dark brown from screenshot */
+          border-radius: 20px; 
+          padding: 25px 45px; 
+          max-width: 650px; 
+          margin: 0 auto;
+          display: flex; 
+          align-items: center; 
+          gap: 35px; 
+          text-align: left; 
+          position: relative;
         }
-        .bl-img-black-badge::after { content: ""; position: absolute; bottom: 0; left: 15%; right: 15%; height: 3px; background: var(--bl-gold); border-radius: 10px 10px 0 0; opacity: 0.8; }
+        /* Bottom accent bar from screenshot */
+        .bl-img-black-badge::after { 
+          content: ""; position: absolute; bottom: 0; left: 12%; right: 45%; height: 4px; 
+          background: #A88A64; border-radius: 10px 10px 0 0;
+        }
         
-        .bl-img-people-icon { color: var(--bl-gold); flex-shrink: 0; opacity: 0.85; }
-        .bl-img-badge-div { width: 1px; height: 50px; background: rgba(255,255,255,0.12); }
-        .bl-img-badge-content h3 { color: white; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; margin: 0 0 4px; }
-        .bl-img-badge-content p { color: rgba(255,255,255,0.5); font-size: 0.82rem; margin: 0; font-weight: 300; }
-        .bl-img-badge-stars { color: var(--bl-gold); font-size: 1.1rem; letter-spacing: 4px; margin-bottom: 8px; line-height: 1; }
+        .bl-img-people-icon { color: #A88A64; flex-shrink: 0; }
+        .bl-img-badge-div { width: 1px; height: 60px; background: rgba(168, 138, 100, 0.2); }
+        
+        .bl-img-badge-stars { 
+          color: #A88A64; /* Muted Gold from screenshot */
+          font-size: 1.4rem; 
+          letter-spacing: 4px; 
+          margin-bottom: 12px; 
+          line-height: 1; 
+        }
+        
+        .bl-img-badge-content h3 { 
+          color: #A88A64; /* Matching Gold for Title */
+          font-size: 1.05rem; 
+          font-weight: 700; 
+          letter-spacing: 0.05em; 
+          margin: 0 0 6px; 
+          text-transform: uppercase;
+        }
+        
+        .bl-img-badge-content p { 
+          color: #9C9C9C; /* Muted Greyish from screenshot */
+          font-size: 1rem; 
+          margin: 0; 
+          font-weight: 300; 
+          letter-spacing: 0.01em;
+        }
 
         /* ─── PROCESS ─── */
         .bl-process { padding:80px 5vw;background:var(--bl-white); }
@@ -660,7 +694,7 @@ const BridalLandingPage = () => {
           </div>
         </section>
 
-        {/* ─── NEW IMAGE-MATCHED TRUST SECTION ─── */}
+        {/* ─── IMAGE-MATCHED TRUST SECTION ─── */}
         <section className="bl-trust-sec">
           <div className="bl-img-top-label">
             <div className="bl-img-line"></div>
@@ -697,7 +731,7 @@ const BridalLandingPage = () => {
 
           <div className="bl-img-black-badge">
             <div className="bl-img-people-icon">
-              <svg width="45" height="45" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
               </svg>
             </div>

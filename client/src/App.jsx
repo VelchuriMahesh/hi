@@ -9,20 +9,21 @@ import WhatsAppButton from './components/WhatsAppButton';
 import Analytics from './Analytics';
 
 // Existing Lazy Imports
-const Home = lazy(() => import('./pages/Home'));
-const Bridal = lazy(() => import('./pages/Bridal'));
-const Designer = lazy(() => import('./pages/Designer'));
-const Kids = lazy(() => import('./pages/Kids'));
-const About = lazy(() => import('./pages/About'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Blog = lazy(() => import('./pages/Blog'));
-const Login = lazy(() => import('./admin/Login'));
-const Dashboard = lazy(() => import('./admin/Dashboard'));
-const Upload = lazy(() => import('./admin/Upload'));
-const Edit = lazy(() => import('./admin/Edit'));
+const Home              = lazy(() => import('./pages/Home'));
+const Bridal            = lazy(() => import('./pages/Bridal'));
+const Designer          = lazy(() => import('./pages/Designer'));
+const Kids              = lazy(() => import('./pages/Kids'));
+const About             = lazy(() => import('./pages/About'));
+const Contact           = lazy(() => import('./pages/Contact'));
+const Blog              = lazy(() => import('./pages/Blog'));
+const Login             = lazy(() => import('./admin/Login'));
+const Dashboard         = lazy(() => import('./admin/Dashboard'));
+const Upload            = lazy(() => import('./admin/Upload'));
+const Edit              = lazy(() => import('./admin/Edit'));
 
-// NEW LANDING PAGE IMPORT
-const BridalLandingPage = lazy(() => import('./pages/BridalLandingPage'));
+// Landing Pages — MUST be PascalCase variable names
+const BridalLandingPage   = lazy(() => import('./pages/BridalLandingPage'));
+const DesignerLandingPage = lazy(() => import('./pages/designerLandingPage')); // ← PascalCase variable
 
 function ScrollToTop() {
   const location = useLocation();
@@ -51,18 +52,19 @@ function AppRoutes() {
     <Suspense fallback={<LoadingPage />}>
       <Routes>
         {/* ROUTES WITH NAVBAR/FOOTER */}
-       <Route element={<SiteLayout />}>
-  <Route path="/" element={<Home />} />
-  <Route path="/bridal-blouse-bangalore" element={<Bridal />} />
-  <Route path="/designer-outfits-bangalore" element={<Designer />} />
-  <Route path="/kids-outfits-bangalore" element={<Kids />} />
-  <Route path="/about-shrusara-boutique" element={<About />} />
-  <Route path="/contact-shrusara-bangalore" element={<Contact />} />
-  <Route path="/bridal-fashion-blog-bangalore" element={<Blog />} />
-</Route>
+        <Route element={<SiteLayout />}>
+          <Route path="/"                              element={<Home />} />
+          <Route path="/bridal-blouse-bangalore"       element={<Bridal />} />
+          <Route path="/designer-outfits-bangalore"    element={<Designer />} />
+          <Route path="/kids-outfits-bangalore"        element={<Kids />} />
+          <Route path="/about-shrusara-boutique"       element={<About />} />
+          <Route path="/contact-shrusara-bangalore"    element={<Contact />} />
+          <Route path="/bridal-fashion-blog-bangalore" element={<Blog />} />
+        </Route>
 
-{/* Landing Page (NO layout) */}
-<Route path="/bridal-blouse-bangalore/consultation" element={<BridalLandingPage />} />
+        {/* Landing Pages (NO navbar/footer layout) */}
+        <Route path="/bridal-blouse-bangalore/consultation"   element={<BridalLandingPage />} />
+        <Route path="/designer-outfits-bangalore/consultation" element={<DesignerLandingPage />} /> {/* ← PascalCase */}
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />
@@ -105,7 +107,8 @@ export default function App() {
       void import('./pages/About');
       void import('./pages/Contact');
       void import('./pages/Blog');
-      void import('./pages/BridalLandingPage'); // Added to warmup
+      void import('./pages/BridalLandingPage');
+      void import('./pages/designerLandingPage');
     };
 
     if ('requestIdleCallback' in window) {
@@ -119,9 +122,8 @@ export default function App() {
 
   return (
     <>
-     <Analytics />
+      <Analytics />
       <ScrollToTop />
-       
       <AppRoutes />
     </>
   );
