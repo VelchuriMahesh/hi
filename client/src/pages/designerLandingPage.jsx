@@ -10,11 +10,7 @@ const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
 )}`;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-
-// Updated gallery items with new filters & correct image paths
 const galleryItems = [
-
-  // ── Western & Indo-Western ──
   {
     category: 'Western & Indo-Western',
     src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',
@@ -38,13 +34,11 @@ const galleryItems = [
   },
   {
     category: 'Western & Indo-Western',
-    src: '/videos/handcrafted-heavy-aari-work-wedding-blouse-backneck-shrusara-boutique.webp',
+    src: '/videos/designer-party-wear-designer-frock-shrusara.webp',
     title: 'Midnight Wine Couture Gown',
     alt: 'Midnight Wine Couture Gown',
     desc: 'A statement designer gown created with flowing silhouette, couture detailing, and elegant evening appeal.',
   },
-
-  // ── Designer Gowns ──
   {
     category: 'Designer Gowns',
     src: '/videos/desingerhero.webp',
@@ -80,8 +74,6 @@ const galleryItems = [
     alt: 'Royal Blue Maternity Gown',
     desc: 'A graceful maternity gown designed with elegant drape, comfort, and premium photoshoot styling.',
   },
-
-  // ── Party Wear ──
   {
     category: 'Party Wear',
     src: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',
@@ -131,8 +123,6 @@ const galleryItems = [
     alt: 'Rose Motion Couture Gown',
     desc: 'A couture-inspired designer gown styled with movement, elegance, and premium occasion wear detailing.',
   },
-
-  // ── Crop Top & Lehenga Sets ──
   {
     category: 'Crop Top & Lehenga Sets',
     src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',
@@ -154,8 +144,6 @@ const galleryItems = [
     alt: 'Custom Made Bridal Reception Lehenga Shrusara',
     desc: 'A custom made bridal reception lehenga designed with elegant detailing and premium finishing.',
   },
-
-  // ── Mother & Daughter Outfits ──
   {
     category: 'Mother & Daughter Outfits',
     src: '/videos/mother-and-daughter-premium-matching-frock-shrusara-boutique.webp',
@@ -321,10 +309,20 @@ function DesignerCtaForm() {
         </div>
       </div>
       <div className="dl-cta-btns">
-        <a href={waLink} target="_blank" rel="noopener noreferrer" className="dl-cta-btn-pri" onClick={handleWhatsAppClick}>
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="dl-cta-btn-pri"
+          onClick={handleWhatsAppClick}
+        >
           <WaIcon size={18} /> WhatsApp Enquiry
         </a>
-        <a href={`tel:${PHONE_NUMBER}`} className="dl-cta-btn-sec" onClick={() => trackPhoneCall('cta_form_designer')}>
+        <a
+          href={`tel:${PHONE_NUMBER}`}
+          className="dl-cta-btn-sec"
+          onClick={() => trackPhoneCall('cta_form_designer')}
+        >
           <PhoneIcon size={16} /> Call Now
         </a>
       </div>
@@ -345,7 +343,6 @@ const DesignerLandingPage = () => {
   return (
     <>
       <style>{`
-        /* ── RESET & BASE ── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
           --dl-gold:      #B8935A;
@@ -364,8 +361,6 @@ const DesignerLandingPage = () => {
           width: 100%;
           max-width: 100vw;
         }
-
-        /* ══ HEADER ══ */
         .dl-hdr {
           position: sticky; top: 0; z-index: 100;
           background: rgba(251,248,243,.97);
@@ -391,8 +386,6 @@ const DesignerLandingPage = () => {
           transition: background .2s;
         }
         .dl-hdr-cta:hover { background: var(--dl-gold); }
-
-        /* ══ HERO ══ */
         .dl-hero {
           display: flex; flex-direction: row; align-items: stretch;
           width: 100%; min-height: 88vh;
@@ -423,14 +416,10 @@ const DesignerLandingPage = () => {
         .dl-hero-img-wrap { flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
         .dl-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .dl-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--dl-cream) 0%, transparent 18%); }
-
-        /* ══ BUTTONS ══ */
         .dl-btn-pri { display: inline-flex; align-items: center; gap: 9px; background: var(--dl-dark); color: var(--dl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; border: 2px solid var(--dl-dark); transition: transform .2s, box-shadow .2s; }
         .dl-btn-pri:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,20,16,.2); }
         .dl-btn-sec { display: inline-flex; align-items: center; gap: 9px; background: transparent; color: var(--dl-dark); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; border: 2px solid var(--dl-dark); transition: background .2s, color .2s; }
         .dl-btn-sec:hover { background: var(--dl-dark); color: var(--dl-white); }
-
-        /* ══ TRUST BAR ══ */
         .dl-trust { padding: 0 4vw 56px; background: var(--dl-white); }
         .dl-trust-heading { padding: 48px 0 28px; text-align: center; }
         .dl-trust-heading h2 { font-family: 'Cormorant Garamond',serif; font-size: clamp(1.45rem,2.2vw,2.1rem); font-weight: 700; color: var(--dl-dark); margin-bottom: 8px; }
@@ -441,14 +430,10 @@ const DesignerLandingPage = () => {
         .dl-trust-label { font-size: .56rem; letter-spacing: .18em; text-transform: uppercase; color: var(--dl-gold); font-weight: 600; margin-bottom: 5px; }
         .dl-trust-title { font-family: 'Cormorant Garamond',serif; font-size: 1rem; font-weight: 700; color: var(--dl-dark); margin-bottom: 4px; }
         .dl-trust-desc  { font-size: .78rem; color: var(--dl-muted); line-height: 1.6; font-weight: 300; }
-
-        /* ══ SECTION LABELS ══ */
         .dl-sec-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--dl-gold); font-weight: 600; margin-bottom: 12px; }
         .dl-sec-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--dl-gold); display: block; }
         .dl-sec-h   { font-family: 'Cormorant Garamond','Playfair Display',serif; font-size: clamp(1.45rem,2.6vw,2.4rem); font-weight: 700; color: var(--dl-dark); margin-bottom: 10px; line-height: 1.2; }
         .dl-sec-sub { font-size: .85rem; color: var(--dl-muted); line-height: 1.72; max-width: 520px; font-weight: 300; }
-
-        /* ══ SERVICES ══ */
         .dl-services { padding: 64px 4vw; background: var(--dl-cream); }
         .dl-services-desc { font-size: .88rem; line-height: 1.82; color: var(--dl-muted); max-width: 760px; margin-bottom: 36px; font-weight: 300; }
         .dl-services-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
@@ -457,8 +442,6 @@ const DesignerLandingPage = () => {
         .dl-service-icon  { width: 36px; height: 36px; border-radius: 50%; background: var(--dl-gold-pale); display: flex; align-items: center; justify-content: center; font-size: .9rem; color: var(--dl-gold); margin-bottom: 12px; }
         .dl-service-title { font-family: 'Cormorant Garamond',serif; font-size: 1rem; font-weight: 700; color: var(--dl-dark); margin-bottom: 7px; }
         .dl-service-desc  { font-size: .76rem; color: var(--dl-muted); line-height: 1.62; font-weight: 300; }
-
-        /* ══ GALLERY ══ */
         .dl-gallery { padding: 64px 4vw; background: var(--dl-white); }
         .dl-gallery-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0 28px; }
         .dl-filter-btn { display: inline-flex; align-items: center; font-size: .6rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 9px 18px; border: 1.5px solid rgba(184,147,90,.35); background: transparent; color: var(--dl-muted); cursor: pointer; transition: all .2s; white-space: nowrap; }
@@ -470,8 +453,6 @@ const DesignerLandingPage = () => {
         .dl-gallery-card-inner { border-radius: 16px; overflow: hidden; background: var(--dl-gold-pale); aspect-ratio: 4/5; }
         .dl-gallery-card-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .dl-gallery-card:hover .dl-gallery-card-inner img { transform: scale(1.05); }
-
-        /* ══ WHY CHOOSE US ══ */
         .dl-why { padding: 64px 4vw; background: var(--dl-cream); }
         .dl-why-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
         .dl-why-list { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
@@ -485,21 +466,13 @@ const DesignerLandingPage = () => {
         .dl-why-img-inner { border-radius: 14px; overflow: hidden; background: var(--dl-gold-pale); aspect-ratio: 3/4; }
         .dl-why-img-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .dl-why-img-card:hover .dl-why-img-inner img { transform: scale(1.05); }
-
-        /* ══ SOCIAL PROOF ══ */
         .dl-trust-sec { padding: 80px 4vw; background: var(--dl-white); text-align: center; }
         .dl-img-top-label { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 22px; }
         .dl-img-top-label span { font-size: .62rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--dl-gold); }
         .dl-img-line { width: 40px; height: 1px; background: var(--dl-gold); opacity: .6; }
         .dl-img-main-h   { font-family: 'Cormorant Garamond',serif; font-size: clamp(1.9rem,3.8vw,3.6rem); color: #2b2118; margin: 0 0 14px; font-weight: 700; }
         .dl-img-main-sub { font-size: 1rem; color: var(--dl-muted); line-height: 1.6; max-width: 560px; margin: 0 auto 44px; font-weight: 300; }
-        .dl-img-google-card {
-          background: white; border-radius: 30px; padding: 22px 40px;
-          max-width: 860px; margin: 0 auto 28px;
-          display: flex; align-items: center; justify-content: space-between;
-          gap: 24px; flex-wrap: wrap;
-          box-shadow: 0 12px 40px rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.03);
-        }
+        .dl-img-google-card { background: white; border-radius: 30px; padding: 22px 40px; max-width: 860px; margin: 0 auto 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; box-shadow: 0 12px 40px rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.03); }
         .dl-img-card-div  { width: 1px; height: 46px; background: #eee; flex-shrink: 0; }
         .dl-img-rating-wrap { display: flex; align-items: center; gap: 16px; text-align: left; }
         .dl-img-big-num   { font-size: 3.8rem; font-weight: 700; color: #2b2118; line-height: 1; font-family: 'Jost',sans-serif; }
@@ -517,8 +490,6 @@ const DesignerLandingPage = () => {
         .dl-img-badge-stars { color: #A88A64; font-size: 1.3rem; letter-spacing: 4px; margin-bottom: 10px; line-height: 1; }
         .dl-img-badge-content h3 { color: #A88A64; font-size: 1rem; font-weight: 700; letter-spacing: .05em; margin: 0 0 5px; text-transform: uppercase; }
         .dl-img-badge-content p  { color: #9C9C9C; font-size: .95rem; margin: 0; font-weight: 300; }
-
-        /* ══ PROCESS ══ */
         .dl-process { padding: 64px 4vw; background: var(--dl-cream); }
         .dl-process-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 32px; }
         .dl-process-card { background: var(--dl-white); padding: 28px 22px; border: 1px solid rgba(184,147,90,.12); position: relative; overflow: hidden; }
@@ -526,8 +497,6 @@ const DesignerLandingPage = () => {
         .dl-process-step  { display: inline-block; font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--dl-gold); margin-bottom: 10px; }
         .dl-process-title { font-family: 'Cormorant Garamond',serif; font-size: 1.2rem; font-weight: 700; color: var(--dl-dark); margin-bottom: 8px; }
         .dl-process-desc  { font-size: .8rem; color: var(--dl-muted); line-height: 1.66; font-weight: 300; }
-
-        /* ══ REVIEWS ══ */
         .dl-reviews { padding: 64px 4vw; background: var(--dl-white); }
         .dl-reviews-hdr { text-align: center; max-width: 680px; margin: 0 auto 40px; }
         .dl-reviews-title { font-family: 'Cormorant Garamond',serif; font-size: clamp(1.45rem,2.6vw,2.4rem); font-weight: 700; color: var(--dl-dark); margin-bottom: 8px; line-height: 1.2; }
@@ -537,8 +506,6 @@ const DesignerLandingPage = () => {
         .dl-review-stars  { color: #FFC107; letter-spacing: 3px; font-size: .88rem; margin-bottom: 10px; }
         .dl-review-text   { font-size: .82rem; line-height: 1.72; color: var(--dl-text); font-weight: 300; margin-bottom: 14px; font-style: italic; }
         .dl-review-name   { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dl-dark); }
-
-        /* ══ FINAL CTA ══ */
         .dl-cta-wrap { padding: 64px 4vw; background: var(--dl-cream); }
         .dl-cta-box  { background: var(--dl-dark); padding: 60px 48px; text-align: center; position: relative; overflow: hidden; max-width: 960px; margin: 0 auto; }
         .dl-cta-box::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 55% at 50% 100%, rgba(184,147,90,.12) 0%, transparent 70%); }
@@ -564,8 +531,6 @@ const DesignerLandingPage = () => {
         .dl-cta-btn-sec { display: inline-flex; align-items: center; gap: 9px; background: transparent; color: var(--dl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 28px; text-decoration: none; border: 2px solid rgba(255,255,255,.3); transition: background .2s; }
         .dl-cta-btn-sec:hover { background: rgba(255,255,255,.08); }
         .dl-form-hint   { font-size: .7rem; color: rgba(255,255,255,.36); margin-top: 14px; font-style: italic; }
-
-        /* ══ FOOTER ══ */
         .dl-footer { background: var(--dl-dark); border-top: 1px solid rgba(184,147,90,.18); padding: 32px 4vw 20px; }
         .dl-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 48px; }
         .dl-footer-brand { display: flex; flex-direction: column; gap: 4px; min-width: 180px; flex: 1.2; }
@@ -585,8 +550,6 @@ const DesignerLandingPage = () => {
         .dl-footer-bottom { max-width: 1100px; margin: 18px auto 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         .dl-footer-copy     { font-size: .62rem; color: rgba(255,255,255,.22); }
         .dl-footer-seo-bottom { font-size: .6rem; color: rgba(255,255,255,.16); text-align: right; }
-
-        /* ══ FLOATING BUTTONS ══ */
         .dl-float-call { position: fixed; bottom: 96px; right: 20px; z-index: 200; }
         .dl-float-call a { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #000; color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.4); text-decoration: none; }
         .dl-float-call a:hover { background: #B8935A; }
@@ -594,8 +557,6 @@ const DesignerLandingPage = () => {
         .dl-float-wa a { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #25D366; color: var(--dl-white); box-shadow: 0 6px 24px rgba(37,211,102,.45); position: relative; text-decoration: none; }
         .dl-float-wa a::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25D366; opacity: .55; animation: dl-ring 2s infinite; }
         @keyframes dl-ring { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.75);opacity:0} }
-
-        /* ══ MODAL ══ */
         .dlm-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.86); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; }
         .dlm-box     { background: #FAF8F5; border-radius: 18px; max-width: 860px; width: 100%; max-height: 92vh; overflow-y: auto; position: relative; }
         .dlm-close   { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #1C1410; z-index: 10; }
@@ -606,17 +567,7 @@ const DesignerLandingPage = () => {
         .dlm-title   { font-family: 'Cormorant Garamond',serif; font-size: 1.55rem; font-weight: 700; color: #1C1410; margin-bottom: 8px; }
         .dlm-desc    { font-size: .86rem; line-height: 1.56; color: #7A6A5A; margin: 0 auto 20px; max-width: 560px; }
         .dlm-btn-cont{ padding: 12px 34px; background: #1C1410; color: #fff; border: none; border-radius: 100px; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
-
-        /* ══════════════════════════════════════
-           TABLET  ≤ 1200px
-        ══════════════════════════════════════ */
-        @media (max-width: 1200px) {
-          .dl-services-grid { grid-template-columns: repeat(3,1fr); }
-        }
-
-        /* ══════════════════════════════════════
-           TABLET  ≤ 1024px
-        ══════════════════════════════════════ */
+        @media (max-width: 1200px) { .dl-services-grid { grid-template-columns: repeat(3,1fr); } }
         @media (max-width: 1024px) {
           .dl-gallery-grid  { grid-template-columns: repeat(2,1fr); }
           .dl-why-inner     { grid-template-columns: 1fr; gap: 36px; }
@@ -625,136 +576,53 @@ const DesignerLandingPage = () => {
           .dl-reviews-grid  { grid-template-columns: repeat(2,1fr); }
           .dl-services-grid { grid-template-columns: repeat(2,1fr); }
         }
-
-        /* ══════════════════════════════════════
-           MOBILE  ≤ 768px
-        ══════════════════════════════════════ */
         @media (max-width: 768px) {
-
-          /* ── Header ── */
           .dl-hdr { height: 60px; padding: 0 16px; gap: 6px; }
           .dl-hdr-logo { height: 38px; }
           .dl-hdr-name { font-size: 1.2rem; }
           .dl-hdr-sub  { font-size: .42rem; letter-spacing: .2em; }
           .dl-hdr-badge { display: none; }
           .dl-hdr-cta  { font-size: .52rem; padding: 9px 11px; letter-spacing: .09em; gap: 5px; }
-
-          /* ── Hero ── */
           .dl-hero { flex-direction: column; min-height: auto; }
           .dl-hero-img-wrap { order: 1; height: 56vw; min-height: 220px; width: 100%; }
           .dl-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--dl-cream) 100%); }
           .dl-hero-text { order: 2; padding: 28px 16px 40px; }
-          .dl-hero-eyebrow { font-size: .55rem; margin-bottom: 10px; }
-          .dl-hero-h1  { font-size: clamp(1.45rem,6vw,1.95rem); margin-bottom: 8px; }
-          .dl-hero-h2  { font-size: clamp(.9rem,3.5vw,1.18rem); margin-bottom: 12px; }
-          .dl-hero-sub { font-size: .82rem; max-width: 100%; margin-bottom: 5px; }
-          .dl-hero-designer { font-size: .66rem; }
-          .dl-hero-price    { font-size: .7rem; }
-          .dl-hero-scarcity { font-size: .62rem; margin-bottom: 18px; }
           .dl-hero-btns { flex-direction: column; gap: 10px; }
           .dl-btn-pri, .dl-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .65rem; }
-
-          /* ── Trust bar ── */
           .dl-trust { padding: 0 16px 40px; }
-          .dl-trust-heading { padding: 36px 0 22px; }
-          .dl-trust-heading h2 { font-size: clamp(1.25rem,5vw,1.6rem); }
           .dl-trust-grid { grid-template-columns: 1fr; }
-          .dl-trust-item { padding: 18px 14px; }
-
-          /* ── Services ── */
           .dl-services { padding: 48px 16px; }
           .dl-services-grid { grid-template-columns: 1fr; gap: 12px; }
-          .dl-service-card  { padding: 20px 16px; }
-
-          /* ── Gallery ── */
           .dl-gallery { padding: 48px 16px; }
-          .dl-gallery-filters { gap: 8px; margin: 18px 0 22px; }
-          .dl-filter-btn { font-size: .56rem; padding: 8px 14px; letter-spacing: .1em; }
           .dl-gallery-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
-          .dl-gallery-card { padding: 8px; border-radius: 16px; }
-          .dl-gallery-card-inner { border-radius: 12px; }
-
-          /* ── Why Choose Us ── */
           .dl-why { padding: 48px 16px; }
-          .dl-why-inner { gap: 28px; }
           .dl-why-right { grid-template-columns: repeat(2,1fr); gap: 10px; }
-          .dl-why-item  { padding: 14px 16px; gap: 11px; }
-          .dl-why-item-text { font-size: .8rem; }
-
-          /* ── Social Proof ── */
           .dl-trust-sec { padding: 60px 16px; }
-          .dl-img-top-label { gap: 10px; }
-          .dl-img-top-label span { font-size: .54rem; letter-spacing: .18em; }
-          .dl-img-main-h   { font-size: clamp(1.55rem,6vw,2.3rem); }
-          .dl-img-main-sub { font-size: .86rem; margin-bottom: 30px; }
-          .dl-img-google-card {
-            flex-direction: column; padding: 22px 18px;
-            text-align: center; gap: 14px; border-radius: 20px;
-          }
+          .dl-img-google-card { flex-direction: column; padding: 22px 18px; text-align: center; gap: 14px; border-radius: 20px; }
           .dl-img-card-div { display: none; }
           .dl-img-rating-wrap { flex-direction: column; align-items: center; text-align: center; gap: 8px; }
-          .dl-img-big-num  { font-size: 3rem; }
-          .dl-img-stars-row{ font-size: 1.25rem; }
-          .dl-img-source-lbl { font-size: .9rem; }
-          .dl-img-sub-row  { text-align: center; font-size: .84rem; }
-          .dl-img-pill-btn { width: 100%; justify-content: center; padding: 12px 18px; font-size: .66rem; }
-          .dl-img-black-badge {
-            flex-direction: column; text-align: center;
-            padding: 22px 18px; gap: 14px; border-radius: 16px; max-width: 100%;
-          }
+          .dl-img-pill-btn { width: 100%; justify-content: center; }
+          .dl-img-black-badge { flex-direction: column; text-align: center; padding: 22px 18px; gap: 14px; border-radius: 16px; max-width: 100%; }
           .dl-img-badge-div { display: none; }
-          .dl-img-badge-stars { font-size: 1.1rem; }
-          .dl-img-badge-content h3 { font-size: .88rem; }
-          .dl-img-badge-content p  { font-size: .86rem; }
-          .dl-img-people-icon svg  { width: 44px; height: 44px; }
-
-          /* ── Process ── */
           .dl-process { padding: 48px 16px; }
-          .dl-process-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
-
-          /* ── Reviews ── */
+          .dl-process-grid { grid-template-columns: 1fr; }
           .dl-reviews { padding: 48px 16px; }
           .dl-reviews-grid { grid-template-columns: 1fr; gap: 12px; }
-          .dl-reviews-hdr  { margin-bottom: 24px; }
-
-          /* ── Final CTA ── */
           .dl-cta-wrap { padding: 48px 16px; }
           .dl-cta-box  { padding: 36px 18px; }
-          .dl-cta-h    { font-size: clamp(1.35rem,5.5vw,1.95rem); }
-          .dl-cta-sub  { font-size: .83rem; }
-          .dl-cta-highlights { flex-direction: column; align-items: center; gap: 8px; }
           .dl-form-fields { grid-template-columns: 1fr; gap: 11px; margin-bottom: 18px; }
           .dl-cta-btns { flex-direction: column; gap: 10px; }
-          .dl-cta-btn-pri, .dl-cta-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .65rem; }
-
-          /* ── Footer ── */
+          .dl-cta-btn-pri, .dl-cta-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; }
           .dl-footer { padding: 28px 16px 18px; }
           .dl-footer-inner { flex-direction: column; gap: 20px; }
-          .dl-footer-desc, .dl-footer-seo { max-width: 100%; }
           .dl-footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
-          .dl-footer-seo-bottom { text-align: left; font-size: .58rem; }
-
-          /* ── Modal ── */
-          .dlm-body  { padding: 16px 16px; }
-          .dlm-title { font-size: 1.28rem; }
-          .dlm-desc  { font-size: .8rem; }
-
-          /* ── Floating buttons ── */
           .dl-float-call { bottom: 90px; right: 16px; }
           .dl-float-call a { width: 50px; height: 50px; }
           .dl-float-wa { bottom: 20px; right: 16px; }
           .dl-float-wa a { width: 50px; height: 50px; }
         }
-
-        /* ══════════════════════════════════════
-           SMALL MOBILE  ≤ 480px
-        ══════════════════════════════════════ */
         @media (max-width: 480px) {
-          .dl-hdr-name { font-size: 1.05rem; }
-          .dl-hdr-cta  { padding: 8px 9px; font-size: .48rem; }
-          .dl-hero-img-wrap { height: 62vw; }
           .dl-gallery-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
-          .dl-img-black-badge::after { left: 8%; right: 40%; }
         }
       `}</style>
 
@@ -769,8 +637,18 @@ const DesignerLandingPage = () => {
               <div className="dl-hdr-sub">FASHION&nbsp;&nbsp;BOUTIQUE</div>
             </div>
           </a>
-          <div className="dl-hdr-badge"><span className="dl-hdr-badge-dot" />Bangalore's Designer Boutique</div>
-          <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="dl-hdr-cta" onClick={() => trackWhatsApp('header_designer')}>
+          <div className="dl-hdr-badge">
+            <span className="dl-hdr-badge-dot" />
+            Bangalore's Designer Boutique
+          </div>
+          {/* ✅ HEADER WHATSAPP — tracked */}
+          <a
+            href={WA_PREFILL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="dl-hdr-cta"
+            onClick={() => trackWhatsApp('header_designer')}
+          >
             <WaIcon size={13} /> Book Consultation
           </a>
         </header>
@@ -786,10 +664,22 @@ const DesignerLandingPage = () => {
             <p className="dl-hero-price">Customized to your body type and occasion · <strong>Starting from ₹5000 onwards</strong></p>
             <p className="dl-hero-scarcity">Limited designer consultation slots available this week</p>
             <div className="dl-hero-btns">
-              <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="dl-btn-pri" onClick={() => trackWhatsApp('hero_designer')}>
+              {/* ✅ HERO WHATSAPP — tracked */}
+              <a
+                href={WA_PREFILL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dl-btn-pri"
+                onClick={() => trackWhatsApp('hero_designer')}
+              >
                 <WaIcon size={16} /> Book Your Designer Consultation
               </a>
-              <a href={`tel:${PHONE_NUMBER}`} className="dl-btn-sec" onClick={() => trackPhoneCall('hero_designer')}>
+              {/* ✅ HERO CALL — tracked */}
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                className="dl-btn-sec"
+                onClick={() => trackPhoneCall('hero_designer')}
+              >
                 <PhoneIcon size={14} /> Call Now
               </a>
             </div>
@@ -800,7 +690,7 @@ const DesignerLandingPage = () => {
           </div>
         </section>
 
-        {/* ── TRUST / VALUE ── */}
+        {/* ── TRUST BAR ── */}
         <section className="dl-trust">
           <div className="dl-trust-heading">
             <h2>Outfits Designed to Match Your Style, Occasion, and Comfort</h2>
@@ -888,10 +778,10 @@ const DesignerLandingPage = () => {
             </div>
             <div className="dl-why-right">
               {[
-                { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',           alt: 'Designer gown Bangalore' },
-                { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',             alt: 'Indo-western designer outfit' },
-                { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',                         alt: 'Crop top lehenga set' },
-                { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',          alt: 'Custom reception gown' },
+                { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp', alt: 'Designer gown Bangalore' },
+                { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',   alt: 'Indo-western designer outfit' },
+                { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',               alt: 'Crop top lehenga set' },
+                { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp', alt: 'Custom reception gown' },
               ].map((img, i) => (
                 <div key={i} className="dl-why-img-card">
                   <div className="dl-why-img-inner">
@@ -906,15 +796,15 @@ const DesignerLandingPage = () => {
         {/* ── SOCIAL PROOF ── */}
         <section className="dl-trust-sec">
           <div className="dl-img-top-label">
-            <div className="dl-img-line"></div>
+            <div className="dl-img-line" />
             <span>Top Rated Designer Boutique in Bangalore</span>
-            <div className="dl-img-line"></div>
+            <div className="dl-img-line" />
           </div>
           <h2 className="dl-img-main-h">Trusted by Clients Across Bangalore</h2>
           <p className="dl-img-main-sub">Real experiences from clients who trusted Shrusara Fashion Boutique for their designer outfits and special occasions.</p>
           <div className="dl-img-google-card">
             <GoogleIcon size={42} />
-            <div className="dl-img-card-div"></div>
+            <div className="dl-img-card-div" />
             <div className="dl-img-rating-wrap">
               <span className="dl-img-big-num">4.9</span>
               <div className="dl-img-stars-group">
@@ -922,10 +812,15 @@ const DesignerLandingPage = () => {
                 <div className="dl-img-source-lbl">Google Reviews</div>
               </div>
             </div>
-            <div className="dl-img-card-div"></div>
+            <div className="dl-img-card-div" />
             <div className="dl-img-sub-row">Based on <strong>250+</strong> verified reviews on Google</div>
-            <div className="dl-img-card-div"></div>
-            <a href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore" target="_blank" rel="noopener noreferrer" className="dl-img-pill-btn">
+            <div className="dl-img-card-div" />
+            <a
+              href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="dl-img-pill-btn"
+            >
               VIEW ON GOOGLE <span style={{ fontSize: '1.1rem' }}>→</span>
             </a>
           </div>
@@ -935,7 +830,7 @@ const DesignerLandingPage = () => {
                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
               </svg>
             </div>
-            <div className="dl-img-badge-div"></div>
+            <div className="dl-img-badge-div" />
             <div className="dl-img-badge-content">
               <div className="dl-img-badge-stars">★★★★★</div>
               <h3>250+ HAPPY CLIENTS IN BANGALORE</h3>
@@ -1010,14 +905,37 @@ const DesignerLandingPage = () => {
                   <span className="dl-footer-contact-icon"><MapPinIcon size={13} /></span>
                   106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086
                 </span>
-                <a href={`tel:${PHONE_NUMBER}`} className="dl-footer-contact-item" onClick={() => trackPhoneCall('footer_designer')}>
-                  <span className="dl-footer-contact-icon"><PhoneIcon size={13} /></span>{PHONE_NUMBER}
+                {/* ✅ FOOTER CALL — tracked */}
+                <a
+                  href={`tel:${PHONE_NUMBER}`}
+                  className="dl-footer-contact-item"
+                  onClick={() => trackPhoneCall('footer_designer')}
+                >
+                  <span className="dl-footer-contact-icon"><PhoneIcon size={13} /></span>
+                  {PHONE_NUMBER}
                 </a>
                 <a href="mailto:help@shrusara.com" className="dl-footer-contact-item">
-                  <span className="dl-footer-contact-icon"><MailIcon size={13} /></span>help@shrusara.com
+                  <span className="dl-footer-contact-icon"><MailIcon size={13} /></span>
+                  help@shrusara.com
+                </a>
+                {/* ✅ FOOTER WHATSAPP — tracked */}
+                <a
+                  href={WA_PREFILL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dl-footer-contact-item"
+                  onClick={() => trackWhatsApp('footer_designer')}
+                >
+                  <span className="dl-footer-contact-icon"><WaIcon size={13} /></span>
+                  WhatsApp Us
                 </a>
               </div>
-              <a href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore" target="_blank" rel="noopener noreferrer" className="dl-footer-map-link">
+              <a
+                href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dl-footer-map-link"
+              >
                 <MapPinIcon size={11} /> View on Google Maps
               </a>
             </div>
@@ -1028,14 +946,26 @@ const DesignerLandingPage = () => {
           </div>
         </footer>
 
-        {/* ── FLOATING BUTTONS ── */}
+        {/* ✅ FLOATING CALL BUTTON — tracked */}
         <div className="dl-float-call">
-          <a href={`tel:${PHONE_NUMBER}`} aria-label="Call Now" onClick={() => trackPhoneCall('floating_button_designer')}>
+          <a
+            href={`tel:${PHONE_NUMBER}`}
+            aria-label="Call Now"
+            onClick={() => trackPhoneCall('floating_button_designer')}
+          >
             <PhoneIcon size={24} />
           </a>
         </div>
+
+        {/* ✅ FLOATING WHATSAPP BUTTON — tracked */}
         <div className="dl-float-wa">
-          <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" onClick={() => trackWhatsApp('floating_button_designer')}>
+          <a
+            href={WA_PREFILL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
+            onClick={() => trackWhatsApp('floating_button_designer')}
+          >
             <WaIcon size={26} />
           </a>
         </div>
