@@ -1024,7 +1024,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
       </Link>
 
       {/* 2. Designer Collection Card */}
-      <Link to="/designer-outfits-bangalore" className="sf-cat-card">
+      <Link to="/bridal-blouse-bangalore" className="sf-cat-card">
         {/* Background Image */}
         <img
           src="/videos/cat2.webp"
