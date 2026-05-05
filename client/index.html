@@ -6,10 +6,31 @@
     <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+    <!-- ✅ 1. Google Tag Manager — MUST be first, as high as possible in head -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NWZZT874');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- ✅ 2. Google Tag (GA4) — correct GA4 measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T1D96GDB0K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-T1D96GDB0K', { send_page_view: false });
+    </script>
+
     <!-- PRIMARY SEO -->
     <title>Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique</title>
     <meta name="description"
-      content="Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore offers customized bridal blouses, designer outfits, lehengas, and gowns with perfect fit and premium finishing." />
+      content="Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore offers customized bridal blouses, designer outfits, lehengas, and gowns with perfect fit and premium finishing by Chief Designer Shruthi Ajith." />
+    <meta name="keywords"
+      content="bridal boutique bangalore, bridal blouse designer bangalore, maggam work blouse, aari work blouse, designer outfits bangalore, lehenga bangalore, bridal gown bangalore, Mahalakshmipuram boutique, Shrusara fashion boutique" />
+    <meta name="author" content="Shrusara Fashion Boutique" />
+    <meta name="robots" content="index, follow" />
 
     <!-- CANONICAL -->
     <link rel="canonical" href="https://shrusara.com/" />
@@ -21,15 +42,21 @@
     <meta name="ICBM" content="13.0077, 77.5487" />
 
     <!-- OPEN GRAPH -->
-    <meta property="og:title" content="Shrusara Fashion Boutique Bangalore" />
+    <meta property="og:title" content="Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique" />
     <meta property="og:description"
-      content="Premium bridal blouse designer & boutique in Bangalore with custom stitching and maggam work." />
+      content="Customized bridal blouses, designer outfits, lehengas and gowns in Bangalore with perfect fit, premium maggam work and personalized styling by Chief Designer Shruthi Ajith." />
     <meta property="og:image" content="https://shrusara.com/videos/logo.png" />
     <meta property="og:url" content="https://shrusara.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Shrusara Fashion Boutique" />
+    <meta property="og:locale" content="en_IN" />
 
     <!-- TWITTER -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bridal & Designer Boutique in Bangalore | Shrusara" />
+    <meta name="twitter:description"
+      content="Customized bridal blouses, designer outfits and gowns in Bangalore with perfect fit and premium finishing." />
+    <meta name="twitter:image" content="https://shrusara.com/videos/logo.png" />
 
     <!-- THEME -->
     <meta name="theme-color" content="#f7f2eb" />
@@ -38,32 +65,17 @@
     <link rel="icon" href="/videos/Revised Logo PNG.png" type="image/png" />
     <link rel="apple-touch-icon" href="/videos/logo.png" />
 
-    <!-- ✅ 1. Google Tag Manager — MUST be first, as high as possible in head -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TWBGWD7P');</script>
-    <!-- End Google Tag Manager -->
-
-    <!-- ✅ 2. Google Tag (GA4) — kept alongside GTM -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T1D96GDB0K"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-T1D96GDB0K', { send_page_view: false });
-    </script>
-
-    <!-- STRUCTURED DATA -->
+    <!-- STRUCTURED DATA — Local Business -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Boutique",
+      "@type": "ClothingStore",
       "name": "Shrusara Fashion Boutique",
       "image": "https://shrusara.com/videos/logo.png",
       "url": "https://shrusara.com",
       "telephone": "+919741827558",
+      "email": "help@shrusara.com",
+      "priceRange": "₹₹",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "106, 6th Main Road, Mahalakshmipuram",
@@ -72,21 +84,37 @@
         "postalCode": "560086",
         "addressCountry": "IN"
       },
-      "description": "Shrusara Fashion Boutique in Bangalore specializes in bridal blouse designing, maggam work, and custom designer outfits.",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 13.0077,
+        "longitude": 77.5487
+      },
+      "description": "Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore specializes in customized bridal blouses, maggam work, aari work, designer outfits, lehengas and gowns with perfect fit and premium finishing.",
       "areaServed": "Bangalore",
-      "sameAs": ["https://www.instagram.com/"]
+      "hasMap": "https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "opens": "10:00",
+        "closes": "20:00"
+      },
+      "sameAs": [
+        "https://www.instagram.com/",
+        "https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore"
+      ]
     }
     </script>
 
+    <script type="module" crossorigin src="/assets/index-B0QvNQeW.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CzgiS9dy.css">
   </head>
   <body>
 
     <!-- ✅ 3. Google Tag Manager (noscript) — MUST be immediately after opening body tag -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TWBGWD7P"
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWZZT874"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
