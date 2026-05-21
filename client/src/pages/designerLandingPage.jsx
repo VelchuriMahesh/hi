@@ -177,14 +177,15 @@ const trustPoints = [
 ];
 
 const services = [
-  { icon: '◈', title: 'Designer Gowns',             desc: 'Stunning gowns for parties, receptions, and special occasions crafted with premium fabric and modern silhouettes.' },
-  { icon: '✦', title: 'Indo-Western Outfits',        desc: 'Fusion ensembles with modern silhouettes and stylish detailing that blend tradition with contemporary fashion.' },
-  { icon: '◷', title: 'Designer Blouses',            desc: 'Customized blouses with unique patterns, premium embroidery, and impeccable finishing for every occasion.' },
-  { icon: '★', title: 'Crop Top & Lehenga Sets',     desc: 'Beautifully designed sets crafted for festive events, weddings, and special celebrations.' },
-  { icon: '✒', title: 'Kurtha Sets',                 desc: 'Elegant and contemporary kurtha sets combining comfort, style, and premium tailoring.' },
-  { icon: '◉', title: 'Ready-to-Wear Sarees',        desc: '1-minute wear concept — elegant sarees pre-draped for convenience without sacrificing traditional grace.' },
-  { icon: '✿', title: 'Mother & Daughter Outfits',   desc: 'Coordinated matching outfits for mothers and daughters, crafted for special occasions and celebrations.' },
-];
++   { icon: '◈', title: 'Designer Gowns',             desc: 'Customized designer gowns for receptions, parties and special occasions, crafted with premium fabrics, elegant silhouettes and perfect boutique fitting.' },
++   { icon: '✦', title: 'Indo-Western Outfits',        desc: 'Customized Indo-western outfits blending modern styling with traditional elegance, tailored beautifully for contemporary occasions and celebrations.' },
++   { icon: '◷', title: 'Designer Blouses',            desc: 'Customized designer blouses with premium embroidery, unique patterns and elegant finishing tailored beautifully for every occasion.' },
++   { icon: '★', title: 'Crop Top & Lehenga Sets',     desc: 'Customized crop tops and lehenga sets crafted stylishly for festive events, weddings and modern ethnic celebrations.' },
++   { icon: '✒', title: 'Kurtha Sets',                 desc: 'Customized kurtha sets designed with contemporary styling, premium tailoring and elegant comfort for casual and festive occasions.' },
++   { icon: '◉', title: 'Ready-to-Wear Sarees',        desc: 'Convert your sarees into elegant ready-to-wear concepts with customized pre-draped styling for comfort, convenience and modern occasions.' },
++   { icon: '✿', title: 'Mother & Daughter Outfits',   desc: 'Customized matching outfits for mothers and daughters, beautifully tailored for birthdays, weddings and memorable family occasions.' },
++   { icon: '◆', title: 'Saree Conversion Outfits',    desc: 'Transform your sarees into customized lehengas, gowns, crop tops and designer outfits crafted beautifully with premium boutique finishing.' },
++ ];
 
 const reviews = [
   { name: 'Kavitha M.',  text: 'I ordered a custom designer gown from Shrusara for my sister\'s reception. The fitting was absolutely perfect and Shruthi Ajith personally helped me choose the right design. An outstanding boutique in Bangalore!' },
@@ -715,8 +716,12 @@ const DesignerLandingPage = () => {
           <p className="dl-sec-eyebrow">Our Services</p>
           <h2 className="dl-sec-h">Customized Designer Outfits &amp; Occasion Wear in Bangalore</h2>
           <p className="dl-services-desc">
-            At Shrusara Fashion Boutique, we specialize in creating customized designer outfits in Bangalore tailored for modern occasions. From western gowns to ethnic wear, every outfit is crafted with attention to detail, premium fabrics, and perfect fitting.
-          </p>
++   At Shrusara Fashion Boutique, we specialize in creating customized designer
++   outfits in Bangalore beautifully tailored for modern occasions. From designer
++   gowns and Indo-western wear to saree conversion outfits and ready-to-wear
++   saree customization, every outfit is crafted with premium detailing, elegant
++   finishing and perfect boutique fitting.
++ </p>
           <div className="dl-services-grid">
             {services.map(s => (
               <div key={s.title} className="dl-service-card">
