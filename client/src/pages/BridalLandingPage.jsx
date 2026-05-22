@@ -43,6 +43,17 @@ const trustPoints = [
   { icon: '✓', label: 'Fitting',       title: 'Made-to-Measure Silhouettes',          desc: 'Every outfit is tailored specifically to your body type, comfort, and occasion' },
 ];
 
+const services = [
+  { icon: '◈', title: 'Designer Gowns',           desc: 'Customized designer gowns for receptions, parties and special occasions, crafted with premium fabrics, elegant silhouettes and perfect boutique fitting.' },
+  { icon: '✦', title: 'Indo-Western Outfits',      desc: 'Customized Indo-western outfits blending modern styling with traditional elegance, tailored beautifully for contemporary occasions and celebrations.' },
+  { icon: '◷', title: 'Designer Blouses',          desc: 'Customized designer blouses with premium embroidery, unique patterns and elegant finishing tailored beautifully for every occasion.' },
+  { icon: '★', title: 'Crop Top & Lehenga Sets',   desc: 'Customized crop tops and lehenga sets crafted stylishly for festive events, weddings and modern ethnic celebrations.' },
+  { icon: '✒', title: 'Kurtha Sets',               desc: 'Customized kurtha sets designed with contemporary styling, premium tailoring and elegant comfort for casual and festive occasions.' },
+  { icon: '◉', title: 'Ready-to-Wear Sarees',      desc: 'Convert your sarees into elegant ready-to-wear concepts with customized pre-draped styling for comfort, convenience and modern occasions.' },
+  { icon: '✿', title: 'Mother & Daughter Outfits', desc: 'Customized matching outfits for mothers and daughters, beautifully tailored for birthdays, weddings and memorable family occasions.' },
+  { icon: '◆', title: 'Saree Conversion Outfits',  desc: 'Transform your sarees into customized lehengas, gowns, crop tops and designer outfits crafted beautifully with premium boutique finishing.' },
+];
+
 const reviews = [
   { name: 'Divya K.',   text: 'Shrusara crafted the most beautiful maggam work blouse for my wedding. The fitting was perfect and Shruthi Ajith personally guided me through the design. Highly recommended for brides in Bangalore!' },
   { name: 'Meghana R.', text: 'I was looking for a customized bridal blouse in Bangalore and found Shrusara. The aari work detailing was stunning and delivered well before my wedding date. The entire process was smooth and professional.' },
@@ -177,7 +188,6 @@ const BridalLandingPage = () => {
   return (
     <>
       <style>{`
-        /* ── RESET & BASE ── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
           --bl-gold:      #B8935A;
@@ -188,188 +198,69 @@ const BridalLandingPage = () => {
           --bl-muted:     #7A6A5A;
           --bl-white:     #FFFFFF;
         }
-        .bl-body {
-          font-family: 'Jost', 'Poppins', sans-serif;
-          background: var(--bl-cream);
-          color: var(--bl-text);
-          overflow-x: hidden;
-          width: 100%;
-          max-width: 100vw;
-        }
-
-        /* ── HEADER ── */
-        .bl-hdr {
-          position: sticky; top: 0; z-index: 100;
-          background: rgba(251,248,243,.97);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(184,147,90,.15);
-          padding: 0 4vw;
-          display: flex; align-items: center; justify-content: space-between;
-          height: 64px;
-          gap: 8px;
-        }
-        .bl-hdr-brand {
-          display: flex; align-items: center; gap: 10px;
-          text-decoration: none; flex-shrink: 0;
-        }
+        .bl-body { font-family: 'Jost', 'Poppins', sans-serif; background: var(--bl-cream); color: var(--bl-text); overflow-x: hidden; width: 100%; max-width: 100vw; }
+        .bl-hdr { position: sticky; top: 0; z-index: 100; background: rgba(251,248,243,.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(184,147,90,.15); padding: 0 4vw; display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 8px; }
+        .bl-hdr-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
         .bl-hdr-logo { height: 44px; width: auto; object-fit: contain; display: block; }
-        .bl-hdr-name {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: 1.5rem; font-weight: 700; color: #2b2118;
-          line-height: 1; white-space: nowrap;
-        }
-        .bl-hdr-sub {
-          font-size: .48rem; letter-spacing: .28em; text-transform: uppercase;
-          color: var(--bl-gold); font-weight: 600; margin-top: 4px; line-height: 1;
-        }
-        .bl-hdr-badge {
-          display: flex; align-items: center; gap: 6px;
-          font-size: .56rem; letter-spacing: .15em; text-transform: uppercase;
-          color: var(--bl-muted); font-weight: 500; white-space: nowrap;
-        }
-        .bl-hdr-badge-dot {
-          width: 6px; height: 6px; border-radius: 50%; background: #4CAF50;
-          animation: bl-pulse 2s infinite; flex-shrink: 0;
-        }
+        .bl-hdr-name { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #2b2118; line-height: 1; white-space: nowrap; }
+        .bl-hdr-sub { font-size: .48rem; letter-spacing: .28em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-top: 4px; line-height: 1; }
+        .bl-hdr-badge { display: flex; align-items: center; gap: 6px; font-size: .56rem; letter-spacing: .15em; text-transform: uppercase; color: var(--bl-muted); font-weight: 500; white-space: nowrap; }
+        .bl-hdr-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #4CAF50; animation: bl-pulse 2s infinite; flex-shrink: 0; }
         @keyframes bl-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-        .bl-hdr-cta {
-          display: inline-flex; align-items: center; gap: 7px;
-          background: var(--bl-dark); color: var(--bl-white);
-          font-size: .58rem; font-weight: 600; letter-spacing: .14em;
-          text-transform: uppercase; padding: 10px 16px;
-          text-decoration: none; white-space: nowrap; flex-shrink: 0;
-          transition: background .2s;
-        }
+        .bl-hdr-cta { display: inline-flex; align-items: center; gap: 7px; background: var(--bl-dark); color: var(--bl-white); font-size: .58rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 10px 16px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: background .2s; }
         .bl-hdr-cta:hover { background: var(--bl-gold); }
-
-        /* ── HERO ── */
-        .bl-hero {
-          display: flex; flex-direction: row;
-          align-items: stretch; width: 100%;
-          min-height: 88vh;
-          background: var(--bl-cream);
-          position: relative; overflow: hidden;
-        }
-        .bl-hero::before {
-          content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-          background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,.08) 0%, transparent 70%);
-        }
-        .bl-hero-text {
-          flex: 1.1; display: flex; flex-direction: column;
-          justify-content: center; align-items: flex-start;
-          padding: 72px 40px 72px 5vw; z-index: 2;
-        }
-        .bl-hero-eyebrow {
-          display: inline-flex; align-items: center; gap: 10px;
-          font-size: .6rem; letter-spacing: .24em; text-transform: uppercase;
-          color: var(--bl-gold); font-weight: 600; margin-bottom: 18px;
-        }
+        .bl-hero { display: flex; flex-direction: row; align-items: stretch; width: 100%; min-height: 88vh; background: var(--bl-cream); position: relative; overflow: hidden; }
+        .bl-hero::before { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,.08) 0%, transparent 70%); }
+        .bl-hero-text { flex: 1.1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 72px 40px 72px 5vw; z-index: 2; }
+        .bl-hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: .6rem; letter-spacing: .24em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 18px; }
         .bl-hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--bl-gold); display: block; }
-        .bl-hero-h1 {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.75rem, 3vw, 3.2rem);
-          font-weight: 700; line-height: 1.12;
-          color: var(--bl-dark); margin-bottom: 10px;
-        }
+        .bl-hero-h1 { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: clamp(1.75rem, 3vw, 3.2rem); font-weight: 700; line-height: 1.12; color: var(--bl-dark); margin-bottom: 10px; }
         .bl-hero-h1 em { font-style: italic; color: var(--bl-gold); }
-        .bl-hero-h2 {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1rem, 1.5vw, 1.5rem);
-          font-weight: 400; font-style: italic;
-          color: var(--bl-muted); margin-bottom: 18px; line-height: 1.35;
-        }
-        .bl-hero-sub {
-          font-size: .86rem; line-height: 1.8; color: var(--bl-muted);
-          max-width: 440px; margin-bottom: 6px; font-weight: 300;
-        }
-        .bl-hero-designer {
-          display: inline-flex; align-items: center; gap: 7px;
-          font-size: .7rem; font-weight: 600; letter-spacing: .06em;
-          color: var(--bl-dark); margin-bottom: 6px;
-        }
+        .bl-hero-h2 { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: clamp(1rem, 1.5vw, 1.5rem); font-weight: 400; font-style: italic; color: var(--bl-muted); margin-bottom: 18px; line-height: 1.35; }
+        .bl-hero-sub { font-size: .86rem; line-height: 1.8; color: var(--bl-muted); max-width: 440px; margin-bottom: 6px; font-weight: 300; }
+        .bl-hero-designer { display: inline-flex; align-items: center; gap: 7px; font-size: .7rem; font-weight: 600; letter-spacing: .06em; color: var(--bl-dark); margin-bottom: 6px; }
         .bl-hero-designer::before { content: '✦'; color: var(--bl-gold); font-size: .68rem; }
         .bl-hero-price { font-size: .74rem; color: var(--bl-muted); margin-bottom: 10px; }
         .bl-hero-price strong { color: var(--bl-dark); font-weight: 700; }
-        .bl-hero-scarcity {
-          display: inline-flex; align-items: center; gap: 6px;
-          font-size: .66rem; color: rgba(184,147,90,.85);
-          font-weight: 500; letter-spacing: .04em; margin-bottom: 24px;
-        }
+        .bl-hero-scarcity { display: inline-flex; align-items: center; gap: 6px; font-size: .66rem; color: rgba(184,147,90,.85); font-weight: 500; letter-spacing: .04em; margin-bottom: 24px; }
         .bl-hero-scarcity::before { content: '⚑'; font-size: .63rem; }
         .bl-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
         .bl-hero-img-wrap { flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
         .bl-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .bl-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--bl-cream) 0%, transparent 18%); }
-
-        /* ── BUTTONS ── */
-        .bl-btn-pri {
-          display: inline-flex; align-items: center; gap: 9px;
-          background: var(--bl-dark); color: var(--bl-white);
-          font-size: .68rem; font-weight: 600; letter-spacing: .14em;
-          text-transform: uppercase; padding: 14px 24px;
-          text-decoration: none; border: 2px solid var(--bl-dark);
-          transition: transform .2s, box-shadow .2s;
-        }
+        .bl-btn-pri { display: inline-flex; align-items: center; gap: 9px; background: var(--bl-dark); color: var(--bl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; border: 2px solid var(--bl-dark); transition: transform .2s, box-shadow .2s; }
         .bl-btn-pri:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,20,16,.2); }
-        .bl-btn-sec {
-          display: inline-flex; align-items: center; gap: 9px;
-          background: transparent; color: var(--bl-dark);
-          font-size: .68rem; font-weight: 600; letter-spacing: .14em;
-          text-transform: uppercase; padding: 14px 24px;
-          text-decoration: none; border: 2px solid var(--bl-dark);
-          transition: background .2s, color .2s;
-        }
+        .bl-btn-sec { display: inline-flex; align-items: center; gap: 9px; background: transparent; color: var(--bl-dark); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; border: 2px solid var(--bl-dark); transition: background .2s, color .2s; }
         .bl-btn-sec:hover { background: var(--bl-dark); color: var(--bl-white); }
-
-        /* ── TRUST BAR ── */
         .bl-trust { padding: 0 4vw 56px; background: var(--bl-white); }
-        .bl-trust-grid {
-          display: grid; grid-template-columns: repeat(3, 1fr);
-          gap: 1px; background: rgba(184,147,90,.12);
-        }
+        .bl-trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(184,147,90,.12); }
         .bl-trust-item { background: var(--bl-white); padding: 28px 22px; display: flex; align-items: flex-start; gap: 14px; }
-        .bl-trust-icon {
-          width: 38px; height: 38px; border-radius: 50%;
-          background: var(--bl-gold-pale); display: flex;
-          align-items: center; justify-content: center;
-          flex-shrink: 0; font-size: .95rem; color: var(--bl-gold);
-        }
+        .bl-trust-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--bl-gold-pale); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .95rem; color: var(--bl-gold); }
         .bl-trust-label { font-size: .56rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 5px; }
         .bl-trust-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 4px; }
         .bl-trust-desc { font-size: .78rem; color: var(--bl-muted); line-height: 1.6; font-weight: 300; }
-
-        /* ── SECTION LABELS ── */
-        .bl-sec-eyebrow {
-          display: inline-flex; align-items: center; gap: 8px;
-          font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
-          color: var(--bl-gold); font-weight: 600; margin-bottom: 12px;
-        }
+        .bl-sec-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
         .bl-sec-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--bl-gold); display: block; }
-        .bl-sec-h {
-          font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-          font-size: clamp(1.5rem, 2.6vw, 2.4rem);
-          font-weight: 700; color: var(--bl-dark); margin-bottom: 10px; line-height: 1.2;
-        }
+        .bl-sec-h { font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: clamp(1.5rem, 2.6vw, 2.4rem); font-weight: 700; color: var(--bl-dark); margin-bottom: 10px; line-height: 1.2; }
         .bl-sec-sub { font-size: .85rem; color: var(--bl-muted); line-height: 1.75; max-width: 500px; font-weight: 300; }
 
-        /* ── GALLERY ── */
-        .bl-gallery { padding: 64px 4vw; background: var(--bl-cream); }
+        /* ── SERVICES ── */
+        .bl-services { padding: 64px 4vw; background: var(--bl-cream); }
+        .bl-services-desc { font-size: .88rem; line-height: 1.82; color: var(--bl-muted); max-width: 760px; margin-bottom: 36px; font-weight: 300; }
+        .bl-services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .bl-service-card { background: var(--bl-white); border: 1px solid rgba(184,147,90,.12); padding: 24px 18px; transition: transform .2s, box-shadow .2s; }
+        .bl-service-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(28,20,16,.10); }
+        .bl-service-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--bl-gold-pale); display: flex; align-items: center; justify-content: center; font-size: .9rem; color: var(--bl-gold); margin-bottom: 12px; }
+        .bl-service-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 7px; }
+        .bl-service-desc { font-size: .76rem; color: var(--bl-muted); line-height: 1.62; font-weight: 300; }
+
+        .bl-gallery { padding: 64px 4vw; background: var(--bl-white); }
         .bl-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
-        .bl-gallery-card {
-          overflow: hidden; border-radius: 22px;
-          border: 1px solid rgba(255,255,255,.6);
-          background: rgba(255,255,255,.82); padding: 10px;
-          box-shadow: 0 4px 20px rgba(28,20,16,.10);
-          transition: transform .3s, box-shadow .3s;
-          cursor: pointer; width: 100%; text-align: left;
-          appearance: none; -webkit-appearance: none; display: block;
-        }
+        .bl-gallery-card { overflow: hidden; border-radius: 22px; border: 1px solid rgba(255,255,255,.6); background: rgba(255,255,255,.82); padding: 10px; box-shadow: 0 4px 20px rgba(28,20,16,.10); transition: transform .3s, box-shadow .3s; cursor: pointer; width: 100%; text-align: left; appearance: none; -webkit-appearance: none; display: block; }
         .bl-gallery-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(28,20,16,.16); }
         .bl-gallery-card-inner { border-radius: 16px; overflow: hidden; background: var(--bl-gold-pale); aspect-ratio: 4/5; }
         .bl-gallery-card-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .bl-gallery-card:hover .bl-gallery-card-inner img { transform: scale(1.05); }
-
-        /* ── CRAFTSMANSHIP ── */
         .bl-craft { padding: 64px 4vw; background: var(--bl-white); }
         .bl-craft-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
         .bl-craft-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
@@ -386,8 +277,6 @@ const BridalLandingPage = () => {
         .bl-craft-img-inner { border-radius: 14px; overflow: hidden; background: var(--bl-gold-pale); aspect-ratio: 3/4; }
         .bl-craft-img-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .bl-craft-img-card:hover .bl-craft-img-inner img { transform: scale(1.05); }
-
-        /* ── DESIGNER ── */
         .bl-designer { padding: 64px 4vw; background: var(--bl-dark); }
         .bl-designer-inner { max-width: 960px; margin: 0 auto; }
         .bl-designer-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bl-gold); font-weight: 600; margin-bottom: 12px; }
@@ -402,8 +291,6 @@ const BridalLandingPage = () => {
         .bl-designer-text { font-size: 1rem; line-height: 1.88; color: rgba(255,255,255,.75); font-weight: 300; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-bottom: 16px; }
         .bl-designer-sub { font-size: .85rem; line-height: 1.72; color: rgba(255,255,255,.5); font-weight: 300; }
         .bl-designer-trusted { font-size: .8rem; line-height: 1.68; color: rgba(255,255,255,.42); font-weight: 300; margin-top: 24px; border-top: 1px solid rgba(184,147,90,.2); padding-top: 18px; }
-
-        /* ── REVIEWS ── */
         .bl-reviews { padding: 64px 4vw; background: var(--bl-white); }
         .bl-reviews-hdr { text-align: center; max-width: 680px; margin: 0 auto 40px; }
         .bl-reviews-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 2.6vw, 2.4rem); font-weight: 700; color: var(--bl-dark); margin-bottom: 10px; line-height: 1.2; }
@@ -413,20 +300,13 @@ const BridalLandingPage = () => {
         .bl-review-stars { color: #FFC107; letter-spacing: 3px; font-size: .88rem; margin-bottom: 10px; }
         .bl-review-text { font-size: .82rem; line-height: 1.72; color: var(--bl-text); font-weight: 300; margin-bottom: 16px; font-style: italic; }
         .bl-review-name { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--bl-dark); }
-
-        /* ── TRUST SECTION ── */
         .bl-trust-sec { padding: 80px 4vw; background: var(--bl-cream); text-align: center; }
         .bl-img-top-label { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 22px; }
         .bl-img-top-label span { font-size: .62rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--bl-gold); }
         .bl-img-line { width: 40px; height: 1px; background: var(--bl-gold); opacity: .6; }
         .bl-img-main-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.9rem, 3.8vw, 3.6rem); color: #2b2118; margin: 0 0 14px; font-weight: 700; }
         .bl-img-main-sub { font-size: 1rem; color: var(--bl-muted); line-height: 1.6; max-width: 560px; margin: 0 auto 44px; font-weight: 300; }
-        .bl-img-google-card {
-          background: white; border-radius: 30px; padding: 22px 40px;
-          max-width: 860px; margin: 0 auto 28px;
-          display: flex; align-items: center; justify-content: space-between; gap: 24px;
-          box-shadow: 0 12px 40px rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.03); flex-wrap: wrap;
-        }
+        .bl-img-google-card { background: white; border-radius: 30px; padding: 22px 40px; max-width: 860px; margin: 0 auto 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; box-shadow: 0 12px 40px rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.03); flex-wrap: wrap; }
         .bl-img-card-div { width: 1px; height: 46px; background: #eee; flex-shrink: 0; }
         .bl-img-rating-wrap { display: flex; align-items: center; gap: 16px; text-align: left; }
         .bl-img-big-num { font-size: 3.8rem; font-weight: 700; color: #2b2118; line-height: 1; font-family: 'Jost', sans-serif; }
@@ -444,8 +324,6 @@ const BridalLandingPage = () => {
         .bl-img-badge-stars { color: #A88A64; font-size: 1.3rem; letter-spacing: 4px; margin-bottom: 10px; line-height: 1; }
         .bl-img-badge-content h3 { color: #A88A64; font-size: 1rem; font-weight: 700; letter-spacing: .05em; margin: 0 0 5px; text-transform: uppercase; }
         .bl-img-badge-content p { color: #9C9C9C; font-size: .95rem; margin: 0; font-weight: 300; }
-
-        /* ── PROCESS ── */
         .bl-process { padding: 64px 4vw; background: var(--bl-white); }
         .bl-process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 36px; }
         .bl-process-card { background: var(--bl-cream); padding: 30px 24px; border: 1px solid rgba(184,147,90,.12); position: relative; overflow: hidden; }
@@ -453,8 +331,6 @@ const BridalLandingPage = () => {
         .bl-process-step { display: inline-block; font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--bl-gold); margin-bottom: 12px; }
         .bl-process-title { font-family: 'Cormorant Garamond', serif; font-size: 1.22rem; font-weight: 700; color: var(--bl-dark); margin-bottom: 8px; }
         .bl-process-desc { font-size: .8rem; color: var(--bl-muted); line-height: 1.68; font-weight: 300; }
-
-        /* ── FINAL CTA ── */
         .bl-cta-wrap { padding: 64px 4vw; background: var(--bl-cream); }
         .bl-cta-box { background: var(--bl-dark); padding: 60px 48px; text-align: center; position: relative; overflow: hidden; max-width: 960px; margin: 0 auto; }
         .bl-cta-box::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 55% at 50% 100%, rgba(184,147,90,.12) 0%, transparent 70%); }
@@ -477,8 +353,6 @@ const BridalLandingPage = () => {
         .bl-cta-btn-sec { display: inline-flex; align-items: center; gap: 9px; background: transparent; color: var(--bl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 28px; text-decoration: none; border: 2px solid rgba(255,255,255,.3); transition: background .2s; }
         .bl-cta-btn-sec:hover { background: rgba(255,255,255,.08); }
         .bl-form-hint { font-size: .7rem; color: rgba(255,255,255,.38); margin-top: 14px; font-style: italic; }
-
-        /* ── FOOTER ── */
         .bl-footer { background: var(--bl-dark); border-top: 1px solid rgba(184,147,90,.18); padding: 32px 4vw 20px; color: rgba(255,255,255,.65); }
         .bl-footer-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px 48px; }
         .bl-footer-brand { display: flex; flex-direction: column; gap: 4px; min-width: 180px; flex: 1.2; }
@@ -497,8 +371,6 @@ const BridalLandingPage = () => {
         .bl-footer-map-link:hover { background: rgba(184,147,90,.1); }
         .bl-footer-bottom { max-width: 1100px; margin: 18px auto 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         .bl-footer-copy { font-size: .62rem; color: rgba(255,255,255,.22); }
-
-        /* ── FLOATING BUTTONS ── */
         .bl-float-call { position: fixed; bottom: 96px; right: 20px; z-index: 200; }
         .bl-float-call a { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #000; color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.4); text-decoration: none; }
         .bl-float-call a:hover { background: #B8935A; }
@@ -506,8 +378,6 @@ const BridalLandingPage = () => {
         .bl-float-wa a { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: #25D366; color: var(--bl-white); box-shadow: 0 6px 24px rgba(37,211,102,.45); position: relative; text-decoration: none; }
         .bl-float-wa a::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25D366; opacity: .55; animation: bl-ring 2s infinite; }
         @keyframes bl-ring { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.75);opacity:0} }
-
-        /* ── MODAL ── */
         .blm-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.86); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; }
         .blm-box { background: #FAF8F5; border-radius: 18px; max-width: 860px; width: 100%; max-height: 92vh; overflow-y: auto; position: relative; }
         .blm-close { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #1C1410; z-index: 10; }
@@ -518,10 +388,7 @@ const BridalLandingPage = () => {
         .blm-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #1C1410; margin-bottom: 8px; }
         .blm-desc { font-size: .88rem; line-height: 1.58; color: #7A6A5A; margin: 0 auto 20px; max-width: 560px; }
         .blm-btn-cont { padding: 12px 36px; background: #1C1410; color: #fff; border: none; border-radius: 100px; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
-
-        /* ══════════════════════════════════════════
-           RESPONSIVE — TABLET  (max 1024px)
-        ══════════════════════════════════════════ */
+        @media (max-width: 1200px) { .bl-services-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 1024px) {
           .bl-gallery-grid { grid-template-columns: repeat(2, 1fr); }
           .bl-craft-inner  { grid-template-columns: 1fr; gap: 36px; }
@@ -529,129 +396,59 @@ const BridalLandingPage = () => {
           .bl-footer-divider-v { display: none; }
           .bl-reviews-grid { grid-template-columns: repeat(2, 1fr); }
           .bl-trust-grid { grid-template-columns: repeat(2, 1fr); }
+          .bl-services-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
-        /* ══════════════════════════════════════════
-           RESPONSIVE — MOBILE  (max 768px)
-        ══════════════════════════════════════════ */
         @media (max-width: 768px) {
-          /* Header */
           .bl-hdr { height: 60px; padding: 0 16px; gap: 6px; }
           .bl-hdr-logo { height: 38px; }
           .bl-hdr-name { font-size: 1.25rem; }
           .bl-hdr-sub { font-size: .42rem; letter-spacing: .22em; }
           .bl-hdr-badge { display: none; }
           .bl-hdr-cta { font-size: .54rem; padding: 9px 12px; letter-spacing: .1em; gap: 5px; }
-
-          /* Hero — stack image above text */
           .bl-hero { flex-direction: column; min-height: auto; }
-          .bl-hero-img-wrap { order: 1; height: 56vw; min-height: 240px; width: 100%; min-height: unset; }
+          .bl-hero-img-wrap { order: 1; height: 56vw; min-height: 240px; width: 100%; }
           .bl-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--bl-cream) 100%); }
           .bl-hero-text { order: 2; padding: 32px 16px 40px; }
-          .bl-hero-eyebrow { font-size: .56rem; margin-bottom: 12px; }
-          .bl-hero-h1 { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 8px; }
-          .bl-hero-h2 { font-size: clamp(.95rem, 3.5vw, 1.2rem); margin-bottom: 14px; }
-          .bl-hero-sub { font-size: .82rem; max-width: 100%; margin-bottom: 5px; }
-          .bl-hero-designer { font-size: .66rem; }
-          .bl-hero-price { font-size: .7rem; }
-          .bl-hero-scarcity { font-size: .63rem; margin-bottom: 20px; }
           .bl-hero-btns { flex-direction: column; gap: 10px; }
           .bl-btn-pri, .bl-btn-sec { width: 100%; justify-content: center; padding: 14px 20px; font-size: .66rem; }
-
-          /* Trust bar */
           .bl-trust { padding: 0 16px 40px; }
           .bl-trust-grid { grid-template-columns: 1fr; }
-          .bl-trust-item { padding: 20px 16px; }
-
-          /* Gallery */
+          .bl-services { padding: 48px 16px; }
+          .bl-services-grid { grid-template-columns: 1fr; gap: 12px; }
           .bl-gallery { padding: 48px 16px; }
           .bl-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
-          .bl-gallery-card { padding: 8px; border-radius: 16px; }
-          .bl-gallery-card-inner { border-radius: 12px; }
-
-          /* Trust section (Google) */
           .bl-trust-sec { padding: 60px 16px; }
-          .bl-img-top-label { gap: 10px; }
-          .bl-img-top-label span { font-size: .56rem; letter-spacing: .18em; }
-          .bl-img-main-h { font-size: clamp(1.6rem, 6vw, 2.4rem); }
-          .bl-img-main-sub { font-size: .88rem; margin-bottom: 32px; }
-          .bl-img-google-card {
-            flex-direction: column; padding: 24px 20px;
-            text-align: center; gap: 16px;
-            border-radius: 20px;
-          }
+          .bl-img-google-card { flex-direction: column; padding: 24px 20px; text-align: center; gap: 16px; border-radius: 20px; }
           .bl-img-card-div { display: none; }
           .bl-img-rating-wrap { flex-direction: column; align-items: center; text-align: center; gap: 8px; }
-          .bl-img-big-num { font-size: 3.2rem; }
-          .bl-img-stars-row { font-size: 1.3rem; }
-          .bl-img-source-lbl { font-size: .9rem; }
-          .bl-img-sub-row { text-align: center; font-size: .85rem; }
-          .bl-img-pill-btn { width: 100%; justify-content: center; padding: 12px 20px; font-size: .68rem; }
-          .bl-img-black-badge {
-            flex-direction: column; text-align: center;
-            padding: 24px 20px; gap: 16px;
-            border-radius: 16px; max-width: 100%;
-          }
+          .bl-img-pill-btn { width: 100%; justify-content: center; padding: 12px 20px; }
+          .bl-img-black-badge { flex-direction: column; text-align: center; padding: 24px 20px; gap: 16px; border-radius: 16px; max-width: 100%; }
           .bl-img-badge-div { display: none; }
-          .bl-img-badge-stars { font-size: 1.2rem; }
-          .bl-img-badge-content h3 { font-size: .9rem; }
-          .bl-img-badge-content p { font-size: .88rem; }
-          .bl-img-people-icon svg { width: 48px; height: 48px; }
-
-          /* Craft */
           .bl-craft { padding: 48px 16px; }
-          .bl-craft-inner { gap: 28px; }
           .bl-craft-right { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-          .bl-craft-tags { gap: 6px; }
-
-          /* Designer */
           .bl-designer { padding: 48px 16px; }
           .bl-designer-layout { grid-template-columns: 1fr; gap: 20px; }
-
-          /* Reviews */
           .bl-reviews { padding: 48px 16px; }
           .bl-reviews-grid { grid-template-columns: 1fr; gap: 14px; }
-          .bl-reviews-hdr { margin-bottom: 28px; }
-
-          /* Process */
           .bl-process { padding: 48px 16px; }
           .bl-process-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
-
-          /* Final CTA */
           .bl-cta-wrap { padding: 48px 16px; }
           .bl-cta-box { padding: 36px 20px; }
-          .bl-cta-h { font-size: clamp(1.4rem, 5.5vw, 2rem); }
-          .bl-cta-sub { font-size: .84rem; }
           .bl-form-fields { grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
           .bl-cta-btns { flex-direction: column; gap: 10px; }
           .bl-cta-btn-pri, .bl-cta-btn-sec { width: 100%; justify-content: center; padding: 14px 20px; font-size: .66rem; }
-
-          /* Footer */
           .bl-footer { padding: 28px 16px 18px; }
           .bl-footer-inner { gap: 20px 0; flex-direction: column; }
-          .bl-footer-desc, .bl-footer-seo { max-width: 100%; }
-
-          /* Modal */
-          .blm-body { padding: 16px 18px; }
-          .blm-title { font-size: 1.35rem; }
-          .blm-desc { font-size: .82rem; }
-
-          /* Floating */
           .bl-float-call { bottom: 90px; right: 16px; }
           .bl-float-call a { width: 50px; height: 50px; }
           .bl-float-wa { bottom: 20px; right: 16px; }
           .bl-float-wa a { width: 50px; height: 50px; }
         }
-
-        /* ══════════════════════════════════════════
-           RESPONSIVE — SMALL MOBILE  (max 480px)
-        ══════════════════════════════════════════ */
         @media (max-width: 480px) {
           .bl-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
           .bl-hdr-name { font-size: 1.1rem; }
           .bl-hdr-cta { padding: 8px 10px; font-size: .5rem; }
           .bl-hero-img-wrap { height: 64vw; }
-          .bl-img-black-badge::after { left: 8%; right: 40%; }
         }
       `}</style>
 
@@ -708,6 +505,24 @@ const BridalLandingPage = () => {
                   <p className="bl-trust-title">{item.title}</p>
                   <p className="bl-trust-desc">{item.desc}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SERVICES */}
+        <section className="bl-services">
+          <p className="bl-sec-eyebrow">Our Services</p>
+          <h2 className="bl-sec-h">Customized Designer Outfits &amp; Occasion Wear in Bangalore</h2>
+          <p className="bl-services-desc">
+            At Shrusara Fashion Boutique, we specialize in customized designer outfits in Bangalore beautifully tailored for modern occasions. From designer gowns and Indo-western wear to saree conversion outfits and ready-to-wear saree customization, every outfit is crafted with premium detailing, elegant finishing and perfect boutique fitting.
+          </p>
+          <div className="bl-services-grid">
+            {services.map(s => (
+              <div key={s.title} className="bl-service-card">
+                <div className="bl-service-icon">{s.icon}</div>
+                <h3 className="bl-service-title">{s.title}</h3>
+                <p className="bl-service-desc">{s.desc}</p>
               </div>
             ))}
           </div>
