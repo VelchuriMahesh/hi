@@ -4,17 +4,13 @@ import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import ReviewsSection from '../components/ReviewsSection';
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
-
-import {
-  fallbackReviews,
-} from '../data/content';
-
-const heroBridal = '/bridal/bridalblow/hero-bridal.webp';
+import { fallbackReviews } from '../data/content';
 import useMergedGallery from '../hooks/useMergedGallery';
 import useHeroMedia from '../hooks/useHeroMedia';
 import { fetchReviews } from '../services/api';
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+const heroBridal = '/bridal/bridalblow/hero-bridal.webp';
+
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 const BRIDAL_MSG      = encodeURIComponent(
@@ -23,7 +19,6 @@ const BRIDAL_MSG      = encodeURIComponent(
 const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${BRIDAL_MSG}`;
 const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
-// ─── Bridal outfits data ────────────────────────────────────────────────────
 const bridalOutfits = [
   {
     id: 1,
@@ -168,7 +163,6 @@ const processSteps = [
   },
 ];
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
 const WaIcon = ({ size = 18 }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -181,9 +175,6 @@ const PhoneIcon = () => (
   </svg>
 );
 
-// ─── Bridal Outfits Filter Section ───────────────────────────────────────────
-
-
 function BridalOutfits() {
   const [activeFilter, setActiveFilter] = useState('all');
 
@@ -192,14 +183,14 @@ function BridalOutfits() {
       ? bridalOutfits
       : bridalOutfits.filter((o) => o.tag === activeFilter);
 
-const mappedImages = filteredData.map((o) => ({
-  id: String(o.id),
-  url: o.image,
-  thumbUrl: o.image,
-  alt: o.alt,
-  title: o.title,
-  description: o.description,  // ✅ use actual description
-}));
+  const mappedImages = filteredData.map((o) => ({
+    id: String(o.id),
+    url: o.image,
+    thumbUrl: o.image,
+    alt: o.alt,
+    title: o.title,
+    description: o.description,
+  }));
 
   return (
     <div className="br-outfits">
@@ -223,7 +214,7 @@ const mappedImages = filteredData.map((o) => ({
     </div>
   );
 }
-// ─── Page Component ───────────────────────────────────────────────────────────
+
 export default function Bridal() {
   const [reviews, setReviews]               = useState(fallbackReviews);
   const [reviewsLoading, setReviewsLoading] = useState(true);
@@ -239,15 +230,12 @@ export default function Bridal() {
       .finally(() => {
         if (mounted) setReviewsLoading(false);
       });
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   return (
     <>
       <style>{`
-        /* ── Variables ── */
         :root {
           --c-primary:   #3E2C23;
           --c-secondary: #EAE3DC;
@@ -260,8 +248,6 @@ export default function Bridal() {
           --r-sm: 14px;
         }
         body { background: var(--c-bg); }
-
-        /* ── HERO ── */
         .br-hero {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -307,8 +293,6 @@ export default function Bridal() {
         }
         .br-hero-price strong { color: var(--c-primary); }
         .br-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-
-        /* Buttons */
         .br-btn-pri {
           display: inline-flex; align-items: center; gap: 8px;
           background: var(--c-primary); color: #fff;
@@ -325,21 +309,15 @@ export default function Bridal() {
           border: 2px solid var(--c-primary); transition: background .2s, color .2s;
         }
         .br-btn-sec:hover { background: var(--c-primary); color: #fff; }
-
-        /* Hero image */
         .br-hero-img-wrap { position: relative; height: 88vh; overflow: hidden; }
         .br-hero-img { width:100%; height:100%; object-fit:cover; object-position:center top; }
         .br-hero-fade {
           position: absolute; inset: 0;
           background: linear-gradient(to right, var(--c-bg) 0%, transparent 16%);
         }
-
-        /* ── SHELLS ── */
         .br-shell { max-width: 1280px; margin: 0 auto; padding: 80px 5vw; }
         .br-alt { background: var(--c-secondary); }
         .br-alt-inner { max-width: 1280px; margin: 0 auto; padding: 80px 5vw; }
-
-        /* ── SECTION HEADINGS ── */
         .br-sec-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font: 600 11px/1 'Poppins',sans-serif; letter-spacing:.18em;
@@ -354,8 +332,6 @@ export default function Bridal() {
           font: 400 .95rem/1.75 'Poppins',sans-serif;
           color: var(--c-muted); max-width: 560px;
         }
-
-        /* ── TRUST BAR ── */
         .br-trust-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
         .br-trust-card {
           background: var(--c-white); border-radius: var(--r-lg); padding: 28px 26px;
@@ -369,8 +345,6 @@ export default function Bridal() {
           font: 700 1.3rem/1.25 'Playfair Display',serif; color: var(--c-primary); margin-bottom: 10px;
         }
         .br-trust-desc { font: 400 .85rem/1.7 'Poppins',sans-serif; color: var(--c-muted); }
-
-        /* ── BRIDAL OUTFITS / FILTER ── */
         .br-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; margin-top: 32px; }
         .br-filter-pill {
           font: 600 12px/1 'Poppins',sans-serif; color: var(--c-primary);
@@ -380,33 +354,6 @@ export default function Bridal() {
         }
         .br-filter-pill:hover { background: rgba(62,44,35,.06); }
         .br-filter-pill.active { background: var(--c-primary); color: #fff; border-color: var(--c-primary); }
-
-        /* Outfit grid */
-        .br-outfit-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-        }
-        .br-outfit-card-btn {
-          overflow: hidden; border-radius: 28px;
-          border: 1px solid rgba(255,255,255,.6);
-          background: rgba(255,255,255,.8);
-          padding: 12px;
-          box-shadow: 0 4px 24px rgba(62,44,35,.10);
-        }
-        .br-outfit-card-inner { border-radius: 22px; overflow: hidden; }
-        .br-outfit-img-wrap {
-          aspect-ratio: 4 / 5;
-          border-radius: 22px;
-          overflow: hidden;
-          background: var(--c-secondary);
-        }
-        .br-outfit-img {
-          width: 100%; height: 100%;
-          object-fit: cover; display: block;
-        }
-
-        /* ── IMAGE BANNER ── */
         .br-image-match-banner {
           display: flex; justify-content: space-between; align-items: center;
           gap: 40px; background: #3E2C23; border-radius: 40px;
@@ -437,8 +384,6 @@ export default function Bridal() {
         }
         .br-btn-gold-pill:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.2); }
         .br-btn-outline-pill:hover { background: rgba(255,255,255,.1); }
-
-        /* ── SERVICES ── */
         .br-svc-grid {
           display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 24px; margin-top: 0;
         }
@@ -458,14 +403,10 @@ export default function Bridal() {
           flex-shrink: 0; margin-top: 5px;
         }
         .br-svc-text { font: 500 .88rem/1.5 'Poppins',sans-serif; color: var(--c-primary); }
-
-        /* ── GALLERY ── */
         .br-gallery-note {
           font: 400 .82rem/1.5 'Poppins',sans-serif; color: var(--c-muted);
           font-style: italic; margin-top: 28px; text-align: center;
         }
-
-        /* ── WHY SHRUSARA ── */
         .br-why-wrap {
           background: var(--c-white); border-radius: 32px; padding: 40px 36px;
           border: 1px solid rgba(62,44,35,.06); box-shadow: 0 4px 24px rgba(62,44,35,.07);
@@ -483,8 +424,6 @@ export default function Bridal() {
         }
         .br-why-icon { color: var(--c-accent); font-size: 18px; margin-bottom: 10px; }
         .br-why-text { font: 600 .78rem/1.5 'Poppins',sans-serif; color: var(--c-primary); }
-
-        /* ── PROCESS ── */
         .br-process-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 40px; }
         .br-process-card {
           background: var(--c-white); border-radius: var(--r-lg); padding: 32px 28px;
@@ -506,8 +445,6 @@ export default function Bridal() {
           font: 700 1.3rem/1.25 'Playfair Display',serif; color: var(--c-primary); margin-bottom: 12px;
         }
         .br-process-desc { font: 400 .85rem/1.7 'Poppins',sans-serif; color: var(--c-muted); }
-
-        /* ── REVIEWS BADGE ── */
         .br-reviews-badge {
           display: inline-flex; align-items: center; gap: 10px;
           background: var(--c-primary); color: #fff;
@@ -515,8 +452,6 @@ export default function Bridal() {
           padding: 12px 24px; border-radius: 50px; margin-bottom: 32px;
         }
         .br-reviews-badge-stars { color: var(--c-accent); letter-spacing: 2px; font-size: 13px; }
-
-        /* ── FINAL CTA ── */
         .br-cta-wrap {
           background: var(--c-primary); border-radius: 32px; padding: 64px 56px;
           text-align: center; position: relative; overflow: hidden;
@@ -567,8 +502,6 @@ export default function Bridal() {
           border: 2px solid rgba(255,255,255,.35); transition: background .2s;
         }
         .br-cta-btn-sec:hover { background: rgba(255,255,255,.1); }
-
-        /* ── RESPONSIVE ── */
         @media(max-width:1024px){
           .br-why-grid { grid-template-columns: repeat(3,1fr); }
           .br-process-grid { grid-template-columns: 1fr 1fr; }
@@ -584,7 +517,6 @@ export default function Bridal() {
           .br-shell { padding:50px 5vw; }
           .br-alt-inner { padding:50px 5vw; }
           .br-trust-grid { grid-template-columns:1fr; }
-          .br-outfit-grid { grid-template-columns:repeat(2,1fr); }
           .br-svc-grid { grid-template-columns:1fr; }
           .br-svc-items { grid-template-columns:1fr; }
           .br-why-grid { grid-template-columns:repeat(2,1fr); }
@@ -598,7 +530,6 @@ export default function Bridal() {
           .br-image-match-title { font-size:1.8rem !important; }
         }
         @media(max-width:480px){
-          .br-outfit-grid { grid-template-columns:1fr; }
           .br-why-grid { grid-template-columns:1fr; }
         }
       `}</style>
@@ -636,11 +567,11 @@ export default function Bridal() {
           </p>
           <div className="br-hero-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-pri" onClick={() => trackWhatsApp('bridal_hero')}>
-  <WaIcon size={18} /> Book Bridal Consultation
-</a>
-<a href={TEL_LINK} className="br-btn-sec" onClick={() => trackPhoneCall('bridal_hero')}>
-  <PhoneIcon /> Call Now
-</a>
+              <WaIcon size={18} /> Book Bridal Consultation
+            </a>
+            <a href={TEL_LINK} className="br-btn-sec" onClick={() => trackPhoneCall('bridal_hero')}>
+              <PhoneIcon /> Call Now
+            </a>
           </div>
         </div>
         <div className="br-hero-img-wrap">
@@ -690,9 +621,9 @@ export default function Bridal() {
             </p>
           </div>
           <div className="br-image-match-btns">
-           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-gold-pill" onClick={() => trackWhatsApp('bridal_banner')}>
-  <WaIcon size={18} /> WhatsApp Enquiry
-</a>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-gold-pill" onClick={() => trackWhatsApp('bridal_banner')}>
+              <WaIcon size={18} /> WhatsApp Enquiry
+            </a>
             <a href={TEL_LINK} className="br-btn-outline-pill">
               Call Now
             </a>
@@ -730,24 +661,24 @@ export default function Bridal() {
             A collection of bridal blouse, lehenga, and gown designs crafted with premium detailing and perfect fit.
           </p>
           <div style={{ marginTop: 36 }}>
-<ImageGrid
-  images={[
-    ...bridalOutfits.map((o) => ({
-      id: `filter-${o.id}`,
-      url: o.image,
-      thumbUrl: o.image,
-      alt: o.alt,
-      title: o.title,
-      description: o.description,
-    })),
-    ...bridalGallery.filter(
-      (img) => !bridalOutfits.some((o) => o.image === (img.url || img.thumbUrl))
-    ),
-  ].slice(0, 100)}
-  loading={galleryLoading}
-  priority
-  columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-/>
+            <ImageGrid
+              images={[
+                ...bridalOutfits.map((o) => ({
+                  id: `filter-${o.id}`,
+                  url: o.image,
+                  thumbUrl: o.image,
+                  alt: o.alt,
+                  title: o.title,
+                  description: o.description,
+                })),
+                ...bridalGallery.filter(
+                  (img) => !bridalOutfits.some((o) => o.image === (img.url || img.thumbUrl))
+                ),
+              ].slice(0, 100)}
+              loading={galleryLoading}
+              priority
+              columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+            />
           </div>
           <p className="br-gallery-note">
             Showing our latest bridal designs · Updated regularly with new work
@@ -797,9 +728,25 @@ export default function Bridal() {
 
       {/* ── 8. REVIEWS ── */}
       <Reveal className="br-shell">
-        <div className="br-reviews-badge">
-          <span className="br-reviews-badge-stars">★★★★★</span>
-          100+ Happy Brides in Bangalore
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
+          <div className="br-reviews-badge" style={{ margin: 0 }}>
+            <span className="br-reviews-badge-stars">★★★★★</span>
+            100+ Happy Brides in Bangalore
+          </div>
+          <a
+            href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', borderRadius: '50px', border: '1.5px solid rgba(62,44,35,.2)', background: '#fff', color: '#3E2C23', font: '600 12px/1 "Poppins", sans-serif', textDecoration: 'none', boxShadow: '0 2px 10px rgba(62,44,35,.08)' }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            View on Google
+          </a>
         </div>
         <ReviewsSection
           payload={reviews}
@@ -824,8 +771,8 @@ export default function Bridal() {
           <p className="br-cta-scarcity">Limited bridal slots available each month</p>
           <div className="br-cta-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-cta-btn-pri" onClick={() => trackWhatsApp('bridal_cta')}>
-  <WaIcon size={18} /> Book Bridal Consultation
-</a>
+              <WaIcon size={18} /> Book Bridal Consultation
+            </a>
             <a href={TEL_LINK} className="br-cta-btn-sec">
               <PhoneIcon /> Call Now
             </a>

@@ -20,18 +20,18 @@ const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
 // ─── Static Designer outfits data ─────────────────────────────────────────────
 const staticDesignerOutfits = [
-  { id: 1,  tag: 'gowns',        title: 'Midnight Wine Designer Gown',        alt: 'Midnight Wine Designer Gown',        image: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',                             description: 'An elegant designer gown crafted with flowing silhouettes and premium finishing for statement occasion wear.' },
-  { id: 2,  tag: 'gowns',        title: 'Floral Trail Indo-Western Gown',     alt: 'Floral Trail Indo-Western Gown',     image: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp',              description: 'A dramatic indo-western gown designed with a flowing trail and modern couture-inspired styling.' },
-  { id: 3,  tag: 'gowns',        title: 'Royal Blue Maternity Gown',          alt: 'Royal Blue Maternity Gown',          image: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp',          description: 'A graceful maternity gown designed with elegant drape, comfort, and premium photoshoot styling.' },
-  { id: 4,  tag: 'gowns',        title: 'Mint Luxe Designer Ball Gown',       alt: 'Mint Luxe Designer Ball Gown',       image: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',                            description: 'A voluminous designer ball gown crafted for engagement, reception, and luxury occasion wear.' },
-  { id: 5,  tag: 'gowns',        title: 'Floral Tail Couture Gown',           alt: 'Floral Tail Couture Gown',           image: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp',                           description: 'A statement couture gown featuring a dramatic tail silhouette and modern designer detailing.' },
-  { id: 6,  tag: 'indo-western', title: 'Gold Indo-Western Crop Top Lehenga', alt: 'Gold Indo-Western Crop Top Lehenga', image: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',                         description: 'An indo-western crop top lehenga designed with fusion styling and handcrafted premium finishing.' },
-  { id: 7,  tag: 'indo-western', title: 'Ivory Indo-Western Crop Top Lehenga',alt: 'Ivory Indo-Western Crop Top Lehenga',image: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',                             description: 'A contemporary crop top lehenga styled with elegant drape and indo-western bridal fusion.' },
-  { id: 8,  tag: 'party-wear',   title: 'Scarlet Evening Designer Gown',      alt: 'Scarlet Evening Designer Gown',      image: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',                             description: 'A refined evening gown designed with sleek silhouettes and premium occasion wear finishing.' },
-  { id: 9,  tag: 'party-wear',   title: 'Contemporary Designer Blouse',       alt: 'Contemporary Designer Blouse',       image: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',                                        description: 'A customized designer blouse crafted with modern styling and premium couture detailing.' },
-  { id: 10, tag: 'party-wear',   title: 'Crimson Trail Party Gown',           alt: 'Crimson Trail Party Gown',           image: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',                       description: 'A dramatic party gown featuring a flowing trail and statement fashion-forward silhouette.' },
-  { id: 11, tag: 'party-wear',   title: 'Rose Motion Couture Gown',           alt: 'Rose Motion Couture Gown',           image: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp',                 description: 'A couture-inspired designer gown styled with movement, elegance, and premium occasion wear detailing.' },
-  { id: 12, tag: 'gowns',        title: 'Noir Evening Couple Couture',        alt: 'Noir Evening Couple Couture',        image: '/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp',        description: 'A coordinated designer couple look crafted for evening occasions with elegant contemporary styling.' },
+  { id: 1,  tag: 'gowns',        title: 'Midnight Wine Designer Gown',         alt: 'Midnight Wine Designer Gown',         image: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',                      description: 'An elegant designer gown crafted with flowing silhouettes and premium finishing for statement occasion wear.' },
+  { id: 2,  tag: 'gowns',        title: 'Floral Trail Indo-Western Gown',      alt: 'Floral Trail Indo-Western Gown',      image: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp',       description: 'A dramatic indo-western gown designed with a flowing trail and modern couture-inspired styling.' },
+  { id: 3,  tag: 'gowns',        title: 'Royal Blue Maternity Gown',           alt: 'Royal Blue Maternity Gown',           image: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp',   description: 'A graceful maternity gown designed with elegant drape, comfort, and premium photoshoot styling.' },
+  { id: 4,  tag: 'gowns',        title: 'Mint Luxe Designer Ball Gown',        alt: 'Mint Luxe Designer Ball Gown',        image: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',                     description: 'A voluminous designer ball gown crafted for engagement, reception, and luxury occasion wear.' },
+  { id: 5,  tag: 'gowns',        title: 'Floral Tail Couture Gown',            alt: 'Floral Tail Couture Gown',            image: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp',                    description: 'A statement couture gown featuring a dramatic tail silhouette and modern designer detailing.' },
+  { id: 6,  tag: 'indo-western', title: 'Gold Indo-Western Crop Top Lehenga',  alt: 'Gold Indo-Western Crop Top Lehenga',  image: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',                  description: 'An indo-western crop top lehenga designed with fusion styling and handcrafted premium finishing.' },
+  { id: 7,  tag: 'indo-western', title: 'Ivory Indo-Western Crop Top Lehenga', alt: 'Ivory Indo-Western Crop Top Lehenga', image: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',                      description: 'A contemporary crop top lehenga styled with elegant drape and indo-western bridal fusion.' },
+  { id: 8,  tag: 'party-wear',   title: 'Scarlet Evening Designer Gown',       alt: 'Scarlet Evening Designer Gown',       image: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',                      description: 'A refined evening gown designed with sleek silhouettes and premium occasion wear finishing.' },
+  { id: 9,  tag: 'party-wear',   title: 'Contemporary Designer Blouse',        alt: 'Contemporary Designer Blouse',        image: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',                                 description: 'A customized designer blouse crafted with modern styling and premium couture detailing.' },
+  { id: 10, tag: 'party-wear',   title: 'Crimson Trail Party Gown',            alt: 'Crimson Trail Party Gown',            image: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',                description: 'A dramatic party gown featuring a flowing trail and statement fashion-forward silhouette.' },
+  { id: 11, tag: 'party-wear',   title: 'Rose Motion Couture Gown',            alt: 'Rose Motion Couture Gown',            image: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp',          description: 'A couture-inspired designer gown styled with movement, elegance, and premium occasion wear detailing.' },
+  { id: 12, tag: 'gowns',        title: 'Noir Evening Couple Couture',         alt: 'Noir Evening Couple Couture',         image: '/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp', description: 'A coordinated designer couple look crafted for evening occasions with elegant contemporary styling.' },
 ];
 
 const FILTERS = [
@@ -42,14 +42,14 @@ const FILTERS = [
 ];
 
 const serviceItems = [
-  { icon: '✦', title: 'Designer Gowns',             desc: 'Customized designer gowns for receptions, parties and special occasions, crafted with premium fabrics, elegant silhouettes and perfect boutique fitting.' },
-  { icon: '◈', title: 'Indo-Western Outfits',       desc: 'Customized Indo-western outfits blending modern styling with traditional elegance, tailored beautifully for contemporary occasions and celebrations.' },
-  { icon: '✒', title: 'Designer Blouses',           desc: 'Customized designer blouses with premium embroidery, unique patterns and elegant finishing tailored beautifully for every occasion.' },
-  { icon: '★', title: 'Crop Top & Lehenga Sets',    desc: 'Customized crop tops and lehenga sets crafted stylishly for festive events, weddings and modern ethnic celebrations.' },
-  { icon: '◷', title: 'Kurtha Sets',                desc: 'Customized kurtha sets designed with contemporary styling, premium tailoring and elegant comfort for casual and festive occasions.' },
-  { icon: '✓', title: 'Ready-to-Wear Sarees',       desc: 'Convert your sarees into elegant ready-to-wear concepts with customized pre-draped styling for comfort, convenience and modern occasions.' },
-  { icon: '❋', title: 'Mother & Daughter Outfits',  desc: 'Customized matching outfits for mothers and daughters, beautifully tailored for birthdays, weddings and memorable family occasions.' },
-  { icon: '◆', title: 'Saree Conversion Outfits',   desc: 'Transform your sarees into customized lehengas, gowns, crop tops and designer outfits crafted beautifully with premium boutique finishing.' },
+  { icon: '✦', title: 'Designer Gowns',            desc: 'Customized designer gowns for receptions, parties and special occasions, crafted with premium fabrics, elegant silhouettes and perfect boutique fitting.' },
+  { icon: '◈', title: 'Indo-Western Outfits',      desc: 'Customized Indo-western outfits blending modern styling with traditional elegance, tailored beautifully for contemporary occasions and celebrations.' },
+  { icon: '✒', title: 'Designer Blouses',          desc: 'Customized designer blouses with premium embroidery, unique patterns and elegant finishing tailored beautifully for every occasion.' },
+  { icon: '★', title: 'Crop Top & Lehenga Sets',   desc: 'Customized crop tops and lehenga sets crafted stylishly for festive events, weddings and modern ethnic celebrations.' },
+  { icon: '◷', title: 'Kurtha Sets',               desc: 'Customized kurtha sets designed with contemporary styling, premium tailoring and elegant comfort for casual and festive occasions.' },
+  { icon: '✓', title: 'Ready-to-Wear Sarees',      desc: 'Convert your sarees into elegant ready-to-wear concepts with customized pre-draped styling for comfort, convenience and modern occasions.' },
+  { icon: '❋', title: 'Mother & Daughter Outfits', desc: 'Customized matching outfits for mothers and daughters, beautifully tailored for birthdays, weddings and memorable family occasions.' },
+  { icon: '◆', title: 'Saree Conversion Outfits',  desc: 'Transform your sarees into customized lehengas, gowns, crop tops and designer outfits crafted beautifully with premium boutique finishing.' },
 ];
 
 const whyItems = [
@@ -88,6 +88,16 @@ const WaIcon = ({ size = 18 }) => (
 const PhoneIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
     <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+  </svg>
+);
+
+// ─── Google Icon ──────────────────────────────────────────────────────────────
+const GoogleIcon = ({ size = 38 }) => (
+  <svg viewBox="0 0 48 48" width={size} height={size} aria-label="Google" role="img" style={{ flexShrink: 0 }}>
+    <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
+    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/>
+    <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.6l6.2 5.2C36.9 36.8 44 31 44 24c0-1.3-.1-2.6-.4-3.9z"/>
   </svg>
 );
 
@@ -164,16 +174,6 @@ function DesignerGallery({ images, loading }) {
     />
   );
 }
-
-// ─── Google Icon ──────────────────────────────────────────────────────────────
-const GoogleIcon = ({ size = 38 }) => (
-  <svg viewBox="0 0 48 48" width={size} height={size} aria-label="Google" role="img" style={{ flexShrink: 0 }}>
-    <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
-    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
-    <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/>
-    <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.6l6.2 5.2C36.9 36.8 44 31 44 24c0-1.3-.1-2.6-.4-3.9z"/>
-  </svg>
-);
 
 // ─── Main Page Component ──────────────────────────────────────────────────────
 export default function Designer() {
@@ -433,15 +433,15 @@ export default function Designer() {
         }
         .ds-google-sub-row strong { color: var(--c-primary); font-weight: 700; }
         .ds-google-btn {
-          display: inline-flex; align-items: center; gap: 10px;
-          border: 1.5px solid var(--c-accent); border-radius: 100px;
-          padding: 13px 28px; color: var(--c-accent);
-          font: 700 11px/1 'Poppins', sans-serif;
-          letter-spacing: .12em; text-transform: uppercase;
-          text-decoration: none; transition: all .2s;
+          display: inline-flex; align-items: center; gap: 8px;
+          background: #4285F4; color: #fff;
+          border: none; border-radius: 100px;
+          padding: 11px 22px;
+          font: 500 13px/1 'Poppins', sans-serif;
+          text-decoration: none; transition: opacity .2s;
           white-space: nowrap; flex-shrink: 0;
         }
-        .ds-google-btn:hover { background: var(--c-accent); color: var(--c-white); }
+        .ds-google-btn:hover { opacity: .88; background: #4285F4; color: #fff; }
         .ds-happy-badge {
           background: var(--c-primary);
           border-radius: 20px;
@@ -814,12 +814,15 @@ export default function Designer() {
             </div>
             <div className="ds-google-divider" />
             <a
-              href="https://www.google.com/maps/search/Shrusara+Fashion+Boutique+Bangalore"
+              href="https://www.google.com/maps/place/Shrusara+Fashion+Boutique"
               target="_blank"
               rel="noopener noreferrer"
               className="ds-google-btn"
             >
-              View on Google <span style={{ fontSize: '1rem' }}>→</span>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+              View on Google ↗
             </a>
           </div>
 

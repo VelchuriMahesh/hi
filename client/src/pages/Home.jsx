@@ -73,62 +73,42 @@ const homeServices = [
 ];
 
 const whyChooseItems = [
-  {
-    title: 'Perfect Customized Fitting for Every Body Type',
-    icon: '✦',
-  },
-  {
-    title: 'Expert in Maggam & Aari Work Detailing',
-    icon: '✦',
-  },
-  {
-    title: 'Premium Stitching with Elegant Finishing',
-    icon: '✦',
-  },
-  {
-    title: 'Personalized Design Consultation',
-    icon: '✦',
-  },
-  {
-    title: 'Assured On-Time Delivery',
-    icon: '✦',
-  },
+  { title: 'Perfect Customized Fitting for Every Body Type', icon: '✦' },
+  { title: 'Expert in Maggam & Aari Work Detailing',        icon: '✦' },
+  { title: 'Premium Stitching with Elegant Finishing',       icon: '✦' },
+  { title: 'Personalized Design Consultation',               icon: '✦' },
+  { title: 'Assured On-Time Delivery',                       icon: '✦' },
 ];
 
 const aboutCards = [
   {
     title: 'Perfect Bridal Finishing',
-    description:
-      'Necklines, fall, and detailing crafted to look flawless in person and in photos.',
+    description: 'Necklines, fall, and detailing crafted to look flawless in person and in photos.',
   },
   {
     title: 'Made-to-Measure Silhouettes',
-    description:
-      'Every outfit is tailored to your body type, comfort, and occasion.',
+    description: 'Every outfit is tailored to your body type, comfort, and occasion.',
   },
   {
     title: 'Expert Maggam & Aari Work',
-    description:
-      'Intricate hand embroidery with rich, premium detailing.',
+    description: 'Intricate hand embroidery with rich, premium detailing.',
   },
   {
     title: 'Personalized Consultation',
-    description:
-      'Clear design guidance tailored to your style and needs.',
+    description: 'Clear design guidance tailored to your style and needs.',
   },
   {
     title: 'On-Time Delivery Assurance',
-    description:
-      'We respect your timeline and deliver as promised.',
+    description: 'We respect your timeline and deliver as promised.',
   },
 ];
 
-// ─── Constants (Match Designer.jsx) ──────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 
 const WHATSAPP_MSG = encodeURIComponent(
-  'Hi, I’m interested in customized bridal outfits. I would like to consult with Chief Designer Shruthi Ajith.'
+  'Hi, I\'m interested in customized bridal outfits. I would like to consult with Chief Designer Shruthi Ajith.'
 );
 
 const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
@@ -151,10 +131,7 @@ function ServiceCard({ service }) {
         <h3 className="sf-service-title">{service.title}</h3>
         <p className="sf-service-desc">{service.description}</p>
         <div className="sf-service-actions">
-          <span
-            className="sf-btn-outline"
-            style={{ width: '100%', textAlign: 'center' }}
-          >
+          <span className="sf-btn-outline" style={{ width: '100%', textAlign: 'center' }}>
             View Designs
           </span>
         </div>
@@ -169,7 +146,7 @@ export default function Home() {
   const [reviews, setReviews] = useState(fallbackReviews);
   const [reviewsLoading, setReviewsLoading] = useState(true);
   const { media: heroMedia } = useHeroMedia('home');
-const { images: homeGallery, loading: galleryLoading } = useGallery('home');
+  const { images: homeGallery, loading: galleryLoading } = useGallery('home');
 
   useEffect(() => {
     let mounted = true;
@@ -216,10 +193,9 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           --sf-radius-sm:  14px;
         }
 
-        /* ── Global ── */
         body { background: var(--sf-bg); }
 
-        /* ── HERO ─────────────────────────────────────────── */
+        /* ── HERO ── */
         .sf-hero {
           display: flex;
           flex-direction: row;
@@ -277,7 +253,6 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           margin-bottom: 20px;
           text-align: left;
         }
-        
         .sf-hero-btns {
           display: flex;
           gap: 14px;
@@ -345,19 +320,9 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         }
 
         /* ── SECTION SHELL ── */
-        .sf-shell {
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 80px 5vw;
-        }
-        .sf-shell-alt {
-          background: var(--sf-secondary);
-        }
-        .sf-shell-alt-inner {
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 80px 5vw;
-        }
+        .sf-shell { max-width: 1280px; margin: 0 auto; padding: 80px 5vw; }
+        .sf-shell-alt { background: var(--sf-secondary); }
+        .sf-shell-alt-inner { max-width: 1280px; margin: 0 auto; padding: 80px 5vw; }
 
         /* ── SECTION HEADING ── */
         .sf-eyebrow {
@@ -475,20 +440,9 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           align-items: center;
           justify-content: center;
         }
-        .sf-btn-outline:hover {
-          background: var(--sf-primary);
-          color: var(--sf-white);
-        }
+        .sf-btn-outline:hover { background: var(--sf-primary); color: var(--sf-white); }
 
         /* ── WHY CHOOSE ── */
-        .sf-why-trust {
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.82rem;
-          color: var(--sf-muted);
-          margin-top: 36px;
-          font-style: italic;
-          text-align: left;
-        }
         .sf-why-grid {
           display: grid;
           grid-template-columns: repeat(5, 1fr);
@@ -507,12 +461,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           align-items: center;
           justify-content: flex-start;
         }
-        .sf-why-icon {
-          color: var(--sf-accent);
-          font-size: 18px;
-          margin-bottom: 10px;
-          line-height: 1;
-        }
+        .sf-why-icon { color: var(--sf-accent); font-size: 18px; margin-bottom: 10px; line-height: 1; }
         .sf-why-text {
           font-family: 'Poppins', sans-serif;
           font-size: 0.78rem;
@@ -522,53 +471,39 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           text-align: center;
         }
 
-        /* ── CATEGORIES REWORKED ── */
+        /* ── CATEGORIES ── */
         .sf-cat-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 28px;
           margin-top: 40px;
         }
- /* ── CATEGORIES CSS (CLEANED UP) ── */
-.sf-cat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  margin-top: 40px;
-}
-.sf-cat-card {
-  position: relative;
-  min-height: 480px; /* High enough to show the photo */
-  border-radius: var(--sf-radius);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Pushes one top, one bottom */
-  text-decoration: none;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-}
-.sf-cat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-}
-.sf-cat-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1; /* Behind text */
-  transition: transform 0.6s ease;
-}
-.sf-cat-card:hover .sf-cat-img {
-  transform: scale(1.08);
-}
-        .sf-cat-body {
-          padding: 40px 32px 24px 32px;
-          color: var(--sf-white);
-          text-align: left;
+        .sf-cat-card {
+          position: relative;
+          min-height: 480px;
+          border-radius: var(--sf-radius);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          text-decoration: none;
+          transition: transform 0.4s ease, box-shadow 0.4s ease;
+          box-shadow: 0 12px 40px rgba(0,0,0,0.15);
         }
+        .sf-cat-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+        .sf-cat-img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 1;
+          transition: transform 0.6s ease;
+        }
+        .sf-cat-card:hover .sf-cat-img { transform: scale(1.08); }
         .sf-cat-title {
           font-family: 'Playfair Display', serif;
           font-size: 2.2rem;
@@ -576,11 +511,6 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           margin-bottom: 16px;
           color: #FFFFFF;
           text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .sf-cat-btn-group {
-          display: flex;
-          gap: 12px;
-          margin-bottom: 8px;
         }
         .sf-btn-mini-visual {
           background: var(--sf-accent);
@@ -602,19 +532,6 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           font-size: 13px;
           font-weight: 600;
           display: inline-block;
-        }
-        .sf-price-bar {
-          background: var(--sf-primary);
-          color: var(--sf-accent);
-          text-align: center;
-          padding: 16px;
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.9rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          border-top: 1px solid rgba(255,255,255,0.1);
-          width: 100%;
         }
 
         /* ── ABOUT ── */
@@ -656,14 +573,29 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           text-align: left;
         }
 
-        /* ── SOCIAL PROOF / REVIEWS ── */
-        .sf-reviews-trust {
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.85rem;
-          color: var(--sf-muted);
-          margin-bottom: 0;
-          text-align: left;
+        /* ── GOOGLE BUTTON ── */
+        .sf-google-btn-wrap {
+          display: flex;
+          justify-content: center;
+          margin-top: 28px;
         }
+        .sf-google-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #4285F4;
+          color: #fff;
+          border: none;
+          border-radius: 100px;
+          padding: 11px 26px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 13px;
+          font-weight: 500;
+          text-decoration: none;
+          transition: opacity 0.2s;
+          white-space: nowrap;
+        }
+        .sf-google-btn:hover { opacity: 0.88; }
 
         /* ── CONSULTATION CTA ── */
         .sf-consult-banner {
@@ -692,8 +624,6 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           text-align: left !important;
           line-height: 1.3 !important;
           display: block !important;
-          visibility: visible !important;
-          opacity: 1 !important;
         }
         .sf-consult-sub {
           font-family: 'Poppins', sans-serif;
@@ -752,80 +682,39 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
 
         /* ── RESPONSIVE ── */
         @media (max-width: 1024px) {
-          .sf-why-grid { grid-template-columns: repeat(3, 1fr); }
-          .sf-about-cards { grid-template-columns: repeat(3, 1fr); }
+          .sf-why-grid      { grid-template-columns: repeat(3, 1fr); }
+          .sf-about-cards   { grid-template-columns: repeat(3, 1fr); }
           .sf-services-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-          .sf-hero { flex-direction: column; min-height: auto; }
-          .sf-hero-text { padding: 50px 5vw 32px; order: 2; align-items: flex-start; }
-          .sf-hero-img-wrap { order: 1; height: 55vw; min-height: 300px; min-width: 100%; }
-          .sf-hero-img { min-height: 300px; }
+          .sf-hero           { flex-direction: column; min-height: auto; }
+          .sf-hero-text      { padding: 50px 5vw 32px; order: 2; align-items: flex-start; }
+          .sf-hero-img-wrap  { order: 1; height: 55vw; min-height: 300px; min-width: 100%; }
+          .sf-hero-img       { min-height: 300px; }
           .sf-hero-img-overlay { background: linear-gradient(to bottom, transparent 60%, var(--sf-bg) 100%); }
-          .sf-hero-btns { flex-direction: column; align-items: stretch; }
+          .sf-hero-btns      { flex-direction: column; align-items: stretch; }
           .sf-btn-primary, .sf-btn-secondary { width: 100%; justify-content: center; }
-          .sf-shell { padding: 50px 5vw; }
+          .sf-shell          { padding: 50px 5vw; }
           .sf-shell-alt-inner { padding: 50px 5vw; }
-          .sf-services-grid { grid-template-columns: 1fr; }
-          .sf-why-grid { grid-template-columns: repeat(2, 1fr); }
-          .sf-cat-grid { grid-template-columns: 1fr; }
-          .sf-cat-card { min-height: 460px; }
-          .sf-cat-title { font-size: 1.8rem; }
-          .sf-about-cards { grid-template-columns: 1fr 1fr; }
+          .sf-services-grid  { grid-template-columns: 1fr; }
+          .sf-why-grid       { grid-template-columns: repeat(2, 1fr); }
+          .sf-cat-grid       { grid-template-columns: 1fr; }
+          .sf-cat-card       { min-height: 460px; }
+          .sf-cat-title      { font-size: 1.8rem; }
+          .sf-about-cards    { grid-template-columns: 1fr 1fr; }
           .sf-consult-banner { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
-          .sf-consult-btns { width: 100%; flex-direction: column; }
+          .sf-consult-btns   { width: 100%; flex-direction: column; }
           .sf-btn-primary-light, .sf-btn-secondary-light { width: 100%; justify-content: center; }
+          .sf-google-btn     { width: 100%; justify-content: center; }
         }
         @media (max-width: 480px) {
-          .sf-why-grid { grid-template-columns: 1fr; }
+          .sf-why-grid    { grid-template-columns: 1fr; }
           .sf-about-cards { grid-template-columns: 1fr; }
-
-          .sf-cat-card {
-  position: relative;
-  min-height: 520px;
-  border-radius: var(--sf-radius);
-  overflow: hidden;
-  text-decoration: none;
-  transition: transform 0.4s ease;
-}
-
-.sf-cat-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  transition: transform 0.6s ease;
-}
-
-.sf-cat-card:hover .sf-cat-img {
-  transform: scale(1.08);
-}
-
-.sf-btn-mini-visual {
-  background: var(--sf-accent);
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 50px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-block;
-}
-  .sf-line {
-  display: flex;
-  align-items: center; /* 🔥 THIS FIXES IT */
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.sf-star {
-  color: #C8A96A;
-  flex-shrink: 0;
-  font-size: 14px;
-}
+          .sf-cat-card    { min-height: 520px; }
         }
+
+        .sf-line  { display: block; margin-bottom: 6px; }
+        .sf-star  { color: #C8A96A; flex-shrink: 0; font-size: 14px; }
       `}</style>
 
       <PageMeta
@@ -836,48 +725,33 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         schema={schema}
       />
 
-      {/* ── HERO SECTION ──────────────────────────────────────────────────────────── */}
+      {/* ── 1. HERO ──────────────────────────────────────────────────────────── */}
       <section className="sf-hero">
         <div className="sf-hero-text">
           <p className="sf-hero-eyebrow">Trusted Boutique · Bangalore</p>
           <h1 className="sf-hero-h1">Bridal & Designer Boutique in Bangalore</h1>
-      <p className="sf-hero-sub">
-  <span className="sf-line">
-    <span className="sf-star">✦</span>
-    <span>
-      Customized bridal blouses, designer outfits, and occasion wear with perfect fit,
-      premium finishing, and personalized styling.
-    </span>
-  </span>
-
-  <span className="sf-line">
-    <span className="sf-star">✦</span>
-    <span>
-      Designed personally by Chief Designer Shruthi Ajith
-    </span>
-  </span>
-</p>
-
-<style>
-{`
-.sf-line {
-  display: block;
-  margin-bottom: 6px;
-}
-`}
-</style>
-<br/>
-
-<br/>
-
+          <p className="sf-hero-sub">
+            <span className="sf-line">
+              <span className="sf-star">✦</span>{' '}
+              <span>
+                Customized bridal blouses, designer outfits, and occasion wear with perfect fit,
+                premium finishing, and personalized styling.
+              </span>
+            </span>
+            <span className="sf-line">
+              <span className="sf-star">✦</span>{' '}
+              <span>Designed personally by Chief Designer Shruthi Ajith</span>
+            </span>
+          </p>
+          <br />
           <div className="sf-hero-btns">
-          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary" onClick={() => trackWhatsApp('home_hero')}>
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary" onClick={() => trackWhatsApp('home_hero')}>
               <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
               Book Bridal Consultation
             </a>
-           <a href={TEL_LINK} className="sf-btn-secondary" onClick={() => trackPhoneCall('home_hero')}>
+            <a href={TEL_LINK} className="sf-btn-secondary" onClick={() => trackPhoneCall('home_hero')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17" height="17">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
               </svg>
@@ -896,11 +770,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         </div>
       </section>
 
-      
-
-      
-
-      {/* ── SERVICES ─────────────────────────────────────────────────────── */}
+      {/* ── 2. SERVICES ──────────────────────────────────────────────────────── */}
       <div className="sf-shell">
         <div className="sf-services-headline">
           <p className="sf-eyebrow">Services</p>
@@ -917,6 +787,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         </div>
       </div>
 
+      {/* ── 3. CTA BANNER 1 ──────────────────────────────────────────────────── */}
       <div className="sf-shell">
         <div className="sf-consult-banner">
           <div>
@@ -925,16 +796,16 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           </div>
           <div className="sf-consult-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light" onClick={() => trackWhatsApp('home_banner_1')}>
-  WhatsApp Enquiry
-</a>
-           <a href={TEL_LINK} className="sf-btn-secondary-light">
-  Call Now
-</a>
+              WhatsApp Enquiry
+            </a>
+            <a href={TEL_LINK} className="sf-btn-secondary-light">
+              Call Now
+            </a>
           </div>
         </div>
       </div>
 
-      {/* ── WHY CHOOSE US ─────────────────────────────────────────────────── */}
+      {/* ── 4. WHY CHOOSE US ─────────────────────────────────────────────────── */}
       <div className="sf-shell-alt">
         <div className="sf-shell-alt-inner">
           <p className="sf-eyebrow">Why Brides Choose Shrusara</p>
@@ -954,126 +825,78 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         </div>
       </div>
 
-      {/* ── GALLERY ──────────────────────────────────────────────────────── */}
+      {/* ── 5. GALLERY ───────────────────────────────────────────────────────── */}
       <div className="sf-shell">
         <p className="sf-eyebrow">Gallery</p>
         <h2 className="sf-heading">Our Bridal &amp; Designer Collection</h2>
         <div style={{ marginTop: 32 }}>
-<ImageGrid
-  images={homeGallery}
-  loading={galleryLoading}
-  columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-/>
+          <ImageGrid
+            images={homeGallery}
+            loading={galleryLoading}
+            columnsClassName="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+          />
         </div>
       </div>
 
-{/* ── CATEGORIES (TITLE AT TOP, PRICE AT BOTTOM) ────────────────────────── */}
-{/* ── CATEGORIES (Gold Titles & Prices Fixed) ────────────────────────── */}
-<div className="sf-shell-alt">
-  <div className="sf-shell-alt-inner">
-    <p className="sf-eyebrow">Explore Categories</p>
-    <h2 className="sf-heading">Find Your Perfect Bridal or Designer Outfit</h2>
-    
-    <div className="sf-cat-grid">
-      
-      {/* 1. Bridal Collection Card */}
-      <Link to="/bridal-blouse-bangalore" className="sf-cat-card">
-        {/* Background Image */}
-        <img
-          src="/videos/cat1.webp"
-          alt="Bridal Collection"
-          className="sf-cat-img"
-          loading="lazy"
-        />
-        
-        {/* TOP BAR: Title */}
-        <div style={{ 
-          position: 'relative', 
-          zIndex: 2, 
-          padding: '24px 20px', 
-          background: 'rgba(26, 26, 26, 0.85)', // Dark contrast
-          textAlign: 'center',
-          borderBottom: '1px solid rgba(200, 169, 106, 0.2)' 
-        }}>
-          <h3 style={{ 
-            margin: 0, 
-            fontSize: '1.9rem', 
-            color: '#C8A96A', // Gold visible color
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: '600'
-          }}>
-            Bridal Collection
-          </h3>
-        </div>
+      {/* ── 6. CATEGORIES ────────────────────────────────────────────────────── */}
+      <div className="sf-shell-alt">
+        <div className="sf-shell-alt-inner">
+          <p className="sf-eyebrow">Explore Categories</p>
+          <h2 className="sf-heading">Find Your Perfect Bridal or Designer Outfit</h2>
 
-        {/* BOTTOM BAR: Price */}
-        <div style={{ 
-          position: 'relative', 
-          zIndex: 2,
-          background: 'rgba(26, 26, 26, 0.9)', 
-          padding: '16px 20px',
-          color: '#C8A96A', // Gold visible color
-          fontWeight: '700',
-          fontSize: '13px',
-          textAlign: 'center',
-          textTransform: 'uppercase',
-          letterSpacing: '1.5px'
-        }}>
-          Bridal designs starting at ₹6000
-        </div>
-      </Link>
+          <div className="sf-cat-grid">
+            {/* Bridal Collection */}
+            <Link to="/bridal-blouse-bangalore" className="sf-cat-card">
+              <img src="/videos/cat1.webp" alt="Bridal Collection" className="sf-cat-img" loading="lazy" />
+              <div style={{
+                position: 'relative', zIndex: 2, padding: '24px 20px',
+                background: 'rgba(26,26,26,0.85)', textAlign: 'center',
+                borderBottom: '1px solid rgba(200,169,106,0.2)',
+              }}>
+                <h3 style={{
+                  margin: 0, fontSize: '1.9rem', color: '#C8A96A',
+                  fontFamily: "'Playfair Display', serif", fontWeight: '600',
+                }}>
+                  Bridal Collection
+                </h3>
+              </div>
+              <div style={{
+                position: 'relative', zIndex: 2, background: 'rgba(26,26,26,0.9)',
+                padding: '16px 20px', color: '#C8A96A', fontWeight: '700',
+                fontSize: '13px', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '1.5px',
+              }}>
+                Bridal designs starting at ₹6000
+              </div>
+            </Link>
 
-      {/* 2. Designer Collection Card */}
-      <Link to="/designer-outfits-bangalore" className="sf-cat-card">
-        {/* Background Image */}
-        <img
-          src="/videos/cat2.webp"
-          alt="Designer Collection"
-          className="sf-cat-img"
-          loading="lazy"
-        />
-        
-        {/* TOP BAR: Title */}
-        <div style={{ 
-          position: 'relative', 
-          zIndex: 2, 
-          padding: '24px 20px', 
-          background: 'rgba(26, 26, 26, 0.85)',
-          textAlign: 'center',
-          borderBottom: '1px solid rgba(200, 169, 106, 0.2)' 
-        }}>
-          <h3 style={{ 
-            margin: 0, 
-            fontSize: '1.9rem', 
-            color: '#C8A96A', // Gold visible color
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: '600'
-          }}>
-            Designer Collection
-          </h3>
+            {/* Designer Collection */}
+            <Link to="/designer-outfits-bangalore" className="sf-cat-card">
+              <img src="/videos/cat2.webp" alt="Designer Collection" className="sf-cat-img" loading="lazy" />
+              <div style={{
+                position: 'relative', zIndex: 2, padding: '24px 20px',
+                background: 'rgba(26,26,26,0.85)', textAlign: 'center',
+                borderBottom: '1px solid rgba(200,169,106,0.2)',
+              }}>
+                <h3 style={{
+                  margin: 0, fontSize: '1.9rem', color: '#C8A96A',
+                  fontFamily: "'Playfair Display', serif", fontWeight: '600',
+                }}>
+                  Designer Collection
+                </h3>
+              </div>
+              <div style={{
+                position: 'relative', zIndex: 2, background: 'rgba(26,26,26,0.9)',
+                padding: '16px 20px', color: '#C8A96A', fontWeight: '700',
+                fontSize: '13px', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '1.5px',
+              }}>
+                Designer outfit starting at ₹5000
+              </div>
+            </Link>
+          </div>
         </div>
+      </div>
 
-        {/* BOTTOM BAR: Price */}
-        <div style={{ 
-          position: 'relative', 
-          zIndex: 2,
-          background: 'rgba(26, 26, 26, 0.9)',
-          padding: '16px 20px',
-          color: '#C8A96A', // Gold visible color
-          fontWeight: '700',
-          fontSize: '13px',
-          textAlign: 'center',
-          textTransform: 'uppercase',
-          letterSpacing: '1.5px'
-        }}>
-          Designer outfit starting at ₹5000
-        </div>
-      </Link>
-
-    </div>
-  </div>
-</div>
-      {/* ── ABOUT ─────────────────────────────────────────────────────────── */}
+      {/* ── 7. ABOUT ─────────────────────────────────────────────────────────── */}
       <div className="sf-shell">
         <p className="sf-eyebrow">About Shrusara</p>
         <h2 className="sf-heading">
@@ -1087,7 +910,7 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         <p className="sf-subheading" style={{ marginTop: '12px', fontWeight: '600', color: 'var(--sf-primary)' }}>
           All designs are personally handled by our Chief Designer, Shruthi Ajith.
         </p>
-        <div className="sf-about-cards" style={{ marginTop: '40px' }}>
+        <div className="sf-about-cards">
           {aboutCards.map((card) => (
             <div key={card.title} className="sf-about-card">
               <span className="sf-about-card-accent" />
@@ -1098,16 +921,34 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
         </div>
       </div>
 
-      {/* ── REVIEWS ──────────────────────────────────────────────────────── */}
+      {/* ── 8. REVIEWS ───────────────────────────────────────────────────────── */}
       <div className="sf-shell-alt">
         <div className="sf-shell-alt-inner">
           <p className="sf-eyebrow">Social Proof</p>
           <h2 className="sf-heading">Trusted by Brides Across Bangalore</h2>
           <ReviewsSection payload={reviews} loading={reviewsLoading} />
+
+          {/* ── View on Google Button ── */}
+          <div className="sf-google-btn-wrap">
+            <a
+              href="https://www.google.com/maps/place/Shrusara+Fashion+Boutique"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sf-google-btn"
+            >
+              <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true">
+                <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+                <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/>
+                <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.6l6.2 5.2C36.9 36.8 44 31 44 24c0-1.3-.1-2.6-.4-3.9z"/>
+              </svg>
+              View on Google ↗
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* ── CONSULTATION CTA ─────────────────────────────────────────────── */}
+      {/* ── 9. CONSULTATION CTA ──────────────────────────────────────────────── */}
       <div className="sf-shell">
         <div className="sf-consult-banner">
           <div>
@@ -1116,11 +957,11 @@ const { images: homeGallery, loading: galleryLoading } = useGallery('home');
           </div>
           <div className="sf-consult-btns">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light" onClick={() => trackWhatsApp('home_banner_2')}>
-  WhatsApp Enquiry
-</a>
+              WhatsApp Enquiry
+            </a>
             <a href={TEL_LINK} className="sf-btn-secondary-light">
-  Call Now
-</a>
+              Call Now
+            </a>
           </div>
         </div>
       </div>
