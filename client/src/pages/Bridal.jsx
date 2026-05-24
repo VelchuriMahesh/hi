@@ -731,7 +731,7 @@ export default function Bridal() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
           <div className="br-reviews-badge" style={{ margin: 0 }}>
             <span className="br-reviews-badge-stars">★★★★★</span>
-            100+ Happy Brides in Bangalore
+            250+ Happy Brides in Bangalore
           </div>
           <a
             href="https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore"

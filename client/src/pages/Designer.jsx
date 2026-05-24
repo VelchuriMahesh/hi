@@ -903,7 +903,7 @@ export default function Designer() {
       <Reveal className="ds-shell">
         <div className="ds-reviews-badge">
           <span className="ds-reviews-badge-stars">★★★★★</span>
-          100+ Happy Clients in Bangalore
+          250+ Happy Clients in Bangalore
         </div>
         <ReviewsSection
           payload={reviews}
