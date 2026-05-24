@@ -114,7 +114,7 @@ const WHATSAPP_MSG = encodeURIComponent(
 const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
 const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
-const GOOGLE_MAPS_LINK = 'https://www.google.com/maps/place/Shrusara+Fashion+Boutique';
+const GOOGLE_MAPS_LINK = 'https://www.google.com/search?q=Shrusara+Fashion+Boutique+Bangalore';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
