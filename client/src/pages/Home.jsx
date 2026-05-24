@@ -114,6 +114,8 @@ const WHATSAPP_MSG = encodeURIComponent(
 const WA_LINK  = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
 const TEL_LINK = `tel:${PHONE_NUMBER}`;
 
+const GOOGLE_MAPS_LINK = 'https://www.google.com/maps/place/Shrusara+Fashion+Boutique';
+
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function ServiceCard({ service }) {
@@ -745,13 +747,23 @@ export default function Home() {
           </p>
           <br />
           <div className="sf-hero-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary" onClick={() => trackWhatsApp('home_hero')}>
+            <a
+              href={WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sf-btn-primary"
+              onClick={() => trackWhatsApp('home_hero')}
+            >
               <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
               Book Bridal Consultation
             </a>
-            <a href={TEL_LINK} className="sf-btn-secondary" onClick={() => trackPhoneCall('home_hero')}>
+            <a
+              href={TEL_LINK}
+              className="sf-btn-secondary"
+              onClick={() => trackPhoneCall('home_hero')}
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="17" height="17">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
               </svg>
@@ -795,7 +807,13 @@ export default function Home() {
             <p className="sf-consult-sub">Start your bridal consultation</p>
           </div>
           <div className="sf-consult-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light" onClick={() => trackWhatsApp('home_banner_1')}>
+            <a
+              href={WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sf-btn-primary-light"
+              onClick={() => trackWhatsApp('home_banner_1')}
+            >
               WhatsApp Enquiry
             </a>
             <a href={TEL_LINK} className="sf-btn-secondary-light">
@@ -921,20 +939,317 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── 8. REVIEWS ───────────────────────────────────────────────────────── */}
+      {/* ── 8. REVIEWS ── */}
       <div className="sf-shell-alt">
         <div className="sf-shell-alt-inner">
-          <p className="sf-eyebrow">Social Proof</p>
-          <h2 className="sf-heading">Trusted by Brides Across Bangalore</h2>
-          <ReviewsSection payload={reviews} loading={reviewsLoading} />
 
-          {/* ── View on Google Button ── */}
-          <div className="sf-google-btn-wrap">
+          <style>{`
+            .sf-reviews-eyebrow-wrap { text-align: center; margin-bottom: 14px; }
+            .sf-reviews-eyebrow {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              font-family: 'Poppins', sans-serif;
+              font-size: 11px;
+              font-weight: 600;
+              letter-spacing: 0.18em;
+              text-transform: uppercase;
+              color: var(--sf-accent);
+            }
+            .sf-reviews-eyebrow::before,
+            .sf-reviews-eyebrow::after {
+              content: '';
+              display: block;
+              width: 40px;
+              height: 1px;
+              background: var(--sf-accent);
+              flex-shrink: 0;
+            }
+            .sf-reviews-heading {
+              font-family: 'Playfair Display', serif;
+              font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+              font-weight: 700;
+              color: var(--sf-primary);
+              text-align: center;
+              margin-bottom: 12px;
+            }
+            .sf-reviews-sub {
+              font-family: 'Poppins', sans-serif;
+              font-size: 0.92rem;
+              color: var(--sf-muted);
+              text-align: center;
+              line-height: 1.75;
+              max-width: 520px;
+              margin: 0 auto 40px;
+            }
+            .sf-rating-card {
+              background: var(--sf-white);
+              border-radius: var(--sf-radius);
+              padding: 28px 32px;
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              margin-bottom: 24px;
+              border: 1px solid rgba(62,44,35,0.07);
+              box-shadow: 0 2px 16px rgba(62,44,35,0.06);
+              flex-wrap: wrap;
+            }
+            .sf-rating-g-logo {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-shrink: 0;
+            }
+            .sf-rating-divider {
+              width: 1px;
+              height: 56px;
+              background: rgba(62,44,35,0.12);
+              flex-shrink: 0;
+            }
+            .sf-score-block { display: flex; align-items: center; gap: 12px; }
+            .sf-score-num {
+              font-family: 'Playfair Display', serif;
+              font-size: 2.8rem;
+              font-weight: 700;
+              color: var(--sf-primary);
+              line-height: 1;
+            }
+            .sf-score-right { display: flex; flex-direction: column; gap: 4px; }
+            .sf-score-stars { display: flex; gap: 3px; }
+            .sf-score-star { color: var(--sf-accent); font-size: 20px; }
+            .sf-score-label {
+              font-family: 'Poppins', sans-serif;
+              font-size: 13px;
+              font-weight: 600;
+              color: var(--sf-primary);
+            }
+            .sf-verified-text {
+              font-family: 'Poppins', sans-serif;
+              font-size: 0.88rem;
+              color: var(--sf-muted);
+              line-height: 1.6;
+            }
+            .sf-verified-text strong { color: var(--sf-primary); font-weight: 600; }
+            .sf-rating-view-btn {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: transparent;
+              color: var(--sf-primary);
+              border: 1.5px solid var(--sf-primary);
+              border-radius: 50px;
+              padding: 11px 26px;
+              font-family: 'Poppins', sans-serif;
+              font-size: 13px;
+              font-weight: 600;
+              text-decoration: none;
+              transition: background 0.2s, color 0.2s;
+              white-space: nowrap;
+              margin-left: auto;
+            }
+            .sf-rating-view-btn:hover { background: var(--sf-primary); color: var(--sf-white); }
+            .sf-reviews-grid {
+              display: grid;
+              grid-template-columns: 1fr 2fr;
+              gap: 20px;
+              margin-top: 8px;
+            }
+            .sf-highlight-card {
+              background: var(--sf-primary);
+              border-radius: var(--sf-radius-sm);
+              padding: 28px 24px;
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            }
+            .sf-highlight-stars { display: flex; gap: 3px; }
+            .sf-highlight-star { color: var(--sf-accent); font-size: 18px; }
+            .sf-highlight-label {
+              font-family: 'Poppins', sans-serif;
+              font-size: 12px;
+              font-weight: 600;
+              letter-spacing: 0.12em;
+              text-transform: uppercase;
+              color: var(--sf-accent);
+            }
+            .sf-highlight-text {
+              font-family: 'Poppins', sans-serif;
+              font-size: 0.85rem;
+              color: rgba(255,255,255,0.75);
+              line-height: 1.65;
+            }
+            .sf-reviews-cards-col {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 20px;
+            }
+            .sf-review-card {
+              background: var(--sf-white);
+              border-radius: var(--sf-radius-sm);
+              padding: 20px;
+              border: 1px solid rgba(62,44,35,0.07);
+              box-shadow: 0 2px 12px rgba(62,44,35,0.05);
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            }
+            .sf-review-top { display: flex; align-items: center; gap: 10px; }
+            .sf-review-avatar {
+              width: 38px;
+              height: 38px;
+              border-radius: 50%;
+              background: var(--sf-accent);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 14px;
+              font-weight: 700;
+              color: var(--sf-white);
+              flex-shrink: 0;
+              font-family: 'Playfair Display', serif;
+            }
+            .sf-review-name {
+              font-family: 'Poppins', sans-serif;
+              font-size: 13px;
+              font-weight: 600;
+              color: var(--sf-primary);
+            }
+            .sf-review-date {
+              font-family: 'Poppins', sans-serif;
+              font-size: 11px;
+              color: var(--sf-muted);
+              margin-top: 2px;
+            }
+            .sf-review-stars { display: flex; gap: 2px; }
+            .sf-review-star { color: var(--sf-accent); font-size: 13px; }
+            .sf-review-text {
+              font-family: 'Poppins', sans-serif;
+              font-size: 0.8rem;
+              line-height: 1.7;
+              color: var(--sf-muted);
+            }
+            .sf-google-btn-wrap-new {
+              display: flex;
+              justify-content: center;
+              margin-top: 32px;
+            }
+            .sf-google-btn-blue {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: #4285F4;
+              color: #fff;
+              border: none;
+              border-radius: 100px;
+              padding: 12px 28px;
+              font-family: 'Poppins', sans-serif;
+              font-size: 13px;
+              font-weight: 500;
+              text-decoration: none;
+              transition: opacity 0.2s;
+              white-space: nowrap;
+              cursor: pointer;
+            }
+            .sf-google-btn-blue:hover { opacity: 0.88; }
+            @media (max-width: 1024px) {
+              .sf-reviews-cards-col { grid-template-columns: repeat(2, 1fr); }
+            }
+            @media (max-width: 768px) {
+              .sf-reviews-grid { grid-template-columns: 1fr; }
+              .sf-reviews-cards-col { grid-template-columns: 1fr; }
+              .sf-rating-divider { display: none; }
+              .sf-rating-view-btn { margin-left: 0; width: 100%; justify-content: center; }
+              .sf-google-btn-blue { width: 100%; justify-content: center; }
+            }
+          `}</style>
+
+          {/* Eyebrow + Heading */}
+          <div className="sf-reviews-eyebrow-wrap">
+            <span className="sf-reviews-eyebrow">Social Proof</span>
+          </div>
+          <h2 className="sf-reviews-heading">Trusted by Clients Across Bangalore</h2>
+          <p className="sf-reviews-sub">
+            Real experiences from clients who trusted Shrusara Fashion Boutique
+            for their designer outfits and special occasions.
+          </p>
+
+          {/* Rating Summary Card */}
+          <div className="sf-rating-card">
+            <div className="sf-rating-g-logo">
+              <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
+                <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19.1 13 24 13c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+                <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/>
+                <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.6l6.2 5.2C36.9 36.8 44 31 44 24c0-1.3-.1-2.6-.4-3.9z"/>
+              </svg>
+            </div>
+            <div className="sf-rating-divider" />
+            <div className="sf-score-block">
+              <span className="sf-score-num">4.9</span>
+              <div className="sf-score-right">
+                <div className="sf-score-stars">
+                  {[1,2,3,4,5].map(i => <span key={i} className="sf-score-star">★</span>)}
+                </div>
+                <span className="sf-score-label">Google Reviews</span>
+              </div>
+            </div>
+            <div className="sf-rating-divider" />
+            <p className="sf-verified-text">
+              Based on <strong>250+</strong> verified reviews on Google
+            </p>
+            {/* ✅ FIXED: href and other attributes are now correctly inside the <a> tag */}
             <a
-              href="https://www.google.com/maps/place/Shrusara+Fashion+Boutique"
+              href={GOOGLE_MAPS_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="sf-google-btn"
+              className="sf-rating-view-btn"
+            >
+              VIEW ON GOOGLE →
+            </a>
+          </div>
+
+          {/* Reviews Grid */}
+          <div className="sf-reviews-grid">
+
+            {/* Dark Highlight Card */}
+            <div className="sf-highlight-card">
+              <div className="sf-highlight-stars">
+                {[1,2,3,4,5].map(i => <span key={i} className="sf-highlight-star">★</span>)}
+              </div>
+              <p className="sf-highlight-label">250+ Happy Clients in Bangalore</p>
+              <p className="sf-highlight-text">Loved by clients. Chosen for style.</p>
+            </div>
+
+            {/* Review Cards */}
+            <div className="sf-reviews-cards-col">
+              {(reviews?.reviews || fallbackReviews?.reviews || []).slice(0, 3).map((review, index) => (
+                <div key={index} className="sf-review-card">
+                  <div className="sf-review-top">
+                    <div className="sf-review-avatar">
+                      {review.author_name?.charAt(0) || 'C'}
+                    </div>
+                    <div>
+                      <p className="sf-review-name">{review.author_name || 'Client'}</p>
+                      <p className="sf-review-date">{review.relative_time_description || 'Recently'}</p>
+                    </div>
+                  </div>
+                  <div className="sf-review-stars">
+                    {[1,2,3,4,5].map(i => <span key={i} className="sf-review-star">★</span>)}
+                  </div>
+                  <p className="sf-review-text">{review.text}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+          {/* ✅ FIXED: View on Google button — attributes correctly inside the <a> tag */}
+          <div className="sf-google-btn-wrap-new">
+            <a
+              href={GOOGLE_MAPS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sf-google-btn-blue"
             >
               <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true">
                 <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.2 6.5 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
@@ -945,6 +1260,7 @@ export default function Home() {
               View on Google ↗
             </a>
           </div>
+
         </div>
       </div>
 
@@ -956,7 +1272,13 @@ export default function Home() {
             <p className="sf-consult-sub">Book Your Bridal Consultation Today</p>
           </div>
           <div className="sf-consult-btns">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="sf-btn-primary-light" onClick={() => trackWhatsApp('home_banner_2')}>
+            <a
+              href={WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sf-btn-primary-light"
+              onClick={() => trackWhatsApp('home_banner_2')}
+            >
               WhatsApp Enquiry
             </a>
             <a href={TEL_LINK} className="sf-btn-secondary-light">
