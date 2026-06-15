@@ -23,9 +23,9 @@ const Edit              = lazy(() => import('./admin/Edit'));
 
 // Landing Pages — MUST be PascalCase variable names
 const BridalLandingPage       = lazy(() => import('./pages/BridalLandingPage'));
-const DesignerLandingPage     = lazy(() => import('./pages/DesignerLandingPage'));
+const DesignerLandingPage     = lazy(() => import('./pages/designerLandingPage')); // NOTE: actual filename is lowercase "d"
 const OccasionWearLandingPage = lazy(() => import('./pages/OccasionWearLandingPage'));
-const SareeLandingPage        = lazy(() => import('./pages/SareeLandingPage')); // ← NEW
+const SareeLandingPage        = lazy(() => import('./pages/SareeLandingPage')); // ← NEW — add this file to client/src/pages/
 
 function ScrollToTop() {
   const location = useLocation();
@@ -112,7 +112,7 @@ export default function App() {
       void import('./pages/Contact');
       void import('./pages/Blog');
       void import('./pages/BridalLandingPage');
-      void import('./pages/DesignerLandingPage');
+      void import('./pages/designerLandingPage');
       void import('./pages/OccasionWearLandingPage');
       void import('./pages/SareeLandingPage'); // ← NEW
     };
