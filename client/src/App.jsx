@@ -22,8 +22,10 @@ const Upload            = lazy(() => import('./admin/Upload'));
 const Edit              = lazy(() => import('./admin/Edit'));
 
 // Landing Pages — MUST be PascalCase variable names
-const BridalLandingPage   = lazy(() => import('./pages/BridalLandingPage'));
-const DesignerLandingPage = lazy(() => import('./pages/designerLandingPage')); // ← PascalCase variable
+const BridalLandingPage       = lazy(() => import('./pages/BridalLandingPage'));
+const DesignerLandingPage     = lazy(() => import('./pages/DesignerLandingPage'));
+const OccasionWearLandingPage = lazy(() => import('./pages/OccasionWearLandingPage'));
+const SareeLandingPage        = lazy(() => import('./pages/SareeLandingPage')); // ← NEW
 
 function ScrollToTop() {
   const location = useLocation();
@@ -63,8 +65,10 @@ function AppRoutes() {
         </Route>
 
         {/* Landing Pages (NO navbar/footer layout) */}
-        <Route path="/bridal-blouse-bangalore/consultation"   element={<BridalLandingPage />} />
-        <Route path="/designer-outfits-bangalore/consultation" element={<DesignerLandingPage />} /> {/* ← PascalCase */}
+        <Route path="/bridal-blouse-bangalore/consultation"      element={<BridalLandingPage />} />
+        <Route path="/designer-outfits-bangalore/consultation"   element={<DesignerLandingPage />} />
+        <Route path="/occasion-wear-bangalore/consultation"      element={<OccasionWearLandingPage />} />
+        <Route path="/saree-transformation-bangalore/consultation" element={<SareeLandingPage />} /> {/* ← NEW */}
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />
@@ -108,7 +112,9 @@ export default function App() {
       void import('./pages/Contact');
       void import('./pages/Blog');
       void import('./pages/BridalLandingPage');
-      void import('./pages/designerLandingPage');
+      void import('./pages/DesignerLandingPage');
+      void import('./pages/OccasionWearLandingPage');
+      void import('./pages/SareeLandingPage'); // ← NEW
     };
 
     if ('requestIdleCallback' in window) {
