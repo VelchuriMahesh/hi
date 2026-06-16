@@ -65,10 +65,10 @@ function AppRoutes() {
         </Route>
 
         {/* Landing Pages (NO navbar/footer layout) */}
-        <Route path="/bridal-blouse-bangalore/consultation"      element={<BridalLandingPage />} />
-        <Route path="/designer-outfits-bangalore/consultation"   element={<DesignerLandingPage />} />
-        <Route path="/occasion-wear-bangalore/consultation"      element={<OccasionWearLandingPage />} />
-        <Route path="/saree-transformation-bangalore/consultation" element={<SareeLandingPage />} /> {/* ← NEW */}
+        <Route path="/customized-bridal-blouse-bangalore"      element={<BridalLandingPage />} />
+        <Route path="/customized-designer-outfits-bangalore"   element={<DesignerLandingPage />} />
+        <Route path="/customized-occasion-wear-bangalore"      element={<OccasionWearLandingPage />} />
+        <Route path="/saree-transformation-bangalore" element={<SareeLandingPage />} /> {/* ← NEW */}
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />
