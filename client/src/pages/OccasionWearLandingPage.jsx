@@ -30,52 +30,57 @@ function trackPhoneCall(label) {
 }
 
 // ─── Gallery Data ─────────────────────────────────────────────────────────────
+// Image data for Occasion Wear gallery sections
+// Paths updated to match the new /public/occasion_wear/ folder structure
+
 const gownImages = [
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',          alt: 'Gold Indo-Western Crop Top Lehenga',         title: 'Gold Indo-Western Crop Top Lehenga' },
-  { src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',   alt: 'Ivory Indo-Western Crop Top Lehenga',         title: 'Ivory Indo-Western Lehenga' },
-  { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',        alt: 'Midnight Wine Designer Gown',                 title: 'Midnight Wine Designer Gown' },
-  { src: '/videos/designer-party-wear-designer-frock-shrusara.webp',                               alt: 'Midnight Wine Couture Gown',                  title: 'Midnight Wine Couture Gown' },
-  { src: '/videos/desingerhero.webp',                                                              alt: 'Ruby One-Shoulder Designer Gown',             title: 'Ruby One-Shoulder Gown' },
-  { src: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',   alt: 'Crimson Trail Party Gown',                    title: 'Crimson Trail Party Gown' },
-  { src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp', alt: 'Elegant Reception Gown',                  title: 'Elegant Reception Gown' },
-  { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',       alt: 'Mint Luxe Designer Ball Gown',                title: 'Mint Luxe Ball Gown' },
-  { src: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp', alt: 'Royal Blue Maternity Gown',        title: 'Royal Blue Maternity Gown' },
-  { src: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',         alt: 'Scarlet Evening Designer Gown',               title: 'Scarlet Evening Gown' },
-  { src: '/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp', alt: 'Noir Evening Couple Couture',     title: 'Noir Evening Couture' },
-  { src: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp', alt: 'Floral Trail Indo-Western Gown',       title: 'Floral Trail Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/indo-western-fusion-bridal-wear-shrusara.webp', alt: 'Customized Indo-Western outfit in Bangalore blending modern fashion with ethnic elegance', title: 'Indo-Western Fusion Bridal Wear' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/contemporary-modren-bridal-trousseau-shruthi-ajith.webp', alt: 'Customized Indo-Western outfit tailored in Bangalore with premium fit and modern styling', title: 'Contemporary Bridal Trousseau' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/designer-party-wear-designer-gown-shrusara.webp', alt: 'Premium designer gown customized for receptions engagement parties and special celebrations', title: 'Designer Party Wear Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/designer-party-wear-bangalore.webp', alt: 'Designer party wear outfit customized in Bangalore for elegant modern occasion dressing', title: 'Designer Party Wear Outfit' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/elegant-designer-evening-gown-bangalore.webp', alt: 'Custom designed gown in Bangalore tailored to individual measurements and style preferences', title: 'Elegant Designer Evening Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/designer-evening-gown-bangalore.webp', alt: 'Designer evening gown customized in Bangalore for receptions parties and special occasions', title: 'Designer Evening Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/occasion-wear-gown-bangalore.webp', alt: 'Custom occasion wear outfit created in Bangalore with personalized design and boutique finishing', title: 'Occasion Wear Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/luxury-designer-gown-bangalore.webp', alt: 'Luxury designer gown with customized fit and premium detailing by designer boutique in Bangalore', title: 'Luxury Designer Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/modern-gown-maternity-photoshoot-premium-outfit-bangalore.webp', alt: 'Custom designed gown in Bangalore tailored to individual measurements and style preferences', title: 'Maternity Photoshoot Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp', alt: 'Premium Indo-Western wear designed for weddings receptions and special occasions in Bangalore', title: 'Modern Tail Gown Reception Wear' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/customized-designer-gown-bangalore.webp', alt: 'Customized designer gown in Bangalore created for modern occasions with premium tailoring and elegant finishing', title: 'Customized Designer Gown' },
+  { src: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/reception-gown-for-brides-shrusara-fashion-boutique.webp', alt: 'Designer Indo-Western dress customized for festive occasions and contemporary celebrations', title: 'Reception Gown for Brides' },
 ];
 
 const blouseImages = [
-  { src: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',             alt: 'Contemporary Designer Blouse',       title: 'Contemporary Designer Blouse' },
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',   alt: 'Embroidered Designer Blouse',        title: 'Embroidered Designer Blouse' },
-  { src: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp', alt: 'Statement Sleeve Blouse',       title: 'Statement Sleeve Blouse' },
-  { src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp', alt: 'Modern Neckline Blouse',        title: 'Modern Neckline Blouse' },
-  { src: '/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp',                    alt: 'Ready-to-Wear Designer Saree',       title: 'Saree & Blouse Set' },
-  { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp', alt: 'Festive Designer Blouse',            title: 'Festive Designer Blouse' },
-  { src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp', alt: 'Reception Blouse',        title: 'Reception Blouse' },
-  { src: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp', alt: 'Couture Blouse',          title: 'Couture Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/boutique-designer-blouse-bangalore.webp', alt: 'Boutique designer blouse in Bangalore crafted with modern patterns and premium detailing', title: 'Boutique Designer Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/customized-designer-blouse-bangalore.webp', alt: 'Customized designer blouse in Bangalore for parties festivals and special occasions', title: 'Customized Designer Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/designer-blouse-bangalore-shrusara.webp', alt: 'Customized designer blouse in Bangalore tailored to personal style and measurements', title: 'Designer Blouse – Shrusara' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/designer-blouse-stitching-bangalore.webp', alt: 'Designer blouse stitching in Bangalore with premium fit and elegant finishing', title: 'Designer Blouse Stitching' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/designer-blouse.webp', alt: 'Designer blouse in Bangalore crafted with modern patterns and elegant finishing', title: 'Designer Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/easy-to-wear-saree-bangalore.webp', alt: 'Easy to wear saree in Bangalore customized for modern women seeking comfort and convenience', title: 'Easy-to-Wear Saree' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/fancy-blouse-stitching-bangalore.webp', alt: 'Fancy blouse stitching in Bangalore for designer sarees and modern occasion wear', title: 'Fancy Blouse Stitching' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/party-wear-designer-blouse-bangalore.webp', alt: 'Party wear designer blouse customized for festive celebrations and occasion wear sarees', title: 'Party Wear Designer Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/premium-designer-blouse-bangalore.webp', alt: 'Premium designer blouse customized for receptions parties and festive occasions', title: 'Premium Designer Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/silk-saree-designer-blouse-bangalore.webp', alt: 'Designer blouse for silk sarees in Bangalore with elegant styling and customized fit', title: 'Silk Saree Designer Blouse' },
+  { src: '/occasion_wear/Designer Blouses/Designer Blouses/silk-saree-designer-blouse-shrusara.webp', alt: 'Silk saree designer blouse in Bangalore customized with elegant detailing and boutique finishing', title: 'Silk Saree Designer Blouse – Shrusara' },
 ];
 
 const lehengaImages = [
-  { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',   alt: 'Designer Crop Top Lehenga',              title: 'Designer Crop Top Lehenga' },
-  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',  alt: 'Luxury Bridal Lehenga',                  title: 'Luxury Bridal Lehenga' },
-  { src: '/bridal/bridalblow/custom-made-bridal-reception-lehenga-shrusara.webp', alt: 'Custom Bridal Reception Lehenga',       title: 'Custom Bridal Lehenga' },
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp', alt: 'Indo-Western Crop Top Set',     title: 'Indo-Western Crop Top Set' },
-  { src: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp', alt: 'Half Saree Set',                         title: 'Designer Half Saree' },
-  { src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp', alt: 'Contemporary Lehenga',   title: 'Contemporary Lehenga Set' },
-  { src: '/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp',        alt: 'Ready-to-Wear Half Saree',               title: 'Ready-to-Wear Half Saree' },
-  { src: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp', alt: 'Festive Lehenga',            title: 'Festive Lehenga Set' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/crop-top-skirt-set-bangalore.webp', alt: 'Customized crop top skirt set in Bangalore with elegant styling and premium boutique finishing', title: 'Crop Top & Skirt Set' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/customized-lehenga-set-bangalore.webp', alt: 'Customized lehenga set in Bangalore tailored to individual style measurements and occasion requirements', title: 'Customized Lehenga Set' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/designer-crop-top-outfit-bangalore.webp', alt: 'Designer crop top outfit in Bangalore customized for parties festivals and special occasions', title: 'Designer Crop Top Outfit' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp', alt: 'Designer crop top outfit customized in Bangalore for modern occasion wear and celebrations', title: 'Designer Crop Top Lehenga' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/designer-half-saree-bangalore.webp', alt: 'Designer half saree in Bangalore customized with modern styling and elegant finishing', title: 'Designer Half Saree' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/designer-half-saree-shrusara.webp', alt: 'Customized half saree in Bangalore tailored for festive occasions and traditional celebrations', title: 'Designer Half Saree – Shrusara' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/designer-lehenga-bangalore.webp', alt: 'Designer lehenga in Bangalore customized with elegant detailing and premium boutique craftsmanship', title: 'Designer Lehenga' },
+  { src: '/occasion_wear/Croptops, Lehenga sets and Half Saree/Croptops, Lehenga sets and Half Saree/half-saree-design-bangalore.webp', alt: 'Half saree design in Bangalore created with premium fabrics and boutique craftsmanship', title: 'Half Saree Design' },
 ];
 
 const motherDaughterImages = [
-  { src: '/videos/mother-and-daughter-premium-matching-frock-shrusara-boutique.webp', alt: 'Mother Daughter Heritage Set',  title: 'Heritage Matching Set' },
-  { src: '/videos/mother-and-daughter-matching-frock-shrusara-boutique.webp',         alt: 'Mommy & Me Princess Set',       title: 'Mommy & Me Princess Set' },
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp', alt: 'Coordinated Family Look',   title: 'Coordinated Family Look' },
-  { src: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp', alt: 'Matching Festive Set', title: 'Festive Matching Set' },
-  { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp', alt: 'Celebration Matching Set', title: 'Celebration Matching Set' },
-  { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',          alt: 'Birthday Matching Outfits',     title: 'Birthday Matching Outfits' },
+  { src: '/occasion_wear/Mother & Daughter matching outfits/Mother & Daughter matching outfits/customized-mother-daughter-outfits-bangalore.webp', alt: 'Mother and daughter matching outfits in Bangalore customized for family celebrations and special occasions', title: 'Customized Mother-Daughter Outfits' },
+  { src: '/occasion_wear/Mother & Daughter matching outfits/Mother & Daughter matching outfits/matching-family-outfits-bangalore.webp', alt: 'Matching family outfits in Bangalore featuring coordinated mother and daughter designer dresses', title: 'Matching Family Outfits' },
+  { src: '/occasion_wear/Mother & Daughter matching outfits/Mother & Daughter matching outfits/mother-and-daughter-premium-matching-frock-shrusara-boutique.webp', alt: 'Premium mother and daughter matching frocks in Bangalore designed for birthdays and family functions', title: 'Premium Matching Frock Set' },
+  { src: '/occasion_wear/Mother & Daughter matching outfits/Mother & Daughter matching outfits/mother-daughter-designer-dresses-bangalore.webp', alt: 'Mother and daughter designer dresses in Bangalore customized with elegant styling and premium finishing', title: 'Mother-Daughter Designer Dresses' },
+  { src: '/occasion_wear/Mother & Daughter matching outfits/Mother & Daughter matching outfits/mother-daughter-matching-dresses-bangalore.webp', alt: 'Mother and daughter matching dresses in Bangalore tailored for photoshoots celebrations and special occasions', title: 'Mother-Daughter Matching Dresses' },
+  { src: '/occasion_wear/Mother & Daughter matching outfits/Mother & Daughter matching outfits/mother-daughter-matching-outfits-bangalore.webp', alt: 'Mother and daughter matching outfits in Bangalore created with customized designs and boutique craftsmanship', title: 'Mother-Daughter Matching Outfits' },
 ];
-
 const reviews = [
   { name: 'Kavitha M.',  text: 'I ordered a custom designer gown from Shrusara for my sister\'s reception. The fitting was absolutely perfect and Shruthi Ajith personally helped me choose the right design. An outstanding boutique in Bangalore!' },
   { name: 'Pooja D.',    text: 'My Indo-western outfit for the Diwali party was absolutely stunning. The tailoring was precise and it was delivered on time. Shrusara truly understands what modern women want from their designer outfits.' },
