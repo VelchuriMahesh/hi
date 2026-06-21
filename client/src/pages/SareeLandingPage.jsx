@@ -26,39 +26,40 @@ function trackPhoneCall(label) {
 }
 
 // ─── Gallery Data ─────────────────────────────────────────────────────────────
+// Paths updated to match /public/occasion_wear/sareetransformation_landing/ folder structure
+
 const readyToWearImages = [
-  { src: '/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp',                                         alt: 'Ready-to-Wear Designer Saree',          title: 'Ready-to-Wear Designer Saree' },
-  { src: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',                                  alt: 'Pre-Stitched Saree with Designer Blouse', title: 'Pre-Stitched Saree with Designer Blouse' },
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',                        alt: 'Ready-to-Wear Saree Bangalore',          title: 'Ready-to-Wear Saree' },
-  { src: '/designer/Indowestern/contemporary-modren-bridal-trousseau-outfit-shruthi-ajith.webp',                 alt: 'One-Minute Saree Customization',         title: 'One-Minute Saree' },
-  { src: '/designer/Partwearset/elegant-designer-evening-gown-for-shruthi-ajith-bangalore.webp',                 alt: 'Pre-Stitched Festive Saree',             title: 'Festive Pre-Stitched Saree' },
-  { src: '/designer/Partwearset/custom-photoshoot-red-gown-reception-wear-bangalore.webp',                       alt: 'Ready-to-Wear Saree for Wedding',        title: 'Wedding Ready-to-Wear Saree' },
-  { src: '/designer/Partwearset/modern-tail-gown-reception-premium-finishing-shrusara-banaglore.webp',           alt: 'Comfortable Pre-Stitched Saree',         title: 'Comfortable Pre-Stitched Saree' },
-  { src: '/designer/designer gown/elegant-evening-gown-brides-featuring-modern-silhouette-premium-fabric.webp', alt: 'Designer Ready-to-Wear Saree',           title: 'Designer Ready-to-Wear Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/ready-to-wear-saree-bangalore.webp', alt: 'Ready to wear saree in Bangalore customized for quick wearing with elegant saree draping and perfect fit', title: 'Ready-to-Wear Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/pre-stitched-saree-bangalore.webp', alt: 'Pre stitched saree in Bangalore permanently customized for comfort convenience and elegant styling', title: 'Pre-Stitched Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/one-minute-saree-bangalore.webp', alt: 'One minute saree in Bangalore customized for quick wear without traditional saree draping', title: 'One-Minute Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/customized-ready-to-wear-saree-bangalore.webp', alt: 'Customized ready to wear saree in Bangalore tailored to individual measurements and preferences', title: 'Customized Ready-to-Wear Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/ready-to-wear-saree-customization-bangalore.webp', alt: 'Ready to wear saree customization in Bangalore designed for weddings functions and special occasions', title: 'Ready-to-Wear Saree Customization' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/customized-pre-stitched-saree-bangalore.webp', alt: 'Customized pre stitched saree in Bangalore with secure fit reusable design and premium finishing', title: 'Customized Pre-Stitched Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/easy-to-wear-saree-bangalore.webp', alt: 'Easy to wear saree in Bangalore customized for modern women seeking comfort and convenience', title: 'Easy-to-Wear Saree' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/permanent-saree-stitching-bangalore.webp', alt: 'Permanent saree stitching in Bangalore transforming traditional sarees into ready to wear sarees', title: 'Permanent Saree Stitching' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/designer-blouse-stitching-bangalore.webp', alt: 'Designer blouse stitching in Bangalore with premium fit and elegant finishing', title: 'Designer Blouse Stitching' },
+  { src: '/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/IMG-20220609-WA0069.webp', alt: 'Ready to wear saree styled in Bangalore showcasing elegant draping and a perfect comfortable fit', title: 'Ready-to-Wear Saree Look' },
 ];
 
 const transformImages = [
-  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',                                   alt: 'Saree to Lehenga Transformation',        title: 'Saree to Lehenga' },
-  { src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp',           alt: 'Saree to Designer Gown',                 title: 'Saree to Designer Gown' },
-  { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp',                      alt: 'Saree to Evening Gown',                  title: 'Saree to Evening Gown' },
-  { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',                                     alt: 'Saree to Crop Top & Skirt Set',          title: 'Saree to Crop Top & Skirt Set' },
-  { src: '/designer/Indowestern/indo-western-fusion-bridal-wear-bangalore-shrusara.webp',                        alt: 'Saree to Indo-Western Outfit',           title: 'Saree to Indo-Western Outfit' },
-  { src: '/bridal/bridalblow/custom-made-bridal-reception-lehenga-shrusara.webp',                                alt: 'Saree to Bridal Lehenga',                title: 'Saree to Bridal Lehenga' },
-  { src: '/designer/designer gown/premium-designer-ball-gown-for-engagement-bangalore.webp',                     alt: 'Saree to Ball Gown',                     title: 'Saree to Ball Gown' },
-  { src: '/designer/Partwearset/designer-blouse-saree-bangalore-shrusara.webp',                                  alt: 'Saree to Designer Blouse',               title: 'Saree to Designer Blouse' },
-  { src: '/videos/designer-party-wear-designer-frock-shrusara.webp',                                            alt: 'Saree to Long Dress',                    title: 'Saree to Long Dress' },
-  { src: '/designer/designer gown/modern-gown-maternity-photoshoot-premium-finishing-shrusara-banaglore.webp',   alt: 'Saree to Occasion Wear',                 title: 'Saree to Occasion Wear' },
-  { src: '/designer/designer gown/modern-gown-bridal-reception-premium-finishing-Shrusara-banaglore.webp',       alt: 'Saree to Indo-Western Gown',             title: 'Saree to Indo-Western Gown' },
-  { src: '/designer/designer gown/reception-gown-for-brides-shrusara-fashion-boutique.webp',                     alt: 'Saree to Bridal Gown',                   title: 'Saree to Bridal Gown' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree to Lehenga Bangalore.webp', alt: 'Saree to lehenga conversion in Bangalore customized from treasured sarees into elegant designer lehengas', title: 'Saree to Lehenga Transformation' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree to Gown Bangalore.webp', alt: 'Saree to designer gown conversion in Bangalore transforming sarees into elegant occasion wear gowns', title: 'Saree to Gown Transformation' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree Transformation Bangalore.webp', alt: 'Saree transformation service in Bangalore creating beautiful new outfits from existing sarees', title: 'Saree Transformation' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Customized Saree Outfits Bangalore.webp', alt: 'Saree redesign service in Bangalore transforming old and unused sarees into fashionable outfits', title: 'Customized Saree Outfit' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree Conversion Bangalore.webp', alt: 'Customized saree conversion in Bangalore tailored to personal style measurements and occasion needs', title: 'Saree Conversion' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/luxury-bridal-lehenga-custom-design-bangalore.webp', alt: 'Saree makeover service in Bangalore creating designer outfits from wedding silk and traditional sarees', title: 'Luxury Bridal Lehenga' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/saree-converted-lehenga-banaglore.webp', alt: 'Old saree converted into a new designer outfit in Bangalore with premium craftsmanship and styling', title: 'Saree Converted to Lehenga' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/custom-bridal-reception-lehenga-shrusara.webp', alt: 'Custom bridal reception lehenga in Bangalore created through saree transformation with premium finishing', title: 'Bridal Reception Lehenga Transformation' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/IMG-20220827-WA0010.webp', alt: 'Saree transformed into a custom designer outfit in Bangalore with elegant styling and boutique finishing', title: 'Saree to Designer Outfit' },
 ];
 
 const transformationGallery = [
-  { src: '/videos/mother-and-daughter-premium-matching-frock-shrusara-boutique.webp', alt: 'Saree transformation before after', title: 'Silk Saree to Lehenga' },
-  { src: '/videos/mother-and-daughter-matching-frock-shrusara-boutique.webp',         alt: 'Saree to gown transformation',     title: 'Wedding Saree to Gown' },
-  { src: '/bridal/Lehenga/luxury-bridal-lehenga-custom-design-bangalore.webp',        alt: 'Kanjivaram saree transformation',  title: 'Kanjivaram to Lehenga' },
-  { src: '/bridal/Gown/elegant-modern-reception-gown-brides-featuring-silhouette-premium-fabric.webp', alt: 'Saree to bridal gown', title: 'Saree to Reception Gown' },
-  { src: '/designer/designer gown/designer-party-wear-designer-evening-gown-shrusara.webp', alt: 'Heirloom saree transformation', title: 'Heirloom Saree to Evening Gown' },
-  { src: '/videos/designer-croptop-lehenga-bangalore-shruthi-shrusara.webp',          alt: 'Saree to crop top set',            title: 'Saree to Crop Top Set' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree to Lehenga Bangalore.webp', alt: 'Saree to lehenga conversion in Bangalore customized from treasured sarees into elegant designer lehengas', title: 'Saree to Lehenga' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree to Gown Bangalore.webp', alt: 'Saree to designer gown conversion in Bangalore transforming sarees into elegant occasion wear gowns', title: 'Saree to Gown' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/luxury-bridal-lehenga-custom-design-bangalore.webp', alt: 'Saree makeover service in Bangalore creating designer outfits from wedding silk and traditional sarees', title: 'Luxury Bridal Lehenga' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/saree-converted-lehenga-banaglore.webp', alt: 'Old saree converted into a new designer outfit in Bangalore with premium craftsmanship and styling', title: 'Saree Converted to Lehenga' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Saree Conversion Bangalore.webp', alt: 'Customized saree conversion in Bangalore tailored to personal style measurements and occasion needs', title: 'Saree Conversion' },
+  { src: '/occasion_wear/sareetransformation_landing/Saree Transformation/Saree Transformation/Customized Saree Outfits Bangalore.webp', alt: 'Saree redesign service in Bangalore transforming old and unused sarees into fashionable outfits', title: 'Customized Saree Outfit' },
 ];
 
 const reviews = [
