@@ -714,7 +714,7 @@ const BridalLandingPage = () => {
         </section>
 
         {/* GALLERY */}
-        <section className="bl-gallery">
+        <section id="bridal-blouses-gallery" className="bl-gallery">
           <p className="bl-sec-eyebrow">Gallery</p>
           <h2 className="bl-sec-h">Customized Bridal Blouse Designs in Bangalore</h2>
           <p className="bl-sec-sub">Explore our collection of maggam work blouses, aari embroidery designs, and customized bridal outfits created for brides across Bangalore.</p>
@@ -854,7 +854,7 @@ const BridalLandingPage = () => {
         </section>
 
         {/* FINAL CTA */}
-        <section className="bl-cta-wrap">
+        <section id="consultation" className="bl-cta-wrap">
           <div className="bl-cta-box">
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
               <p className="bl-cta-eyebrow">Bridal Consultation</p>

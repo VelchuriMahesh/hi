@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -16,18 +17,6 @@ const WA_MESSAGES = {
 
 const waLink = (key) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGES[key] || WA_MESSAGES.hero)}`;
-
-// ─── Tracking Helpers ─────────────────────────────────────────────────────────
-function trackWhatsApp(label) {
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', 'whatsapp_click', { event_category: 'Lead', event_label: label });
-  }
-}
-function trackPhoneCall(label) {
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', 'phone_call_click', { event_category: 'Lead', event_label: label });
-  }
-}
 
 // ─── Gallery Data ─────────────────────────────────────────────────────────────
 // Image data for Occasion Wear gallery sections
@@ -630,7 +619,7 @@ export default function OccasionWearLandingPage() {
       <div className="ow-divider" />
 
       {/* ── SECTION 4: GOWNS & INDO-WESTERN ── */}
-      <section className="ow-sec ow-sec-white">
+      <section id="designer-gowns-gallery" className="ow-sec ow-sec-white">
         <div className="ow-prod-header">
           <div className="ow-prod-header-text">
             <p className="ow-eyebrow">Section 01</p>
@@ -647,7 +636,7 @@ export default function OccasionWearLandingPage() {
       <div className="ow-divider" />
 
       {/* ── SECTION 5: BLOUSES ── */}
-      <section className="ow-sec ow-sec-cream">
+      <section id="designer-blouses-gallery" className="ow-sec ow-sec-cream">
         <div className="ow-prod-header">
           <div className="ow-prod-header-text">
             <p className="ow-eyebrow">Section 02</p>
@@ -664,7 +653,7 @@ export default function OccasionWearLandingPage() {
       <div className="ow-divider" />
 
       {/* ── SECTION 6: LEHENGA & HALF SAREES ── */}
-      <section className="ow-sec ow-sec-white">
+      <section id="crop-top-gallery" className="ow-sec ow-sec-white">
         <div className="ow-prod-header">
           <div className="ow-prod-header-text">
             <p className="ow-eyebrow">Section 03</p>
@@ -681,7 +670,7 @@ export default function OccasionWearLandingPage() {
       <div className="ow-divider" />
 
       {/* ── SECTION 7: MOTHER & DAUGHTER ── */}
-      <section className="ow-sec ow-sec-cream">
+      <section id="mother-daughter-gallery" className="ow-sec ow-sec-cream">
         <div className="ow-prod-header">
           <div className="ow-prod-header-text">
             <p className="ow-eyebrow">Section 04</p>
@@ -820,7 +809,7 @@ export default function OccasionWearLandingPage() {
       <div className="ow-divider" />
 
       {/* ── FINAL CTA ── */}
-      <section className="ow-sec ow-sec-white">
+      <section id="consultation" className="ow-sec ow-sec-white">
         <div className="ow-cta-box">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
             <p className="ow-cta-eyebrow">Designer Consultation</p>

@@ -42,10 +42,8 @@ export default function Contact() {
                   key={item.label}
                   href={item.href}
                   onClick={() => {
-                    if (!window.gtag) return;
-
                     if (item.label === 'Phone') {
-                     trackPhoneCall('contact_page');
+                      trackPhoneCall('contact_page');
                     }
 
                     if (item.label === 'WhatsApp') {

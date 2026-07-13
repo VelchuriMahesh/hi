@@ -624,7 +624,11 @@ export default function Bridal() {
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-btn-gold-pill" onClick={() => trackWhatsApp('bridal_banner')}>
               <WaIcon size={18} /> WhatsApp Enquiry
             </a>
-            <a href={TEL_LINK} className="br-btn-outline-pill">
+            <a
+              href={TEL_LINK}
+              className="br-btn-outline-pill"
+              onClick={() => trackPhoneCall('bridal_banner')}
+            >
               Call Now
             </a>
           </div>
@@ -773,7 +777,11 @@ export default function Bridal() {
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="br-cta-btn-pri" onClick={() => trackWhatsApp('bridal_cta')}>
               <WaIcon size={18} /> Book Bridal Consultation
             </a>
-            <a href={TEL_LINK} className="br-cta-btn-sec">
+            <a
+              href={TEL_LINK}
+              className="br-cta-btn-sec"
+              onClick={() => trackPhoneCall('bridal_cta')}
+            >
               <PhoneIcon /> Call Now
             </a>
           </div>

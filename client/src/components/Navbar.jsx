@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { contactLinks, navLinks } from '../data/content';
+import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 function navLinkClass({ isActive }) {
   return [
@@ -45,15 +46,7 @@ export default function Navbar() {
           <a
             className="button-secondary"
             href={contactLinks.call}
-            onClick={() => {
-              if (window.gtag) {
-                window.gtag('event', 'phone_call_click', {
-                  event_category: 'Lead',
-                  event_label: 'navbar',
-                  value: 1,
-                });
-              }
-            }}
+            onClick={() => trackPhoneCall('navbar')}
           >
             Call Now
           </a>
@@ -62,15 +55,7 @@ export default function Navbar() {
           <a
             className="button-primary"
             href={contactLinks.whatsapp}
-            onClick={() => {
-              if (window.gtag) {
-                window.gtag('event', 'whatsapp_click', {
-                  event_category: 'Lead',
-                  event_label: 'navbar',
-                  value: 1,
-                });
-              }
-            }}
+            onClick={() => trackWhatsApp('navbar')}
           >
             Book on WhatsApp
           </a>
@@ -122,15 +107,7 @@ export default function Navbar() {
               <a
                 className="button-secondary text-center py-4"
                 href={contactLinks.call}
-                onClick={() => {
-                  if (window.gtag) {
-                    window.gtag('event', 'phone_call_click', {
-                      event_category: 'Lead',
-                      event_label: 'navbar_mobile',
-                      value: 1,
-                    });
-                  }
-                }}
+                onClick={() => trackPhoneCall('navbar_mobile')}
               >
                 Call Now
               </a>
@@ -139,15 +116,7 @@ export default function Navbar() {
               <a
                 className="button-primary text-center py-4"
                 href={contactLinks.whatsapp}
-                onClick={() => {
-                  if (window.gtag) {
-                    window.gtag('event', 'whatsapp_click', {
-                      event_category: 'Lead',
-                      event_label: 'navbar_mobile',
-                      value: 1,
-                    });
-                  }
-                }}
+                onClick={() => trackWhatsApp('navbar_mobile')}
               >
                 WhatsApp Us
               </a>

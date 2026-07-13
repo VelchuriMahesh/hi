@@ -730,7 +730,7 @@ const DesignerLandingPage = () => {
         </section>
 
         {/* ── GALLERY ── */}
-        <section className="dl-gallery">
+        <section id="designer-outfits-gallery" className="dl-gallery">
           <p className="dl-sec-eyebrow">Gallery</p>
           <h2 className="dl-sec-h">Designer Outfit Gallery</h2>
           <p className="dl-sec-sub">Explore our collection of customized designer gowns, Indo-western outfits, blouses, and ethnic wear designed with premium detailing and modern styling.</p>
@@ -873,7 +873,7 @@ const DesignerLandingPage = () => {
         </section>
 
         {/* ── FINAL CTA ── */}
-        <section className="dl-cta-wrap">
+        <section id="consultation" className="dl-cta-wrap">
           <div className="dl-cta-box">
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
               <p className="dl-cta-eyebrow">Designer Consultation</p>

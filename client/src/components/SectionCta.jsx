@@ -1,4 +1,5 @@
 import { contactLinks } from '../data/content';
+import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 export default function SectionCta({
   title = 'Book your consultation on WhatsApp',
@@ -16,10 +17,18 @@ export default function SectionCta({
             <p className="max-w-2xl text-white/80">{description}</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:justify-self-end">
-            <a className="button-primary bg-white text-ink hover:bg-sand" href={contactLinks.whatsapp}>
+            <a
+              className="button-primary bg-white text-ink hover:bg-sand"
+              href={contactLinks.whatsapp}
+              onClick={() => trackWhatsApp('section_cta')}
+            >
               {primaryLabel}
             </a>
-            <a className="button-secondary border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white" href={contactLinks.call}>
+            <a
+              className="button-secondary border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+              href={contactLinks.call}
+              onClick={() => trackPhoneCall('section_cta')}
+            >
               {secondaryLabel}
             </a>
           </div>
@@ -28,4 +37,3 @@ export default function SectionCta({
     </section>
   );
 }
-

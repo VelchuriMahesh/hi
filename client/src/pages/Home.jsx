@@ -816,7 +816,11 @@ export default function Home() {
             >
               WhatsApp Enquiry
             </a>
-            <a href={TEL_LINK} className="sf-btn-secondary-light">
+            <a
+              href={TEL_LINK}
+              className="sf-btn-secondary-light"
+              onClick={() => trackPhoneCall('home_banner_1')}
+            >
               Call Now
             </a>
           </div>
@@ -1281,7 +1285,11 @@ export default function Home() {
             >
               WhatsApp Enquiry
             </a>
-            <a href={TEL_LINK} className="sf-btn-secondary-light">
+            <a
+              href={TEL_LINK}
+              className="sf-btn-secondary-light"
+              onClick={() => trackPhoneCall('home_banner_2')}
+            >
               Call Now
             </a>
           </div>

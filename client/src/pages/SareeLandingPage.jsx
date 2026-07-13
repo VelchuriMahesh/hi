@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -14,16 +15,6 @@ const WA_MESSAGES = {
 
 const waLink = (key) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGES[key] || WA_MESSAGES.hero)}`;
-
-// ─── Tracking ─────────────────────────────────────────────────────────────────
-function trackWhatsApp(label) {
-  if (typeof window.gtag === 'function')
-    window.gtag('event', 'whatsapp_click', { event_category: 'Lead', event_label: label });
-}
-function trackPhoneCall(label) {
-  if (typeof window.gtag === 'function')
-    window.gtag('event', 'phone_call_click', { event_category: 'Lead', event_label: label });
-}
 
 // ─── Gallery Data ─────────────────────────────────────────────────────────────
 // Paths updated to match /public/occasion_wear/sareetransformation_landing/ folder structure
@@ -609,7 +600,7 @@ export default function SareeLandingPage() {
       <div className="sw-divider" />
 
       {/* ── SECTION 4: READY-TO-WEAR ── */}
-      <section className="sw-sec sw-sec-white">
+      <section id="ready-to-wear-gallery" className="sw-sec sw-sec-white">
         <div className="sw-prod-header">
           <div className="sw-prod-header-text">
             <p className="sw-eyebrow">Service 01</p>
@@ -645,7 +636,7 @@ export default function SareeLandingPage() {
       <div className="sw-divider" />
 
       {/* ── SECTION 6: TRANSFORMATION GALLERY ── */}
-      <section className="sw-sec sw-sec-white sw-center">
+      <section id="saree-transformation-gallery" className="sw-sec sw-sec-white sw-center">
         <p className="sw-eyebrow" style={{ justifyContent: 'center' }}>Transformation Gallery</p>
         <h2 className="sw-h2">From Treasured Saree to Stunning New Creation</h2>
         <p className="sw-lead">See how cherished sarees have been transformed into elegant, wearable creations through thoughtful design, expert tailoring and personalized customization.</p>
@@ -785,7 +776,7 @@ export default function SareeLandingPage() {
       <div className="sw-divider" />
 
       {/* ── FINAL CTA ── */}
-      <section className="sw-sec sw-sec-cream">
+      <section id="consultation" className="sw-sec sw-sec-cream">
         <div className="sw-cta-box">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
             <p className="sw-cta-eyebrow">Saree Consultation</p>

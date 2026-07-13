@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { contactLinks, navLinks } from '../data/content';
+import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 export default function Footer() {
   return (
@@ -40,15 +41,7 @@ export default function Footer() {
           <a
             className="block transition hover:text-cocoa"
             href={contactLinks.call}
-            onClick={() => {
-              if (window.gtag) {
-                window.gtag('event', 'phone_call_click', {
-                  event_category: 'Lead',
-                  event_label: 'footer',
-                  value: 1,
-                });
-              }
-            }}
+            onClick={() => trackPhoneCall('footer')}
           >
             {contactLinks.phoneDisplay}
           </a>
@@ -67,15 +60,7 @@ export default function Footer() {
             href={contactLinks.whatsapp}
             target="_blank"
             rel="noreferrer"
-            onClick={() => {
-              if (window.gtag) {
-                window.gtag('event', 'whatsapp_click', {
-                  event_category: 'Lead',
-                  event_label: 'footer',
-                  value: 1,
-                });
-              }
-            }}
+            onClick={() => trackWhatsApp('footer')}
           >
             WhatsApp Us
           </a>
