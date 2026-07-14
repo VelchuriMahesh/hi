@@ -27,11 +27,179 @@ const DesignerLandingPage     = lazy(() => import('./pages/designerLandingPage')
 const OccasionWearLandingPage = lazy(() => import('./pages/OccasionWearLandingPage'));
 const SareeLandingPage        = lazy(() => import('./pages/SareeLandingPage')); // ← NEW — add this file to client/src/pages/
 
+const HASH_SCROLL_RETRY_MS = 2500;
+const HASH_SCROLL_RETRY_INTERVAL_MS = 100;
+const HASH_SCROLL_ALIGNMENT_GAP = 12;
+
+function getHashTargetId(hash) {
+  const rawId = hash.startsWith('#') ? hash.slice(1) : hash;
+
+  try {
+    return decodeURIComponent(rawId);
+  } catch {
+    return rawId;
+  }
+}
+
+function getAnchorScrollOffset() {
+  let offset = 0;
+
+  document.querySelectorAll('header').forEach((header) => {
+    const style = window.getComputedStyle(header);
+
+    if (style.position !== 'fixed' && style.position !== 'sticky') {
+      return;
+    }
+
+    const rect = header.getBoundingClientRect();
+    const top = Number.parseFloat(style.top);
+    const stickyTop = Number.isFinite(top) ? top : 0;
+
+    if (rect.height > 0 && rect.bottom > 0 && rect.top <= stickyTop + 1) {
+      offset = Math.max(offset, rect.height + Math.max(stickyTop, 0));
+    }
+  });
+
+  return offset > 0 ? offset + HASH_SCROLL_ALIGNMENT_GAP : 0;
+}
+
+function scrollToAnchorTarget(target) {
+  const top = target.getBoundingClientRect().top + window.scrollY - getAnchorScrollOffset();
+
+  window.scrollTo({
+    top: Math.max(top, 0),
+    left: 0,
+    behavior: 'smooth',
+  });
+}
+
+function isAnchorTargetAligned(target) {
+  const distanceFromAnchorTop = target.getBoundingClientRect().top - getAnchorScrollOffset();
+  return Math.abs(distanceFromAnchorTop) <= 8;
+}
+
 function ScrollToTop() {
   const location = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    let cancelled = false;
+    const timeoutIds = [];
+    const frameIds = [];
+    const cleanupCallbacks = [];
+
+    const scheduleTimeout = (callback, delay) => {
+      const timeoutId = window.setTimeout(() => {
+        if (!cancelled) {
+          callback();
+        }
+      }, delay);
+      timeoutIds.push(timeoutId);
+    };
+
+    const scheduleAfterPaint = (callback) => {
+      const firstFrameId = window.requestAnimationFrame(() => {
+        if (cancelled) {
+          return;
+        }
+
+        const secondFrameId = window.requestAnimationFrame(() => {
+          if (!cancelled) {
+            callback();
+          }
+        });
+        frameIds.push(secondFrameId);
+      });
+      frameIds.push(firstFrameId);
+    };
+
+    const cleanup = () => {
+      cancelled = true;
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+      frameIds.forEach((frameId) => window.cancelAnimationFrame(frameId));
+      cleanupCallbacks.forEach((cleanupCallback) => cleanupCallback());
+    };
+
+    const scrollToTop = () => {
+      scheduleAfterPaint(() => {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      });
+    };
+
+    const scheduleAlignmentChecks = (targetId) => {
+      [300, 800, 1400].forEach((delay) => {
+        scheduleTimeout(() => {
+          const target = document.getElementById(targetId);
+
+          if (target && !isAnchorTargetAligned(target)) {
+            scrollToAnchorTarget(target);
+          }
+        }, delay);
+      });
+    };
+
+    const startHashScrollRetry = (targetId) => {
+      const retryUntil = Date.now() + HASH_SCROLL_RETRY_MS;
+
+      const tryScroll = () => {
+        const target = document.getElementById(targetId);
+
+        if (target) {
+          scheduleAfterPaint(() => {
+            scrollToAnchorTarget(target);
+            scheduleAlignmentChecks(targetId);
+          });
+          return;
+        }
+
+        if (Date.now() < retryUntil) {
+          scheduleTimeout(tryScroll, HASH_SCROLL_RETRY_INTERVAL_MS);
+        }
+      };
+
+      scheduleAfterPaint(tryScroll);
+    };
+
+    const scrollToHash = (hash) => {
+      const targetId = getHashTargetId(hash);
+
+      if (!targetId) {
+        return;
+      }
+
+      if (document.readyState === 'complete') {
+        startHashScrollRetry(targetId);
+      } else {
+        const scrollAfterLoad = () => startHashScrollRetry(targetId);
+        window.addEventListener('load', scrollAfterLoad, { once: true });
+        cleanupCallbacks.push(() => window.removeEventListener('load', scrollAfterLoad));
+      }
+    };
+
+    const handleHashChange = () => {
+      if (window.location.hash) {
+        scrollToHash(window.location.hash);
+      } else {
+        scrollToTop();
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    cleanupCallbacks.push(() => window.removeEventListener('hashchange', handleHashChange));
+
+    if (!location.hash) {
+      scrollToTop();
+      return cleanup;
+    }
+
+    scrollToHash(location.hash);
+
+    return cleanup;
+  }, [location.hash, location.key, location.pathname]);
+
   return null;
 }
 
