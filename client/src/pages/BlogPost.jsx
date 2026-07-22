@@ -302,7 +302,7 @@ export default function BlogPost() {
         .bp-hero-img { overflow: hidden; border: 10px solid #fff; border-radius: 34px; box-shadow: 0 24px 70px rgba(47,39,35,.16); background: #EAE3DC; }
         .bp-hero-img img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
         .bp-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 40px; align-items: start; }
-        .bp-layout-simple { display: block; max-width: 1100px; padding-top: 48px; }
+        .bp-layout-simple { display: block; max-width: 1040px; padding-top: 48px; }
         .bp-toc { position: sticky; top: 92px; background: #fff; border: 1px solid rgba(47,39,35,.08); border-radius: 20px; padding: 20px; box-shadow: 0 18px 40px rgba(34,31,27,.08); }
         .bp-toc a { display: block; margin-top: 12px; color: #61564f; text-decoration: none; font: 500 13px/1.5 Poppins,sans-serif; }
         .bp-toc a[data-level="h3"] { padding-left: 14px; }
@@ -316,14 +316,13 @@ export default function BlogPost() {
         .bp-content figure { margin: 0; overflow: hidden; border-radius: 22px; background: #F8F6F3; }
         .bp-content figure img { width: 100%; display: block; object-fit: cover; }
         .bp-content figcaption { padding: 12px 16px; color: #61564f; font: 400 .85rem/1.6 Poppins,sans-serif; }
-        .bp-simple-story { display: grid; gap: 34px; }
-        .bp-simple-section { position: relative; display: grid; grid-template-columns: minmax(0, .92fr) minmax(300px, .82fr); gap: clamp(24px, 4vw, 42px); align-items: center; border: 1px solid rgba(47,39,35,.08); border-radius: 32px; background: #fff; padding: clamp(22px, 3.5vw, 34px); box-shadow: 0 22px 60px rgba(47,39,35,.09); }
-        .bp-simple-section:nth-child(even) { grid-template-columns: minmax(300px, .82fr) minmax(0, .92fr); }
+        .bp-simple-story { display: grid; gap: clamp(44px, 6vw, 74px); }
+        .bp-simple-section { position: relative; display: grid; grid-template-columns: minmax(0, .95fr) minmax(300px, .75fr); gap: clamp(24px, 4.5vw, 54px); align-items: center; border: 0; border-radius: 0; background: transparent; padding: 0; box-shadow: none; }
+        .bp-simple-section:nth-child(even) { grid-template-columns: minmax(300px, .75fr) minmax(0, .95fr); }
         .bp-simple-section:nth-child(even) .bp-simple-copy { order: 2; }
         .bp-simple-section-text-only { display: block; }
-        .bp-simple-kicker { margin-bottom: 16px; color: #9F6B4E; font: 800 11px/1 Poppins,sans-serif; letter-spacing: .18em; text-transform: uppercase; }
         .bp-simple-copy { min-width: 0; }
-        .bp-simple-text { color: #514741; font: 400 1rem/1.95 Poppins,sans-serif; }
+        .bp-simple-text { color: #514741; font: 400 1.02rem/2 Poppins,sans-serif; }
         .bp-simple-text > * + * { margin-top: 14px; }
         .bp-simple-text p { margin: 0; }
         .bp-simple-text h2 { margin: 0; color: #2f2723; font: 700 clamp(1.8rem, 3vw, 2.65rem)/1.14 "Playfair Display",serif; }
@@ -336,10 +335,10 @@ export default function BlogPost() {
         .bp-copy-type-subheading > p:first-child { color: #2f2723; font: 700 clamp(1.35rem, 2vw, 1.8rem)/1.2 "Playfair Display",serif; }
         .bp-copy-type-quote { border-left: 4px solid #9F6B4E; padding-left: 18px; color: #2f2723; font-family: "Playfair Display",serif; font-weight: 700; }
         .bp-copy-style-lead { font-size: 1.12rem; color: #443a34; }
-        .bp-copy-style-highlight { border-left: 5px solid #9F6B4E; border-radius: 18px; background: #fff8ef; padding: 18px 20px; }
-        .bp-copy-style-note { border: 1px solid rgba(91,116,97,.22); border-radius: 18px; background: #eef4ef; padding: 18px 20px; }
+        .bp-copy-style-highlight { color: #3d312a; }
+        .bp-copy-style-note { color: #465b4b; }
         .bp-copy-type-heading h2:first-child, .bp-copy-type-subheading h3:first-child { margin-bottom: 8px; }
-        .bp-simple-frame { overflow: hidden; border: 10px solid #f7f3ed; border-radius: 28px; background: #EAE3DC; box-shadow: 0 18px 45px rgba(47,39,35,.13); }
+        .bp-simple-frame { overflow: hidden; border: 10px solid #fff; border-radius: 28px; background: #EAE3DC; box-shadow: 0 18px 45px rgba(47,39,35,.13); }
         .bp-simple-frame img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
         .bp-simple-frame figcaption { background: #fff; padding: 12px 15px; color: #61564f; font: 600 .82rem/1.5 Poppins,sans-serif; }
         .bp-content blockquote { margin: 0; border-left: 4px solid #C8A96A; background: #F8F6F3; padding: 24px; font: 700 1.35rem/1.5 "Playfair Display",serif; }
@@ -416,7 +415,6 @@ export default function BlogPost() {
                   return (
                     <article key={section.id || index} className={`bp-simple-section ${sectionImage.url ? '' : 'bp-simple-section-text-only'}`}>
                       <div className="bp-simple-copy">
-                        <p className="bp-simple-kicker">Section {index + 1}</p>
                         {html ? (
                           <div
                             className={`bp-simple-text bp-copy-style-${section.textStyle || 'classic'} bp-copy-type-${section.textType || 'paragraph'}`}
