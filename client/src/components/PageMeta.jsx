@@ -35,10 +35,13 @@ export default function PageMeta({
   keywords,
   canonicalPath = '/',
   robots = 'index,follow',
+  image,
+  type = 'website',
   schema
 }) {
   useEffect(() => {
     const canonicalUrl = new URL(canonicalPath, contactLinks.siteUrl).toString();
+    const imageUrl = image ? new URL(image, contactLinks.siteUrl).toString() : '';
 
     document.title = title;
     upsertMeta('description', description);
@@ -46,11 +49,13 @@ export default function PageMeta({
     upsertMeta('robots', robots);
     upsertMeta('og:title', title, 'property');
     upsertMeta('og:description', description, 'property');
-    upsertMeta('og:type', 'website', 'property');
+    upsertMeta('og:type', type, 'property');
     upsertMeta('og:url', canonicalUrl, 'property');
+    upsertMeta('og:image', imageUrl, 'property');
     upsertMeta('twitter:card', 'summary_large_image', 'name');
     upsertMeta('twitter:title', title, 'name');
     upsertMeta('twitter:description', description, 'name');
+    upsertMeta('twitter:image', imageUrl, 'name');
     upsertLink('canonical', canonicalUrl);
 
     const scriptId = 'page-structured-data';
@@ -68,8 +73,7 @@ export default function PageMeta({
     } else if (script) {
       script.remove();
     }
-  }, [canonicalPath, description, keywords, robots, schema, title]);
+  }, [canonicalPath, description, image, keywords, robots, schema, title, type]);
 
   return null;
 }
-

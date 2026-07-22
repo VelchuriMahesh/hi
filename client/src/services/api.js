@@ -1,5 +1,13 @@
 const API_BASE = import.meta.env.VITE_API_URL;
 
+function slugifyValue(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 async function request(path, options = {}) {
   let response;
 
@@ -32,7 +40,10 @@ async function request(path, options = {}) {
   }
 
   if (!response.ok) {
-    throw new Error(payload.message || 'Request failed');
+    const error = new Error(payload.message || 'Request failed');
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
   }
 
   return payload;
@@ -74,6 +85,43 @@ export const deleteGalleryItem = (token, id) =>
 // POSTS
 export const fetchPosts = () => request('/posts');
 
+export const fetchAdminPosts = (token) =>
+  request('/posts/admin', {
+    headers: { Authorization: `Bearer ${token}` }
+  }).catch((error) => {
+    if (error.status === 404) {
+      return fetchPosts();
+    }
+
+    throw error;
+  });
+
+export const fetchPostBySlug = (slug) =>
+  request(`/posts/slug/${encodeURIComponent(slug)}`).catch(async (error) => {
+    if (error.status !== 404) {
+      throw error;
+    }
+
+    const targetSlug = slugifyValue(slug);
+    const response = await fetchPosts();
+    const item = (response.items || []).find((post) => {
+      const candidates = [
+        post.slug,
+        post.title,
+        post.id,
+        String(post.url || '').split('/').filter(Boolean).pop()
+      ];
+
+      return candidates.some((candidate) => slugifyValue(candidate) === targetSlug);
+    });
+
+    if (!item) {
+      throw error;
+    }
+
+    return { item };
+  });
+
 export const createPost = (token, data) =>
   request('/posts', {
     method: 'POST',
@@ -92,6 +140,17 @@ export const deletePost = (token, id) =>
   request(`/posts/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` }
+  });
+
+export const duplicatePost = (token, id) =>
+  request(`/posts/${id}/duplicate`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+export const trackPostView = (id) =>
+  request(`/posts/${id}/view`, {
+    method: 'POST'
   });
 
 // VIDEOS

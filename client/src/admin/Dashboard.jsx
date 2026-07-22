@@ -18,7 +18,8 @@ const emptyPostForm = {
   title: '',
   excerpt: '',
   content: '',
-  coverImage: ''
+  coverImage: '',
+  status: 'published'
 };
 
 const emptyVideoForm = {
@@ -303,6 +304,9 @@ export default function Dashboard() {
               </h1>
             </div>
             <div className="flex flex-wrap gap-3">
+              <Link className="button-secondary" to="/admin/blogs">
+                Manage blogs
+              </Link>
               <Link className="button-secondary" to="/admin/upload">
                 Upload images
               </Link>

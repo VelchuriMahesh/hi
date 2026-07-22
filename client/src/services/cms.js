@@ -11,6 +11,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage } from './firebase';
 import {
   fetchGallery as fetchGalleryApi,
+  fetchAdminPosts as fetchAdminPostsApi,
   fetchPosts as fetchPostsApi,
   fetchVideos as fetchVideosApi,
   createVideo as createVideoApi,
@@ -91,7 +92,8 @@ export async function fetchGalleryDocuments() {
 
 export async function fetchBlogDocuments() {
   try {
-    const response = await fetchPostsApi();
+    const token = getAdminToken();
+    const response = token ? await fetchAdminPostsApi(token) : await fetchPostsApi();
     return response.items || [];
   } catch (err) {
     return fetchCollectionDocuments(BLOG_COLLECTION);

@@ -16,10 +16,12 @@ const Kids              = lazy(() => import('./pages/Kids'));
 const About             = lazy(() => import('./pages/About'));
 const Contact           = lazy(() => import('./pages/Contact'));
 const Blog              = lazy(() => import('./pages/Blog'));
+const BlogPost          = lazy(() => import('./pages/BlogPost'));
 const Login             = lazy(() => import('./admin/Login'));
 const Dashboard         = lazy(() => import('./admin/Dashboard'));
 const Upload            = lazy(() => import('./admin/Upload'));
 const Edit              = lazy(() => import('./admin/Edit'));
+const BlogManager       = lazy(() => import('./admin/BlogManager'));
 
 // Landing Pages — MUST be PascalCase variable names
 const BridalLandingPage       = lazy(() => import('./pages/BridalLandingPage'));
@@ -230,6 +232,7 @@ function AppRoutes() {
           <Route path="/about-shrusara-boutique"       element={<About />} />
           <Route path="/contact-shrusara-bangalore"    element={<Contact />} />
           <Route path="/bridal-fashion-blog-bangalore" element={<Blog />} />
+          <Route path="/bridal-fashion-blog-bangalore/:slug" element={<BlogPost />} />
         </Route>
 
         {/* Landing Pages (NO navbar/footer layout) */}
@@ -245,6 +248,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/blogs"
+          element={
+            <ProtectedRoute>
+              <BlogManager />
             </ProtectedRoute>
           }
         />
@@ -279,6 +290,8 @@ export default function App() {
       void import('./pages/About');
       void import('./pages/Contact');
       void import('./pages/Blog');
+      void import('./pages/BlogPost');
+      void import('./admin/BlogManager');
       void import('./pages/BridalLandingPage');
       void import('./pages/designerLandingPage');
       void import('./pages/OccasionWearLandingPage');

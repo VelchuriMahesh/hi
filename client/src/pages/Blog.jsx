@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import LazyImage from '../components/LazyImage';
 import PageMeta from '../components/PageMeta';
 import Reveal from '../components/Reveal';
 import { fallbackBlogPosts } from '../data/content';
 import { fetchPosts } from '../services/api';
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
+import { calculateReadingTime, getPostUrl, normalizePost } from '../utils/blog';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -119,30 +121,34 @@ function BlogCard({ post, loading }) {
     );
   }
 
-  // Normalise: API may return coverImage or image or thumbUrl
-  const image = post.coverImage || post.image || post.thumbUrl || fallbackBlogPosts?.[0]?.coverImage;
-  const date  = post.publishedAt || post.createdAt;
+  const normalized = normalizePost(post);
+  const image = normalized.featuredImage?.url || normalized.coverImage || fallbackBlogPosts?.[0]?.coverImage;
+  const date = normalized.publishedAt || normalized.createdAt;
+  const articleUrl = post.slug ? getPostUrl(normalized) : '';
 
   return (
     <article className="blg-card">
       <div className="blg-card-img-wrap">
         <LazyImage
           src={image}
-          alt={post.title}
+          alt={normalized.featuredImage?.alt || normalized.title}
           sizes="(min-width: 1280px) 33vw, (min-width: 1024px) 50vw, 100vw"
           wrapperClassName="blg-card-img"
         />
-        {post.tag && <span className="blg-card-tag">{post.tag}</span>}
+        {normalized.category && <span className="blg-card-tag">{normalized.category}</span>}
       </div>
       <div className="blg-card-body">
-        {date && <p className="blg-card-date">{formatDate(date)}</p>}
-        <h2 className="blg-card-title">{post.title}</h2>
-        <p className="blg-card-excerpt">{post.excerpt}</p>
-        {expanded && post.content && (
-          <p className="blg-card-content">{post.content}</p>
+        {date && <p className="blg-card-date">{formatDate(date)} · {calculateReadingTime(normalized)} min read</p>}
+        <h2 className="blg-card-title">{normalized.title}</h2>
+        <p className="blg-card-excerpt">{normalized.excerpt}</p>
+        {expanded && normalized.content && (
+          <p className="blg-card-content">{normalized.content}</p>
         )}
-        {/* Only show Read More if there is expanded content */}
-        {post.content && (
+        {articleUrl ? (
+          <Link className="blg-read-more" to={articleUrl}>
+            Read Article <ArrowIcon />
+          </Link>
+        ) : normalized.content ? (
           <button
             type="button"
             className="blg-read-more"
@@ -150,7 +156,7 @@ function BlogCard({ post, loading }) {
           >
             {expanded ? 'Show Less' : 'Read More'} <ArrowIcon />
           </button>
-        )}
+        ) : null}
       </div>
     </article>
   );
