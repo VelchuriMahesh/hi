@@ -140,13 +140,14 @@ export function getBlockPlainText(block = {}) {
 }
 
 export function calculateReadingTime(post = {}) {
+  const simpleSectionText = (post.simpleSections || [])
+    .map((section) => `${section.paragraph || section.text || stripHtml(section.html || '')} ${section.image?.caption || section.caption || ''}`)
+    .join(' ')
+    .trim();
+  const blockText = (post.blocks || []).map(getBlockPlainText).join(' ').trim();
+  const bodyText = simpleSectionText || blockText || [post.content, stripHtml(post.contentHtml || '')].filter(Boolean).join(' ');
   const words = [
-    post.title,
-    post.excerpt,
-    post.content,
-    stripHtml(post.contentHtml || ''),
-    ...(post.simpleSections || []).map((section) => `${section.paragraph || section.text || ''} ${stripHtml(section.html || '')} ${section.image?.alt || ''} ${section.image?.caption || section.caption || ''}`),
-    ...(post.blocks || []).map(getBlockPlainText),
+    bodyText,
     ...(post.faqs || []).map((faq) => `${faq.question || ''} ${faq.answer || ''}`)
   ]
     .join(' ')
@@ -154,7 +155,7 @@ export function calculateReadingTime(post = {}) {
     .split(/\s+/)
     .filter(Boolean).length;
 
-  return Math.max(1, Math.ceil(words / 220));
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 export function createEmptyImage(overrides = {}) {
@@ -463,7 +464,7 @@ export function normalizePost(post = {}) {
       ...empty.analytics,
       ...(post.analytics || {})
     },
-    readingTime: post.readingTime || calculateReadingTime({ ...post, content: normalizedContent, contentHtml: normalizedContentHtml, simpleSections })
+    readingTime: calculateReadingTime({ ...post, content: normalizedContent, contentHtml: normalizedContentHtml, simpleSections })
   };
 }
 

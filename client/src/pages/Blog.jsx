@@ -231,7 +231,7 @@ export default function Blog() {
         .blg-eyebrow::before,
         .blg-eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--c-accent); display: block; }
         .blg-hero-h1 {
-          font: 700 clamp(2rem,3.6vw,3.2rem)/1.15 'Playfair Display',serif;
+          font: 700 clamp(1.9rem,3.35vw,2.95rem)/1.15 'Playfair Display',serif;
           color: var(--c-primary); margin-bottom: 20px;
         }
         .blg-hero-sub {

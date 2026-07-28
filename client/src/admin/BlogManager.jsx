@@ -19,7 +19,6 @@ import {
   createEmptyImage,
   encodeSimpleBlogContent,
   formatDate,
-  getAbsoluteUrl,
   getPostUrl,
   normalizeImage,
   normalizePost,
@@ -28,6 +27,7 @@ import {
 
 const SECTION_COUNT = 5;
 const AUTO_SAVE_KEY = 'shrusara-simple-blog-draft';
+const LIVE_SITE_URL = 'https://www.shrusara.com';
 
 const categories = [
   'Bridal Blouse',
@@ -67,6 +67,17 @@ function getPlainText(html = '') {
   return String(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function getLivePreviewUrl(pathOrUrl = '') {
+  if (/^https?:\/\//i.test(pathOrUrl)) {
+    const url = new URL(pathOrUrl);
+    url.protocol = 'https:';
+    url.hostname = 'www.shrusara.com';
+    return url.toString();
+  }
+
+  return new URL(pathOrUrl || '/', LIVE_SITE_URL).toString();
+}
+
 function getSectionHtml(source = {}) {
   if (source.html) return source.html;
   if (source.paragraph || source.text) return `<p>${escapeHtml(source.paragraph || source.text)}</p>`;
@@ -91,6 +102,9 @@ function createSection(index, source = {}, fallbackAlt = '') {
 function normalizeSimpleForm(post = {}) {
   const normalized = normalizePost(post);
   const altText = normalized.altText || normalized.featuredImage?.alt || normalized.title || '';
+  const rawFeaturedImage = normalizeImage(post.featuredImage || '', altText);
+  const rawCoverImage = normalizeImage(post.coverImage || '', altText);
+  const featuredImage = rawFeaturedImage.url ? rawFeaturedImage : rawCoverImage;
   const simpleSections = Array.from({ length: SECTION_COUNT }, (_, index) =>
     createSection(index, normalized.simpleSections?.[index], altText)
   );
@@ -101,6 +115,7 @@ function normalizeSimpleForm(post = {}) {
     seoTitle: normalized.seoTitle || normalized.title || '',
     metaTitle: normalized.metaTitle || normalized.seoTitle || normalized.title || '',
     metaDescription: normalized.metaDescription || normalized.excerpt || '',
+    featuredImage,
     altText,
     simpleSections
   };
@@ -127,7 +142,15 @@ function buildSimplePayload(form) {
       }
     };
   });
-  const firstImage = simpleSections.find((section) => section.image.url)?.image || createEmptyImage({ alt: altText });
+  const uploadedHeroImage = normalizeImage(form.featuredImage || form.coverImage || '', altText);
+  const firstSectionImage = simpleSections.find((section) => section.image.url)?.image || createEmptyImage({ alt: altText });
+  const heroImage = uploadedHeroImage.url
+    ? {
+        ...uploadedHeroImage,
+        alt: uploadedHeroImage.alt || altText,
+        loading: 'eager'
+      }
+    : firstSectionImage;
   const paragraphs = simpleSections.map((section) => section.paragraph).filter(Boolean);
   const contentHtml = simpleSections.map((section) => section.html || (section.paragraph ? `<p>${escapeHtml(section.paragraph)}</p>` : '')).filter(Boolean).join('');
   const blocks = simpleSections.flatMap((section, index) => {
@@ -179,30 +202,30 @@ function buildSimplePayload(form) {
     }),
     contentHtml,
     blocks,
-    featuredImage: firstImage,
-    coverImage: firstImage.url,
+    featuredImage: heroImage,
+    coverImage: heroImage.url,
     images: simpleSections.map((section) => section.image).filter((image) => image.url),
     openGraph: {
       ...(form.openGraph || {}),
       title,
       description: form.metaDescription.trim(),
-      image: form.openGraph?.image?.url ? form.openGraph.image : firstImage
+      image: heroImage
     },
     twitter: {
       ...(form.twitter || {}),
       title,
       description: form.metaDescription.trim(),
-      image: form.twitter?.image?.url ? form.twitter.image : firstImage
+      image: heroImage
     },
     facebook: {
       ...(form.facebook || {}),
       title,
       description: form.metaDescription.trim(),
-      image: form.facebook?.image?.url ? form.facebook.image : firstImage
+      image: heroImage
     },
     social: {
       ...(form.social || {}),
-      pinterestImage: form.social?.pinterestImage?.url ? form.social.pinterestImage : firstImage
+      pinterestImage: heroImage
     }
   };
 }
@@ -424,6 +447,76 @@ function BlogImageInput({ index, section, altText, uploading, onChange, onUpload
   );
 }
 
+function HeroImageInput({ image, altText, uploading, onChange, onUpload }) {
+  const normalizedImage = normalizeImage(image, altText);
+
+  function updateImage(nextImage) {
+    onChange(normalizeImage(nextImage, altText));
+  }
+
+  return (
+    <div className="space-y-3 rounded-2xl border border-ink/10 bg-linen p-4">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cocoa">Hero Image</p>
+        <p className="mt-1 text-xs leading-5 text-stone-500">
+          Controls the public blog header and thumbnail. Section images remain separate below.
+        </p>
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border-[6px] border-white bg-white shadow-soft">
+        {normalizedImage.url ? (
+          <img className="h-56 w-full object-cover" src={normalizedImage.url} alt={normalizedImage.alt || altText} />
+        ) : (
+          <div className="flex h-56 items-center justify-center px-6 text-center text-sm text-stone-500">
+            Upload hero image
+          </div>
+        )}
+      </div>
+
+      <label className="flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-cocoa/50 bg-white px-3 py-3 text-sm font-semibold text-cocoa transition hover:bg-linen">
+        {uploading ? 'Uploading...' : normalizedImage.url ? 'Replace Hero Image' : 'Upload Hero Image'}
+        <input
+          className="sr-only"
+          type="file"
+          accept="image/*"
+          disabled={uploading}
+          onChange={(event) => onUpload(event.target.files?.[0])}
+        />
+      </label>
+
+      <label className={labelClass()}>
+        Hero Image URL
+        <input
+          className={inputClass()}
+          value={normalizedImage.url}
+          onChange={(event) => updateImage({ ...normalizedImage, url: event.target.value })}
+          placeholder="https://..."
+        />
+      </label>
+
+      <label className={labelClass()}>
+        Hero Image Alt Text
+        <input
+          className={inputClass()}
+          value={normalizedImage.alt}
+          onChange={(event) => updateImage({ ...normalizedImage, alt: event.target.value })}
+          placeholder={altText || 'Describe the hero image'}
+        />
+      </label>
+
+      <label className={labelClass()}>
+        Hero Image Caption
+        <input
+          className={inputClass()}
+          value={normalizedImage.caption}
+          onChange={(event) => updateImage({ ...normalizedImage, caption: event.target.value })}
+          placeholder="Optional hero caption"
+        />
+      </label>
+    </div>
+  );
+}
+
 export default function BlogManager() {
   const [posts, setPosts] = useState([]);
   const [form, setForm] = useState(createInitialForm);
@@ -432,6 +525,7 @@ export default function BlogManager() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingHeroImage, setUploadingHeroImage] = useState(false);
   const [uploadingIndex, setUploadingIndex] = useState(null);
   const [message, setMessage] = useState('');
 
@@ -461,7 +555,7 @@ export default function BlogManager() {
     );
   }, [posts, query]);
 
-  const previewUrl = form.slug ? getAbsoluteUrl(getPostUrl(form)) : `${getAbsoluteUrl(BLOG_BASE_PATH)}/new-blog`;
+  const previewUrl = form.slug ? getLivePreviewUrl(getPostUrl(form)) : getLivePreviewUrl(`${BLOG_BASE_PATH}/new-blog`);
   const completedSections = form.simpleSections.filter((section) => section.paragraph || section.html || section.image?.url).length;
 
   async function loadPosts() {
@@ -514,6 +608,31 @@ export default function BlogManager() {
         currentIndex === index ? createSection(index, nextSection, current.altText) : section
       )
     }));
+  }
+
+  async function uploadHeroImage(file) {
+    if (!file) return;
+
+    setUploadingHeroImage(true);
+    setMessage('');
+
+    try {
+      const uploaded = await uploadImageToImgbb(file);
+      setForm((current) => ({
+        ...current,
+        featuredImage: createEmptyImage({
+          url: uploaded.url,
+          alt: current.altText || current.seoTitle || current.title,
+          fileName: file.name,
+          format: file.type.split('/')[1] || '',
+          loading: 'eager'
+        })
+      }));
+    } catch (error) {
+      setMessage(error.message || 'Hero image upload failed.');
+    } finally {
+      setUploadingHeroImage(false);
+    }
   }
 
   async function uploadSectionImage(file, index) {
@@ -594,9 +713,9 @@ export default function BlogManager() {
 
     if (savedPost?.slug) {
       if (previewWindow) {
-        previewWindow.location.href = getPostUrl(savedPost);
+        previewWindow.location.href = getLivePreviewUrl(getPostUrl(savedPost));
       } else {
-        window.location.href = getPostUrl(savedPost);
+        window.location.href = getLivePreviewUrl(getPostUrl(savedPost));
       }
     } else if (previewWindow) {
       previewWindow.close();
@@ -690,7 +809,7 @@ export default function BlogManager() {
                         </button>
                         <div className="mt-3 flex flex-wrap gap-2">
                           <button className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" type="button" onClick={() => editPost(post)}>Edit</button>
-                          <Link className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" to={getPostUrl(post)} target="_blank">Preview</Link>
+                          <a className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" href={getLivePreviewUrl(getPostUrl(post))} target="_blank" rel="noreferrer">Preview</a>
                           <button className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" type="button" onClick={() => duplicateExistingPost(post)}>Duplicate</button>
                           <button className="rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600" type="button" onClick={() => removePost(post)}>Delete</button>
                         </div>
@@ -737,6 +856,14 @@ export default function BlogManager() {
                         placeholder="Describe the blog images for SEO and accessibility"
                       />
                     </label>
+
+                    <HeroImageInput
+                      image={form.featuredImage}
+                      altText={form.altText || form.seoTitle || form.title}
+                      uploading={uploadingHeroImage}
+                      onChange={(nextImage) => updateField('featuredImage', nextImage)}
+                      onUpload={uploadHeroImage}
+                    />
                   </div>
 
                   <div className="rounded-2xl bg-linen p-4">
@@ -771,7 +898,7 @@ export default function BlogManager() {
                     <div className="mt-5 rounded-xl bg-white p-4 text-sm text-stone-600">
                       <p><span className="font-semibold text-ink">URL:</span> {previewUrl}</p>
                       <p className="mt-2"><span className="font-semibold text-ink">Sections:</span> {completedSections}/5</p>
-                      <p className="mt-2"><span className="font-semibold text-ink">Reading time:</span> {calculateReadingTime(buildSimplePayload(form))} min</p>
+                      <p className="mt-2"><span className="font-semibold text-ink">Reading time:</span> {calculateReadingTime(buildSimplePayload(form))} min read</p>
                     </div>
                   </div>
                 </div>
