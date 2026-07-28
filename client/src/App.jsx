@@ -22,6 +22,7 @@ const Dashboard         = lazy(() => import('./admin/Dashboard'));
 const Upload            = lazy(() => import('./admin/Upload'));
 const Edit              = lazy(() => import('./admin/Edit'));
 const BlogManager       = lazy(() => import('./admin/BlogManager'));
+const ReadyToWearSareeLandingPage = lazy(() => import('./pages/ReadyToWearSareeLandingPage'));
 
 // Landing Pages — MUST be PascalCase variable names
 const BridalLandingPage       = lazy(() => import('./pages/BridalLandingPage'));
@@ -241,6 +242,8 @@ function AppRoutes() {
         <Route path="/customized-occasion-wear-bangalore"      element={<OccasionWearLandingPage />} />
         <Route path="/saree-transformation-bangalore" element={<SareeLandingPage />} /> {/* ← NEW */}
 
+        <Route path="/ready-to-wear-saree-bangalore" element={<ReadyToWearSareeLandingPage />} />
+
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />
         <Route
@@ -292,6 +295,7 @@ export default function App() {
       void import('./pages/Blog');
       void import('./pages/BlogPost');
       void import('./admin/BlogManager');
+      void import('./pages/ReadyToWearSareeLandingPage');
       void import('./pages/BridalLandingPage');
       void import('./pages/designerLandingPage');
       void import('./pages/OccasionWearLandingPage');

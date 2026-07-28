@@ -4,6 +4,7 @@ import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
+const OCCASION_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Designer Outfits.";
 
 // ─── WhatsApp Pre-filled Messages ────────────────────────────────────────────
 const WA_MESSAGES = {
@@ -16,7 +17,7 @@ const WA_MESSAGES = {
 };
 
 const waLink = (key) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGES[key] || WA_MESSAGES.hero)}`;
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(OCCASION_WHATSAPP_MESSAGE)}`;
 
 // ─── Gallery Data ─────────────────────────────────────────────────────────────
 // Image data for Occasion Wear gallery sections
@@ -535,7 +536,7 @@ export default function OccasionWearLandingPage() {
         </div>
         <a href={waLink('hero')} target="_blank" rel="noopener noreferrer"
           className="ow-hdr-cta" onClick={() => trackWhatsApp('header')}>
-          <WaIcon size={13} /> Book Consultation
+          <WaIcon size={13} /> Chat With Our Designer
         </a>
       </header>
 
@@ -554,7 +555,7 @@ export default function OccasionWearLandingPage() {
           <div className="ow-hero-btns">
             <a href={waLink('hero')} target="_blank" rel="noopener noreferrer"
               className="ow-btn-pri" onClick={() => trackWhatsApp('hero')}>
-              <WaIcon size={16} /> Discuss Your Design
+              <WaIcon size={16} /> Chat With Our Designer
             </a>
             <a href={`tel:${PHONE_NUMBER}`} className="ow-btn-sec" onClick={() => trackPhoneCall('hero')}>
               <PhoneIcon size={14} /> Call Now
@@ -630,7 +631,7 @@ export default function OccasionWearLandingPage() {
             <SectionHighlights points={['Personalized Design Consultation', 'Premium Fabrics', 'Elegant Silhouettes', 'Contemporary Styling', 'Made-to-Measure Fit']} />
           </div>
         </div>
-        <GalleryGrid images={gownImages} waKey="gowns" waLabel="Discuss Your Design" columns={4} />
+        <GalleryGrid images={gownImages} waKey="gowns" waLabel="Chat With Our Designer" columns={4} />
       </section>
 
       <div className="ow-divider" />
@@ -647,7 +648,7 @@ export default function OccasionWearLandingPage() {
             <SectionHighlights points={['Designer Necklines', 'Statement Sleeves', 'Premium Embroidery', 'Personalized Styling', 'Custom Measurements']} />
           </div>
         </div>
-        <GalleryGrid images={blouseImages} waKey="blouses" waLabel="Share Your Reference Image" columns={4} />
+        <GalleryGrid images={blouseImages} waKey="blouses" waLabel="Chat With Our Designer" columns={4} />
       </section>
 
       <div className="ow-divider" />
@@ -664,7 +665,7 @@ export default function OccasionWearLandingPage() {
             <SectionHighlights points={['Customized Styling', 'Elegant Finishing', 'Premium Fabrics', 'Personalized Measurements', 'Contemporary Designs']} />
           </div>
         </div>
-        <GalleryGrid images={lehengaImages} waKey="lehenga" waLabel="Book Consultation" columns={4} />
+        <GalleryGrid images={lehengaImages} waKey="lehenga" waLabel="Chat With Our Designer" columns={4} />
       </section>
 
       <div className="ow-divider" />
@@ -681,7 +682,7 @@ export default function OccasionWearLandingPage() {
             <SectionHighlights points={['Coordinated Styling', 'Custom Measurements', 'Premium Fabrics', 'Elegant Finishing', 'Personalized Designs']} />
           </div>
         </div>
-        <GalleryGrid images={motherDaughterImages} waKey="motherDaughter" waLabel="Discuss Matching Designs" columns={3} />
+        <GalleryGrid images={motherDaughterImages} waKey="motherDaughter" waLabel="Chat With Our Designer" columns={3} />
       </section>
 
       <div className="ow-divider" />
@@ -824,7 +825,7 @@ export default function OccasionWearLandingPage() {
           <div className="ow-cta-btns">
             <a href={waLink('finalCta')} target="_blank" rel="noopener noreferrer"
               className="ow-btn-pri ow-btn-pri-gold" onClick={() => trackWhatsApp('final_cta')}>
-              <WaIcon size={18} /> Book Free Studio Consultation via WhatsApp
+              <WaIcon size={18} /> Chat With Our Designer
             </a>
             <a href={`tel:${PHONE_NUMBER}`} className="ow-btn-sec ow-btn-sec-white" onClick={() => trackPhoneCall('final_cta')}>
               <PhoneIcon size={14} /> Call Now
@@ -858,7 +859,7 @@ export default function OccasionWearLandingPage() {
                 <span className="ow-footer-icon"><MailIcon size={13} /></span>help@shrusara.com
               </a>
               <a href={waLink('hero')} target="_blank" rel="noopener noreferrer" className="ow-footer-contact-item" onClick={() => trackWhatsApp('footer')}>
-                <span className="ow-footer-icon"><WaIcon size={13} /></span>WhatsApp Us
+                <span className="ow-footer-icon"><WaIcon size={13} /></span>Chat With Our Designer
               </a>
             </div>
             <a href="https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore" target="_blank" rel="noopener noreferrer" className="ow-footer-map">

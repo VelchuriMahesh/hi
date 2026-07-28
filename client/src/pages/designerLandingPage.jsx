@@ -4,9 +4,10 @@ import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
+const DESIGNER_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Designer Outfits.";
 
 const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  'Hi, I am looking for a customized designer outfit. I would like to consult with Chief Designer Shruthi Ajith.'
+  DESIGNER_WHATSAPP_MESSAGE
 )}`;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -284,9 +285,7 @@ function DesignerCtaForm() {
   const [stylePref, setStylePref]   = useState('');
   const [designIdea, setDesignIdea] = useState('');
 
-  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `Hi, I am looking for a customized designer outfit.\nOccasion: ${occasion || '[occasion]'}.\nStyle preference: ${stylePref || '—'}.\nDesign idea: ${designIdea || '—'}.\nI would like to consult with Chief Designer Shruthi Ajith.`
-  )}`;
+  const waLink = WA_PREFILL;
 
   const handleWhatsAppClick = () => {
     trackFormSubmit({ occasion, stylePref, designIdea });
@@ -317,7 +316,7 @@ function DesignerCtaForm() {
           className="dl-cta-btn-pri"
           onClick={handleWhatsAppClick}
         >
-          <WaIcon size={18} /> WhatsApp Enquiry
+          <WaIcon size={18} /> Chat With Our Designer
         </a>
         <a
           href={`tel:${PHONE_NUMBER}`}
@@ -650,7 +649,7 @@ const DesignerLandingPage = () => {
             className="dl-hdr-cta"
             onClick={() => trackWhatsApp('header_designer')}
           >
-            <WaIcon size={13} /> Book Consultation
+            <WaIcon size={13} /> Chat With Our Designer
           </a>
         </header>
 
@@ -673,7 +672,7 @@ const DesignerLandingPage = () => {
                 className="dl-btn-pri"
                 onClick={() => trackWhatsApp('hero_designer')}
               >
-                <WaIcon size={16} /> Book Your Designer Consultation
+                <WaIcon size={16} /> Chat With Our Designer
               </a>
               {/* ✅ HERO CALL — tracked */}
               <a
@@ -928,7 +927,7 @@ const DesignerLandingPage = () => {
                   onClick={() => trackWhatsApp('footer_designer')}
                 >
                   <span className="dl-footer-contact-icon"><WaIcon size={13} /></span>
-                  WhatsApp Us
+                  Chat With Our Designer
                 </a>
               </div>
               <a

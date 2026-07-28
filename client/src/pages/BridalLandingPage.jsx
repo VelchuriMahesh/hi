@@ -6,9 +6,10 @@ const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 
 const heroBridal = '/bridal/bridalblow/hero-bridal.webp';
+const BRIDAL_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Bridal Blouses.";
 
 const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  'Hi, I am looking for a customized bridal outfit. I would like to consult with Chief Designer Shruthi Ajith.'
+  BRIDAL_WHATSAPP_MESSAGE
 )}`;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -132,9 +133,7 @@ function BridalCtaForm() {
   const [sareeDetails, setSareeDetails] = useState('');
   const [designPref, setDesignPref]     = useState('');
 
-  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `Hi, I am looking for a customized bridal outfit.\nMy wedding date is ${weddingDate || '[date]'}.\nSaree details: ${sareeDetails || '—'}.\nDesign preferences: ${designPref || '—'}.\nI would like to consult with Chief Designer Shruthi Ajith.`
-  )}`;
+  const waLink = WA_PREFILL;
 
   const handleWhatsAppClick = () => {
     trackFormSubmit({ weddingDate, sareeDetails, designPref });
@@ -159,7 +158,7 @@ function BridalCtaForm() {
       </div>
       <div className="bl-cta-btns">
         <a href={waLink} target="_blank" rel="noopener noreferrer" className="bl-cta-btn-pri" onClick={handleWhatsAppClick}>
-          <WaIcon size={18} /> WhatsApp Consultation
+          <WaIcon size={18} /> Chat With Our Designer
         </a>
         <a href={`tel:${PHONE_NUMBER}`} className="bl-cta-btn-sec" onClick={() => trackPhoneCall('cta_form_bridal')}>
           <PhoneIcon size={16} /> Call Now
@@ -668,7 +667,7 @@ const BridalLandingPage = () => {
           </div>
           <div className="bl-hdr-badge"><span className="bl-hdr-badge-dot" />Bangalore's Bridal Studio</div>
           <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-hdr-cta" onClick={() => trackWhatsApp('header_bridal')}>
-            <WaIcon size={13} /> Book Consultation
+            <WaIcon size={13} /> Chat With Our Designer
           </a>
         </header>
 
@@ -684,7 +683,7 @@ const BridalLandingPage = () => {
             <p className="bl-hero-scarcity">Limited bridal consultation slots available this month</p>
             <div className="bl-hero-btns">
               <a href={WA_PREFILL} target="_blank" rel="noopener noreferrer" className="bl-btn-pri" onClick={() => trackWhatsApp('hero_bridal')}>
-                <WaIcon size={16} /> Book Your Bridal Consultation
+                <WaIcon size={16} /> Chat With Our Designer
               </a>
               <a href={`tel:${PHONE_NUMBER}`} className="bl-btn-sec" onClick={() => trackPhoneCall('hero_bridal')}>
                 <PhoneIcon size={14} /> Call Now
