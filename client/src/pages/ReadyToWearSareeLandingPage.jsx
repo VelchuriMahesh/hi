@@ -1113,12 +1113,15 @@ function ReadyToWearSareeLandingPage() {
           background: rgba(255,255,255,.82);
           padding: 10px;
           box-shadow: 0 4px 20px rgba(28,20,16,.10);
+          width: 100%;
+          max-width: 360px;
+          margin: 0 auto;
         }
         .rtw-video-inner {
           border-radius: 16px;
           overflow: hidden;
           background: var(--rtw-gold-pale);
-          aspect-ratio: 16 / 10;
+          aspect-ratio: 9 / 16;
         }
         .rtw-video-inner video {
           width: 100%;
@@ -1516,7 +1519,7 @@ function ReadyToWearSareeLandingPage() {
               <div className="rtw-hdr-sub">FASHION&nbsp;&nbsp;BOUTIQUE</div>
             </div>
           </a>
-          <div className="rtw-hdr-badge"><span className="rtw-hdr-badge-dot" />Bangalore's Saree Studio</div>
+          <div className="rtw-hdr-badge"><span className="rtw-hdr-badge-dot" />BANGALORE'S DESIGNER STUDIO</div>
           <a href={waLink(DESIGNER_MESSAGE)} target="_blank" rel="noopener noreferrer" className="rtw-hdr-cta" onClick={() => trackWhatsApp('ready_to_wear_header')}>
             <WaIcon size={13} /> Chat With Our Designer
           </a>
@@ -1648,7 +1651,7 @@ function ReadyToWearSareeLandingPage() {
               <div className="rtw-video-card">
                 <div className="rtw-video-inner">
                   <video controls playsInline poster={`${IMAGE_BASE}/ready-to-wear-saree-walking-view-bangalore.webp`}>
-                    <source src="/videos/about.mp4" type="video/mp4" />
+                    <source src="/videos/shrusara.mp4" type="video/mp4" />
                   </video>
                 </div>
               </div>
