@@ -39,52 +39,64 @@ const heroHighlights = [
 
 const galleryImages = [
   {
-    src: `${IMAGE_BASE}/ready-to-wear-saree-bangalore.webp`,
-    alt: 'Ready-to-wear saree customization front view in Bangalore',
-    title: 'Ready-to-Wear Saree Front View',
-    desc: 'A graceful front-view finish created after ready-to-wear saree customization.'
+    src: `${IMAGE_BASE}/customized-ready-to-wear-saree-front-view-bangalore.webp`,
+    alt: 'Customized Ready-to-Wear Saree front view tailored to customer measurements by Shrusara Fashion Boutique in Bangalore.',
+    title: 'Front View',
+    desc: 'A front-view look at a customized ready-to-wear saree tailored to customer measurements.'
   },
   {
-    src: `${IMAGE_BASE}/customized-ready-to-wear-saree-bangalore.webp`,
-    alt: 'Customized ready-to-wear saree walking view in Bangalore',
-    title: 'Customized Walking Drape',
-    desc: 'A ready-to-wear saree customized for easy movement, comfort, and elegant fall.'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-walking-view-bangalore.webp`,
+    alt: 'Customer wearing a customized Ready-to-Wear Saree with elegant draping and permanent pleats in Bangalore.',
+    title: 'Walking View',
+    desc: 'Elegant draping and permanent pleats designed for graceful movement.'
   },
   {
-    src: `${IMAGE_BASE}/ready-to-wear-saree-customization-bangalore.webp`,
-    alt: 'Ready-to-wear saree side view by Shrusara',
+    src: `${IMAGE_BASE}/ready-to-wear-saree-side-profile-bangalore.webp`,
+    alt: 'Side profile of a customized Ready-to-Wear Saree showcasing premium finishing and elegant draping.',
     title: 'Side Profile Saree Fit',
-    desc: 'A clean side profile showing tailored pleat structure and secure fitting.'
+    desc: 'A side profile showing the drape, fall, and premium finishing.'
   },
   {
-    src: `${IMAGE_BASE}/easy-to-wear-saree-bangalore.webp`,
-    alt: 'Ready-to-wear saree sitting pose with comfortable drape',
-    title: 'Comfortable Sitting Drape',
-    desc: 'A practical ready-to-wear saree finish planned for comfort through long functions.'
+    src: `${IMAGE_BASE}/customized-ready-to-wear-saree-sitting-pose.webp`,
+    alt: 'Customized Ready-to-Wear Saree styled with a comfortable fit and graceful sitting pose by Shrusara.',
+    title: 'Sitting Pose',
+    desc: 'A comfortable ready-to-wear fit planned for long functions and graceful sitting.'
   },
   {
-    src: `${IMAGE_BASE}/pre-stitched-saree-bangalore.webp`,
-    alt: 'Ready-to-wear saree pallu close-up after customization',
+    src: `${IMAGE_BASE}/ready-to-wear-saree-pallu-detail-bangalore.webp`,
+    alt: 'Close-up of the pallu showcasing premium finishing on a customized Ready-to-Wear Saree.',
     title: 'Pallu Finish Detail',
-    desc: 'Pallu styling is balanced to preserve the saree beauty while making it easy to wear.'
+    desc: 'A close-up of pallu finishing that preserves the saree beauty.'
   },
   {
-    src: `${IMAGE_BASE}/permanent-saree-stitching-bangalore.webp`,
-    alt: 'Permanent saree stitching pleat detail',
+    src: `${IMAGE_BASE}/ready-to-wear-saree-permanent-pleats.webp`,
+    alt: 'Permanent pleat detailing on a customized Ready-to-Wear Saree for effortless draping.',
     title: 'Permanent Pleat Detail',
-    desc: 'Permanent pleat setting helps your saree sit neatly every time you wear it.'
+    desc: 'Permanent pleat setting for a neat drape every time you wear it.'
   },
   {
-    src: `${IMAGE_BASE}/one-minute-saree-bangalore.webp`,
-    alt: 'Boutique consultation sample for ready-to-wear saree customization',
-    title: 'One-Minute Saree Styling',
-    desc: 'A boutique-ready drape for women who want saree elegance without everyday draping effort.'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-consultation-bangalore.webp`,
+    alt: 'Designer consultation for customized Ready-to-Wear Saree tailoring at Shrusara Fashion Boutique.',
+    title: 'Consultation',
+    desc: 'Designer consultation for measurements, drape planning, and saree assessment.'
   },
   {
-    src: `${IMAGE_BASE}/customized-pre-stitched-saree-bangalore.webp`,
-    alt: 'Boutique-finished ready-to-wear saree in Bangalore',
-    title: 'Pre-Stitched Boutique Finish',
-    desc: 'A reusable pre-stitched saree tailored to your measurements and original saree fabric.'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-boutique-display.webp`,
+    alt: 'Customized Ready-to-Wear Saree displayed inside Shrusara Fashion Boutique in Bangalore.',
+    title: 'Boutique Display',
+    desc: 'A boutique display of ready-to-wear saree finishing by Shrusara.'
+  },
+  {
+    src: `${IMAGE_BASE}/customized-ready-to-wear-saree-back-view.webp`,
+    alt: 'Back view of a customized Ready-to-Wear Saree highlighting elegant draping and finishing.',
+    title: 'Back View',
+    desc: 'A finished ready-to-wear saree view highlighting the drape from behind.'
+  },
+  {
+    src: `${IMAGE_BASE}/ready-to-wear-saree-premium-customization.webp`,
+    alt: 'Premium customized Ready-to-Wear Saree with permanent pleats designed by Shrusara Fashion Boutique.',
+    title: 'Premium Customization',
+    desc: 'Premium ready-to-wear customization with permanent pleats and boutique finishing.'
   }
 ];
 
@@ -164,20 +176,20 @@ const consultationOptions = [
 
 const craftImages = [
   {
-    src: `${IMAGE_BASE}/permanent-saree-stitching-bangalore.webp`,
-    alt: 'Permanent pleat stitching for ready-to-wear saree'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-permanent-pleats.webp`,
+    alt: 'Permanent pleat detailing on a customized Ready-to-Wear Saree for effortless draping.'
   },
   {
-    src: `${IMAGE_BASE}/pre-stitched-saree-bangalore.webp`,
-    alt: 'Pre-stitched saree pallu finishing'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-pallu-detail-bangalore.webp`,
+    alt: 'Close-up of the pallu showcasing premium finishing on a customized Ready-to-Wear Saree.'
   },
   {
-    src: `${IMAGE_BASE}/customized-ready-to-wear-saree-bangalore.webp`,
-    alt: 'Customized ready-to-wear saree fit'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-walking-view-bangalore.webp`,
+    alt: 'Customer wearing a customized Ready-to-Wear Saree with elegant draping and permanent pleats in Bangalore.'
   },
   {
-    src: `${IMAGE_BASE}/easy-to-wear-saree-bangalore.webp`,
-    alt: 'Easy-to-wear saree boutique finish'
+    src: `${IMAGE_BASE}/ready-to-wear-saree-premium-customization.webp`,
+    alt: 'Premium customized Ready-to-Wear Saree with permanent pleats designed by Shrusara Fashion Boutique.'
   }
 ];
 
@@ -328,7 +340,10 @@ const footerBusinessHours = [
   'Sunday: By Appointment Only'
 ];
 
-const footerSocials = ['Instagram', 'Facebook'];
+const footerSocials = [
+  { label: 'Instagram', href: 'https://www.instagram.com/shrusara_fashion_boutique/' },
+  { label: 'Facebook', href: 'https://www.facebook.com/ShrusaraFashionBoutique' }
+];
 
 const readyToWearSchema = {
   '@context': 'https://schema.org',
@@ -431,7 +446,7 @@ function ReadyToWearSareeLandingPage() {
         description="Convert your own saree into a ready-to-wear saree in Bangalore with permanent pleats, premium lining, secure fit, and boutique finishing by Shrusara."
         keywords="ready to wear saree Bangalore, pre stitched saree Bangalore, one minute saree Bangalore, saree customization Bangalore"
         canonicalPath="/ready-to-wear-saree-bangalore"
-        image={`${IMAGE_BASE}/ready-to-wear-saree-bangalore.webp`}
+        image={`${IMAGE_BASE}/customized-ready-to-wear-saree-front-view-bangalore.webp`}
         schema={readyToWearSchema}
       />
 
@@ -615,12 +630,13 @@ function ReadyToWearSareeLandingPage() {
           font-size: .68rem; font-weight: 600; letter-spacing: .14em;
           text-transform: uppercase; padding: 14px 24px;
           text-decoration: none; border: 2px solid var(--rtw-dark);
+          color: var(--rtw-white) !important;
           transition: transform .2s, box-shadow .2s, background .2s, color .2s;
         }
         .rtw-btn-pri { background: var(--rtw-dark); color: var(--rtw-white); }
-        .rtw-btn-pri:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,20,16,.2); }
-        .rtw-btn-sec { background: transparent; color: var(--rtw-dark); }
-        .rtw-btn-sec:hover { background: var(--rtw-dark); color: var(--rtw-white); }
+        .rtw-btn-pri:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,20,16,.2); color: var(--rtw-white) !important; }
+        .rtw-btn-sec { background: var(--rtw-gold); color: var(--rtw-white); border-color: var(--rtw-gold); }
+        .rtw-btn-sec:hover { background: var(--rtw-dark); border-color: var(--rtw-dark); color: var(--rtw-white) !important; }
 
         .rtw-anchor-wrap {
           position: sticky;
@@ -814,10 +830,7 @@ function ReadyToWearSareeLandingPage() {
           gap: 20px;
           margin-top: 32px;
         }
-        .rtw-gallery-grid {
-          display: grid; grid-template-columns: repeat(4, 1fr);
-          gap: 16px; margin-top: 36px;
-        }
+        .rtw-gallery-grid { columns: 4 220px; column-gap: 16px; margin-top: 36px; }
         .rtw-gallery-card {
           overflow: hidden; border-radius: 22px;
           border: 1px solid rgba(255,255,255,.6);
@@ -826,9 +839,12 @@ function ReadyToWearSareeLandingPage() {
           transition: transform .3s, box-shadow .3s;
           cursor: pointer; width: 100%; text-align: left;
           appearance: none; -webkit-appearance: none; display: block;
+          break-inside: avoid; margin: 0 0 16px;
         }
         .rtw-gallery-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(28,20,16,.16); }
         .rtw-gallery-card-inner { border-radius: 16px; overflow: hidden; background: var(--rtw-gold-pale); aspect-ratio: 4/5; }
+        .rtw-gallery-card:nth-child(3n) .rtw-gallery-card-inner { aspect-ratio: 3/4; }
+        .rtw-gallery-card:nth-child(5n) .rtw-gallery-card-inner { aspect-ratio: 1/1.18; }
         .rtw-gallery-card-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
         .rtw-gallery-card:hover .rtw-gallery-card-inner img { transform: scale(1.05); }
 
@@ -1217,6 +1233,7 @@ function ReadyToWearSareeLandingPage() {
           display: inline-flex; align-items: center; gap: 9px;
           font-size: .68rem; font-weight: 600; letter-spacing: .14em;
           text-transform: uppercase; padding: 14px 28px; text-decoration: none;
+          color: var(--rtw-white) !important;
           transition: transform .2s, box-shadow .2s, background .2s;
         }
         .rtw-cta-btn-pri {
@@ -1228,7 +1245,7 @@ function ReadyToWearSareeLandingPage() {
           background: transparent; color: var(--rtw-white);
           border: 2px solid rgba(255,255,255,.3);
         }
-        .rtw-cta-btn-sec:hover { background: rgba(255,255,255,.08); }
+        .rtw-cta-btn-sec:hover { background: rgba(255,255,255,.08); color: var(--rtw-white) !important; }
 
         .rtw-footer {
           background: var(--rtw-dark);
@@ -1277,13 +1294,15 @@ function ReadyToWearSareeLandingPage() {
         .rtw-footer-list li,
         .rtw-footer-list a,
         .rtw-footer-text-list li,
-        .rtw-footer-inline-links li {
+        .rtw-footer-inline-links li,
+        .rtw-footer-inline-links a {
           font-size: .74rem;
           color: rgba(255,255,255,.52);
           line-height: 1.5;
           transition: color .2s;
         }
-        .rtw-footer-list a:hover { color: var(--rtw-gold); }
+        .rtw-footer-list a:hover,
+        .rtw-footer-inline-links a:hover { color: var(--rtw-gold); }
         .rtw-footer-contact-list { display: flex; flex-direction: column; gap: 9px; }
         .rtw-footer-contact-item {
           display: flex; align-items: flex-start; gap: 8px;
@@ -1428,7 +1447,7 @@ function ReadyToWearSareeLandingPage() {
           .rtw-designer,
           .rtw-reviews,
           .rtw-cta-wrap { padding: 48px 16px; }
-          .rtw-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
+          .rtw-gallery-grid { columns: 2 140px; column-gap: 12px; margin-top: 24px; }
           .rtw-gallery-card { padding: 8px; border-radius: 16px; }
           .rtw-gallery-card-inner { border-radius: 12px; }
           .rtw-before-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
@@ -1480,7 +1499,7 @@ function ReadyToWearSareeLandingPage() {
         }
 
         @media (max-width: 480px) {
-          .rtw-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+          .rtw-gallery-grid { columns: 2 130px; column-gap: 10px; }
           .rtw-hdr-name { font-size: 1.1rem; }
           .rtw-hdr-cta { padding: 8px 10px; font-size: .5rem; }
           .rtw-hero-img-wrap { height: 64vw; }
@@ -1536,7 +1555,7 @@ function ReadyToWearSareeLandingPage() {
               </div>
             </div>
             <div className="rtw-hero-img-wrap">
-              <img src={`${IMAGE_BASE}/ready-to-wear-saree-bangalore.webp`} alt="Ready-to-wear saree customization by Shrusara Fashion Boutique Bangalore" />
+              <img src={`${IMAGE_BASE}/customized-ready-to-wear-saree-front-view-bangalore.webp`} alt="Customized Ready-to-Wear Saree front view tailored to customer measurements by Shrusara Fashion Boutique in Bangalore." />
               <div className="rtw-hero-img-fade" />
             </div>
           </section>
@@ -1623,13 +1642,12 @@ function ReadyToWearSareeLandingPage() {
           </section>
 
           <section id="process-video" className="rtw-process rtw-white-sec">
-            <p className="rtw-sec-eyebrow">AI Process Video (45 Seconds)</p>
             <h2 className="rtw-sec-h">See How Your Saree Is Professionally Customized</h2>
             <p className="rtw-sec-sub">Below the video, you'll see the six-step boutique process from consultation to doorstep delivery.</p>
             <div className="rtw-video-layout">
               <div className="rtw-video-card">
                 <div className="rtw-video-inner">
-                  <video controls playsInline poster={`${IMAGE_BASE}/customized-ready-to-wear-saree-bangalore.webp`}>
+                  <video controls playsInline poster={`${IMAGE_BASE}/ready-to-wear-saree-walking-view-bangalore.webp`}>
                     <source src="/videos/about.mp4" type="video/mp4" />
                   </video>
                 </div>
@@ -1652,9 +1670,9 @@ function ReadyToWearSareeLandingPage() {
           </section>
 
           <section id="gallery" className="rtw-gallery">
-            <p className="rtw-sec-eyebrow">Ready-to-Wear Gallery</p>
-            <h2 className="rtw-sec-h">Original Boutique Images of Customized Ready-to-Wear Sarees</h2>
-            <p className="rtw-sec-sub">Front view, walking, side profile, sitting pose, pallu finishing, pleat detail, consultation reference, and boutique-ready styling.</p>
+            <p className="rtw-sec-eyebrow">READY-TO-WEAR GALLERY</p>
+            <h2 className="rtw-sec-h">See the Elegance of Our Customized Ready-to-Wear Sarees</h2>
+            <p className="rtw-sec-sub">Explore real customer sarees customized by Shrusara. From elegant draping and permanent pleats to beautifully finished styling, every saree is tailored for comfort, convenience, and timeless elegance.</p>
             <div className="rtw-gallery-grid">
               {galleryImages.map((item, index) => (
                 <button
@@ -1872,7 +1890,11 @@ function ReadyToWearSareeLandingPage() {
             <div>
               <p className="rtw-footer-col-title">Follow Us</p>
               <ul className="rtw-footer-inline-links">
-                {footerSocials.map((item) => <li key={item}>{item}</li>)}
+                {footerSocials.map((item) => (
+                  <li key={item.href}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer">{item.label}</a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
