@@ -2,11 +2,17 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LazyImage from '../components/LazyImage';
 import PageMeta from '../components/PageMeta';
-import Reveal from '../components/Reveal';
 import { fallbackBlogPosts } from '../data/content';
-import { fetchPosts } from '../services/api';
+import { fetchBlogSettings, fetchPosts } from '../services/api';
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
-import { calculateReadingTime, getPostUrl, normalizePost } from '../utils/blog';
+import {
+  DEFAULT_BLOG_SETTINGS,
+  buildWhatsAppUrl,
+  calculateReadingTime,
+  getPostUrl,
+  normalizeBlogSettings,
+  normalizePost
+} from '../utils/blog';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
@@ -73,17 +79,6 @@ const seoBlogTopics = [
   },
 ];
 
-const blogTopicPills = [
-  'Bridal Blouse Designs',
-  'Maggam Work',
-  'Aari Work',
-  'Lehenga Styling',
-  'Bridal Gowns',
-  'Designer Outfits',
-  'Styling Tips',
-  'Bangalore Boutique',
-];
-
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const WaIcon = ({ size = 18 }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
@@ -104,6 +99,98 @@ const ArrowIcon = () => (
 );
 
 // ─── Blog Card ────────────────────────────────────────────────────────────────
+function BlogCmsSections({ settings, whatsappLink }) {
+  const landingLinks = [
+    ['Bridal', settings.landingPages?.bridal],
+    ['Designer', settings.landingPages?.designer],
+    ['Occasion Wear', settings.landingPages?.occasionWear],
+    ['Ready to Wear Saree', settings.landingPages?.readyToWearSaree]
+  ].filter(([, url]) => url);
+  const siteLinks = [
+    ['Homepage', settings.homepageUrl],
+    ['About', settings.aboutUrl],
+    ['Contact', settings.contactUrl]
+  ].filter(([, url]) => url);
+
+  return (
+    <>
+      <section className="blg-cms-band">
+        <div className="blg-cms-inner">
+          <div className="blg-cms-author">
+            <p className="blg-sec-eyebrow">Designer Note</p>
+            <h2>{settings.aboutAuthorHeading}</h2>
+            <p>{settings.aboutAuthor}</p>
+            {settings.authorSignature ? (
+              <div className="blg-cms-signature">
+                {String(settings.authorSignature).split('\n').map((line, index) => (
+                  line ? <p key={`${line}-${index}`}>{line}</p> : <br key={`break-${index}`} />
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="blg-cms-contact">
+            <p className="blg-sec-eyebrow">Contact</p>
+            <h2>{settings.contactHeading}</h2>
+            <p>{settings.contactText}</p>
+            {whatsappLink ? (
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsApp('blog_settings_contact')}>
+                <WaIcon size={18} /> {settings.whatsappButtonText}
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section className="blg-shell blg-links-panel">
+        <div>
+          <p className="blg-sec-eyebrow">Useful Links</p>
+          <h2 className="blg-sec-h2">Explore Shrusara Services</h2>
+        </div>
+        <div className="blg-link-grid">
+          {[...siteLinks, ...landingLinks].map(([label, url]) => (
+            <a key={`${label}-${url}`} href={url} target="_blank" rel="noopener noreferrer">
+              {label}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="blg-shell blg-category-library">
+        <p className="blg-sec-eyebrow">Category FAQs &amp; CTAs</p>
+        <h2 className="blg-sec-h2">Blog Category Guide</h2>
+        <p className="blg-sec-sub">
+          FAQs and service links are managed from the blog category library and shown here for readers.
+        </p>
+
+        <div className="blg-category-grid">
+          {Object.entries(settings.categories || {}).map(([category, config]) => (
+            <details key={category} className="blg-category-card">
+              <summary>
+                <span>{category}</span>
+                <small>{config.purpose}</small>
+              </summary>
+              <div className="blg-category-body">
+                {(config.faqs || []).filter((faq) => faq.question || faq.answer).map((faq, index) => (
+                  <div key={faq.id || `${category}-${index}`} className="blg-mini-faq">
+                    <h3>{faq.question}</h3>
+                    <p>{faq.answer}</p>
+                  </div>
+                ))}
+                {config.primaryCtaLink ? (
+                  <a className="blg-category-cta" href={config.primaryCtaLink} target="_blank" rel="noopener noreferrer">
+                    {config.primaryCta || 'Explore Service'}
+                  </a>
+                ) : null}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
 function BlogCard({ post, loading }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -146,7 +233,7 @@ function BlogCard({ post, loading }) {
         )}
         {articleUrl ? (
           <Link className="blg-read-more" to={articleUrl}>
-            Read Article <ArrowIcon />
+            Read Full Article <ArrowIcon />
           </Link>
         ) : normalized.content ? (
           <button
@@ -165,23 +252,25 @@ function BlogCard({ post, loading }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Blog() {
   const [adminPosts, setAdminPosts] = useState([]);
+  const [blogSettings, setBlogSettings] = useState(() => normalizeBlogSettings(DEFAULT_BLOG_SETTINGS));
   const [loading, setLoading]       = useState(true);
 
   useEffect(() => {
     let mounted = true;
 
-    fetchPosts()
-      .then(res => {
+    Promise.all([
+      fetchPosts().catch(() => ({ items: [] })),
+      fetchBlogSettings().catch(() => ({ item: null }))
+    ])
+      .then(([res, settingsResponse]) => {
         if (!mounted) return;
         // fetchPosts returns { items: [...] }  (same shape the Dashboard uses)
         const items = res?.items || [];
         if (items.length > 0) {
           setAdminPosts(items);
         }
+        setBlogSettings(normalizeBlogSettings(settingsResponse.item));
         // If items is empty we fall through to seoBlogTopics below
-      })
-      .catch(() => {
-        // Network / Firebase error — silently fall through to SEO topics
       })
       .finally(() => {
         if (mounted) setLoading(false);
@@ -196,6 +285,12 @@ export default function Blog() {
     : adminPosts.length > 0
       ? adminPosts
       : seoBlogTopics;
+  const resolvedBlogSettings = normalizeBlogSettings(blogSettings);
+  const topicPills = Object.keys(resolvedBlogSettings.categories);
+  const settingsWhatsAppLink = buildWhatsAppUrl(
+    resolvedBlogSettings.whatsappNumber,
+    resolvedBlogSettings.whatsappMessage
+  ) || WA_LINK;
 
   return (
     <>
@@ -339,6 +434,34 @@ export default function Blog() {
         @keyframes blg-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
         /* ── FINAL CTA ── */
+        .blg-cms-band { background: #fff; border-top: 1px solid rgba(62,44,35,.06); border-bottom: 1px solid rgba(62,44,35,.06); }
+        .blg-cms-inner { max-width: 1280px; margin: 0 auto; padding: 72px 5vw; display: grid; grid-template-columns: minmax(0,1fr) minmax(320px,.7fr); gap: 28px; align-items: stretch; }
+        .blg-cms-author, .blg-cms-contact { border-radius: 24px; padding: clamp(24px,4vw,42px); }
+        .blg-cms-author { background: var(--c-bg); border: 1px solid rgba(62,44,35,.08); }
+        .blg-cms-author h2, .blg-cms-contact h2 { font: 700 clamp(1.45rem,2.4vw,2rem)/1.2 'Playfair Display',serif; color: var(--c-primary); margin-bottom: 14px; }
+        .blg-cms-author p, .blg-cms-contact p { color: var(--c-muted); font: 400 .95rem/1.85 'Poppins',sans-serif; }
+        .blg-cms-signature { margin-top: 24px; border-left: 4px solid var(--c-accent); background: #fff; padding: 18px 20px; color: var(--c-primary); font: 600 .92rem/1.7 'Poppins',sans-serif; }
+        .blg-cms-signature p { margin: 0; color: var(--c-primary); }
+        .blg-cms-contact { background: var(--c-primary); color: #fff; }
+        .blg-cms-contact h2 { color: #fff; }
+        .blg-cms-contact p { color: rgba(255,255,255,.78); }
+        .blg-cms-contact a { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; border-radius: 50px; background: var(--c-accent); color: #fff; padding: 14px 24px; text-decoration: none; font: 700 13px/1 'Poppins',sans-serif; }
+        .blg-links-panel { display: grid; grid-template-columns: minmax(0,.42fr) minmax(0,1fr); gap: 24px; align-items: start; padding-bottom: 36px; }
+        .blg-link-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .blg-link-grid a { border: 1px solid rgba(62,44,35,.16); border-radius: 50px; color: var(--c-primary); padding: 11px 18px; text-decoration: none; font: 700 12px/1 'Poppins',sans-serif; background: #fff; }
+        .blg-category-library { padding-top: 36px; }
+        .blg-category-grid { margin-top: 28px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+        .blg-category-card { border: 1px solid rgba(62,44,35,.08); border-radius: 20px; background: #fff; padding: 18px; box-shadow: 0 2px 18px rgba(62,44,35,.06); }
+        .blg-category-card summary { cursor: pointer; list-style: none; display: grid; gap: 8px; }
+        .blg-category-card summary::-webkit-details-marker { display: none; }
+        .blg-category-card summary span { color: var(--c-primary); font: 700 1.15rem/1.25 'Playfair Display',serif; }
+        .blg-category-card summary small { color: var(--c-muted); font: 500 .78rem/1.55 'Poppins',sans-serif; }
+        .blg-category-body { margin-top: 18px; display: grid; gap: 12px; }
+        .blg-mini-faq { border-top: 1px solid rgba(62,44,35,.08); padding-top: 12px; }
+        .blg-mini-faq h3 { color: var(--c-primary); font: 700 .9rem/1.45 'Poppins',sans-serif; }
+        .blg-mini-faq p { margin-top: 4px; color: var(--c-muted); font: 400 .84rem/1.65 'Poppins',sans-serif; }
+        .blg-category-cta { justify-self: start; border-radius: 50px; background: var(--c-primary); color: #fff; padding: 12px 18px; text-decoration: none; font: 700 12px/1 'Poppins',sans-serif; }
+
         .blg-cta-wrap {
           background: var(--c-primary); border-radius: 32px; padding: 64px 56px;
           text-align: center; position: relative; overflow: hidden;
@@ -381,11 +504,13 @@ export default function Blog() {
         .blg-cta-btn-sec:hover { background: rgba(255,255,255,.1); }
 
         /* ── RESPONSIVE ── */
-        @media(max-width:1024px) { .blg-grid { grid-template-columns: repeat(2,1fr); } }
+        @media(max-width:1024px) { .blg-grid { grid-template-columns: repeat(2,1fr); } .blg-cms-inner, .blg-links-panel { grid-template-columns: 1fr; } }
         @media(max-width:768px) {
           .blg-hero { padding: 64px 5vw 52px; }
           .blg-shell { padding: 52px 5vw; }
           .blg-grid { grid-template-columns: 1fr; }
+          .blg-cms-inner { padding: 52px 5vw; }
+          .blg-category-grid { grid-template-columns: 1fr; }
           .blg-topics-divider { display: none; }
           .blg-cta-wrap { padding: 40px 24px; }
           .blg-cta-btns { flex-direction: column; align-items: center; }
@@ -417,7 +542,7 @@ export default function Blog() {
           <span className="blg-topics-label">Topics</span>
           <div className="blg-topics-divider" />
           <div className="blg-topics-pills">
-            {blogTopicPills.map(t => (
+            {topicPills.map(t => (
               <span key={t} className="blg-pill">{t}</span>
             ))}
           </div>
@@ -425,7 +550,7 @@ export default function Blog() {
       </div>
 
       {/* ── 2. BLOG LISTING ─────────────────────────────────────────────────── */}
-      <Reveal className="blg-shell">
+      <section className="blg-shell">
         <p className="blg-sec-eyebrow">Latest Posts</p>
         <h2 className="blg-sec-h2">Bridal &amp; Designer Styling Reads</h2>
         <p className="blg-sec-sub">
@@ -434,27 +559,29 @@ export default function Blog() {
         </p>
         <div className="blg-grid">
           {displayPosts.map(post => (
-            <Reveal key={post.id}>
+            <div key={post.id}>
               <BlogCard post={post} loading={loading} />
-            </Reveal>
+            </div>
           ))}
         </div>
-      </Reveal>
+      </section>
 
       {/* ── 3. FINAL CTA ────────────────────────────────────────────────────── */}
+      <BlogCmsSections settings={resolvedBlogSettings} whatsappLink={settingsWhatsAppLink} />
+
       <div className="blg-shell" style={{ paddingTop: 0 }}>
         <div className="blg-cta-wrap">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
             <p className="blg-cta-eyebrow">Customized Design</p>
           </div>
-          <h2 className="blg-cta-h">Looking for a Customized Design?</h2>
+          <h2 className="blg-cta-h">{resolvedBlogSettings.contactHeading}</h2>
           <p className="blg-cta-sub">
-            Connect with our Chief Designer Shruthi Ajith for a personalized consultation.
+            {resolvedBlogSettings.contactText}
           </p>
           <div className="blg-cta-btns">
-           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="blg-cta-btn-pri" onClick={() => trackWhatsApp('blog_cta')}>
-  <WaIcon size={18} /> WhatsApp Enquiry
-</a>
+            <a href={settingsWhatsAppLink} target="_blank" rel="noopener noreferrer" className="blg-cta-btn-pri" onClick={() => trackWhatsApp('blog_cta')}>
+              <WaIcon size={18} /> {resolvedBlogSettings.whatsappButtonText}
+            </a>
             <a href={TEL_LINK} className="blg-cta-btn-sec" onClick={() => trackPhoneCall('blog_cta')}>
   <PhoneIcon /> Call Now
 </a>

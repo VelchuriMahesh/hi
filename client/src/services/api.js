@@ -1,4 +1,36 @@
+import { DEFAULT_BLOG_SETTINGS, normalizeBlogSettings } from '../utils/blog';
+
 const API_BASE = import.meta.env.VITE_API_URL;
+const BLOG_SETTINGS_CACHE_KEY = 'shrusara-blog-settings';
+
+function getCachedBlogSettings() {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const cached = window.localStorage.getItem(BLOG_SETTINGS_CACHE_KEY);
+    return cached ? JSON.parse(cached) : null;
+  } catch {
+    window.localStorage.removeItem(BLOG_SETTINGS_CACHE_KEY);
+    return null;
+  }
+}
+
+function cacheBlogSettings(settings) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    window.localStorage.setItem(
+      BLOG_SETTINGS_CACHE_KEY,
+      JSON.stringify(normalizeBlogSettings(settings))
+    );
+  } catch {
+    // Local preview cache is optional; backend persistence remains the source of truth.
+  }
+}
+
+function canUseLocalBlogSettingsFallback(error) {
+  return error?.status === 404 || String(error?.message || '').includes('Cannot connect to the API');
+}
 
 function slugifyValue(value) {
   return String(value || '')
@@ -9,19 +41,31 @@ function slugifyValue(value) {
 }
 
 async function request(path, options = {}) {
+  const { timeoutMs, ...fetchOptions } = options;
+  const controller = timeoutMs && typeof AbortController !== 'undefined'
+    ? new AbortController()
+    : null;
+  const timeoutId = controller
+    ? globalThis.setTimeout(() => controller.abort(), timeoutMs)
+    : null;
   let response;
 
   try {
     response = await fetch(`${API_BASE}${path}`, {
-      ...options,
+      ...fetchOptions,
+      signal: controller?.signal,
       headers: {
         Accept: 'application/json',
-        ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
-        ...options.headers
+        ...(fetchOptions.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+        ...fetchOptions.headers
       }
     });
   } catch (err) {
     throw new Error(`Cannot connect to the API at ${API_BASE}`);
+  } finally {
+    if (timeoutId) {
+      globalThis.clearTimeout(timeoutId);
+    }
   }
 
   const raw = await response.text();
@@ -84,6 +128,51 @@ export const deleteGalleryItem = (token, id) =>
 
 // POSTS
 export const fetchPosts = () => request('/posts');
+
+export const fetchBlogSettings = () =>
+  request('/posts/settings', { timeoutMs: 6000 })
+    .then((response) => {
+      if (response.item) {
+        cacheBlogSettings(response.item);
+      }
+
+      return response;
+    })
+    .catch((error) => {
+      if (!canUseLocalBlogSettingsFallback(error)) {
+        throw error;
+      }
+
+      return {
+        item: getCachedBlogSettings() || normalizeBlogSettings(DEFAULT_BLOG_SETTINGS),
+        localOnly: true
+      };
+    });
+
+export const updateBlogSettings = (token, data) =>
+  request('/posts/settings', {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+    timeoutMs: 10000
+  })
+    .then((response) => {
+      cacheBlogSettings(response.item || data);
+      return response;
+    })
+    .catch((error) => {
+      if (!canUseLocalBlogSettingsFallback(error)) {
+        throw error;
+      }
+
+      const item = normalizeBlogSettings(data);
+      cacheBlogSettings(item);
+
+      return {
+        item,
+        localOnly: true
+      };
+    });
 
 export const fetchAdminPosts = (token) =>
   request('/posts/admin', {

@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import LazyImage from '../components/LazyImage';
 import PageMeta from '../components/PageMeta';
-import { fetchPostBySlug, fetchPosts, trackPostView } from '../services/api';
+import { fetchBlogSettings, fetchPostBySlug, fetchPosts, trackPostView } from '../services/api';
 import {
   BLOG_BASE_PATH,
+  DEFAULT_BLOG_SETTINGS,
   DEFAULT_BLOG_IMAGE,
+  applyBlogSettingsToPost,
   buildBlogSchema,
   buildWhatsAppUrl,
   calculateReadingTime,
@@ -13,6 +15,7 @@ import {
   getAbsoluteUrl,
   getPostUrl,
   getTableOfContents,
+  normalizeBlogSettings,
   normalizeImage,
   normalizePost,
   slugify
@@ -167,6 +170,47 @@ function renderBlock(block) {
   return null;
 }
 
+function BlogGlobalSections({ settings }) {
+  const normalized = normalizeBlogSettings(settings);
+  const whatsappUrl = buildWhatsAppUrl(normalized.whatsappNumber, normalized.whatsappMessage);
+  const signatureLines = String(normalized.authorSignature || '').split('\n');
+
+  return (
+    <section className="bp-global">
+      <div className="bp-global-grid">
+        <div className="bp-global-card">
+          <p className="bp-eyebrow">Designer Note</p>
+          <h2>{normalized.aboutAuthorHeading}</h2>
+          <p>{normalized.aboutAuthor}</p>
+        </div>
+
+        <div className="bp-global-card bp-global-contact">
+          <p className="bp-eyebrow">Contact</p>
+          <h2>{normalized.contactHeading}</h2>
+          <p>{normalized.contactText}</p>
+          {whatsappUrl ? (
+            <a className="bp-global-whatsapp" href={whatsappUrl} target="_blank" rel="noreferrer">
+              {normalized.whatsappButtonText}
+            </a>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="bp-global-signature">
+        {signatureLines.map((line, index) => (
+          line ? <p key={`${line}-${index}`}>{line}</p> : <br key={`break-${index}`} />
+        ))}
+      </div>
+
+      <div className="bp-global-links">
+        {normalized.homepageUrl ? <a href={normalized.homepageUrl}>Home</a> : null}
+        {normalized.aboutUrl ? <a href={normalized.aboutUrl}>About Shrusara</a> : null}
+        {normalized.contactUrl ? <a href={normalized.contactUrl}>Contact</a> : null}
+      </div>
+    </section>
+  );
+}
+
 const BLOG_STATE_STYLES = `
   .bp-page { min-height: 60vh; background: #F8F6F3; color: #3E2C23; }
   .bp-shell { max-width: 1120px; margin: 0 auto; padding: 64px 5vw; }
@@ -194,6 +238,7 @@ export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
+  const [blogSettings, setBlogSettings] = useState(() => normalizeBlogSettings(DEFAULT_BLOG_SETTINGS));
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
 
@@ -205,14 +250,17 @@ export default function BlogPost() {
       setMessage('');
 
       try {
-        const [postResponse, postsResponse] = await Promise.all([
+        const [postResponse, postsResponse, settingsResponse] = await Promise.all([
           fetchPostBySlug(slug),
-          fetchPosts().catch(() => ({ items: [] }))
+          fetchPosts().catch(() => ({ items: [] })),
+          fetchBlogSettings().catch(() => ({ item: null }))
         ]);
 
         if (!mounted) return;
 
-        const loadedPost = normalizePost(postResponse.item);
+        const settings = normalizeBlogSettings(settingsResponse.item);
+        const loadedPost = applyBlogSettingsToPost(postResponse.item, settings);
+        setBlogSettings(settings);
         setPost(loadedPost);
         setAllPosts((postsResponse.items || []).map(normalizePost));
 
@@ -230,7 +278,7 @@ export default function BlogPost() {
     return () => { mounted = false; };
   }, [slug]);
 
-  const normalized = post ? normalizePost(post) : null;
+  const normalized = post ? applyBlogSettingsToPost(post, blogSettings) : null;
   const relatedPosts = useMemo(
     () => (normalized ? getRelatedPosts(normalized, allPosts) : []),
     [allPosts, normalized]
@@ -240,6 +288,10 @@ export default function BlogPost() {
   const schema = normalized ? buildBlogSchema(normalized, relatedPosts) : null;
   const simpleSections = normalized ? getSimpleSections(normalized) : [];
   const hasSimpleSections = simpleSections.length > 0;
+  const simpleToc = simpleSections.map((section, index) => ({
+    id: `chapter-${index + 1}-${slugify(section.id || normalized?.slug || normalized?.title || '')}`,
+    label: `Chapter ${index + 1}`
+  }));
 
   if (loading) {
     return (
@@ -338,6 +390,10 @@ export default function BlogPost() {
         .bp-copy-style-highlight { color: #3d312a; }
         .bp-copy-style-note { color: #465b4b; }
         .bp-copy-type-heading h2:first-child, .bp-copy-type-subheading h3:first-child { margin-bottom: 8px; }
+        .bp-simple-toc { margin-bottom: 42px; border: 1px solid rgba(62,44,35,.08); border-radius: 24px; background: #fff; padding: clamp(20px, 3vw, 28px); box-shadow: 0 18px 40px rgba(34,31,27,.07); }
+        .bp-simple-toc-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .bp-simple-toc-links a { border: 1px solid rgba(62,44,35,.14); border-radius: 999px; color: #3E2C23; padding: 10px 16px; text-decoration: none; font: 700 12px/1 Poppins,sans-serif; }
+        .bp-chapter-kicker { display: inline-flex; margin-bottom: 14px; border-radius: 999px; background: rgba(159,107,78,.1); padding: 8px 13px; color: #9F6B4E; font: 800 11px/1 Poppins,sans-serif; letter-spacing: .16em; text-transform: uppercase; }
         .bp-simple-frame { overflow: hidden; border: 10px solid #fff; border-radius: 28px; background: #EAE3DC; box-shadow: 0 18px 45px rgba(47,39,35,.13); }
         .bp-simple-frame img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
         .bp-simple-frame figcaption { background: #fff; padding: 12px 15px; color: #61564f; font: 600 .82rem/1.5 Poppins,sans-serif; }
@@ -354,6 +410,19 @@ export default function BlogPost() {
         .bp-cta h2 { color: #fff; }
         .bp-cta p { color: rgba(255,255,255,.78); }
         .bp-cta a, .bp-share a, .bp-empty a { display: inline-flex; justify-content: center; border-radius: 999px; background: #9F6B4E; color: #fff; padding: 13px 22px; text-decoration: none; font: 700 13px/1 Poppins,sans-serif; }
+        .bp-global { margin-top: 46px; display: grid; gap: 18px; }
+        .bp-global-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+        .bp-global-card { border: 1px solid rgba(62,44,35,.1); border-radius: 24px; background: #F8F6F3; padding: clamp(22px, 3vw, 32px); }
+        .bp-global-card h2 { margin-top: 12px; font: 700 1.65rem/1.2 "Playfair Display",serif; color: #2f2723; }
+        .bp-global-card p { margin-top: 12px; color: #61564f; font: 400 .96rem/1.85 Poppins,sans-serif; }
+        .bp-global-contact { background: #221f1b; }
+        .bp-global-contact h2 { color: #fff; }
+        .bp-global-contact p { color: rgba(255,255,255,.76); }
+        .bp-global-whatsapp { display: inline-flex; justify-content: center; margin-top: 18px; border-radius: 999px; background: #9F6B4E; color: #fff; padding: 13px 22px; text-decoration: none; font: 700 13px/1 Poppins,sans-serif; }
+        .bp-global-signature { border-left: 4px solid #C8A96A; background: #fff; padding: 22px 24px; color: #514741; font: 600 .94rem/1.75 Poppins,sans-serif; }
+        .bp-global-signature p { margin: 0; }
+        .bp-global-links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .bp-global-links a { border: 1px solid rgba(62,44,35,.14); border-radius: 999px; color: #3E2C23; padding: 10px 16px; text-decoration: none; font: 700 12px/1 Poppins,sans-serif; }
         .bp-faq, .bp-related, .bp-share { margin-top: 42px; display: grid; gap: 14px; }
         .bp-faq details { border: 1px solid rgba(62,44,35,.1); border-radius: 18px; padding: 18px; background: #F8F6F3; }
         .bp-faq summary { cursor: pointer; font-weight: 700; }
@@ -365,7 +434,7 @@ export default function BlogPost() {
         .bp-skeleton { height: 360px; border-radius: 28px; background: linear-gradient(90deg,#EAE3DC,#fff,#EAE3DC); background-size: 200% 100%; animation: bp-shimmer 1.4s linear infinite; }
         .bp-skeleton-title { height: 120px; margin-top: 24px; }
         @keyframes bp-shimmer { to { background-position: -200% 0; } }
-        @media(max-width: 900px) { .bp-hero, .bp-layout, .bp-simple-section, .bp-simple-section:nth-child(even) { grid-template-columns: 1fr; } .bp-simple-section:nth-child(even) .bp-simple-copy { order: 0; } .bp-hero { padding-top: 48px; } .bp-layout-simple { padding-top: 32px; } .bp-toc { position: static; } .bp-related-grid, .bp-gallery > div { grid-template-columns: 1fr; } }
+        @media(max-width: 900px) { .bp-hero, .bp-layout, .bp-simple-section, .bp-simple-section:nth-child(even), .bp-global-grid { grid-template-columns: 1fr; } .bp-simple-section:nth-child(even) .bp-simple-copy { order: 0; } .bp-hero { padding-top: 48px; } .bp-layout-simple { padding-top: 32px; } .bp-toc { position: static; } .bp-related-grid, .bp-gallery > div { grid-template-columns: 1fr; } }
       `}</style>
 
       <PageMeta
@@ -407,14 +476,30 @@ export default function BlogPost() {
 
           <article className={`bp-article ${hasSimpleSections ? 'bp-article-simple' : ''}`}>
             {hasSimpleSections ? (
-              <section className="bp-simple-story">
+              <>
+                <section className="bp-simple-toc">
+                  <p className="bp-eyebrow">Article Chapters</p>
+                  <div className="bp-simple-toc-links">
+                    {simpleToc.map((item) => (
+                      <a key={item.id} href={`#${item.id}`}>{item.label}</a>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="bp-simple-story">
                 {simpleSections.map((section, index) => {
                   const sectionImage = normalizeImage(section.image || section.imageUrl || '', normalized.altText || normalized.title);
                   const html = section.html || (section.paragraph ? `<p>${escapeHtml(section.paragraph)}</p>` : '');
+                  const chapter = simpleToc[index];
 
                   return (
-                    <article key={section.id || index} className={`bp-simple-section ${sectionImage.url ? '' : 'bp-simple-section-text-only'}`}>
+                    <article
+                      key={section.id || index}
+                      id={chapter.id}
+                      className={`bp-simple-section ${sectionImage.url ? '' : 'bp-simple-section-text-only'}`}
+                    >
                       <div className="bp-simple-copy">
+                        <p className="bp-chapter-kicker">{chapter.label}</p>
                         {html ? (
                           <div
                             className={`bp-simple-text bp-copy-style-${section.textStyle || 'classic'} bp-copy-type-${section.textType || 'paragraph'}`}
@@ -436,7 +521,8 @@ export default function BlogPost() {
                     </article>
                   );
                 })}
-              </section>
+                </section>
+              </>
             ) : (
               <>
                 <div className="bp-content" dangerouslySetInnerHTML={{ __html: normalized.contentHtml }} />
@@ -457,6 +543,8 @@ export default function BlogPost() {
                 </div>
               </section>
             ) : null}
+
+            <BlogGlobalSections settings={normalized.blogSettings} />
 
             {(normalized.faqs || []).some((faq) => faq.question || faq.answer) ? (
               <section className="bp-faq">

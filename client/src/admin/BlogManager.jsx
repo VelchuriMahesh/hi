@@ -7,6 +7,8 @@ import {
   deletePost,
   duplicatePost,
   fetchAdminPosts,
+  fetchBlogSettings,
+  updateBlogSettings as updateBlogSettingsApi,
   updatePost
 } from '../services/api';
 import { uploadImageToImgbb } from '../services/uploaders';
@@ -14,12 +16,14 @@ import {
   BLOG_BASE_PATH,
   BLOG_STATUSES,
   DEFAULT_BLOG_AUTHOR,
+  DEFAULT_BLOG_SETTINGS,
   calculateReadingTime,
   createEmptyBlogPost,
   createEmptyImage,
   encodeSimpleBlogContent,
   formatDate,
   getPostUrl,
+  normalizeBlogSettings,
   normalizeImage,
   normalizePost,
   slugify
@@ -28,17 +32,6 @@ import {
 const SECTION_COUNT = 5;
 const AUTO_SAVE_KEY = 'shrusara-simple-blog-draft';
 const LIVE_SITE_URL = 'https://www.shrusara.com';
-
-const categories = [
-  'Bridal Blouse',
-  'Maggam Work',
-  'Aari Work',
-  'Lehenga Styling',
-  'Bridal Gowns',
-  'Designer Outfits',
-  'Styling Tips',
-  'Bangalore Boutique'
-];
 
 function inputClass(extra = '') {
   return `w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm text-ink outline-none transition focus:border-cocoa ${extra}`;
@@ -435,6 +428,26 @@ function BlogImageInput({ index, section, altText, uploading, onChange, onUpload
       </label>
 
       <label className={labelClass()}>
+        Image File Name
+        <input
+          className={inputClass()}
+          value={image.fileName}
+          onChange={(event) => updateImage({ ...image, fileName: event.target.value })}
+          placeholder="bridal-blouse-design-bangalore.webp"
+        />
+      </label>
+
+      <label className={labelClass()}>
+        Image Alt Text
+        <input
+          className={inputClass()}
+          value={image.alt}
+          onChange={(event) => updateImage({ ...image, alt: event.target.value })}
+          placeholder={altText || `Describe image ${index + 1}`}
+        />
+      </label>
+
+      <label className={labelClass()}>
         Caption
         <input
           className={inputClass()}
@@ -495,6 +508,16 @@ function HeroImageInput({ image, altText, uploading, onChange, onUpload }) {
       </label>
 
       <label className={labelClass()}>
+        Hero Image File Name
+        <input
+          className={inputClass()}
+          value={normalizedImage.fileName}
+          onChange={(event) => updateImage({ ...normalizedImage, fileName: event.target.value })}
+          placeholder="bridal-fashion-blog-hero.webp"
+        />
+      </label>
+
+      <label className={labelClass()}>
         Hero Image Alt Text
         <input
           className={inputClass()}
@@ -517,22 +540,265 @@ function HeroImageInput({ image, altText, uploading, onChange, onUpload }) {
   );
 }
 
+const landingPageLabels = {
+  bridal: 'Bridal blouse landing page',
+  designer: 'Designer outfits landing page',
+  occasionWear: 'Occasion wear landing page',
+  readyToWearSaree: 'Ready to wear saree landing page'
+};
+
+function BlogSettingsPanel({
+  settings,
+  saving,
+  message,
+  onFieldChange,
+  onLandingPageChange,
+  onCategoryFieldChange,
+  onCategoryFaqChange,
+  onSave
+}) {
+  const normalized = normalizeBlogSettings(settings);
+
+  return (
+    <details open className="mb-6 rounded-[28px] bg-white p-5 shadow-soft md:p-7">
+      <summary className="cursor-pointer list-none">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">CMS Settings</p>
+            <h2 className="mt-1 font-heading text-3xl text-ink">Blog Settings &amp; Category Library</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
+              Control public blog author content, contact CTA, WhatsApp message, category FAQs, primary CTAs, and blog landing links from one place.
+            </p>
+          </div>
+          <button
+            className="button-primary"
+            type="button"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              onSave();
+            }}
+            disabled={saving}
+          >
+            {saving ? 'Saving Settings...' : 'Save Blog Settings'}
+          </button>
+        </div>
+      </summary>
+
+      {message ? (
+        <div className="mt-5 rounded-2xl border border-cocoa/20 bg-linen px-4 py-3 text-sm font-medium text-ink">
+          {message}
+        </div>
+      ) : null}
+
+      <div className="mt-6 grid gap-5 lg:grid-cols-2">
+        <label className={labelClass()}>
+          About Author Heading
+          <input
+            className={inputClass()}
+            value={normalized.aboutAuthorHeading}
+            onChange={(event) => onFieldChange('aboutAuthorHeading', event.target.value)}
+          />
+        </label>
+
+        <label className={labelClass()}>
+          WhatsApp Button Text
+          <input
+            className={inputClass()}
+            value={normalized.whatsappButtonText}
+            onChange={(event) => onFieldChange('whatsappButtonText', event.target.value)}
+          />
+        </label>
+
+        <label className={`${labelClass()} lg:col-span-2`}>
+          About the Author
+          <textarea
+            className={inputClass('min-h-28')}
+            value={normalized.aboutAuthor}
+            onChange={(event) => onFieldChange('aboutAuthor', event.target.value)}
+          />
+        </label>
+
+        <label className={labelClass()}>
+          Contact Heading
+          <input
+            className={inputClass()}
+            value={normalized.contactHeading}
+            onChange={(event) => onFieldChange('contactHeading', event.target.value)}
+          />
+        </label>
+
+        <label className={labelClass()}>
+          WhatsApp Number
+          <input
+            className={inputClass()}
+            value={normalized.whatsappNumber}
+            onChange={(event) => onFieldChange('whatsappNumber', event.target.value)}
+            placeholder="919741827558"
+          />
+        </label>
+
+        <label className={`${labelClass()} lg:col-span-2`}>
+          Contact Section Text
+          <textarea
+            className={inputClass('min-h-24')}
+            value={normalized.contactText}
+            onChange={(event) => onFieldChange('contactText', event.target.value)}
+          />
+        </label>
+
+        <label className={`${labelClass()} lg:col-span-2`}>
+          WhatsApp Message
+          <textarea
+            className={inputClass('min-h-20')}
+            value={normalized.whatsappMessage}
+            onChange={(event) => onFieldChange('whatsappMessage', event.target.value)}
+          />
+        </label>
+
+        <label className={`${labelClass()} lg:col-span-2`}>
+          Author Signature
+          <textarea
+            className={inputClass('min-h-28')}
+            value={normalized.authorSignature}
+            onChange={(event) => onFieldChange('authorSignature', event.target.value)}
+          />
+        </label>
+      </div>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {[
+          ['homepageUrl', 'Homepage URL'],
+          ['aboutUrl', 'About URL'],
+          ['contactUrl', 'Contact URL']
+        ].map(([field, label]) => (
+          <label key={field} className={labelClass()}>
+            {label}
+            <input
+              className={inputClass()}
+              value={normalized[field]}
+              onChange={(event) => onFieldChange(field, event.target.value)}
+            />
+          </label>
+        ))}
+      </div>
+
+      <div className="mt-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">Landing Page URLs</p>
+        <div className="mt-3 grid gap-4 md:grid-cols-2">
+          {Object.entries(normalized.landingPages).map(([key, value]) => (
+            <label key={key} className={labelClass()}>
+              {landingPageLabels[key] || key}
+              <input
+                className={inputClass()}
+                value={value}
+                onChange={(event) => onLandingPageChange(key, event.target.value)}
+              />
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-7 space-y-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">Category FAQs &amp; CTAs</p>
+        {Object.entries(normalized.categories).map(([category, config]) => (
+          <details key={category} className="rounded-2xl border border-ink/10 bg-linen p-4">
+            <summary className="cursor-pointer font-heading text-xl text-ink">{category}</summary>
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <label className={`${labelClass()} lg:col-span-2`}>
+                Category Purpose
+                <input
+                  className={inputClass()}
+                  value={config.purpose}
+                  onChange={(event) => onCategoryFieldChange(category, 'purpose', event.target.value)}
+                />
+              </label>
+              <label className={labelClass()}>
+                Primary CTA
+                <input
+                  className={inputClass()}
+                  value={config.primaryCta}
+                  onChange={(event) => onCategoryFieldChange(category, 'primaryCta', event.target.value)}
+                />
+              </label>
+              <label className={labelClass()}>
+                Primary CTA Link
+                <input
+                  className={inputClass()}
+                  value={config.primaryCtaLink}
+                  onChange={(event) => onCategoryFieldChange(category, 'primaryCtaLink', event.target.value)}
+                />
+              </label>
+              <label className={`${labelClass()} lg:col-span-2`}>
+                CTA Description
+                <textarea
+                  className={inputClass('min-h-20')}
+                  value={config.ctaDescription}
+                  onChange={(event) => onCategoryFieldChange(category, 'ctaDescription', event.target.value)}
+                />
+              </label>
+              <label className={`${labelClass()} lg:col-span-2`}>
+                Developer Note
+                <input
+                  className={inputClass()}
+                  value={config.developerNote}
+                  onChange={(event) => onCategoryFieldChange(category, 'developerNote', event.target.value)}
+                />
+              </label>
+            </div>
+
+            <div className="mt-5 grid gap-4">
+              {config.faqs.map((faq, index) => (
+                <div key={faq.id || index} className="rounded-2xl bg-white p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">FAQ {index + 1}</p>
+                  <div className="mt-3 grid gap-3 lg:grid-cols-2">
+                    <label className={labelClass()}>
+                      Question
+                      <input
+                        className={inputClass()}
+                        value={faq.question}
+                        onChange={(event) => onCategoryFaqChange(category, index, 'question', event.target.value)}
+                      />
+                    </label>
+                    <label className={labelClass()}>
+                      Answer
+                      <textarea
+                        className={inputClass('min-h-20')}
+                        value={faq.answer}
+                        onChange={(event) => onCategoryFaqChange(category, index, 'answer', event.target.value)}
+                      />
+                    </label>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+    </details>
+  );
+}
+
 export default function BlogManager() {
   const [posts, setPosts] = useState([]);
   const [form, setForm] = useState(createInitialForm);
+  const [blogSettings, setBlogSettings] = useState(() => normalizeBlogSettings(DEFAULT_BLOG_SETTINGS));
   const [selectedId, setSelectedId] = useState(null);
   const [slugEdited, setSlugEdited] = useState(false);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [settingsSaving, setSettingsSaving] = useState(false);
   const [uploadingHeroImage, setUploadingHeroImage] = useState(false);
   const [uploadingIndex, setUploadingIndex] = useState(null);
   const [message, setMessage] = useState('');
+  const [settingsMessage, setSettingsMessage] = useState('');
 
   const token = getAdminToken();
 
   useEffect(() => {
     loadPosts();
+    loadBlogSettings();
   }, []);
 
   useEffect(() => {
@@ -555,6 +821,12 @@ export default function BlogManager() {
     );
   }, [posts, query]);
 
+  const normalizedBlogSettings = useMemo(() => normalizeBlogSettings(blogSettings), [blogSettings]);
+  const categoryNames = useMemo(() => Object.keys(normalizedBlogSettings.categories), [normalizedBlogSettings]);
+  const relatedCandidates = useMemo(
+    () => sortPosts(posts).filter((post) => post.id && post.id !== selectedId),
+    [posts, selectedId]
+  );
   const previewUrl = form.slug ? getLivePreviewUrl(getPostUrl(form)) : getLivePreviewUrl(`${BLOG_BASE_PATH}/new-blog`);
   const completedSections = form.simpleSections.filter((section) => section.paragraph || section.html || section.image?.url).length;
 
@@ -569,6 +841,97 @@ export default function BlogManager() {
       setMessage(error.message || 'Unable to load blogs.');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function loadBlogSettings() {
+    try {
+      const response = await fetchBlogSettings();
+      setBlogSettings(normalizeBlogSettings(response.item));
+    } catch {
+      setBlogSettings(normalizeBlogSettings(DEFAULT_BLOG_SETTINGS));
+    }
+  }
+
+  function updateBlogSettingsField(field, value) {
+    setBlogSettings((current) => normalizeBlogSettings({
+      ...current,
+      [field]: value
+    }));
+  }
+
+  function updateLandingPage(key, value) {
+    setBlogSettings((current) => {
+      const settings = normalizeBlogSettings(current);
+      return normalizeBlogSettings({
+        ...settings,
+        landingPages: {
+          ...settings.landingPages,
+          [key]: value
+        }
+      });
+    });
+  }
+
+  function updateCategoryField(category, field, value) {
+    setBlogSettings((current) => {
+      const settings = normalizeBlogSettings(current);
+      return normalizeBlogSettings({
+        ...settings,
+        categories: {
+          ...settings.categories,
+          [category]: {
+            ...settings.categories[category],
+            [field]: value
+          }
+        }
+      });
+    });
+  }
+
+  function updateCategoryFaq(category, index, field, value) {
+    setBlogSettings((current) => {
+      const settings = normalizeBlogSettings(current);
+      const config = settings.categories[category] || {};
+      const faqs = [...(config.faqs || [])];
+      faqs[index] = {
+        ...(faqs[index] || { id: `faq-${index + 1}`, question: '', answer: '' }),
+        [field]: value
+      };
+
+      return normalizeBlogSettings({
+        ...settings,
+        categories: {
+          ...settings.categories,
+          [category]: {
+            ...config,
+            faqs
+          }
+        }
+      });
+    });
+  }
+
+  async function saveBlogSettings() {
+    setSettingsSaving(true);
+    setSettingsMessage('');
+
+    try {
+      const payload = normalizeBlogSettings(blogSettings);
+      delete payload.id;
+      delete payload.createdAt;
+      delete payload.updatedAt;
+      const response = await updateBlogSettingsApi(token, payload);
+      setBlogSettings(normalizeBlogSettings(response.item || payload));
+      setSettingsMessage(
+        response.localOnly
+          ? 'Blog settings saved for this local preview. Public blog pages in this browser now use these CMS values.'
+          : 'Blog settings saved. Public blog pages now use these CMS values.'
+      );
+    } catch (error) {
+      setSettingsMessage(error.message || 'Unable to save blog settings.');
+    } finally {
+      setSettingsSaving(false);
     }
   }
 
@@ -608,6 +971,20 @@ export default function BlogManager() {
         currentIndex === index ? createSection(index, nextSection, current.altText) : section
       )
     }));
+  }
+
+  function updateRelatedPost(index, value) {
+    setForm((current) => {
+      const relatedPostIds = [...(current.relatedPostIds || [])];
+      relatedPostIds[index] = value;
+      const selectedIds = relatedPostIds.filter(Boolean);
+
+      return {
+        ...current,
+        relatedMode: selectedIds.length ? 'manual' : 'auto',
+        relatedPostIds: selectedIds
+      };
+    });
   }
 
   async function uploadHeroImage(file) {
@@ -781,6 +1158,17 @@ export default function BlogManager() {
             </div>
           ) : null}
 
+          <BlogSettingsPanel
+            settings={normalizedBlogSettings}
+            saving={settingsSaving}
+            message={settingsMessage}
+            onFieldChange={updateBlogSettingsField}
+            onLandingPageChange={updateLandingPage}
+            onCategoryFieldChange={updateCategoryField}
+            onCategoryFaqChange={updateCategoryFaq}
+            onSave={saveBlogSettings}
+          />
+
           <section className="grid gap-6 xl:grid-cols-[360px_1fr]">
             <aside className="space-y-4">
               <div className="rounded-[28px] bg-white p-5 shadow-soft">
@@ -888,13 +1276,31 @@ export default function BlogManager() {
                     <label className={`${labelClass()} mt-4`}>
                       Category
                       <select className={inputClass()} value={form.category} onChange={(event) => updateField('category', event.target.value)}>
-                        {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+                        {categoryNames.map((category) => <option key={category} value={category}>{category}</option>)}
                       </select>
                     </label>
                     <label className={`${labelClass()} mt-4`}>
                       Author
                       <input className={inputClass()} value={form.author} onChange={(event) => updateField('author', event.target.value)} />
                     </label>
+                    <div className="mt-4 space-y-3">
+                      <p className="text-sm font-medium text-stone-700">Related Blogs</p>
+                      {[0, 1, 2].map((index) => (
+                        <label key={index} className={labelClass()}>
+                          Related Blog {index + 1}
+                          <select
+                            className={inputClass()}
+                            value={form.relatedPostIds?.[index] || ''}
+                            onChange={(event) => updateRelatedPost(index, event.target.value)}
+                          >
+                            <option value="">Auto / None</option>
+                            {relatedCandidates.map((post) => (
+                              <option key={post.id} value={post.id}>{post.title || 'Untitled blog'}</option>
+                            ))}
+                          </select>
+                        </label>
+                      ))}
+                    </div>
                     <div className="mt-5 rounded-xl bg-white p-4 text-sm text-stone-600">
                       <p><span className="font-semibold text-ink">URL:</span> {previewUrl}</p>
                       <p className="mt-2"><span className="font-semibold text-ink">Sections:</span> {completedSections}/5</p>

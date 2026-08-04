@@ -8,6 +8,157 @@ export const BLOG_STATUSES = ['draft', 'published', 'scheduled', 'private'];
 export const SIMPLE_BLOG_SECTION_COUNT = 5;
 export const SIMPLE_BLOG_CONTENT_PREFIX = 'SHRUSARA_SIMPLE_BLOG:';
 
+export const BLOG_CATEGORY_ALIASES = {
+  'Bridal Blouse': 'Bridal Blouses',
+  'Bridal Blouse Designs': 'Bridal Blouses',
+  'Maggam Work': 'Maggam & Aari Work',
+  'Aari Work': 'Maggam & Aari Work',
+  'Lehenga Styling': 'Bridal Lehengas & Gowns',
+  'Bridal Gowns': 'Bridal Lehengas & Gowns',
+  'Designer Outfits': 'Luxury Occasion Wear',
+  'Styling Tips': 'Fashion & Styling Tips',
+  'Bridal Styling': 'Fashion & Styling Tips',
+  'Bangalore Boutique': 'Bangalore Boutique Guide'
+};
+
+export const DEFAULT_BLOG_SETTINGS = {
+  aboutAuthorHeading: 'About the Author',
+  aboutAuthor:
+    'Shruthi Ajith is the Founder & Chief Designer of Shrusara Fashion Boutique, Bangalore. She specializes in customized bridal blouses, bridal lehengas, bridal gowns, Maggam & Aari Work, Ready to Wear Saree customization and luxury occasion wear. Through this blog, she shares practical fashion tips, bridal styling ideas and customization guidance to help readers make informed decisions.',
+  contactHeading: "Have Questions? We're Happy to Help",
+  contactText:
+    "Every bride has her own style, ideas and wedding plans. If you have questions about customization, embroidery styles, fabrics, measurements or simply need guidance in choosing the right design, feel free to contact us. We're always happy to help - there is absolutely no obligation to place an order.",
+  whatsappButtonText: 'Chat with Our Designer',
+  whatsappNumber: contactLinks.phoneRaw,
+  whatsappMessage:
+    'Hello! I was reading your blog on the Shrusara website and would like to know more about your customized bridal and designer wear services.',
+  authorSignature:
+    'Warm Regards,\n\nShruthi Ajith\nFounder & Chief Designer\nShrusara Fashion Boutique\nCustomized Bridal & Designer Wear | Bangalore',
+  homepageUrl: 'https://www.shrusara.com/',
+  aboutUrl: 'https://www.shrusara.com/about-shrusara-boutique/',
+  contactUrl: 'https://www.shrusara.com/contact-shrusara-bangalore/',
+  landingPages: {
+    bridal: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+    designer: 'https://www.shrusara.com/customized-designer-outfits-bangalore/',
+    occasionWear: 'https://www.shrusara.com/customized-occasion-wear-bangalore/',
+    readyToWearSaree: 'https://www.shrusara.com/ready-to-wear-saree-bangalore/'
+  },
+  categories: {
+    'Bridal Blouses': {
+      purpose: 'Blogs about customized bridal blouses.',
+      primaryCta: 'Explore Bridal Blouse Designs',
+      primaryCtaLink: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+      ctaDescription: 'Explore customized bridal blouse designs, hand embroidery, and premium fitting options at Shrusara.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'How early should I start?', answer: 'Start 6-8 weeks before the wedding.' },
+        { question: 'Which embroidery is suitable?', answer: 'Maggam, Aari, Zardosi, Thread, Stone and Pearl Work are popular.' },
+        { question: 'Can I customize my blouse?', answer: 'Yes, every design can be customized.' },
+        { question: 'Can I bring my own reference?', answer: 'Yes, reference images are welcome.' },
+        { question: 'Do you accept international orders?', answer: 'Yes. We assist customers worldwide through online consultations.' }
+      ]
+    },
+    'Bridal Lehengas & Gowns': {
+      purpose: 'Blogs about customized bridal outfits.',
+      primaryCta: 'Explore Bridal Collection',
+      primaryCtaLink: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+      ctaDescription: 'Explore bridal lehengas, gowns, reception outfits, and complete bridal couture options.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'Do you create customized lehengas?', answer: 'Yes.' },
+        { question: 'Can I customize fabrics and colours?', answer: 'Yes.' },
+        { question: 'Do you provide styling guidance?', answer: 'Yes.' },
+        { question: 'How long does it take?', answer: 'Depends on the design.' },
+        { question: 'Can international customers order?', answer: 'Yes. Online consultations are available.' }
+      ]
+    },
+    'Maggam & Aari Work': {
+      purpose: 'Blogs about bridal hand embroidery.',
+      primaryCta: 'Explore Hand Embroidery Designs',
+      primaryCtaLink: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+      ctaDescription: 'See handcrafted Maggam and Aari work ideas for bridal blouses and occasion wear.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'What is Maggam Work?', answer: 'Traditional bridal hand embroidery.' },
+        { question: 'What is Aari Work?', answer: 'Fine hand embroidery using a specialized hook.' },
+        { question: 'Can embroidery be customized?', answer: 'Yes.' },
+        { question: 'Which fabrics are suitable?', answer: 'Silk, Raw Silk and Velvet.' },
+        { question: 'Can customers outside India order?', answer: 'Yes. International consultations are available.' }
+      ]
+    },
+    'Luxury Occasion Wear': {
+      purpose: 'Designer blouses, gowns and premium occasion wear.',
+      primaryCta: 'Explore Luxury Occasion Wear',
+      primaryCtaLink: 'https://www.shrusara.com/customized-occasion-wear-bangalore/',
+      ctaDescription: 'Explore customized designer blouses, gowns, Indo-western outfits, and premium occasion wear.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'Can I customize my outfit?', answer: 'Yes.' },
+        { question: 'Do you stitch designer blouses?', answer: 'Yes.' },
+        { question: 'Can I bring a reference?', answer: 'Yes.' },
+        { question: 'Do you create matching outfits?', answer: 'Yes.' },
+        { question: 'Do you accept international enquiries?', answer: 'Yes. Online consultations are available.' }
+      ]
+    },
+    'Ready to Wear Sarees': {
+      purpose: 'Transform your own saree into a Ready to Wear Saree.',
+      primaryCta: 'Explore Ready to Wear Saree Service',
+      primaryCtaLink: 'https://www.shrusara.com/ready-to-wear-saree-bangalore/',
+      ctaDescription: 'Learn how Shrusara can convert your own saree into a ready-to-wear saree with permanent pleats.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'Do you sell Ready-to-Wear Sarees?', answer: 'No. We customize your saree.' },
+        { question: 'Can I courier my saree?', answer: 'Yes.' },
+        { question: 'Can I book a video consultation?', answer: 'Yes.' },
+        { question: 'Can any saree be converted?', answer: 'Most can.' },
+        { question: 'How do I get started?', answer: 'Send us a saree photo on WhatsApp.' }
+      ]
+    },
+    'Fashion & Styling Tips': {
+      purpose: 'Educational fashion blogs.',
+      primaryCta: 'Explore Customized Designer Outfits',
+      primaryCtaLink: 'https://www.shrusara.com/customized-designer-outfits-bangalore/',
+      ctaDescription: 'Explore customized designer outfit ideas for bridal, festive, and special occasion styling.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'Who are these blogs for?', answer: 'Everyone.' },
+        { question: 'Are they promotional?', answer: 'No.' },
+        { question: 'Can I ask questions?', answer: 'Yes.' },
+        { question: 'Do you share trends?', answer: 'Yes.' },
+        { question: 'Can I contact you?', answer: 'Absolutely.' }
+      ]
+    },
+    'Bangalore Boutique Guide': {
+      purpose: 'Guides about boutiques in Bangalore.',
+      primaryCta: 'Contact Our Designer',
+      primaryCtaLink: 'https://www.shrusara.com/contact-shrusara-bangalore/',
+      ctaDescription: 'Visit or contact Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'Can I visit?', answer: 'Yes.' },
+        { question: 'Do you offer consultations?', answer: 'Yes.' },
+        { question: 'Outside Bangalore?', answer: 'Online consultations available.' },
+        { question: 'Location?', answer: 'Mahalakshmipuram, Bangalore.' },
+        { question: 'How to contact?', answer: 'WhatsApp or Contact page.' }
+      ]
+    },
+    'Business Insights': {
+      purpose: 'General business articles.',
+      primaryCta: 'Explore More Blogs',
+      primaryCtaLink: 'https://www.shrusara.com/',
+      ctaDescription: 'Read more Shrusara guides and boutique insights.',
+      developerNote: 'Auto-load when this category is selected.',
+      faqs: [
+        { question: 'Who are these for?', answer: 'Business owners.' },
+        { question: 'Only fashion?', answer: 'No.' },
+        { question: 'Why publish?', answer: 'Share knowledge.' },
+        { question: 'Can I share?', answer: 'Yes.' },
+        { question: 'More topics?', answer: 'Yes.' }
+      ]
+    }
+  }
+};
+
 export const BLOG_BLOCK_TYPES = [
   'hero',
   'paragraph',
@@ -212,6 +363,105 @@ export function createEmptyCta() {
   };
 }
 
+function normalizeCategoryFaqs(faqs = [], fallbackFaqs = []) {
+  const source = Array.isArray(faqs) && faqs.length ? faqs : fallbackFaqs;
+  const length = Math.max(5, source.length, fallbackFaqs.length);
+
+  return Array.from({ length }, (_, index) => {
+    const fallback = fallbackFaqs[index] || {};
+    const faq = source[index] || {};
+
+    return {
+      id: faq.id || fallback.id || `faq-${index + 1}`,
+      question: faq.question ?? fallback.question ?? '',
+      answer: faq.answer ?? fallback.answer ?? ''
+    };
+  });
+}
+
+export function getBlogCategoryName(category = '') {
+  const value = String(category || '').trim();
+  return BLOG_CATEGORY_ALIASES[value] || value || 'Bridal Blouses';
+}
+
+export function normalizeBlogSettings(settings = {}) {
+  const source = settings && typeof settings === 'object' ? settings : {};
+  const sourceCategories = source.categories && typeof source.categories === 'object' ? source.categories : {};
+  const normalizedSourceCategories = Object.entries(sourceCategories).reduce((result, [name, config]) => {
+    const canonicalName = getBlogCategoryName(name);
+    result[canonicalName] = {
+      ...(result[canonicalName] || {}),
+      ...(config || {})
+    };
+    return result;
+  }, {});
+  const categoryNames = Array.from(new Set([
+    ...Object.keys(DEFAULT_BLOG_SETTINGS.categories),
+    ...Object.keys(normalizedSourceCategories)
+  ]));
+  const categories = categoryNames.reduce((result, name) => {
+    const fallback = DEFAULT_BLOG_SETTINGS.categories[name] || {};
+    const incoming = normalizedSourceCategories[name] || {};
+
+    result[name] = {
+      purpose: incoming.purpose ?? fallback.purpose ?? '',
+      primaryCta: incoming.primaryCta ?? fallback.primaryCta ?? '',
+      primaryCtaLink: incoming.primaryCtaLink ?? fallback.primaryCtaLink ?? '',
+      ctaDescription: incoming.ctaDescription ?? fallback.ctaDescription ?? '',
+      developerNote: incoming.developerNote ?? fallback.developerNote ?? '',
+      faqs: normalizeCategoryFaqs(incoming.faqs, fallback.faqs || [])
+    };
+
+    return result;
+  }, {});
+
+  return {
+    ...DEFAULT_BLOG_SETTINGS,
+    ...source,
+    landingPages: {
+      ...DEFAULT_BLOG_SETTINGS.landingPages,
+      ...(source.landingPages || {})
+    },
+    categories
+  };
+}
+
+export function getBlogCategoryConfig(settings = DEFAULT_BLOG_SETTINGS, category = '') {
+  const blogSettings = normalizeBlogSettings(settings);
+  const name = getBlogCategoryName(category);
+
+  if (blogSettings.categories[name]) {
+    return {
+      name,
+      ...blogSettings.categories[name]
+    };
+  }
+
+  const [fallbackName, fallbackConfig] = Object.entries(blogSettings.categories)[0] || [
+    'Bridal Blouses',
+    DEFAULT_BLOG_SETTINGS.categories['Bridal Blouses']
+  ];
+
+  return {
+    name: fallbackName,
+    ...fallbackConfig
+  };
+}
+
+function getCategoryCta(categoryConfig = {}) {
+  if (!categoryConfig.primaryCta && !categoryConfig.ctaDescription) return null;
+
+  return {
+    id: `category-cta-${slugify(categoryConfig.name || categoryConfig.primaryCta || 'blog')}`,
+    heading: categoryConfig.primaryCta || 'Explore Shrusara Services',
+    description: categoryConfig.ctaDescription || categoryConfig.purpose || '',
+    buttonText: categoryConfig.primaryCta || 'Learn More',
+    buttonUrl: categoryConfig.primaryCtaLink || '',
+    whatsappNumber: '',
+    whatsappMessage: ''
+  };
+}
+
 export function createBlock(type = 'paragraph') {
   const base = {
     id: newId('block'),
@@ -310,7 +560,7 @@ export function createEmptyBlogPost() {
     metaTitle: '',
     metaDescription: '',
     slug: '',
-    category: 'Bridal Blouse',
+    category: 'Bridal Blouses',
     tags: [],
     author: DEFAULT_BLOG_AUTHOR,
     status: 'draft',
@@ -377,7 +627,7 @@ export function normalizeImage(image, fallbackAlt = '') {
 
 export function normalizePost(post = {}) {
   const empty = createEmptyBlogPost();
-  const category = post.category || post.tag || empty.category;
+  const category = getBlogCategoryName(post.category || post.tag || empty.category);
   const title = post.title || '';
   const decodedContent = decodeSimpleBlogContent(post.content);
   const rawSimpleSections = Array.isArray(post.simpleSections) && post.simpleSections.length
@@ -468,6 +718,28 @@ export function normalizePost(post = {}) {
   };
 }
 
+export function applyBlogSettingsToPost(post = {}, settings = DEFAULT_BLOG_SETTINGS) {
+  const normalized = normalizePost(post);
+  const blogSettings = normalizeBlogSettings(settings);
+  const categoryConfig = getBlogCategoryConfig(blogSettings, normalized.category);
+  const categoryFaqs = (categoryConfig.faqs || []).filter((faq) => faq.question || faq.answer);
+  const categoryCta = getCategoryCta(categoryConfig);
+  const nextPost = {
+    ...normalized,
+    category: categoryConfig.name,
+    tag: categoryConfig.name,
+    faqs: categoryFaqs.length ? categoryFaqs : normalized.faqs,
+    ctas: categoryCta ? [categoryCta] : normalized.ctas,
+    blogSettings,
+    categoryConfig
+  };
+
+  return {
+    ...nextPost,
+    readingTime: calculateReadingTime(nextPost)
+  };
+}
+
 export function getPostUrl(post = {}) {
   return `${BLOG_BASE_PATH}/${post.slug || slugify(post.title || post.id)}`;
 }
@@ -478,7 +750,8 @@ export function getAbsoluteUrl(pathOrUrl = '') {
 }
 
 export function buildWhatsAppUrl(number, message) {
-  const raw = String(number || '').replace(/\D/g, '');
+  const digits = String(number || '').replace(/\D/g, '');
+  const raw = digits.length === 10 ? `91${digits}` : digits;
   if (!raw) return '';
   return `https://wa.me/${raw}?text=${encodeURIComponent(message || '')}`;
 }

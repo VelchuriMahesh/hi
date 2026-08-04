@@ -5,6 +5,8 @@ const DEFAULT_POST_IMAGE = 'https://images.unsplash.com/photo-1496747611176-8432
 const BLOG_BASE_PATH = '/bridal-fashion-blog-bangalore';
 const DEFAULT_AUTHOR = 'Shrusara Fashion Boutique';
 const SIMPLE_BLOG_SECTION_COUNT = 5;
+const BLOG_SETTINGS_COLLECTION = 'blogSettings';
+const BLOG_SETTINGS_DOC_ID = 'global';
 
 function getPublicSiteUrl() {
   return String(process.env.SITE_URL || process.env.CLIENT_URL || 'https://www.shrusara.com').replace(/\/+$/, '');
@@ -214,7 +216,7 @@ function normalizePostPayload(body, currentData = {}) {
   const status = ['draft', 'published', 'scheduled', 'private'].includes(body.status)
     ? body.status
     : currentData.status || 'draft';
-  const category = toStringValue(body.category, currentData.category || body.tag || 'Bridal Blouse');
+  const category = toStringValue(body.category, currentData.category || body.tag || 'Bridal Blouses');
   const simpleSections = normalizeSimpleSections(body.simpleSections ?? currentData.simpleSections ?? [], altText || title);
   const firstSimpleImage = simpleSections.find((section) => section.image.url)?.image;
   const requestedFeaturedImage = normalizeImage(body.featuredImage ?? currentData.featuredImage ?? '', altText || title);
@@ -340,6 +342,58 @@ export async function listPosts(req, res, next) {
     res.json({ items });
   } catch (error) {
     console.error("🔥 Firestore Error in listPosts:", error.message);
+    next(error);
+  }
+}
+
+/**
+ * GET /api/posts/settings
+ */
+export async function getBlogSettings(req, res, next) {
+  try {
+    const snapshot = await db.collection(BLOG_SETTINGS_COLLECTION).doc(BLOG_SETTINGS_DOC_ID).get();
+
+    res.json({
+      item: snapshot.exists
+        ? {
+            id: snapshot.id,
+            ...serializeFirestore(snapshot.data())
+          }
+        : null
+    });
+  } catch (error) {
+    console.error('Firestore Error in getBlogSettings:', error.message);
+    next(error);
+  }
+}
+
+/**
+ * PUT /api/posts/settings
+ */
+export async function updateBlogSettings(req, res, next) {
+  try {
+    const reference = db.collection(BLOG_SETTINGS_COLLECTION).doc(BLOG_SETTINGS_DOC_ID);
+    const settings = { ...(req.body || {}) };
+    delete settings.id;
+    delete settings.createdAt;
+    delete settings.updatedAt;
+
+    const payload = {
+      ...settings,
+      updatedAt: Timestamp.now()
+    };
+
+    await reference.set(payload, { merge: true });
+
+    const snapshot = await reference.get();
+    res.json({
+      item: {
+        id: snapshot.id,
+        ...serializeFirestore(snapshot.data())
+      }
+    });
+  } catch (error) {
+    console.error('Firestore Error in updateBlogSettings:', error.message);
     next(error);
   }
 }
