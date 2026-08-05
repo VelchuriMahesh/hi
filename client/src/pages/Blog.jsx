@@ -145,14 +145,24 @@ function BlogCmsSections({ settings, whatsappLink }) {
       <section className="blg-shell blg-links-panel">
         <div>
           <p className="blg-sec-eyebrow">Useful Links</p>
-          <h2 className="blg-sec-h2">Explore Shrusara Services</h2>
+          <h2 className="blg-sec-h2">Website &amp; Landing Page URLs</h2>
         </div>
-        <div className="blg-link-grid">
-          {[...siteLinks, ...landingLinks].map(([label, url]) => (
-            <a key={`${label}-${url}`} href={url} target="_blank" rel="noopener noreferrer">
-              {label}
-            </a>
-          ))}
+        <div className="blg-link-groups">
+          {[
+            ['Website Links', siteLinks],
+            ['Landing Page URLs', landingLinks]
+          ].map(([groupLabel, links]) => links.length ? (
+            <div key={groupLabel} className="blg-link-group">
+              <h3>{groupLabel}</h3>
+              <div className="blg-link-grid">
+                {links.map(([label, url]) => (
+                  <a key={`${label}-${url}`} href={url} target="_blank" rel="noopener noreferrer">
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : null)}
         </div>
       </section>
 
@@ -165,11 +175,11 @@ function BlogCmsSections({ settings, whatsappLink }) {
 
         <div className="blg-category-grid">
           {Object.entries(settings.categories || {}).map(([category, config]) => (
-            <details key={category} className="blg-category-card">
-              <summary>
-                <span>{category}</span>
-                <small>{config.purpose}</small>
-              </summary>
+            <article key={category} className="blg-category-card">
+              <header>
+                <h3>{category}</h3>
+                {config.purpose ? <p>{config.purpose}</p> : null}
+              </header>
               <div className="blg-category-body">
                 {(config.faqs || []).filter((faq) => faq.question || faq.answer).map((faq, index) => (
                   <div key={faq.id || `${category}-${index}`} className="blg-mini-faq">
@@ -183,7 +193,7 @@ function BlogCmsSections({ settings, whatsappLink }) {
                   </a>
                 ) : null}
               </div>
-            </details>
+            </article>
           ))}
         </div>
       </section>
@@ -447,15 +457,17 @@ export default function Blog() {
         .blg-cms-contact p { color: rgba(255,255,255,.78); }
         .blg-cms-contact a { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; border-radius: 50px; background: var(--c-accent); color: #fff; padding: 14px 24px; text-decoration: none; font: 700 13px/1 'Poppins',sans-serif; }
         .blg-links-panel { display: grid; grid-template-columns: minmax(0,.42fr) minmax(0,1fr); gap: 24px; align-items: start; padding-bottom: 36px; }
+        .blg-link-groups { display: grid; gap: 18px; }
+        .blg-link-group { display: grid; gap: 10px; }
+        .blg-link-group h3 { color: var(--c-primary); font: 700 .95rem/1.35 'Poppins',sans-serif; }
         .blg-link-grid { display: flex; flex-wrap: wrap; gap: 10px; }
         .blg-link-grid a { border: 1px solid rgba(62,44,35,.16); border-radius: 50px; color: var(--c-primary); padding: 11px 18px; text-decoration: none; font: 700 12px/1 'Poppins',sans-serif; background: #fff; }
         .blg-category-library { padding-top: 36px; }
         .blg-category-grid { margin-top: 28px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
         .blg-category-card { border: 1px solid rgba(62,44,35,.08); border-radius: 20px; background: #fff; padding: 18px; box-shadow: 0 2px 18px rgba(62,44,35,.06); }
-        .blg-category-card summary { cursor: pointer; list-style: none; display: grid; gap: 8px; }
-        .blg-category-card summary::-webkit-details-marker { display: none; }
-        .blg-category-card summary span { color: var(--c-primary); font: 700 1.15rem/1.25 'Playfair Display',serif; }
-        .blg-category-card summary small { color: var(--c-muted); font: 500 .78rem/1.55 'Poppins',sans-serif; }
+        .blg-category-card header { display: grid; gap: 8px; }
+        .blg-category-card header h3 { color: var(--c-primary); font: 700 1.15rem/1.25 'Playfair Display',serif; }
+        .blg-category-card header p { color: var(--c-muted); font: 500 .78rem/1.55 'Poppins',sans-serif; }
         .blg-category-body { margin-top: 18px; display: grid; gap: 12px; }
         .blg-mini-faq { border-top: 1px solid rgba(62,44,35,.08); padding-top: 12px; }
         .blg-mini-faq h3 { color: var(--c-primary); font: 700 .9rem/1.45 'Poppins',sans-serif; }

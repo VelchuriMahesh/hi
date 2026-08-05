@@ -132,11 +132,16 @@ export const fetchPosts = () => request('/posts');
 export const fetchBlogSettings = () =>
   request('/posts/settings', { timeoutMs: 6000 })
     .then((response) => {
-      if (response.item) {
-        cacheBlogSettings(response.item);
+      const item = response.item || getCachedBlogSettings();
+
+      if (item) {
+        cacheBlogSettings(item);
       }
 
-      return response;
+      return {
+        ...response,
+        item
+      };
     })
     .catch((error) => {
       if (!canUseLocalBlogSettingsFallback(error)) {

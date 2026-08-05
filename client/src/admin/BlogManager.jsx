@@ -22,6 +22,7 @@ import {
   createEmptyImage,
   encodeSimpleBlogContent,
   formatDate,
+  getBlogCategoryConfig,
   getPostUrl,
   normalizeBlogSettings,
   normalizeImage,
@@ -775,6 +776,17 @@ function BlogSettingsPanel({
           </details>
         ))}
       </div>
+
+      <div className="mt-6 flex justify-end">
+        <button
+          className="button-primary"
+          type="button"
+          onClick={onSave}
+          disabled={saving}
+        >
+          {saving ? 'Saving Settings...' : 'Save Blog Settings'}
+        </button>
+      </div>
     </details>
   );
 }
@@ -823,6 +835,10 @@ export default function BlogManager() {
 
   const normalizedBlogSettings = useMemo(() => normalizeBlogSettings(blogSettings), [blogSettings]);
   const categoryNames = useMemo(() => Object.keys(normalizedBlogSettings.categories), [normalizedBlogSettings]);
+  const selectedCategoryConfig = useMemo(
+    () => getBlogCategoryConfig(normalizedBlogSettings, form.category),
+    [normalizedBlogSettings, form.category]
+  );
   const relatedCandidates = useMemo(
     () => sortPosts(posts).filter((post) => post.id && post.id !== selectedId),
     [posts, selectedId]
@@ -1279,6 +1295,25 @@ export default function BlogManager() {
                         {categoryNames.map((category) => <option key={category} value={category}>{category}</option>)}
                       </select>
                     </label>
+                    <div className="mt-4 rounded-2xl border border-cocoa/15 bg-white p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cocoa">Auto-loaded category content</p>
+                      <h3 className="mt-2 font-heading text-xl text-ink">{selectedCategoryConfig.name}</h3>
+                      {selectedCategoryConfig.purpose ? (
+                        <p className="mt-1 text-sm leading-6 text-stone-600">{selectedCategoryConfig.purpose}</p>
+                      ) : null}
+                      <div className="mt-4 rounded-xl bg-linen p-3 text-sm leading-6 text-stone-700">
+                        <p><span className="font-semibold text-ink">CTA:</span> {selectedCategoryConfig.primaryCta || 'Not set'}</p>
+                        <p className="break-words"><span className="font-semibold text-ink">CTA Link:</span> {selectedCategoryConfig.primaryCtaLink || 'Not set'}</p>
+                      </div>
+                      <div className="mt-4 space-y-3">
+                        {(selectedCategoryConfig.faqs || []).filter((faq) => faq.question || faq.answer).map((faq, index) => (
+                          <div key={faq.id || index} className="rounded-xl border border-ink/10 bg-linen p-3">
+                            <p className="text-sm font-semibold text-ink">{faq.question}</p>
+                            <p className="mt-1 text-sm leading-6 text-stone-600">{faq.answer}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                     <label className={`${labelClass()} mt-4`}>
                       Author
                       <input className={inputClass()} value={form.author} onChange={(event) => updateField('author', event.target.value)} />

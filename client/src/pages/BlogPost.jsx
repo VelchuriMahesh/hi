@@ -117,10 +117,10 @@ function renderBlock(block) {
 
   if (block.type === 'faq') {
     return (
-      <details key={block.id}>
-        <summary>{block.question}</summary>
+      <section key={block.id} className="bp-inline-faq">
+        <h3>{block.question}</h3>
         <p>{block.answer}</p>
-      </details>
+      </section>
     );
   }
 
@@ -174,6 +174,17 @@ function BlogGlobalSections({ settings }) {
   const normalized = normalizeBlogSettings(settings);
   const whatsappUrl = buildWhatsAppUrl(normalized.whatsappNumber, normalized.whatsappMessage);
   const signatureLines = String(normalized.authorSignature || '').split('\n');
+  const siteLinks = [
+    ['Home', normalized.homepageUrl],
+    ['About Shrusara', normalized.aboutUrl],
+    ['Contact', normalized.contactUrl]
+  ].filter(([, url]) => url);
+  const landingLinks = [
+    ['Bridal Blouse', normalized.landingPages?.bridal],
+    ['Designer Outfits', normalized.landingPages?.designer],
+    ['Occasion Wear', normalized.landingPages?.occasionWear],
+    ['Ready to Wear Saree', normalized.landingPages?.readyToWearSaree]
+  ].filter(([, url]) => url);
 
   return (
     <section className="bp-global">
@@ -202,10 +213,20 @@ function BlogGlobalSections({ settings }) {
         ))}
       </div>
 
-      <div className="bp-global-links">
-        {normalized.homepageUrl ? <a href={normalized.homepageUrl}>Home</a> : null}
-        {normalized.aboutUrl ? <a href={normalized.aboutUrl}>About Shrusara</a> : null}
-        {normalized.contactUrl ? <a href={normalized.contactUrl}>Contact</a> : null}
+      <div className="bp-global-link-groups">
+        {[
+          ['Website Links', siteLinks],
+          ['Landing Page URLs', landingLinks]
+        ].map(([groupLabel, links]) => links.length ? (
+          <div key={groupLabel} className="bp-global-link-group">
+            <h3>{groupLabel}</h3>
+            <div className="bp-global-links">
+              {links.map(([label, url]) => (
+                <a key={`${label}-${url}`} href={url}>{label}</a>
+              ))}
+            </div>
+          </div>
+        ) : null)}
       </div>
     </section>
   );
@@ -421,11 +442,16 @@ export default function BlogPost() {
         .bp-global-whatsapp { display: inline-flex; justify-content: center; margin-top: 18px; border-radius: 999px; background: #9F6B4E; color: #fff; padding: 13px 22px; text-decoration: none; font: 700 13px/1 Poppins,sans-serif; }
         .bp-global-signature { border-left: 4px solid #C8A96A; background: #fff; padding: 22px 24px; color: #514741; font: 600 .94rem/1.75 Poppins,sans-serif; }
         .bp-global-signature p { margin: 0; }
+        .bp-global-link-groups { display: grid; gap: 16px; }
+        .bp-global-link-group { display: grid; gap: 10px; }
+        .bp-global-link-group h3 { color: #2f2723; font: 700 .95rem/1.35 Poppins,sans-serif; }
         .bp-global-links { display: flex; flex-wrap: wrap; gap: 10px; }
         .bp-global-links a { border: 1px solid rgba(62,44,35,.14); border-radius: 999px; color: #3E2C23; padding: 10px 16px; text-decoration: none; font: 700 12px/1 Poppins,sans-serif; }
         .bp-faq, .bp-related, .bp-share { margin-top: 42px; display: grid; gap: 14px; }
-        .bp-faq details { border: 1px solid rgba(62,44,35,.1); border-radius: 18px; padding: 18px; background: #F8F6F3; }
-        .bp-faq summary { cursor: pointer; font-weight: 700; }
+        .bp-faq-grid { display: grid; gap: 12px; }
+        .bp-faq-item, .bp-inline-faq { border: 1px solid rgba(62,44,35,.1); border-radius: 18px; padding: 18px; background: #F8F6F3; }
+        .bp-faq-item h3, .bp-inline-faq h3 { color: #2f2723; font: 700 1rem/1.45 Poppins,sans-serif; }
+        .bp-faq-item p, .bp-inline-faq p { margin-top: 8px; color: #61564f; font: 400 .95rem/1.75 Poppins,sans-serif; }
         .bp-related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
         .bp-related-card { border-radius: 20px; background: #F8F6F3; padding: 16px; text-decoration: none; color: #2f2723; }
         .bp-share-row { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -549,12 +575,14 @@ export default function BlogPost() {
             {(normalized.faqs || []).some((faq) => faq.question || faq.answer) ? (
               <section className="bp-faq">
                 <h2>FAQs</h2>
-                {normalized.faqs.filter((faq) => faq.question || faq.answer).map((faq) => (
-                  <details key={faq.id}>
-                    <summary>{faq.question}</summary>
-                    <p>{faq.answer}</p>
-                  </details>
-                ))}
+                <div className="bp-faq-grid">
+                  {normalized.faqs.filter((faq) => faq.question || faq.answer).map((faq) => (
+                    <article key={faq.id} className="bp-faq-item">
+                      <h3>{faq.question}</h3>
+                      <p>{faq.answer}</p>
+                    </article>
+                  ))}
+                </div>
               </section>
             ) : null}
 
