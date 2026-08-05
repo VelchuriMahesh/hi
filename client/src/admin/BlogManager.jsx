@@ -33,6 +33,13 @@ import {
 const SECTION_COUNT = 5;
 const AUTO_SAVE_KEY = 'shrusara-simple-blog-draft';
 const LIVE_SITE_URL = 'https://www.shrusara.com';
+const BLOG_PAGE_SIZES = [10, 25, 50];
+const BLOG_SORT_OPTIONS = [
+  { value: 'updated-desc', label: 'Recently Updated' },
+  { value: 'created-desc', label: 'Newest Created' },
+  { value: 'title-asc', label: 'Title A-Z' },
+  { value: 'status-asc', label: 'Status' }
+];
 
 function inputClass(extra = '') {
   return `w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm text-ink outline-none transition focus:border-cocoa ${extra}`;
@@ -230,6 +237,31 @@ function sortPosts(items) {
     const rightDate = new Date(right.updatedAt || right.createdAt || 0).getTime();
     return rightDate - leftDate;
   });
+}
+
+function sortBlogs(items, sortMode = 'updated-desc') {
+  return [...items].sort((left, right) => {
+    if (sortMode === 'title-asc') {
+      return String(left.title || left.seoTitle || '').localeCompare(String(right.title || right.seoTitle || ''));
+    }
+
+    if (sortMode === 'status-asc') {
+      return String(left.status || '').localeCompare(String(right.status || ''))
+        || String(left.title || '').localeCompare(String(right.title || ''));
+    }
+
+    const leftDateField = sortMode === 'created-desc' ? left.createdAt : left.updatedAt || left.createdAt;
+    const rightDateField = sortMode === 'created-desc' ? right.createdAt : right.updatedAt || right.createdAt;
+    return new Date(rightDateField || 0).getTime() - new Date(leftDateField || 0).getTime();
+  });
+}
+
+function getStatusBadgeClass(status = '') {
+  if (status === 'published') return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+  if (status === 'draft') return 'border-amber-200 bg-amber-50 text-amber-700';
+  if (status === 'scheduled') return 'border-sky-200 bg-sky-50 text-sky-700';
+  if (status === 'private') return 'border-stone-200 bg-stone-100 text-stone-600';
+  return 'border-ink/10 bg-linen text-stone-600';
 }
 
 function createNewSimpleBlog() {
@@ -561,7 +593,7 @@ function BlogSettingsPanel({
   const normalized = normalizeBlogSettings(settings);
 
   return (
-    <details open className="mb-6 rounded-[28px] bg-white p-5 shadow-soft md:p-7">
+    <details className="mb-6 rounded-[28px] bg-white p-5 shadow-soft md:p-7">
       <summary className="cursor-pointer list-none">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -798,6 +830,11 @@ export default function BlogManager() {
   const [selectedId, setSelectedId] = useState(null);
   const [slugEdited, setSlugEdited] = useState(false);
   const [query, setQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [sortMode, setSortMode] = useState('updated-desc');
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [settingsSaving, setSettingsSaving] = useState(false);
@@ -818,27 +855,54 @@ export default function BlogManager() {
     window.localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(draft));
   }, [form]);
 
-  const filteredPosts = useMemo(() => {
-    const term = query.trim().toLowerCase();
-    const items = sortPosts(posts);
-
-    if (!term) return items;
-
-    return items.filter((post) =>
-      [post.title, post.seoTitle, post.metaDescription, post.category, post.author, post.status]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase()
-        .includes(term)
-    );
-  }, [posts, query]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, statusFilter, categoryFilter, sortMode, pageSize]);
 
   const normalizedBlogSettings = useMemo(() => normalizeBlogSettings(blogSettings), [blogSettings]);
   const categoryNames = useMemo(() => Object.keys(normalizedBlogSettings.categories), [normalizedBlogSettings]);
+  const blogStats = useMemo(() => {
+    const statusCounts = posts.reduce((counts, post) => {
+      const status = post.status || 'draft';
+      counts[status] = (counts[status] || 0) + 1;
+      return counts;
+    }, {});
+
+    return {
+      total: posts.length,
+      published: statusCounts.published || 0,
+      draft: statusCounts.draft || 0,
+      scheduled: statusCounts.scheduled || 0,
+      private: statusCounts.private || 0
+    };
+  }, [posts]);
+
+  const filteredPosts = useMemo(() => {
+    const term = query.trim().toLowerCase();
+    const items = sortBlogs(posts, sortMode);
+
+    return items.filter((post) => {
+      const matchesSearch = !term || [post.title, post.seoTitle, post.metaDescription, post.category, post.author, post.status, post.slug]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .includes(term);
+      const matchesStatus = statusFilter === 'all' || post.status === statusFilter;
+      const matchesCategory = categoryFilter === 'all' || post.category === categoryFilter;
+
+      return matchesSearch && matchesStatus && matchesCategory;
+    });
+  }, [posts, query, statusFilter, categoryFilter, sortMode]);
+
   const selectedCategoryConfig = useMemo(
     () => getBlogCategoryConfig(normalizedBlogSettings, form.category),
     [normalizedBlogSettings, form.category]
   );
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / pageSize));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const pageStartIndex = (safeCurrentPage - 1) * pageSize;
+  const pageEndIndex = Math.min(pageStartIndex + pageSize, filteredPosts.length);
+  const paginatedPosts = filteredPosts.slice(pageStartIndex, pageEndIndex);
   const relatedCandidates = useMemo(
     () => sortPosts(posts).filter((post) => post.id && post.id !== selectedId),
     [posts, selectedId]
@@ -956,6 +1020,7 @@ export default function BlogManager() {
     setSlugEdited(false);
     setMessage('');
     setForm(createNewSimpleBlog());
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function editPost(post) {
@@ -1147,24 +1212,44 @@ export default function BlogManager() {
   return (
     <>
       <PageMeta
-        title="Simple Blog Manager | Shrusara Admin"
-        description="Create SEO-friendly Shrusara blog posts with five image and paragraph sections."
+        title="Advanced Blog Manager | Shrusara Admin"
+        description="Create, filter, edit, and publish SEO-friendly Shrusara blog posts from the admin panel."
         robots="noindex,nofollow"
       />
 
       <main className="min-h-screen bg-linen px-4 py-8 text-ink">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <div>
+          <div className="mb-6 rounded-[32px] bg-white p-5 shadow-soft md:p-7">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cocoa">Admin Blog</p>
-              <h1 className="mt-2 font-heading text-4xl text-ink">Simple Blog Editor</h1>
+                <h1 className="mt-2 font-heading text-4xl text-ink">Advanced Blog Manager</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
-                Add SEO title, meta description, one alt text, and five paragraph/image sections. Published blogs appear automatically on the public blog page.
+                  Create, search, filter, duplicate, and update 100+ blogs without losing your place.
+                  Category CTA and Q&A content auto-load from Blog Settings.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
               <Link className="button-secondary" to="/admin">Back to Dashboard</Link>
-              <button className="button-primary" type="button" onClick={startNewBlog}>New Blog</button>
+                <button className="button-primary" type="button" onClick={startNewBlog}>
+                  + Create New Blog
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {[
+                ['Total Blogs', blogStats.total],
+                ['Published', blogStats.published],
+                ['Drafts', blogStats.draft],
+                ['Scheduled', blogStats.scheduled],
+                ['Private', blogStats.private]
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-2xl border border-ink/10 bg-linen px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">{label}</p>
+                  <p className="mt-1 font-heading text-3xl text-ink">{value}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -1186,47 +1271,177 @@ export default function BlogManager() {
           />
 
           <section className="grid gap-6 xl:grid-cols-[360px_1fr]">
-            <aside className="space-y-4">
+            <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
               <div className="rounded-[28px] bg-white p-5 shadow-soft">
-                <div className="flex items-center justify-between gap-3">
-                  <h2 className="font-heading text-2xl">Blogs</h2>
-                  <span className="rounded-full bg-linen px-3 py-1 text-xs font-semibold text-cocoa">{posts.length}</span>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cocoa">Blog Library</p>
+                    <h2 className="mt-1 font-heading text-2xl">Manage Blogs</h2>
+                  </div>
+                  <button
+                    className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-soft"
+                    type="button"
+                    onClick={startNewBlog}
+                  >
+                    + New
+                  </button>
                 </div>
+
                 <input
                   className={`${inputClass()} mt-4`}
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search blogs"
+                  placeholder="Search title, slug, category, status..."
                 />
 
-                <div className="mt-4 overflow-hidden rounded-2xl border border-ink/10">
+                <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                  <label className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
+                    Status
+                    <select className={`${inputClass()} mt-1`} value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+                      <option value="all">All Statuses</option>
+                      {BLOG_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
+                    </select>
+                  </label>
+
+                  <label className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
+                    Category
+                    <select className={`${inputClass()} mt-1`} value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
+                      <option value="all">All Categories</option>
+                      {categoryNames.map((category) => <option key={category} value={category}>{category}</option>)}
+                    </select>
+                  </label>
+
+                  <label className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
+                    Sort
+                    <select className={`${inputClass()} mt-1`} value={sortMode} onChange={(event) => setSortMode(event.target.value)}>
+                      {BLOG_SORT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                    </select>
+                  </label>
+
+                  <label className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
+                    Per Page
+                    <select className={`${inputClass()} mt-1`} value={pageSize} onChange={(event) => setPageSize(Number(event.target.value))}>
+                      {BLOG_PAGE_SIZES.map((size) => <option key={size} value={size}>{size}</option>)}
+                    </select>
+                  </label>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-stone-500">
+                  <span>
+                    Showing {filteredPosts.length ? pageStartIndex + 1 : 0}-{pageEndIndex} of {filteredPosts.length}
+                  </span>
+                  <button
+                    className="text-cocoa"
+                    type="button"
+                    onClick={() => {
+                      setQuery('');
+                      setStatusFilter('all');
+                      setCategoryFilter('all');
+                      setSortMode('updated-desc');
+                    }}
+                  >
+                    Clear filters
+                  </button>
+                </div>
+
+                <div className="mt-4 max-h-[68vh] overflow-y-auto rounded-2xl border border-ink/10">
                   {loading ? (
                     <p className="bg-white p-4 text-sm text-stone-500">Loading blogs...</p>
-                  ) : filteredPosts.length ? (
-                    filteredPosts.map((post) => (
-                      <article key={post.id} className="border-b border-ink/10 bg-white p-4 last:border-b-0">
-                        <button className="block w-full text-left" type="button" onClick={() => editPost(post)}>
-                          <span className="text-sm font-semibold text-ink">{post.title || 'Untitled blog'}</span>
-                          <span className="mt-1 block text-xs text-stone-500">
-                            {post.category} | {post.status} | {formatDate(post.updatedAt || post.createdAt)}
-                          </span>
-                        </button>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          <button className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" type="button" onClick={() => editPost(post)}>Edit</button>
-                          <a className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" href={getLivePreviewUrl(getPostUrl(post))} target="_blank" rel="noreferrer">Preview</a>
-                          <button className="rounded-full border border-ink/10 px-3 py-1 text-xs font-semibold text-ink" type="button" onClick={() => duplicateExistingPost(post)}>Duplicate</button>
-                          <button className="rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600" type="button" onClick={() => removePost(post)}>Delete</button>
-                        </div>
-                      </article>
-                    ))
+                  ) : paginatedPosts.length ? (
+                    paginatedPosts.map((post) => {
+                      const isSelected = selectedId === post.id;
+
+                      return (
+                        <article
+                          key={post.id}
+                          className={`border-b border-ink/10 bg-white p-4 transition last:border-b-0 ${isSelected ? 'bg-linen ring-2 ring-cocoa/25' : 'hover:bg-linen/60'}`}
+                        >
+                          <button className="block w-full text-left" type="button" onClick={() => editPost(post)}>
+                            <span className="line-clamp-2 text-sm font-semibold leading-5 text-ink">{post.title || 'Untitled blog'}</span>
+                            <span className="mt-2 flex flex-wrap items-center gap-2">
+                              <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold capitalize ${getStatusBadgeClass(post.status)}`}>
+                                {post.status || 'draft'}
+                              </span>
+                              <span className="rounded-full border border-ink/10 bg-white px-2.5 py-1 text-[11px] font-semibold text-stone-600">
+                                {post.category || 'No category'}
+                              </span>
+                            </span>
+                            <span className="mt-2 block text-xs text-stone-500">
+                              Updated {formatDate(post.updatedAt || post.createdAt)}
+                            </span>
+                          </button>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            <button className="rounded-full border border-ink/10 bg-white px-3 py-1 text-xs font-semibold text-ink" type="button" onClick={() => editPost(post)}>Edit</button>
+                            <a className="rounded-full border border-ink/10 bg-white px-3 py-1 text-xs font-semibold text-ink" href={getLivePreviewUrl(getPostUrl(post))} target="_blank" rel="noreferrer">Preview</a>
+                            <button className="rounded-full border border-ink/10 bg-white px-3 py-1 text-xs font-semibold text-ink" type="button" onClick={() => duplicateExistingPost(post)}>Duplicate</button>
+                            <button className="rounded-full border border-red-200 bg-white px-3 py-1 text-xs font-semibold text-red-600" type="button" onClick={() => removePost(post)}>Delete</button>
+                          </div>
+                        </article>
+                      );
+                    })
                   ) : (
-                    <p className="bg-white p-4 text-sm text-stone-500">No blogs found.</p>
+                    <div className="bg-white p-5 text-sm text-stone-500">
+                      <p>No blogs found for these filters.</p>
+                      <button className="mt-3 text-sm font-semibold text-cocoa" type="button" onClick={startNewBlog}>
+                        Create a new blog
+                      </button>
+                    </div>
                   )}
+                </div>
+
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <button
+                    className="rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold text-ink disabled:opacity-40"
+                    type="button"
+                    disabled={safeCurrentPage <= 1}
+                    onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                  >
+                    Previous
+                  </button>
+                  <span className="text-xs font-semibold text-stone-500">
+                    Page {safeCurrentPage} of {totalPages}
+                  </span>
+                  <button
+                    className="rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold text-ink disabled:opacity-40"
+                    type="button"
+                    disabled={safeCurrentPage >= totalPages}
+                    onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
             </aside>
 
             <form className="space-y-6" onSubmit={savePost}>
+              <section className="rounded-[28px] bg-white p-5 shadow-soft md:p-7">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">
+                      {selectedId ? 'Editing Blog' : 'Create New Blog'}
+                    </p>
+                    <h2 className="mt-2 font-heading text-3xl text-ink">
+                      {form.seoTitle || form.title || 'Untitled Blog Draft'}
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-stone-600">
+                      {selectedId
+                        ? 'Update the article details below. Changes are saved when you click Update Blog.'
+                        : 'Fill the SEO details, choose a category, add images and sections, then create the blog.'}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`rounded-full border px-3 py-1.5 text-xs font-semibold capitalize ${getStatusBadgeClass(form.status)}`}>
+                      {form.status || 'draft'}
+                    </span>
+                    {selectedId ? (
+                      <button className="button-secondary" type="button" onClick={startNewBlog}>
+                        + Create Another
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
+              </section>
+
               <section className="rounded-[28px] bg-white p-5 shadow-soft md:p-7">
                 <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
                   <div className="space-y-4">
@@ -1389,7 +1604,7 @@ export default function BlogManager() {
                     Save & Preview
                   </button>
                   <button className="button-primary" type="submit" disabled={saving}>
-                    {saving ? 'Saving...' : selectedId ? 'Update Blog' : 'Publish Blog'}
+                    {saving ? 'Saving...' : selectedId ? 'Update Blog' : 'Create Blog'}
                   </button>
                 </div>
               </div>
