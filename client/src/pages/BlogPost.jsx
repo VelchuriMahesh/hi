@@ -216,7 +216,7 @@ function BlogGlobalSections({ settings }) {
       <div className="bp-global-link-groups">
         {[
           ['Website Links', siteLinks],
-          ['Landing Page URLs', landingLinks]
+          ['Explore Our Customization Services', landingLinks]
         ].map(([groupLabel, links]) => links.length ? (
           <div key={groupLabel} className="bp-global-link-group">
             <h3>{groupLabel}</h3>
@@ -608,6 +608,7 @@ export default function BlogPost() {
                 <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer">Facebook</a>
                 <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(normalized.title)}`} target="_blank" rel="noreferrer">Twitter</a>
                 <a href={`https://wa.me/?text=${encodeURIComponent(`${normalized.title} ${shareUrl}`)}`} target="_blank" rel="noreferrer">WhatsApp</a>
+                <a href="https://www.instagram.com/shrusara_fashion_boutique/" target="_blank" rel="noreferrer">Instagram</a>
               </div>
             </section>
           </article>

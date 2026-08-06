@@ -145,12 +145,12 @@ function BlogCmsSections({ settings, whatsappLink }) {
       <section className="blg-shell blg-links-panel">
         <div>
           <p className="blg-sec-eyebrow">Useful Links</p>
-          <h2 className="blg-sec-h2">Website &amp; Landing Page URLs</h2>
+          <h2 className="blg-sec-h2">Website Links &amp; Customization Services</h2>
         </div>
         <div className="blg-link-groups">
           {[
             ['Website Links', siteLinks],
-            ['Landing Page URLs', landingLinks]
+            ['Explore Our Customization Services', landingLinks]
           ].map(([groupLabel, links]) => links.length ? (
             <div key={groupLabel} className="blg-link-group">
               <h3>{groupLabel}</h3>
@@ -182,10 +182,10 @@ function BlogCmsSections({ settings, whatsappLink }) {
               </header>
               <div className="blg-category-body">
                 {(config.faqs || []).filter((faq) => faq.question || faq.answer).map((faq, index) => (
-                  <div key={faq.id || `${category}-${index}`} className="blg-mini-faq">
-                    <h3>{faq.question}</h3>
+                  <details key={faq.id || `${category}-${index}`} className="blg-mini-faq">
+                    <summary>{faq.question}</summary>
                     <p>{faq.answer}</p>
-                  </div>
+                  </details>
                 ))}
                 {config.primaryCtaLink ? (
                   <a className="blg-category-cta" href={config.primaryCtaLink} target="_blank" rel="noopener noreferrer">
@@ -452,9 +452,9 @@ export default function Blog() {
         .blg-cms-author p, .blg-cms-contact p { color: var(--c-muted); font: 400 .95rem/1.85 'Poppins',sans-serif; }
         .blg-cms-signature { margin-top: 24px; border-left: 4px solid var(--c-accent); background: #fff; padding: 18px 20px; color: var(--c-primary); font: 600 .92rem/1.7 'Poppins',sans-serif; }
         .blg-cms-signature p { margin: 0; color: var(--c-primary); }
-        .blg-cms-contact { background: var(--c-primary); color: #fff; }
-        .blg-cms-contact h2 { color: #fff; }
-        .blg-cms-contact p { color: rgba(255,255,255,.78); }
+        .blg-cms-contact { background: #EAE3DC; color: #2A1B14; border: 1px solid rgba(62,44,35,.12); }
+        .blg-cms-contact h2 { color: #2A1B14 !important; font-weight: 900; text-shadow: none; }
+        .blg-cms-contact p { color: #4A362B !important; font-weight: 500; }
         .blg-cms-contact a { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; border-radius: 50px; background: var(--c-accent); color: #fff; padding: 14px 24px; text-decoration: none; font: 700 13px/1 'Poppins',sans-serif; }
         .blg-links-panel { display: grid; grid-template-columns: minmax(0,.42fr) minmax(0,1fr); gap: 24px; align-items: start; padding-bottom: 36px; }
         .blg-link-groups { display: grid; gap: 18px; }
@@ -470,17 +470,20 @@ export default function Blog() {
         .blg-category-card header p { color: var(--c-muted); font: 500 .78rem/1.55 'Poppins',sans-serif; }
         .blg-category-body { margin-top: 18px; display: grid; gap: 12px; }
         .blg-mini-faq { border-top: 1px solid rgba(62,44,35,.08); padding-top: 12px; }
-        .blg-mini-faq h3 { color: var(--c-primary); font: 700 .9rem/1.45 'Poppins',sans-serif; }
+        .blg-mini-faq summary { cursor: pointer; list-style: none; color: var(--c-primary); font: 700 .9rem/1.45 'Poppins',sans-serif; }
+        .blg-mini-faq summary::-webkit-details-marker { display: none; }
+        .blg-mini-faq summary::after { content: '+'; float: right; color: var(--c-accent); font-weight: 800; }
+        .blg-mini-faq[open] summary::after { content: '-'; }
         .blg-mini-faq p { margin-top: 4px; color: var(--c-muted); font: 400 .84rem/1.65 'Poppins',sans-serif; }
         .blg-category-cta { justify-self: start; border-radius: 50px; background: var(--c-primary); color: #fff; padding: 12px 18px; text-decoration: none; font: 700 12px/1 'Poppins',sans-serif; }
 
         .blg-cta-wrap {
-          background: var(--c-primary); border-radius: 32px; padding: 64px 56px;
+          background: #EAE3DC; border: 1px solid rgba(62,44,35,.12); border-radius: 32px; padding: 64px 56px;
           text-align: center; position: relative; overflow: hidden;
         }
         .blg-cta-wrap::before {
           content: ''; position: absolute; inset: 0; pointer-events: none;
-          background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(200,169,106,.12) 0%, transparent 70%);
+          background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(200,169,106,.16) 0%, transparent 70%);
         }
         .blg-cta-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
@@ -491,11 +494,11 @@ export default function Blog() {
         .blg-cta-eyebrow::after  { content: ''; width: 22px; height: 1px; background: var(--c-accent); display: block; }
         .blg-cta-h {
           font: 700 clamp(1.6rem,2.8vw,2.4rem)/1.2 'Playfair Display',serif;
-          color: #fff; margin-bottom: 14px;
+          color: #2A1B14 !important; margin-bottom: 14px; font-weight: 900; text-shadow: none;
         }
         .blg-cta-sub {
           font: 400 1rem/1.75 'Poppins',sans-serif;
-          color: rgba(255,255,255,.75); max-width: 460px; margin: 0 auto 36px;
+          color: #4A362B !important; max-width: 460px; margin: 0 auto 36px; font-weight: 500;
         }
         .blg-cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
         .blg-cta-btn-pri {
