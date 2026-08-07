@@ -593,14 +593,14 @@ function BlogSettingsPanel({
   const normalized = normalizeBlogSettings(settings);
 
   return (
-    <details className="mb-6 rounded-[28px] bg-white p-5 shadow-soft md:p-7">
+    <details open className="mb-6 rounded-[28px] bg-white p-5 shadow-soft md:p-7">
       <summary className="cursor-pointer list-none">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">CMS Settings</p>
-            <h2 className="mt-1 font-heading text-3xl text-ink">Blog Settings &amp; Category Library</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">CMS Global Fields</p>
+            <h2 className="mt-1 font-heading text-3xl text-ink">Editable Blog Settings &amp; Category Library</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
-              Control public blog author content, contact CTA, WhatsApp message, category FAQs, primary CTAs, and blog landing links from one place.
+              Edit the About the Author text, contact section, WhatsApp message, category FAQs, CTAs, and blog landing links from one place.
             </p>
           </div>
           <button
@@ -644,7 +644,7 @@ function BlogSettingsPanel({
         </label>
 
         <label className={`${labelClass()} lg:col-span-2`}>
-          About the Author
+          About the Author Text
           <textarea
             className={inputClass('min-h-28')}
             value={normalized.aboutAuthor}
@@ -672,7 +672,7 @@ function BlogSettingsPanel({
         </label>
 
         <label className={`${labelClass()} lg:col-span-2`}>
-          Contact Section Text
+          Contact Text
           <textarea
             className={inputClass('min-h-24')}
             value={normalized.contactText}
@@ -1511,20 +1511,80 @@ export default function BlogManager() {
                       </select>
                     </label>
                     <div className="mt-4 rounded-2xl border border-cocoa/15 bg-white p-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cocoa">Auto-loaded category content</p>
-                      <h3 className="mt-2 font-heading text-xl text-ink">{selectedCategoryConfig.name}</h3>
-                      {selectedCategoryConfig.purpose ? (
-                        <p className="mt-1 text-sm leading-6 text-stone-600">{selectedCategoryConfig.purpose}</p>
-                      ) : null}
-                      <div className="mt-4 rounded-xl bg-linen p-3 text-sm leading-6 text-stone-700">
-                        <p><span className="font-semibold text-ink">CTA:</span> {selectedCategoryConfig.primaryCta || 'Not set'}</p>
-                        <p className="break-words"><span className="font-semibold text-ink">CTA Link:</span> {selectedCategoryConfig.primaryCtaLink || 'Not set'}</p>
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cocoa">Auto-loaded category content</p>
+                          <h3 className="mt-2 font-heading text-xl text-ink">{selectedCategoryConfig.name}</h3>
+                          <p className="mt-1 text-sm leading-6 text-stone-600">
+                            These FAQ and CTA fields load from the selected category and are editable here.
+                          </p>
+                        </div>
+                        <button
+                          className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white disabled:opacity-50"
+                          type="button"
+                          onClick={saveBlogSettings}
+                          disabled={settingsSaving}
+                        >
+                          {settingsSaving ? 'Saving...' : 'Save CMS'}
+                        </button>
                       </div>
+
+                      <label className={`${labelClass()} mt-4`}>
+                        Category Purpose
+                        <input
+                          className={inputClass()}
+                          value={selectedCategoryConfig.purpose || ''}
+                          onChange={(event) => updateCategoryField(selectedCategoryConfig.name, 'purpose', event.target.value)}
+                        />
+                      </label>
+
+                      <div className="mt-4 grid gap-3">
+                        <label className={labelClass()}>
+                          CTA Text
+                          <input
+                            className={inputClass()}
+                            value={selectedCategoryConfig.primaryCta || ''}
+                            onChange={(event) => updateCategoryField(selectedCategoryConfig.name, 'primaryCta', event.target.value)}
+                          />
+                        </label>
+                        <label className={labelClass()}>
+                          CTA Link
+                          <input
+                            className={inputClass()}
+                            value={selectedCategoryConfig.primaryCtaLink || ''}
+                            onChange={(event) => updateCategoryField(selectedCategoryConfig.name, 'primaryCtaLink', event.target.value)}
+                          />
+                        </label>
+                        <label className={labelClass()}>
+                          CTA Description
+                          <textarea
+                            className={inputClass('min-h-20')}
+                            value={selectedCategoryConfig.ctaDescription || ''}
+                            onChange={(event) => updateCategoryField(selectedCategoryConfig.name, 'ctaDescription', event.target.value)}
+                          />
+                        </label>
+                      </div>
+
                       <div className="mt-4 space-y-3">
-                        {(selectedCategoryConfig.faqs || []).filter((faq) => faq.question || faq.answer).map((faq, index) => (
+                        {(selectedCategoryConfig.faqs || []).map((faq, index) => (
                           <div key={faq.id || index} className="rounded-xl border border-ink/10 bg-linen p-3">
-                            <p className="text-sm font-semibold text-ink">{faq.question}</p>
-                            <p className="mt-1 text-sm leading-6 text-stone-600">{faq.answer}</p>
+                            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">FAQ {index + 1}</p>
+                            <label className={`${labelClass()} mt-3`}>
+                              Question
+                              <input
+                                className={inputClass()}
+                                value={faq.question || ''}
+                                onChange={(event) => updateCategoryFaq(selectedCategoryConfig.name, index, 'question', event.target.value)}
+                              />
+                            </label>
+                            <label className={`${labelClass()} mt-3`}>
+                              Answer
+                              <textarea
+                                className={inputClass('min-h-20')}
+                                value={faq.answer || ''}
+                                onChange={(event) => updateCategoryFaq(selectedCategoryConfig.name, index, 'answer', event.target.value)}
+                              />
+                            </label>
                           </div>
                         ))}
                       </div>
