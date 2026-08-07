@@ -564,7 +564,7 @@ export default function OccasionWearLandingPage() {
           <p className="ow-hero-note">Limited designer consultation slots available this week.</p>
         </div>
         <div className="ow-hero-img">
-          <img src="/videos/desingerhero.webp" alt="Premium customized occasion wear by Shrusara Fashion Boutique Bangalore" />
+          <img src="/videos/hii.webp" alt="Premium customized occasion wear by Shrusara Fashion Boutique Bangalore" />
           <div className="ow-hero-img-fade" />
         </div>
       </section>
