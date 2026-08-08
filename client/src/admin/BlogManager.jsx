@@ -907,7 +907,10 @@ export default function BlogManager() {
     () => sortPosts(posts).filter((post) => post.id && post.id !== selectedId),
     [posts, selectedId]
   );
-  const previewUrl = form.slug ? getLivePreviewUrl(getPostUrl(form)) : getLivePreviewUrl(`${BLOG_BASE_PATH}/new-blog`);
+  const cleanPreviewSlug = slugify(form.slug || form.seoTitle || form.title);
+  const previewUrl = cleanPreviewSlug
+    ? getLivePreviewUrl(getPostUrl({ ...form, slug: cleanPreviewSlug }))
+    : getLivePreviewUrl(`${BLOG_BASE_PATH}/new-blog`);
   const completedSections = form.simpleSections.filter((section) => section.paragraph || section.html || section.image?.url).length;
 
   async function loadPosts() {
@@ -1500,9 +1503,14 @@ export default function BlogManager() {
                         value={form.slug}
                         onChange={(event) => {
                           setSlugEdited(true);
-                          updateField('slug', slugify(event.target.value));
+                          updateField('slug', event.target.value.toLowerCase());
                         }}
+                        onBlur={() => updateField('slug', slugify(form.slug || form.seoTitle || form.title))}
+                        placeholder="best-bridal-blouse-design"
                       />
+                      <span className="block text-xs font-normal leading-5 text-stone-500">
+                        Type 3-4 words with spaces, hyphens, or symbols. It saves as a clean hyphen URL.
+                      </span>
                     </label>
                     <label className={`${labelClass()} mt-4`}>
                       Category

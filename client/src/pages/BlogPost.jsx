@@ -117,10 +117,10 @@ function renderBlock(block) {
 
   if (block.type === 'faq') {
     return (
-      <section key={block.id} className="bp-inline-faq">
-        <h3>{block.question}</h3>
+      <details key={block.id} className="bp-inline-faq">
+        <summary>{block.question}</summary>
         <p>{block.answer}</p>
-      </section>
+      </details>
     );
   }
 
@@ -427,19 +427,19 @@ export default function BlogPost() {
         .bp-table-wrap td { padding: 14px 16px; border-bottom: 1px solid rgba(62,44,35,.08); }
         .bp-video { aspect-ratio: 16/9; background: #221f1b; }
         .bp-video iframe { width: 100%; height: 100%; border: 0; }
-        .bp-cta { text-align: center; border-radius: 28px; background: #221f1b; padding: 42px 28px; color: #fff; }
-        .bp-cta h2 { color: #fff; }
-        .bp-cta p { color: rgba(255,255,255,.78); }
+        .bp-cta { text-align: center; border: 1px solid rgba(62,44,35,.12); border-radius: 28px; background: #EAE3DC; padding: 42px 28px; color: #2A1B14; }
+        .bp-cta h2 { color: #2A1B14 !important; font-weight: 900; }
+        .bp-cta p { color: #4A362B !important; font-weight: 500; }
         .bp-cta a, .bp-share a, .bp-empty a { display: inline-flex; justify-content: center; border-radius: 999px; background: #9F6B4E; color: #fff; padding: 13px 22px; text-decoration: none; font: 700 13px/1 Poppins,sans-serif; }
         .bp-global { margin-top: 46px; display: grid; gap: 18px; }
         .bp-global-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
         .bp-global-card { border: 1px solid rgba(62,44,35,.1); border-radius: 24px; background: #F8F6F3; padding: clamp(22px, 3vw, 32px); }
         .bp-global-card h2 { margin-top: 12px; font: 700 1.65rem/1.2 "Playfair Display",serif; color: #2f2723; }
         .bp-global-card p { margin-top: 12px; color: #61564f; font: 400 .96rem/1.85 Poppins,sans-serif; }
-        .bp-global-contact { background: #221f1b; }
-        .bp-global-contact h2 { color: #fff; }
-        .bp-global-contact p { color: rgba(255,255,255,.76); }
-        .bp-global-whatsapp { display: inline-flex; justify-content: center; margin-top: 18px; border-radius: 999px; background: #9F6B4E; color: #fff; padding: 13px 22px; text-decoration: none; font: 700 13px/1 Poppins,sans-serif; }
+        .bp-global-contact { background: #EAE3DC; border-color: rgba(62,44,35,.14); }
+        .bp-global-contact h2 { color: #2A1B14 !important; font-weight: 900; }
+        .bp-global-contact p { color: #4A362B !important; font-weight: 500; }
+        .bp-global-whatsapp { display: inline-flex; justify-content: center; margin-top: 18px; border-radius: 999px; background: #3E2C23; color: #fff !important; padding: 13px 22px; text-decoration: none; font: 800 13px/1 Poppins,sans-serif; }
         .bp-global-signature { border-left: 4px solid #C8A96A; background: #fff; padding: 22px 24px; color: #514741; font: 600 .94rem/1.75 Poppins,sans-serif; }
         .bp-global-signature p { margin: 0; }
         .bp-global-link-groups { display: grid; gap: 16px; }
@@ -450,7 +450,10 @@ export default function BlogPost() {
         .bp-faq, .bp-related, .bp-share { margin-top: 42px; display: grid; gap: 14px; }
         .bp-faq-grid { display: grid; gap: 12px; }
         .bp-faq-item, .bp-inline-faq { border: 1px solid rgba(62,44,35,.1); border-radius: 18px; padding: 18px; background: #F8F6F3; }
-        .bp-faq-item h3, .bp-inline-faq h3 { color: #2f2723; font: 700 1rem/1.45 Poppins,sans-serif; }
+        .bp-faq-item summary, .bp-inline-faq summary { cursor: pointer; list-style: none; color: #2f2723; font: 800 1rem/1.45 Poppins,sans-serif; }
+        .bp-faq-item summary::-webkit-details-marker, .bp-inline-faq summary::-webkit-details-marker { display: none; }
+        .bp-faq-item summary::after, .bp-inline-faq summary::after { content: '+'; float: right; color: #9F6B4E; font-size: 1.1rem; font-weight: 900; }
+        .bp-faq-item[open] summary::after, .bp-inline-faq[open] summary::after { content: '-'; }
         .bp-faq-item p, .bp-inline-faq p { margin-top: 8px; color: #61564f; font: 400 .95rem/1.75 Poppins,sans-serif; }
         .bp-related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
         .bp-related-card { border-radius: 20px; background: #F8F6F3; padding: 16px; text-decoration: none; color: #2f2723; }
@@ -577,10 +580,10 @@ export default function BlogPost() {
                 <h2>FAQs</h2>
                 <div className="bp-faq-grid">
                   {normalized.faqs.filter((faq) => faq.question || faq.answer).map((faq) => (
-                    <article key={faq.id} className="bp-faq-item">
-                      <h3>{faq.question}</h3>
+                    <details key={faq.id} className="bp-faq-item">
+                      <summary>{faq.question}</summary>
                       <p>{faq.answer}</p>
-                    </article>
+                    </details>
                   ))}
                 </div>
               </section>
