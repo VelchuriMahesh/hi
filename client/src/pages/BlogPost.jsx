@@ -397,19 +397,20 @@ export default function BlogPost() {
         .bp-simple-copy { min-width: 0; }
         .bp-simple-text { color: #514741; font: 400 1.02rem/2 Poppins,sans-serif; }
         .bp-simple-text > * + * { margin-top: 14px; }
-        .bp-simple-text p { margin: 0; }
-        .bp-simple-text h2 { margin: 0; color: #2f2723; font: 700 clamp(1.8rem, 3vw, 2.65rem)/1.14 "Playfair Display",serif; }
-        .bp-simple-text h3 { margin: 0; color: #2f2723; font: 700 clamp(1.35rem, 2vw, 1.8rem)/1.2 "Playfair Display",serif; }
-        .bp-simple-text blockquote { margin: 0; border-left: 4px solid #9F6B4E; padding: 6px 0 6px 18px; color: #2f2723; font: 700 1.25rem/1.65 "Playfair Display",serif; }
-        .bp-simple-text strong, .bp-simple-text b { color: #2f2723; font-weight: 800; }
+        .bp-simple-text p, .bp-simple-text div, .bp-simple-text span, .bp-simple-text font, .bp-simple-text li { margin: 0; color: #514741 !important; font: 400 1.02rem/2 Poppins,sans-serif !important; letter-spacing: 0 !important; }
+        .bp-simple-text h1, .bp-simple-text h2 { margin: 0; color: #2f2723 !important; font: 700 clamp(1.8rem, 3vw, 2.65rem)/1.14 "Playfair Display",serif !important; letter-spacing: 0 !important; }
+        .bp-simple-text h3 { margin: 0; color: #2f2723 !important; font: 700 clamp(1.35rem, 2vw, 1.8rem)/1.2 "Playfair Display",serif !important; letter-spacing: 0 !important; }
+        .bp-simple-text blockquote { margin: 0; border-left: 4px solid #9F6B4E; padding: 6px 0 6px 18px; color: #2f2723 !important; font: 700 1.25rem/1.65 "Playfair Display",serif !important; letter-spacing: 0 !important; }
+        .bp-simple-text strong, .bp-simple-text b { color: #2f2723 !important; font-weight: 800 !important; font-family: Poppins,sans-serif !important; }
         .bp-simple-text em { color: #8b5c43; }
         .bp-simple-text u { text-decoration-color: #9F6B4E; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-        .bp-copy-type-heading > p:first-child { color: #2f2723; font: 700 clamp(1.8rem, 3vw, 2.65rem)/1.14 "Playfair Display",serif; }
-        .bp-copy-type-subheading > p:first-child { color: #2f2723; font: 700 clamp(1.35rem, 2vw, 1.8rem)/1.2 "Playfair Display",serif; }
+        .bp-copy-type-heading > p:first-child, .bp-copy-type-heading > div:first-child, .bp-copy-type-heading > span:first-child, .bp-copy-type-heading > font:first-child { display: block; color: #2f2723 !important; font: 700 clamp(1.8rem, 3vw, 2.65rem)/1.14 "Playfair Display",serif !important; }
+        .bp-copy-type-subheading > p:first-child, .bp-copy-type-subheading > div:first-child, .bp-copy-type-subheading > span:first-child, .bp-copy-type-subheading > font:first-child { display: block; color: #2f2723 !important; font: 700 clamp(1.35rem, 2vw, 1.8rem)/1.2 "Playfair Display",serif !important; }
         .bp-copy-type-quote { border-left: 4px solid #9F6B4E; padding-left: 18px; color: #2f2723; font-family: "Playfair Display",serif; font-weight: 700; }
-        .bp-copy-style-lead { font-size: 1.12rem; color: #443a34; }
-        .bp-copy-style-highlight { color: #3d312a; }
-        .bp-copy-style-note { color: #465b4b; }
+        .bp-copy-type-quote p, .bp-copy-type-quote div, .bp-copy-type-quote span, .bp-copy-type-quote font { color: #2f2723 !important; font: 700 1.25rem/1.65 "Playfair Display",serif !important; }
+        .bp-copy-style-lead p, .bp-copy-style-lead div, .bp-copy-style-lead span, .bp-copy-style-lead font, .bp-copy-style-lead li { font-size: 1.12rem !important; color: #443a34 !important; }
+        .bp-copy-style-highlight p, .bp-copy-style-highlight div, .bp-copy-style-highlight span, .bp-copy-style-highlight font, .bp-copy-style-highlight li { color: #3d312a !important; }
+        .bp-copy-style-note p, .bp-copy-style-note div, .bp-copy-style-note span, .bp-copy-style-note font, .bp-copy-style-note li { color: #465b4b !important; }
         .bp-copy-type-heading h2:first-child, .bp-copy-type-subheading h3:first-child { margin-bottom: 8px; }
         .bp-simple-toc { margin-bottom: 42px; border: 1px solid rgba(62,44,35,.08); border-radius: 24px; background: #fff; padding: clamp(20px, 3vw, 28px); box-shadow: 0 18px 40px rgba(34,31,27,.07); }
         .bp-simple-toc-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }

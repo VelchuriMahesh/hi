@@ -68,6 +68,13 @@ function getPlainText(html = '') {
   return String(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function sanitizeSectionHtml(html = '') {
+  return String(html || '')
+    .replace(/\s(?:class|style|id|dir|lang|face|size|color)=("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/<\/?font\b[^>]*>/gi, '')
+    .replace(/<\/?span\b[^>]*>/gi, '');
+}
+
 function getLivePreviewUrl(pathOrUrl = '') {
   if (/^https?:\/\//i.test(pathOrUrl)) {
     const url = new URL(pathOrUrl);
@@ -80,7 +87,7 @@ function getLivePreviewUrl(pathOrUrl = '') {
 }
 
 function getSectionHtml(source = {}) {
-  if (source.html) return source.html;
+  if (source.html) return sanitizeSectionHtml(source.html);
   if (source.paragraph || source.text) return `<p>${escapeHtml(source.paragraph || source.text)}</p>`;
   return '';
 }
@@ -123,7 +130,9 @@ function normalizeSimpleForm(post = {}) {
 }
 
 function buildSimplePayload(form) {
-  const title = (form.seoTitle || form.title || '').trim();
+  const title = (form.title || form.seoTitle || '').trim();
+  const seoTitle = (form.seoTitle || title).trim();
+  const metaTitle = seoTitle;
   const altText = (form.altText || title).trim();
   const simpleSections = Array.from({ length: SECTION_COUNT }, (_, index) => {
     const section = createSection(index, form.simpleSections?.[index], altText);
@@ -188,8 +197,8 @@ function buildSimplePayload(form) {
   return {
     ...form,
     title,
-    seoTitle: title,
-    metaTitle: title,
+    seoTitle,
+    metaTitle,
     metaDescription: form.metaDescription.trim(),
     excerpt: form.metaDescription.trim(),
     altText,
@@ -208,19 +217,19 @@ function buildSimplePayload(form) {
     images: simpleSections.map((section) => section.image).filter((image) => image.url),
     openGraph: {
       ...(form.openGraph || {}),
-      title,
+      title: seoTitle,
       description: form.metaDescription.trim(),
       image: heroImage
     },
     twitter: {
       ...(form.twitter || {}),
-      title,
+      title: seoTitle,
       description: form.metaDescription.trim(),
       image: heroImage
     },
     facebook: {
       ...(form.facebook || {}),
-      title,
+      title: seoTitle,
       description: form.metaDescription.trim(),
       image: heroImage
     },
@@ -320,7 +329,7 @@ function RichTextSectionEditor({ index, section, onChange }) {
 
   function emit(extra = {}) {
     const editor = editorRef.current;
-    const html = editor?.innerHTML || '';
+    const html = sanitizeSectionHtml(editor?.innerHTML || '');
     const paragraph = getPlainText(html);
     onChange({
       ...section,
@@ -334,6 +343,22 @@ function RichTextSectionEditor({ index, section, onChange }) {
     editorRef.current?.focus();
     document.execCommand(command, false, value);
     emit(extra);
+  }
+
+  function handlePaste(event) {
+    const text = event.clipboardData?.getData('text/plain');
+    if (!text) return;
+
+    event.preventDefault();
+    const html = text
+      .split(/\n{2,}/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean)
+      .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`)
+      .join('');
+
+    document.execCommand('insertHTML', false, html);
+    emit();
   }
 
   function applyTextType(value) {
@@ -405,6 +430,7 @@ function RichTextSectionEditor({ index, section, onChange }) {
         contentEditable
         data-placeholder={`Write section ${index + 1} text here`}
         suppressContentEditableWarning
+        onPaste={handlePaste}
         onInput={() => emit()}
         onBlur={() => emit()}
         style={{ textAlign: section.alignment || 'left' }}
@@ -907,7 +933,7 @@ export default function BlogManager() {
     () => sortPosts(posts).filter((post) => post.id && post.id !== selectedId),
     [posts, selectedId]
   );
-  const cleanPreviewSlug = slugify(form.slug || form.seoTitle || form.title);
+  const cleanPreviewSlug = slugify(form.slug || form.title || form.seoTitle);
   const previewUrl = cleanPreviewSlug
     ? getLivePreviewUrl(getPostUrl({ ...form, slug: cleanPreviewSlug }))
     : getLivePreviewUrl(`${BLOG_BASE_PATH}/new-blog`);
@@ -1038,13 +1064,19 @@ export default function BlogManager() {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
-  function updateTitle(value) {
+  function updateBlogTitle(value) {
     setForm((current) => ({
       ...current,
       title: value,
-      seoTitle: value,
-      metaTitle: value,
       slug: slugEdited ? current.slug : slugify(value)
+    }));
+  }
+
+  function updateSeoTitle(value) {
+    setForm((current) => ({
+      ...current,
+      seoTitle: value,
+      metaTitle: value
     }));
   }
 
@@ -1083,7 +1115,7 @@ export default function BlogManager() {
         ...current,
         featuredImage: createEmptyImage({
           url: uploaded.url,
-          alt: current.altText || current.seoTitle || current.title,
+          alt: current.altText || current.title || current.seoTitle,
           fileName: file.name,
           format: file.type.split('/')[1] || '',
           loading: 'eager'
@@ -1112,7 +1144,7 @@ export default function BlogManager() {
                 ...section,
                 image: createEmptyImage({
                   url: uploaded.url,
-                  alt: current.altText || current.seoTitle || current.title,
+                  alt: current.altText || current.title || current.seoTitle,
                   fileName: file.name,
                   format: file.type.split('/')[1] || '',
                   loading: 'lazy'
@@ -1136,7 +1168,7 @@ export default function BlogManager() {
       const payload = buildSimplePayload(form);
 
       if (!payload.title) {
-        setMessage('SEO Title is required.');
+        setMessage('Blog Title/H1 is required.');
         return null;
       }
 
@@ -1424,7 +1456,7 @@ export default function BlogManager() {
                       {selectedId ? 'Editing Blog' : 'Create New Blog'}
                     </p>
                     <h2 className="mt-2 font-heading text-3xl text-ink">
-                      {form.seoTitle || form.title || 'Untitled Blog Draft'}
+                      {form.title || 'Untitled Blog Draft'}
                     </h2>
                     <p className="mt-2 text-sm leading-6 text-stone-600">
                       {selectedId
@@ -1449,14 +1481,30 @@ export default function BlogManager() {
                 <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
                   <div className="space-y-4">
                     <label className={labelClass()}>
+                      Blog Title / H1
+                      <input
+                        className={inputClass()}
+                        value={form.title}
+                        onChange={(event) => updateBlogTitle(event.target.value)}
+                        placeholder="Example: Bridal Blouse Bangalore - A Simple Guide"
+                        required
+                      />
+                      <span className="block text-xs font-normal leading-5 text-stone-500">
+                        This is the title readers see on the blog page.
+                      </span>
+                    </label>
+
+                    <label className={labelClass()}>
                       SEO Title
                       <input
                         className={inputClass()}
                         value={form.seoTitle}
-                        onChange={(event) => updateTitle(event.target.value)}
-                        placeholder="Example: Bridal Blouse Designs in Bangalore"
-                        required
+                        onChange={(event) => updateSeoTitle(event.target.value)}
+                        placeholder="Example: Bridal Blouse Designs in Bangalore | Shrusara"
                       />
+                      <span className="block text-xs font-normal leading-5 text-stone-500">
+                        Used only for page title, meta SEO, and social preview title. If blank, Blog Title is used.
+                      </span>
                     </label>
 
                     <label className={labelClass()}>
@@ -1481,7 +1529,7 @@ export default function BlogManager() {
 
                     <HeroImageInput
                       image={form.featuredImage}
-                      altText={form.altText || form.seoTitle || form.title}
+                      altText={form.altText || form.title || form.seoTitle}
                       uploading={uploadingHeroImage}
                       onChange={(nextImage) => updateField('featuredImage', nextImage)}
                       onUpload={uploadHeroImage}
@@ -1505,7 +1553,7 @@ export default function BlogManager() {
                           setSlugEdited(true);
                           updateField('slug', event.target.value.toLowerCase());
                         }}
-                        onBlur={() => updateField('slug', slugify(form.slug || form.seoTitle || form.title))}
+                        onBlur={() => updateField('slug', slugify(form.slug || form.title || form.seoTitle))}
                         placeholder="best-bridal-blouse-design"
                       />
                       <span className="block text-xs font-normal leading-5 text-stone-500">
@@ -1652,7 +1700,7 @@ export default function BlogManager() {
                       <BlogImageInput
                         index={index}
                         section={section}
-                        altText={form.altText || form.seoTitle}
+                        altText={form.altText || form.title || form.seoTitle}
                         uploading={uploadingIndex === index}
                         onChange={(nextSection) => updateSection(index, nextSection)}
                         onUpload={uploadSectionImage}
