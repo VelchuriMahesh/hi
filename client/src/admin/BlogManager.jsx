@@ -850,10 +850,15 @@ function BlogSettingsPanel({
 }
 
 export default function BlogManager() {
+  const initialFormRef = useRef(null);
+  if (!initialFormRef.current) {
+    initialFormRef.current = createInitialForm();
+  }
+
   const [posts, setPosts] = useState([]);
-  const [form, setForm] = useState(createInitialForm);
+  const [form, setForm] = useState(() => initialFormRef.current);
   const [blogSettings, setBlogSettings] = useState(() => normalizeBlogSettings(DEFAULT_BLOG_SETTINGS));
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(() => initialFormRef.current?.id || null);
   const [slugEdited, setSlugEdited] = useState(false);
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -929,9 +934,11 @@ export default function BlogManager() {
   const pageStartIndex = (safeCurrentPage - 1) * pageSize;
   const pageEndIndex = Math.min(pageStartIndex + pageSize, filteredPosts.length);
   const paginatedPosts = filteredPosts.slice(pageStartIndex, pageEndIndex);
+  const activePostId = selectedId || form.id || '';
+  const isEditingExisting = Boolean(activePostId);
   const relatedCandidates = useMemo(
-    () => sortPosts(posts).filter((post) => post.id && post.id !== selectedId),
-    [posts, selectedId]
+    () => sortPosts(posts).filter((post) => post.id && post.id !== activePostId),
+    [posts, activePostId]
   );
   const cleanPreviewSlug = slugify(form.slug || form.title || form.seoTitle);
   const previewUrl = cleanPreviewSlug
@@ -1172,8 +1179,9 @@ export default function BlogManager() {
         return null;
       }
 
-      const response = selectedId
-        ? await updatePost(token, selectedId, payload)
+      const postId = selectedId || form.id;
+      const response = postId
+        ? await updatePost(token, postId, payload)
         : await createPost(token, payload);
 
       const savedPost = normalizeSimpleForm(response.item);
@@ -1185,7 +1193,7 @@ export default function BlogManager() {
         return sortPosts([savedPost, ...withoutSaved]);
       });
       window.localStorage.removeItem(AUTO_SAVE_KEY);
-      setMessage('Blog saved. It will reflect on the user blog page when published.');
+      setMessage(`Blog ${postId ? 'updated' : 'created'}. It will reflect on the user blog page when published.`);
       return savedPost;
     } catch (error) {
       setMessage(error.message || 'Unable to save blog.');
@@ -1223,7 +1231,7 @@ export default function BlogManager() {
     try {
       await deletePost(token, post.id);
       setPosts((current) => current.filter((item) => item.id !== post.id));
-      if (selectedId === post.id) startNewBlog();
+      if (activePostId === post.id) startNewBlog();
       setMessage('Blog deleted.');
     } catch (error) {
       setMessage(error.message || 'Unable to delete blog.');
@@ -1384,7 +1392,7 @@ export default function BlogManager() {
                     <p className="bg-white p-4 text-sm text-stone-500">Loading blogs...</p>
                   ) : paginatedPosts.length ? (
                     paginatedPosts.map((post) => {
-                      const isSelected = selectedId === post.id;
+                      const isSelected = activePostId === post.id;
 
                       return (
                         <article
@@ -1453,13 +1461,13 @@ export default function BlogManager() {
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cocoa">
-                      {selectedId ? 'Editing Blog' : 'Create New Blog'}
+                      {isEditingExisting ? 'Editing Blog' : 'Create New Blog'}
                     </p>
                     <h2 className="mt-2 font-heading text-3xl text-ink">
                       {form.title || 'Untitled Blog Draft'}
                     </h2>
                     <p className="mt-2 text-sm leading-6 text-stone-600">
-                      {selectedId
+                      {isEditingExisting
                         ? 'Update the article details below. Changes are saved when you click Update Blog.'
                         : 'Fill the SEO details, choose a category, add images and sections, then create the blog.'}
                     </p>
@@ -1468,7 +1476,7 @@ export default function BlogManager() {
                     <span className={`rounded-full border px-3 py-1.5 text-xs font-semibold capitalize ${getStatusBadgeClass(form.status)}`}>
                       {form.status || 'draft'}
                     </span>
-                    {selectedId ? (
+                    {isEditingExisting ? (
                       <button className="button-secondary" type="button" onClick={startNewBlog}>
                         + Create Another
                       </button>
@@ -1712,7 +1720,7 @@ export default function BlogManager() {
 
               <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ink/10 bg-white/95 p-4 shadow-soft backdrop-blur">
                 <div className="text-sm text-stone-600">
-                  <span className="font-semibold text-ink">{selectedId ? 'Editing existing blog' : 'Creating new blog'}</span>
+                  <span className="font-semibold text-ink">{isEditingExisting ? 'Editing existing blog' : 'Creating new blog'}</span>
                   <span className="ml-2">Autosaved locally while you type.</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -1720,7 +1728,7 @@ export default function BlogManager() {
                     Save & Preview
                   </button>
                   <button className="button-primary" type="submit" disabled={saving}>
-                    {saving ? 'Saving...' : selectedId ? 'Update Blog' : 'Create Blog'}
+                    {saving ? 'Saving...' : isEditingExisting ? 'Update Blog' : 'Create Blog'}
                   </button>
                 </div>
               </div>

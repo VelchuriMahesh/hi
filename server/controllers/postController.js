@@ -336,6 +336,21 @@ async function hasSlugCollision(slug, currentId = null) {
   return snapshot.docs.some((item) => String(item.id) !== currentDocumentId);
 }
 
+async function buildUpdatePayload(body, currentData, postId) {
+  const payload = normalizePostPayload(body, currentData);
+  const requestedSlug = slugify(body.slug ?? currentData.slug ?? payload.title);
+  const currentSlug = slugify(currentData.slug || '');
+  const isSlugUnchanged = currentSlug && requestedSlug === currentSlug;
+
+  payload.slug = isSlugUnchanged && !(await hasSlugCollision(currentSlug, postId))
+    ? currentSlug
+    : await buildUniqueSlug(payload.title, postId, requestedSlug);
+  payload.url = `${BLOG_BASE_PATH}/${payload.slug}`;
+  payload.updatedAt = Timestamp.now();
+
+  return payload;
+}
+
 /**
  * GET /api/posts
  */
@@ -413,6 +428,36 @@ export async function updateBlogSettings(req, res, next) {
  */
 export async function createPost(req, res, next) {
   try {
+    const requestedId = toStringValue(req.body.id);
+
+    if (requestedId) {
+      const existingRef = db.collection('posts').doc(requestedId);
+      const existingSnapshot = await existingRef.get();
+
+      if (existingSnapshot.exists) {
+        const currentData = existingSnapshot.data();
+        const payload = await buildUpdatePayload(req.body, currentData, requestedId);
+
+        if (!payload.title) {
+          return res.status(400).json({ message: 'Blog title is required.' });
+        }
+
+        await existingRef.update(payload);
+
+        if (payload.status === 'published') {
+          void pingGoogleSitemap();
+        }
+
+        return res.json({
+          item: {
+            id: requestedId,
+            ...serializeFirestore({ ...currentData, ...payload })
+          },
+          updatedExisting: true
+        });
+      }
+    }
+
     const payload = normalizePostPayload(req.body);
 
     if (!payload.title) {
@@ -458,21 +503,11 @@ export async function updatePostById(req, res, next) {
     }
 
     const currentData = snapshot.data();
-    const payload = normalizePostPayload(req.body, currentData);
+    const payload = await buildUpdatePayload(req.body, currentData, req.params.id);
 
     if (!payload.title) {
       return res.status(400).json({ message: 'Blog title is required.' });
     }
-
-    const requestedSlug = slugify(req.body.slug ?? currentData.slug ?? payload.title);
-    const currentSlug = slugify(currentData.slug || '');
-    const isSlugUnchanged = currentSlug && requestedSlug === currentSlug;
-
-    payload.slug = isSlugUnchanged && !(await hasSlugCollision(currentSlug, req.params.id))
-      ? currentSlug
-      : await buildUniqueSlug(payload.title, req.params.id, requestedSlug);
-    payload.url = `${BLOG_BASE_PATH}/${payload.slug}`;
-    payload.updatedAt = Timestamp.now();
 
     await postRef.update(payload);
 
