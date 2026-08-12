@@ -312,18 +312,28 @@ async function pingGoogleSitemap() {
  */
 async function buildUniqueSlug(title, currentId = null, requestedSlug = '') {
   const baseSlug = slugify(requestedSlug || title) || `post-${Date.now()}`;
+  const currentDocumentId = currentId == null ? null : String(currentId);
   let candidate = baseSlug;
   let counter = 1;
 
   while (true) {
     // Admin SDK check for existing slug
     const snapshot = await db.collection('posts').where('slug', '==', candidate).get();
-    const collision = snapshot.docs.find((item) => item.id !== currentId);
+    const collision = snapshot.docs.find((item) => String(item.id) !== currentDocumentId);
 
     if (!collision) return candidate;
     candidate = `${baseSlug}-${counter}`;
     counter += 1;
   }
+}
+
+async function hasSlugCollision(slug, currentId = null) {
+  if (!slug) return false;
+
+  const currentDocumentId = currentId == null ? null : String(currentId);
+  const snapshot = await db.collection('posts').where('slug', '==', slug).get();
+
+  return snapshot.docs.some((item) => String(item.id) !== currentDocumentId);
 }
 
 /**
@@ -454,7 +464,13 @@ export async function updatePostById(req, res, next) {
       return res.status(400).json({ message: 'Blog title is required.' });
     }
 
-    payload.slug = await buildUniqueSlug(payload.title, req.params.id, req.body.slug ?? currentData.slug);
+    const requestedSlug = slugify(req.body.slug ?? currentData.slug ?? payload.title);
+    const currentSlug = slugify(currentData.slug || '');
+    const isSlugUnchanged = currentSlug && requestedSlug === currentSlug;
+
+    payload.slug = isSlugUnchanged && !(await hasSlugCollision(currentSlug, req.params.id))
+      ? currentSlug
+      : await buildUniqueSlug(payload.title, req.params.id, requestedSlug);
     payload.url = `${BLOG_BASE_PATH}/${payload.slug}`;
     payload.updatedAt = Timestamp.now();
 
