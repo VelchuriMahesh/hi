@@ -115,13 +115,29 @@ function normalizeImage(value, fallbackAlt = '') {
   };
 }
 
-function normalizeSimpleSections(sections = [], fallbackAlt = '') {
+function cleanTitleAlt(alt = '', title = '') {
+  const value = String(alt || '').trim();
+  const titleValue = String(title || '').trim();
+  return value && value !== titleValue ? value : '';
+}
+
+function normalizePostImage(value, fallbackAlt = '', title = '') {
+  const fallback = cleanTitleAlt(fallbackAlt, title);
+  const image = normalizeImage(value, fallback);
+
+  return {
+    ...image,
+    alt: cleanTitleAlt(image.alt, title)
+  };
+}
+
+function normalizeSimpleSections(sections = [], fallbackAlt = '', title = '') {
   const source = Array.isArray(sections) ? sections : [];
 
   return Array.from({ length: SIMPLE_BLOG_SECTION_COUNT }, (_, index) => {
     const section = source[index] || {};
     const html = toStringValue(section.html);
-    const image = normalizeImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || fallbackAlt);
+    const image = normalizePostImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || fallbackAlt, title);
 
     return {
       id: section.id || `section-${index + 1}`,
@@ -132,7 +148,7 @@ function normalizeSimpleSections(sections = [], fallbackAlt = '') {
       alignment: section.alignment || 'left',
       image: {
         ...image,
-        alt: image.alt || fallbackAlt,
+        alt: image.alt || cleanTitleAlt(fallbackAlt, title),
         caption: toStringValue(section.caption, image.caption)
       },
       caption: toStringValue(section.caption, image.caption)
@@ -212,22 +228,22 @@ function normalizePostPayload(body, currentData = {}) {
   const ctas = normalizeCtas(body.ctas ?? currentData.ctas ?? []);
   const content = toStringValue(body.content, currentData.content);
   const contentHtml = toStringValue(body.contentHtml, currentData.contentHtml);
-  const altText = toStringValue(body.altText, currentData.altText || title);
+  const altText = cleanTitleAlt(toStringValue(body.altText, currentData.altText), title);
   const status = ['draft', 'published', 'scheduled', 'private'].includes(body.status)
     ? body.status
     : currentData.status || 'draft';
   const category = toStringValue(body.category, currentData.category || body.tag || 'Bridal Blouses');
-  const simpleSections = normalizeSimpleSections(body.simpleSections ?? currentData.simpleSections ?? [], altText || title);
+  const simpleSections = normalizeSimpleSections(body.simpleSections ?? currentData.simpleSections ?? [], altText, title);
   const firstSimpleImage = simpleSections.find((section) => section.image.url)?.image;
-  const requestedFeaturedImage = normalizeImage(body.featuredImage ?? currentData.featuredImage ?? '', altText || title);
+  const requestedFeaturedImage = normalizePostImage(body.featuredImage ?? currentData.featuredImage ?? '', altText, title);
   const featuredImage = requestedFeaturedImage.url
     ? requestedFeaturedImage
-    : normalizeImage(body.coverImage ?? currentData.coverImage ?? firstSimpleImage ?? DEFAULT_POST_IMAGE, altText || title);
+    : normalizePostImage(body.coverImage ?? currentData.coverImage ?? firstSimpleImage ?? DEFAULT_POST_IMAGE, altText, title);
   const coverImage = featuredImage.url || DEFAULT_POST_IMAGE;
   const imageLibrary = Array.isArray(body.images)
-    ? body.images.map((image) => normalizeImage(image, title))
+    ? body.images.map((image) => normalizePostImage(image, altText, title))
     : Array.isArray(currentData.images)
-      ? currentData.images.map((image) => normalizeImage(image, title))
+      ? currentData.images.map((image) => normalizePostImage(image, altText, title))
       : [];
 
   return {
@@ -256,20 +272,20 @@ function normalizePostPayload(body, currentData = {}) {
     openGraph: {
       title: toStringValue(body.openGraph?.title, currentData.openGraph?.title || seoTitle || title),
       description: toStringValue(body.openGraph?.description, currentData.openGraph?.description || metaDescription || excerpt),
-      image: normalizeImage(body.openGraph?.image ?? currentData.openGraph?.image ?? coverImage, title)
+      image: normalizePostImage(body.openGraph?.image ?? currentData.openGraph?.image ?? coverImage, altText, title)
     },
     twitter: {
       title: toStringValue(body.twitter?.title, currentData.twitter?.title || seoTitle || title),
       description: toStringValue(body.twitter?.description, currentData.twitter?.description || metaDescription || excerpt),
-      image: normalizeImage(body.twitter?.image ?? currentData.twitter?.image ?? coverImage, title)
+      image: normalizePostImage(body.twitter?.image ?? currentData.twitter?.image ?? coverImage, altText, title)
     },
     facebook: {
       title: toStringValue(body.facebook?.title, currentData.facebook?.title || seoTitle || title),
       description: toStringValue(body.facebook?.description, currentData.facebook?.description || metaDescription || excerpt),
-      image: normalizeImage(body.facebook?.image ?? currentData.facebook?.image ?? coverImage, title)
+      image: normalizePostImage(body.facebook?.image ?? currentData.facebook?.image ?? coverImage, altText, title)
     },
     social: {
-      pinterestImage: normalizeImage(body.social?.pinterestImage ?? currentData.social?.pinterestImage ?? coverImage, title)
+      pinterestImage: normalizePostImage(body.social?.pinterestImage ?? currentData.social?.pinterestImage ?? coverImage, altText, title)
     },
     blocks,
     faqs,

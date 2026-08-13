@@ -109,8 +109,8 @@ function createSection(index, source = {}, fallbackAlt = '') {
 
 function normalizeSimpleForm(post = {}) {
   const normalized = normalizePost(post);
-  const altText = normalized.altText || normalized.featuredImage?.alt || normalized.title || '';
-  const rawFeaturedImage = normalizeImage(post.featuredImage || '', altText);
+  const altText = normalized.altText || normalized.featuredImage?.alt || '';
+  const rawFeaturedImage = normalizeImage(normalized.featuredImage || '', altText);
   const rawCoverImage = normalizeImage(post.coverImage || '', altText);
   const featuredImage = rawFeaturedImage.url ? rawFeaturedImage : rawCoverImage;
   const simpleSections = Array.from({ length: SECTION_COUNT }, (_, index) =>
@@ -133,7 +133,7 @@ function buildSimplePayload(form) {
   const title = (form.title || form.seoTitle || '').trim();
   const seoTitle = (form.seoTitle || title).trim();
   const metaTitle = seoTitle;
-  const altText = (form.altText || title).trim();
+  const altText = (form.altText || '').trim();
   const simpleSections = Array.from({ length: SECTION_COUNT }, (_, index) => {
     const section = createSection(index, form.simpleSections?.[index], altText);
     const image = normalizeImage(section.image, altText);
@@ -1122,7 +1122,7 @@ export default function BlogManager() {
         ...current,
         featuredImage: createEmptyImage({
           url: uploaded.url,
-          alt: current.altText || current.title || current.seoTitle,
+          alt: current.altText || '',
           fileName: file.name,
           format: file.type.split('/')[1] || '',
           loading: 'eager'
@@ -1151,7 +1151,7 @@ export default function BlogManager() {
                 ...section,
                 image: createEmptyImage({
                   url: uploaded.url,
-                  alt: current.altText || current.title || current.seoTitle,
+                  alt: current.altText || '',
                   fileName: file.name,
                   format: file.type.split('/')[1] || '',
                   loading: 'lazy'
@@ -1537,7 +1537,7 @@ export default function BlogManager() {
 
                     <HeroImageInput
                       image={form.featuredImage}
-                      altText={form.altText || form.title || form.seoTitle}
+                      altText={form.altText}
                       uploading={uploadingHeroImage}
                       onChange={(nextImage) => updateField('featuredImage', nextImage)}
                       onUpload={uploadHeroImage}
@@ -1708,7 +1708,7 @@ export default function BlogManager() {
                       <BlogImageInput
                         index={index}
                         section={section}
-                        altText={form.altText || form.title || form.seoTitle}
+                        altText={form.altText}
                         uploading={uploadingIndex === index}
                         onChange={(nextSection) => updateSection(index, nextSection)}
                         onUpload={uploadSectionImage}

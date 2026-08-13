@@ -627,10 +627,27 @@ export function normalizeImage(image, fallbackAlt = '') {
   });
 }
 
+function cleanTitleAlt(alt = '', title = '') {
+  const value = String(alt || '').trim();
+  const titleValue = String(title || '').trim();
+  return value && value !== titleValue ? value : '';
+}
+
+function normalizeBlogImage(image, fallbackAlt = '', title = '') {
+  const fallback = cleanTitleAlt(fallbackAlt, title);
+  const normalized = normalizeImage(image, fallback);
+
+  return {
+    ...normalized,
+    alt: cleanTitleAlt(normalized.alt, title)
+  };
+}
+
 export function normalizePost(post = {}) {
   const empty = createEmptyBlogPost();
   const category = getBlogCategoryName(post.category || post.tag || empty.category);
   const title = post.title || '';
+  const imageAltFallback = cleanTitleAlt(post.altText, title);
   const decodedContent = decodeSimpleBlogContent(post.content);
   const rawSimpleSections = Array.isArray(post.simpleSections) && post.simpleSections.length
     ? post.simpleSections
@@ -642,11 +659,11 @@ export function normalizePost(post = {}) {
   const firstSimpleImage = typeof firstSimpleImageSection?.image === 'string'
     ? firstSimpleImageSection.image
     : firstSimpleImageSection?.image?.url || firstSimpleImageSection?.imageUrl;
-  const requestedFeaturedImage = normalizeImage(post.featuredImage || '', title);
+  const requestedFeaturedImage = normalizeBlogImage(post.featuredImage || '', imageAltFallback, title);
   const featuredImage = requestedFeaturedImage.url
     ? requestedFeaturedImage
-    : normalizeImage(post.coverImage || firstSimpleImage || post.image || post.thumbUrl || DEFAULT_BLOG_IMAGE, title);
-  const altText = post.altText || featuredImage.alt || title;
+    : normalizeBlogImage(post.coverImage || firstSimpleImage || post.image || post.thumbUrl || DEFAULT_BLOG_IMAGE, imageAltFallback, title);
+  const altText = imageAltFallback || featuredImage.alt || '';
   const simpleSections = Array.from({ length: SIMPLE_BLOG_SECTION_COUNT }, (_, index) => {
     const section = rawSimpleSections[index] || {};
     return createEmptySimpleSection(index, {
@@ -656,7 +673,7 @@ export function normalizePost(post = {}) {
       textType: section.textType || 'paragraph',
       textStyle: section.textStyle || 'classic',
       alignment: section.alignment || 'left',
-      image: normalizeImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || altText),
+      image: normalizeBlogImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || altText, title),
       caption: section.caption || section.image?.caption || ''
     });
   });
@@ -684,7 +701,7 @@ export function normalizePost(post = {}) {
     status: post.status || 'published',
     featuredImage,
     coverImage: featuredImage.url,
-    images: Array.isArray(post.images) ? post.images.map((image) => normalizeImage(image, title)) : [],
+    images: Array.isArray(post.images) ? post.images.map((image) => normalizeBlogImage(image, altText, title)) : [],
     altText,
     simpleSections,
     content: normalizedContent,
@@ -692,22 +709,22 @@ export function normalizePost(post = {}) {
     openGraph: {
       ...empty.openGraph,
       ...(post.openGraph || {}),
-      image: normalizeImage(post.openGraph?.image || post.coverImage || featuredImage.url, title)
+      image: normalizeBlogImage(post.openGraph?.image || post.coverImage || featuredImage.url, altText, title)
     },
     twitter: {
       ...empty.twitter,
       ...(post.twitter || {}),
-      image: normalizeImage(post.twitter?.image || post.coverImage || featuredImage.url, title)
+      image: normalizeBlogImage(post.twitter?.image || post.coverImage || featuredImage.url, altText, title)
     },
     facebook: {
       ...empty.facebook,
       ...(post.facebook || {}),
-      image: normalizeImage(post.facebook?.image || post.coverImage || featuredImage.url, title)
+      image: normalizeBlogImage(post.facebook?.image || post.coverImage || featuredImage.url, altText, title)
     },
     social: {
       ...empty.social,
       ...(post.social || {}),
-      pinterestImage: normalizeImage(post.social?.pinterestImage || featuredImage.url, title)
+      pinterestImage: normalizeBlogImage(post.social?.pinterestImage || featuredImage.url, altText, title)
     },
     blocks: Array.isArray(post.blocks) && post.blocks.length ? post.blocks : empty.blocks,
     faqs: Array.isArray(post.faqs) && post.faqs.length ? post.faqs : empty.faqs,

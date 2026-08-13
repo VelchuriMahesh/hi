@@ -35,7 +35,7 @@ function getRelatedPosts(post, posts) {
 
 function getSimpleSections(post = {}) {
   return (post.simpleSections || []).filter((section) => {
-    const image = normalizeImage(section.image || section.imageUrl || '', post.altText || post.title);
+    const image = normalizeImage(section.image || section.imageUrl || '', post.altText || '');
     return section.paragraph || section.html || image.url;
   });
 }
@@ -490,7 +490,7 @@ export default function BlogPost() {
             </div>
           </div>
           <div className="bp-hero-img">
-            <LazyImage src={image} alt={normalized.featuredImage.alt || normalized.title} sizes="(min-width: 900px) 42vw, 100vw" />
+            <LazyImage src={image} alt={normalized.featuredImage.alt || normalized.altText || ''} sizes="(min-width: 900px) 42vw, 100vw" />
           </div>
         </section>
 
@@ -518,7 +518,7 @@ export default function BlogPost() {
 
                 <section className="bp-simple-story">
                 {simpleSections.map((section, index) => {
-                  const sectionImage = normalizeImage(section.image || section.imageUrl || '', normalized.altText || normalized.title);
+                  const sectionImage = normalizeImage(section.image || section.imageUrl || '', normalized.altText || '');
                   const html = section.html || (section.paragraph ? `<p>${escapeHtml(section.paragraph)}</p>` : '');
                   const chapter = simpleToc[index];
 
@@ -542,7 +542,7 @@ export default function BlogPost() {
                         <figure className="bp-simple-frame">
                           <LazyImage
                             src={sectionImage.url}
-                            alt={sectionImage.alt || normalized.altText || normalized.title}
+                            alt={sectionImage.alt || normalized.altText || ''}
                             sizes="(min-width: 900px) 34vw, 100vw"
                           />
                           {(section.caption || sectionImage.caption) ? <figcaption>{section.caption || sectionImage.caption}</figcaption> : null}
@@ -566,7 +566,7 @@ export default function BlogPost() {
                 <div>
                   {normalized.images.filter((imageItem) => imageItem.url).map((imageItem) => (
                     <figure key={imageItem.id || imageItem.url}>
-                      <img src={imageItem.url} alt={imageItem.alt || normalized.title} width={imageItem.width || undefined} height={imageItem.height || undefined} loading="lazy" />
+                      <img src={imageItem.url} alt={imageItem.alt || normalized.altText || ''} width={imageItem.width || undefined} height={imageItem.height || undefined} loading="lazy" />
                       {imageItem.caption ? <figcaption>{imageItem.caption}</figcaption> : null}
                     </figure>
                   ))}
