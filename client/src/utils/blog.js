@@ -659,10 +659,10 @@ export function normalizePost(post = {}) {
   const firstSimpleImage = typeof firstSimpleImageSection?.image === 'string'
     ? firstSimpleImageSection.image
     : firstSimpleImageSection?.image?.url || firstSimpleImageSection?.imageUrl;
-  const requestedFeaturedImage = normalizeBlogImage(post.featuredImage || '', imageAltFallback, title);
+  const requestedFeaturedImage = normalizeBlogImage(post.featuredImage || '', '', title);
   const featuredImage = requestedFeaturedImage.url
     ? requestedFeaturedImage
-    : normalizeBlogImage(post.coverImage || firstSimpleImage || post.image || post.thumbUrl || DEFAULT_BLOG_IMAGE, imageAltFallback, title);
+    : normalizeBlogImage(post.coverImage || firstSimpleImage || post.image || post.thumbUrl || DEFAULT_BLOG_IMAGE, '', title);
   const altText = imageAltFallback || featuredImage.alt || '';
   const simpleSections = Array.from({ length: SIMPLE_BLOG_SECTION_COUNT }, (_, index) => {
     const section = rawSimpleSections[index] || {};
@@ -673,7 +673,7 @@ export function normalizePost(post = {}) {
       textType: section.textType || 'paragraph',
       textStyle: section.textStyle || 'classic',
       alignment: section.alignment || 'left',
-      image: normalizeBlogImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || altText, title),
+      image: normalizeBlogImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || '', title),
       caption: section.caption || section.image?.caption || ''
     });
   });
@@ -701,7 +701,7 @@ export function normalizePost(post = {}) {
     status: post.status || 'published',
     featuredImage,
     coverImage: featuredImage.url,
-    images: Array.isArray(post.images) ? post.images.map((image) => normalizeBlogImage(image, altText, title)) : [],
+    images: Array.isArray(post.images) ? post.images.map((image) => normalizeBlogImage(image, '', title)) : [],
     altText,
     simpleSections,
     content: normalizedContent,
@@ -709,22 +709,22 @@ export function normalizePost(post = {}) {
     openGraph: {
       ...empty.openGraph,
       ...(post.openGraph || {}),
-      image: normalizeBlogImage(post.openGraph?.image || post.coverImage || featuredImage.url, altText, title)
+      image: normalizeBlogImage(post.openGraph?.image || post.coverImage || featuredImage.url, '', title)
     },
     twitter: {
       ...empty.twitter,
       ...(post.twitter || {}),
-      image: normalizeBlogImage(post.twitter?.image || post.coverImage || featuredImage.url, altText, title)
+      image: normalizeBlogImage(post.twitter?.image || post.coverImage || featuredImage.url, '', title)
     },
     facebook: {
       ...empty.facebook,
       ...(post.facebook || {}),
-      image: normalizeBlogImage(post.facebook?.image || post.coverImage || featuredImage.url, altText, title)
+      image: normalizeBlogImage(post.facebook?.image || post.coverImage || featuredImage.url, '', title)
     },
     social: {
       ...empty.social,
       ...(post.social || {}),
-      pinterestImage: normalizeBlogImage(post.social?.pinterestImage || featuredImage.url, altText, title)
+      pinterestImage: normalizeBlogImage(post.social?.pinterestImage || featuredImage.url, '', title)
     },
     blocks: Array.isArray(post.blocks) && post.blocks.length ? post.blocks : empty.blocks,
     faqs: Array.isArray(post.faqs) && post.faqs.length ? post.faqs : empty.faqs,

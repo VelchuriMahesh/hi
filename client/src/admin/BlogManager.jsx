@@ -92,7 +92,7 @@ function getSectionHtml(source = {}) {
   return '';
 }
 
-function createSection(index, source = {}, fallbackAlt = '') {
+function createSection(index, source = {}) {
   const html = getSectionHtml(source);
 
   return {
@@ -102,19 +102,19 @@ function createSection(index, source = {}, fallbackAlt = '') {
     textType: source.textType || 'paragraph',
     textStyle: source.textStyle || 'classic',
     alignment: source.alignment || 'left',
-    image: normalizeImage(source.image || source.imageUrl || '', source.image?.alt || source.alt || fallbackAlt),
+    image: normalizeImage(source.image || source.imageUrl || '', source.image?.alt || source.alt || ''),
     caption: source.caption || source.image?.caption || ''
   };
 }
 
 function normalizeSimpleForm(post = {}) {
   const normalized = normalizePost(post);
-  const altText = normalized.altText || normalized.featuredImage?.alt || '';
-  const rawFeaturedImage = normalizeImage(normalized.featuredImage || '', altText);
-  const rawCoverImage = normalizeImage(post.coverImage || '', altText);
+  const altText = normalized.altText || '';
+  const rawFeaturedImage = normalizeImage(normalized.featuredImage || '', '');
+  const rawCoverImage = normalizeImage(post.coverImage || '', '');
   const featuredImage = rawFeaturedImage.url ? rawFeaturedImage : rawCoverImage;
   const simpleSections = Array.from({ length: SECTION_COUNT }, (_, index) =>
-    createSection(index, normalized.simpleSections?.[index], altText)
+    createSection(index, normalized.simpleSections?.[index])
   );
 
   return {
@@ -135,8 +135,8 @@ function buildSimplePayload(form) {
   const metaTitle = seoTitle;
   const altText = (form.altText || '').trim();
   const simpleSections = Array.from({ length: SECTION_COUNT }, (_, index) => {
-    const section = createSection(index, form.simpleSections?.[index], altText);
-    const image = normalizeImage(section.image, altText);
+    const section = createSection(index, form.simpleSections?.[index]);
+    const image = normalizeImage(section.image, '');
     const html = section.html || (section.paragraph ? `<p>${escapeHtml(section.paragraph)}</p>` : '');
     const paragraph = getPlainText(html || section.paragraph);
 
@@ -147,17 +147,17 @@ function buildSimplePayload(form) {
       caption: section.caption.trim(),
       image: {
         ...image,
-        alt: image.alt || altText,
+        alt: image.alt || '',
         caption: section.caption || image.caption
       }
     };
   });
-  const uploadedHeroImage = normalizeImage(form.featuredImage || form.coverImage || '', altText);
-  const firstSectionImage = simpleSections.find((section) => section.image.url)?.image || createEmptyImage({ alt: altText });
+  const uploadedHeroImage = normalizeImage(form.featuredImage || form.coverImage || '', '');
+  const firstSectionImage = simpleSections.find((section) => section.image.url)?.image || createEmptyImage();
   const heroImage = uploadedHeroImage.url
     ? {
         ...uploadedHeroImage,
-        alt: uploadedHeroImage.alt || altText,
+        alt: uploadedHeroImage.alt || '',
         loading: 'eager'
       }
     : firstSectionImage;
@@ -443,13 +443,13 @@ function RichTextSectionEditor({ index, section, onChange }) {
   );
 }
 
-function BlogImageInput({ index, section, altText, uploading, onChange, onUpload }) {
-  const image = normalizeImage(section.image, altText);
+function BlogImageInput({ index, section, uploading, onChange, onUpload }) {
+  const image = normalizeImage(section.image, '');
 
   function updateImage(nextImage) {
     onChange({
       ...section,
-      image: normalizeImage(nextImage, altText)
+      image: normalizeImage(nextImage, '')
     });
   }
 
@@ -457,7 +457,7 @@ function BlogImageInput({ index, section, altText, uploading, onChange, onUpload
     <div className="space-y-3">
       <div className="overflow-hidden rounded-2xl border-[6px] border-white bg-linen shadow-soft">
         {image.url ? (
-          <img className="h-64 w-full object-cover" src={image.url} alt={image.alt || altText} />
+          <img className="h-64 w-full object-cover" src={image.url} alt={image.alt || ''} />
         ) : (
           <div className="flex h-64 items-center justify-center px-6 text-center text-sm text-stone-500">
             Upload image {index + 1}
@@ -502,7 +502,7 @@ function BlogImageInput({ index, section, altText, uploading, onChange, onUpload
           className={inputClass()}
           value={image.alt}
           onChange={(event) => updateImage({ ...image, alt: event.target.value })}
-          placeholder={altText || `Describe image ${index + 1}`}
+          placeholder={`Describe image ${index + 1}`}
         />
       </label>
 
@@ -519,11 +519,11 @@ function BlogImageInput({ index, section, altText, uploading, onChange, onUpload
   );
 }
 
-function HeroImageInput({ image, altText, uploading, onChange, onUpload }) {
-  const normalizedImage = normalizeImage(image, altText);
+function HeroImageInput({ image, uploading, onChange, onUpload }) {
+  const normalizedImage = normalizeImage(image, '');
 
   function updateImage(nextImage) {
-    onChange(normalizeImage(nextImage, altText));
+    onChange(normalizeImage(nextImage, ''));
   }
 
   return (
@@ -537,7 +537,7 @@ function HeroImageInput({ image, altText, uploading, onChange, onUpload }) {
 
       <div className="overflow-hidden rounded-2xl border-[6px] border-white bg-white shadow-soft">
         {normalizedImage.url ? (
-          <img className="h-56 w-full object-cover" src={normalizedImage.url} alt={normalizedImage.alt || altText} />
+          <img className="h-56 w-full object-cover" src={normalizedImage.url} alt={normalizedImage.alt || ''} />
         ) : (
           <div className="flex h-56 items-center justify-center px-6 text-center text-sm text-stone-500">
             Upload hero image
@@ -582,7 +582,7 @@ function HeroImageInput({ image, altText, uploading, onChange, onUpload }) {
           className={inputClass()}
           value={normalizedImage.alt}
           onChange={(event) => updateImage({ ...normalizedImage, alt: event.target.value })}
-          placeholder={altText || 'Describe the hero image'}
+          placeholder="Describe the hero image"
         />
       </label>
 
@@ -1122,7 +1122,7 @@ export default function BlogManager() {
         ...current,
         featuredImage: createEmptyImage({
           url: uploaded.url,
-          alt: current.altText || '',
+          alt: '',
           fileName: file.name,
           format: file.type.split('/')[1] || '',
           loading: 'eager'
@@ -1151,7 +1151,7 @@ export default function BlogManager() {
                 ...section,
                 image: createEmptyImage({
                   url: uploaded.url,
-                  alt: current.altText || '',
+                  alt: '',
                   fileName: file.name,
                   format: file.type.split('/')[1] || '',
                   loading: 'lazy'
@@ -1537,7 +1537,6 @@ export default function BlogManager() {
 
                     <HeroImageInput
                       image={form.featuredImage}
-                      altText={form.altText}
                       uploading={uploadingHeroImage}
                       onChange={(nextImage) => updateField('featuredImage', nextImage)}
                       onUpload={uploadHeroImage}
@@ -1708,7 +1707,6 @@ export default function BlogManager() {
                       <BlogImageInput
                         index={index}
                         section={section}
-                        altText={form.altText}
                         uploading={uploadingIndex === index}
                         onChange={(nextSection) => updateSection(index, nextSection)}
                         onUpload={uploadSectionImage}

@@ -228,7 +228,7 @@ function BlogCard({ post, loading }) {
       <div className="blg-card-img-wrap">
         <LazyImage
           src={image}
-          alt={normalized.featuredImage?.alt || normalized.altText || ''}
+          alt={normalized.featuredImage?.alt || ''}
           sizes="(min-width: 1280px) 33vw, (min-width: 1024px) 50vw, 100vw"
           wrapperClassName="blg-card-img"
         />

@@ -131,13 +131,13 @@ function normalizePostImage(value, fallbackAlt = '', title = '') {
   };
 }
 
-function normalizeSimpleSections(sections = [], fallbackAlt = '', title = '') {
+function normalizeSimpleSections(sections = [], title = '') {
   const source = Array.isArray(sections) ? sections : [];
 
   return Array.from({ length: SIMPLE_BLOG_SECTION_COUNT }, (_, index) => {
     const section = source[index] || {};
     const html = toStringValue(section.html);
-    const image = normalizePostImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || fallbackAlt, title);
+    const image = normalizePostImage(section.image || section.imageUrl || '', section.image?.alt || section.alt || '', title);
 
     return {
       id: section.id || `section-${index + 1}`,
@@ -148,7 +148,7 @@ function normalizeSimpleSections(sections = [], fallbackAlt = '', title = '') {
       alignment: section.alignment || 'left',
       image: {
         ...image,
-        alt: image.alt || cleanTitleAlt(fallbackAlt, title),
+        alt: image.alt || '',
         caption: toStringValue(section.caption, image.caption)
       },
       caption: toStringValue(section.caption, image.caption)
@@ -233,17 +233,17 @@ function normalizePostPayload(body, currentData = {}) {
     ? body.status
     : currentData.status || 'draft';
   const category = toStringValue(body.category, currentData.category || body.tag || 'Bridal Blouses');
-  const simpleSections = normalizeSimpleSections(body.simpleSections ?? currentData.simpleSections ?? [], altText, title);
+  const simpleSections = normalizeSimpleSections(body.simpleSections ?? currentData.simpleSections ?? [], title);
   const firstSimpleImage = simpleSections.find((section) => section.image.url)?.image;
-  const requestedFeaturedImage = normalizePostImage(body.featuredImage ?? currentData.featuredImage ?? '', altText, title);
+  const requestedFeaturedImage = normalizePostImage(body.featuredImage ?? currentData.featuredImage ?? '', '', title);
   const featuredImage = requestedFeaturedImage.url
     ? requestedFeaturedImage
-    : normalizePostImage(body.coverImage ?? currentData.coverImage ?? firstSimpleImage ?? DEFAULT_POST_IMAGE, altText, title);
+    : normalizePostImage(body.coverImage ?? currentData.coverImage ?? firstSimpleImage ?? DEFAULT_POST_IMAGE, '', title);
   const coverImage = featuredImage.url || DEFAULT_POST_IMAGE;
   const imageLibrary = Array.isArray(body.images)
-    ? body.images.map((image) => normalizePostImage(image, altText, title))
+    ? body.images.map((image) => normalizePostImage(image, '', title))
     : Array.isArray(currentData.images)
-      ? currentData.images.map((image) => normalizePostImage(image, altText, title))
+      ? currentData.images.map((image) => normalizePostImage(image, '', title))
       : [];
 
   return {
@@ -272,20 +272,20 @@ function normalizePostPayload(body, currentData = {}) {
     openGraph: {
       title: toStringValue(body.openGraph?.title, currentData.openGraph?.title || seoTitle || title),
       description: toStringValue(body.openGraph?.description, currentData.openGraph?.description || metaDescription || excerpt),
-      image: normalizePostImage(body.openGraph?.image ?? currentData.openGraph?.image ?? coverImage, altText, title)
+      image: normalizePostImage(body.openGraph?.image ?? currentData.openGraph?.image ?? coverImage, '', title)
     },
     twitter: {
       title: toStringValue(body.twitter?.title, currentData.twitter?.title || seoTitle || title),
       description: toStringValue(body.twitter?.description, currentData.twitter?.description || metaDescription || excerpt),
-      image: normalizePostImage(body.twitter?.image ?? currentData.twitter?.image ?? coverImage, altText, title)
+      image: normalizePostImage(body.twitter?.image ?? currentData.twitter?.image ?? coverImage, '', title)
     },
     facebook: {
       title: toStringValue(body.facebook?.title, currentData.facebook?.title || seoTitle || title),
       description: toStringValue(body.facebook?.description, currentData.facebook?.description || metaDescription || excerpt),
-      image: normalizePostImage(body.facebook?.image ?? currentData.facebook?.image ?? coverImage, altText, title)
+      image: normalizePostImage(body.facebook?.image ?? currentData.facebook?.image ?? coverImage, '', title)
     },
     social: {
-      pinterestImage: normalizePostImage(body.social?.pinterestImage ?? currentData.social?.pinterestImage ?? coverImage, altText, title)
+      pinterestImage: normalizePostImage(body.social?.pinterestImage ?? currentData.social?.pinterestImage ?? coverImage, '', title)
     },
     blocks,
     faqs,
