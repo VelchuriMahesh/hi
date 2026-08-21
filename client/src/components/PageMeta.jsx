@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { contactLinks } from '../data/content';
 
 function upsertMeta(selector, value, attribute = 'name') {
-  if (!value) {
+  if (value === undefined || value === null) {
     return;
   }
 
@@ -14,7 +14,7 @@ function upsertMeta(selector, value, attribute = 'name') {
     document.head.appendChild(element);
   }
 
-  element.setAttribute('content', value);
+  element.setAttribute('content', String(value));
 }
 
 function upsertLink(rel, href) {
@@ -42,19 +42,21 @@ export default function PageMeta({
   useEffect(() => {
     const canonicalUrl = new URL(canonicalPath, contactLinks.siteUrl).toString();
     const imageUrl = image ? new URL(image, contactLinks.siteUrl).toString() : '';
+    const safeTitle = String(title || '');
+    const safeDescription = String(description || '');
 
-    document.title = title;
-    upsertMeta('description', description);
+    document.title = safeTitle;
+    upsertMeta('description', safeDescription);
     upsertMeta('keywords', keywords);
     upsertMeta('robots', robots);
-    upsertMeta('og:title', title, 'property');
-    upsertMeta('og:description', description, 'property');
+    upsertMeta('og:title', safeTitle, 'property');
+    upsertMeta('og:description', safeDescription, 'property');
     upsertMeta('og:type', type, 'property');
     upsertMeta('og:url', canonicalUrl, 'property');
     upsertMeta('og:image', imageUrl, 'property');
     upsertMeta('twitter:card', 'summary_large_image', 'name');
-    upsertMeta('twitter:title', title, 'name');
-    upsertMeta('twitter:description', description, 'name');
+    upsertMeta('twitter:title', safeTitle, 'name');
+    upsertMeta('twitter:description', safeDescription, 'name');
     upsertMeta('twitter:image', imageUrl, 'name');
     upsertLink('canonical', canonicalUrl);
 

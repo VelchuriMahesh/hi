@@ -356,9 +356,10 @@ export default function BlogPost() {
     );
   }
 
-  const title = normalized.metaTitle || normalized.seoTitle || normalized.title;
-  const description = normalized.metaDescription || normalized.excerpt;
+  const title = normalized.seoTitle || normalized.metaTitle || normalized.title;
+  const description = normalized.metaDescription || '';
   const image = normalized.openGraph?.image?.url || normalized.featuredImage?.url || normalized.coverImage || DEFAULT_BLOG_IMAGE;
+  const canonicalPath = getPostUrl(normalized);
 
   return (
     <>
@@ -470,8 +471,8 @@ export default function BlogPost() {
       <PageMeta
         title={title}
         description={description}
-        canonicalPath={normalized.canonicalUrl || getPostUrl(normalized)}
-        robots={normalized.robots}
+        canonicalPath={canonicalPath}
+        robots="index,follow"
         image={image}
         type="article"
         schema={schema}

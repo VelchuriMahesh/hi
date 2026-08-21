@@ -798,7 +798,7 @@ export function getTableOfContents(post = {}) {
 
 export function buildBlogSchema(post = {}, relatedPosts = []) {
   const normalized = normalizePost(post);
-  const canonicalUrl = normalized.canonicalUrl || getAbsoluteUrl(getPostUrl(normalized));
+  const canonicalUrl = getAbsoluteUrl(getPostUrl(normalized));
   const imageUrl = getAbsoluteUrl(normalized.featuredImage.url || normalized.coverImage || DEFAULT_BLOG_IMAGE);
   const publishedDate = toDate(normalized.publishedAt || normalized.createdAt)?.toISOString();
   const modifiedDate = toDate(normalized.updatedAt || normalized.publishedAt || normalized.createdAt)?.toISOString();
