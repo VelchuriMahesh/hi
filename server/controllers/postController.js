@@ -9,7 +9,9 @@ const BLOG_SETTINGS_COLLECTION = 'blogSettings';
 const BLOG_SETTINGS_DOC_ID = 'global';
 
 function getPublicSiteUrl() {
-  return String(process.env.SITE_URL || process.env.CLIENT_URL || 'https://www.shrusara.com').replace(/\/+$/, '');
+  return String(process.env.SITE_URL || 'https://shrusara.com')
+    .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, 'https://shrusara.com')
+    .replace(/\/+$/, '');
 }
 
 function toStringValue(value, fallback = '') {
@@ -551,8 +553,91 @@ export async function listAdminPosts(req, res, next) {
   return listPosts(req, res, next);
 }
 
+const STATIC_SITEMAP_PAGES = [
+  {
+    path: '',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '1.0'
+  },
+  {
+    path: '/bridal-blouse-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.9'
+  },
+  {
+    path: '/bridal-blouse-bangalore/consultation',
+    lastmod: '2026-04-26',
+    changefreq: 'monthly',
+    priority: '0.8'
+  },
+  {
+    path: '/designer-outfits-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.9'
+  },
+  {
+    path: '/ready-to-wear-saree-bangalore',
+    lastmod: '2026-07-28',
+    changefreq: 'weekly',
+    priority: '0.9'
+  },
+  {
+    path: '/kids-outfits-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/about-shrusara-boutique',
+    lastmod: '2026-04-26',
+    changefreq: 'monthly',
+    priority: '0.7'
+  },
+  {
+    path: '/contact-shrusara-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'monthly',
+    priority: '0.7'
+  },
+  {
+    path: '/bridal-fashion-blog-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.8'
+  }
+];
+
+function formatSitemapDate(dateValue) {
+  if (!dateValue) {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  try {
+    if (typeof dateValue === 'object' && dateValue !== null) {
+      if (typeof dateValue.toDate === 'function') {
+        return dateValue.toDate().toISOString().split('T')[0];
+      }
+      if (typeof dateValue._seconds === 'number') {
+        return new Date(dateValue._seconds * 1000).toISOString().split('T')[0];
+      }
+    }
+    const d = new Date(dateValue);
+    if (!isNaN(d.getTime())) {
+      return d.toISOString().split('T')[0];
+    }
+  } catch {
+    // fallback
+  }
+
+  return new Date().toISOString().split('T')[0];
+}
+
 /**
  * GET /api/posts/sitemap.xml
+ * GET /sitemap.xml
  */
 export async function getPostsSitemap(req, res, next) {
   try {
@@ -561,27 +646,44 @@ export async function getPostsSitemap(req, res, next) {
     const items = snapshot.docs
       .map(mapDocument)
       .filter(isPostPublic)
-      .sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+      .sort((a, b) => new Date(b.updatedAt || b.publishedAt || b.createdAt || 0) - new Date(a.updatedAt || a.publishedAt || a.createdAt || 0));
 
-    const urls = [
-      {
-        loc: `${siteUrl}${BLOG_BASE_PATH}`,
-        lastmod: new Date().toISOString()
-      },
-      ...items.map((item) => ({
+    const staticUrls = STATIC_SITEMAP_PAGES.map((page) => ({
+      loc: `${siteUrl}${page.path ? page.path : '/'}`,
+      lastmod: page.lastmod,
+      changefreq: page.changefreq,
+      priority: page.priority
+    }));
+
+    const blogUrls = items.map((item) => {
+      const rawDate = item.updatedAt || item.publishedAt || item.createdAt;
+      return {
         loc: `${siteUrl}${BLOG_BASE_PATH}/${item.slug}`,
-        lastmod: item.updatedAt || item.publishedAt || item.createdAt || new Date().toISOString()
-      }))
-    ];
+        lastmod: formatSitemapDate(rawDate),
+        changefreq: 'weekly',
+        priority: '0.8'
+      };
+    });
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
-      .map((item) => `  <url>\n    <loc>${item.loc}</loc>\n    <lastmod>${new Date(item.lastmod).toISOString()}</lastmod>\n  </url>`)
-      .join('\n')}\n</urlset>`;
+    const allUrls = [...staticUrls, ...blogUrls];
 
-    res.set('Content-Type', 'application/xml');
+    const xmlEntries = allUrls.map((item) => {
+      return [
+        '  <url>',
+        `    <loc>${item.loc}</loc>`,
+        `    <lastmod>${item.lastmod}</lastmod>`,
+        `    <changefreq>${item.changefreq}</changefreq>`,
+        `    <priority>${item.priority}</priority>`,
+        '  </url>'
+      ].join('\n');
+    });
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${xmlEntries.join('\n')}\n</urlset>\n`;
+
+    res.set('Content-Type', 'application/xml; charset=utf-8');
     res.send(xml);
   } catch (error) {
-    console.error("ðŸ”¥ Firestore Error in getPostsSitemap:", error.message);
+    console.error("🔥 Firestore Error in getPostsSitemap:", error.message);
     next(error);
   }
 }

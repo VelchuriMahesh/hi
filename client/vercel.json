@@ -2,6 +2,10 @@
 {
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
       "source": "/bridal-fashion-blog-bangalore/:slug",
       "destination": "/api/blog-template?slug=:slug"
     },

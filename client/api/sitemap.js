@@ -1,0 +1,214 @@
+const BLOG_BASE_PATH = '/bridal-fashion-blog-bangalore';
+const DEFAULT_SITE_URL = 'https://shrusara.com';
+const DEFAULT_API_BASE = 'https://hi-jtc6.onrender.com/api';
+
+const STATIC_PAGES = [
+  {
+    path: '',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '1.0'
+  },
+  {
+    path: '/bridal-blouse-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.9'
+  },
+  {
+    path: '/bridal-blouse-bangalore/consultation',
+    lastmod: '2026-04-26',
+    changefreq: 'monthly',
+    priority: '0.8'
+  },
+  {
+    path: '/designer-outfits-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.9'
+  },
+  {
+    path: '/ready-to-wear-saree-bangalore',
+    lastmod: '2026-07-28',
+    changefreq: 'weekly',
+    priority: '0.9'
+  },
+  {
+    path: '/kids-outfits-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/about-shrusara-boutique',
+    lastmod: '2026-04-26',
+    changefreq: 'monthly',
+    priority: '0.7'
+  },
+  {
+    path: '/contact-shrusara-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'monthly',
+    priority: '0.7'
+  },
+  {
+    path: '/bridal-fashion-blog-bangalore',
+    lastmod: '2026-04-26',
+    changefreq: 'weekly',
+    priority: '0.8'
+  }
+];
+
+function toStringValue(value = '') {
+  return String(value || '').trim();
+}
+
+function normalizeSiteUrl(value = '') {
+  return toStringValue(value || DEFAULT_SITE_URL)
+    .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, DEFAULT_SITE_URL)
+    .replace(/\/+$/, '');
+}
+
+function getRequestOrigin(req) {
+  if (!req || !req.headers) return DEFAULT_SITE_URL;
+  const protocol = req.headers['x-forwarded-proto'] || 'https';
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  if (!host) return DEFAULT_SITE_URL;
+  return `${protocol}://${host}`;
+}
+
+function getPublicSiteUrl(req) {
+  return normalizeSiteUrl(
+    process.env.VITE_SITE_URL ||
+    process.env.SITE_URL ||
+    process.env.PUBLIC_SITE_URL ||
+    getRequestOrigin(req)
+  );
+}
+
+function getApiBase() {
+  return toStringValue(
+    process.env.VITE_API_URL ||
+    process.env.API_BASE_URL ||
+    process.env.BACKEND_API_URL ||
+    DEFAULT_API_BASE
+  ).replace(/\/+$/, '');
+}
+
+function formatLastmod(dateValue) {
+  if (!dateValue) {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  try {
+    if (typeof dateValue === 'object' && dateValue !== null) {
+      if (typeof dateValue.toDate === 'function') {
+        return dateValue.toDate().toISOString().split('T')[0];
+      }
+      if (typeof dateValue._seconds === 'number') {
+        return new Date(dateValue._seconds * 1000).toISOString().split('T')[0];
+      }
+    }
+    const d = new Date(dateValue);
+    if (!isNaN(d.getTime())) {
+      return d.toISOString().split('T')[0];
+    }
+  } catch {
+    // fallback
+  }
+
+  return new Date().toISOString().split('T')[0];
+}
+
+function isPostPublic(post) {
+  if (!post) return false;
+  if ((post.status || 'published') !== 'published') return false;
+  if (!post.publishedAt) return true;
+  return new Date(post.publishedAt).getTime() <= Date.now();
+}
+
+async function fetchPublishedPosts() {
+  try {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
+
+    const response = await fetch(`${getApiBase()}/posts`, {
+      headers: { accept: 'application/json' },
+      signal: controller?.signal
+    });
+
+    if (timeoutId) clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const payload = await response.json();
+    return Array.isArray(payload.items) ? payload.items : [];
+  } catch (error) {
+    console.warn('Failed to fetch posts for sitemap:', error.message);
+    return [];
+  }
+}
+
+export function buildSitemapXml(siteUrl, posts = []) {
+  const publicPosts = posts.filter(isPostPublic);
+
+  // Sort posts by updated date descending
+  publicPosts.sort((a, b) => {
+    const dateA = new Date(a.updatedAt || a.publishedAt || a.createdAt || 0).getTime();
+    const dateB = new Date(b.updatedAt || b.publishedAt || b.createdAt || 0).getTime();
+    return dateB - dateA;
+  });
+
+  const staticUrls = STATIC_PAGES.map((page) => ({
+    loc: `${siteUrl}${page.path ? page.path : '/'}`,
+    lastmod: page.lastmod,
+    changefreq: page.changefreq,
+    priority: page.priority
+  }));
+
+  const blogUrls = publicPosts.map((post) => {
+    const rawDate = post.updatedAt || post.publishedAt || post.createdAt;
+    return {
+      loc: `${siteUrl}${BLOG_BASE_PATH}/${post.slug}`,
+      lastmod: formatLastmod(rawDate),
+      changefreq: 'weekly',
+      priority: '0.8'
+    };
+  });
+
+  const allUrls = [...staticUrls, ...blogUrls];
+
+  const xmlEntries = allUrls.map((entry) => {
+    return [
+      '  <url>',
+      `    <loc>${entry.loc}</loc>`,
+      `    <lastmod>${entry.lastmod}</lastmod>`,
+      `    <changefreq>${entry.changefreq}</changefreq>`,
+      `    <priority>${entry.priority}</priority>`,
+      '  </url>'
+    ].join('\n');
+  });
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${xmlEntries.join('\n')}\n</urlset>\n`;
+}
+
+export default async function handler(req, res) {
+  try {
+    const siteUrl = getPublicSiteUrl(req);
+    const posts = await fetchPublishedPosts();
+    const xml = buildSitemapXml(siteUrl, posts);
+
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    res.status(200).send(xml);
+  } catch (error) {
+    console.error('Error generating sitemap:', error);
+    // Fallback: Return static pages if an unexpected error occurs
+    const siteUrl = getPublicSiteUrl(req);
+    const xml = buildSitemapXml(siteUrl, []);
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.status(200).send(xml);
+  }
+}

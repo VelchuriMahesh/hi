@@ -11,6 +11,7 @@ import galleryRoutes from './routes/galleryRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import videoRoutes from './routes/videoRoutes.js';
+import { getPostsSitemap } from './controllers/postController.js';
 import errorHandler from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -69,6 +70,9 @@ app.get('/api/health', (_req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// ✅ Sitemap route
+app.get('/sitemap.xml', getPostsSitemap);
 
 // ✅ Routes
 app.use('/api/auth', authRoutes);
