@@ -1172,7 +1172,11 @@ export default function BlogManager() {
     setMessage('');
 
     try {
-      const payload = buildSimplePayload(form);
+      const nowIso = new Date().toISOString();
+      const payload = {
+        ...buildSimplePayload(form),
+        updatedAt: nowIso
+      };
 
       if (!payload.title) {
         setMessage('Blog Title/H1 is required.');

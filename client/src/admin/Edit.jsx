@@ -138,7 +138,8 @@ export default function Edit() {
           title: form.title,
           excerpt: form.excerpt,
           content: form.content,
-          coverImage: form.coverImage
+          coverImage: form.coverImage,
+          updatedAt: new Date().toISOString()
         });
       } else if (type === 'video') {
         await updateVideo(token, id, {
