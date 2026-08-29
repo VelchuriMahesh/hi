@@ -1,4 +1,4 @@
-import { contactLinks } from '../data/content';
+import { contactLinks } from '../data/content.js';
 
 export const BLOG_BASE_PATH = '/bridal-fashion-blog-bangalore';
 export const DEFAULT_BLOG_AUTHOR = 'Shrusara Fashion Boutique';
@@ -34,20 +34,20 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Hello! I was reading your blog on the Shrusara website and would like to know more about your customized bridal and designer wear services.',
   authorSignature:
     'Warm Regards,\n\nShruthi Ajith\nFounder & Chief Designer\nShrusara Fashion Boutique\nCustomized Bridal & Designer Wear | Bangalore',
-  homepageUrl: 'https://www.shrusara.com/',
-  aboutUrl: 'https://www.shrusara.com/about-shrusara-boutique/',
-  contactUrl: 'https://www.shrusara.com/contact-shrusara-bangalore/',
+  homepageUrl: 'https://shrusara.com/',
+  aboutUrl: 'https://shrusara.com/about-shrusara-boutique/',
+  contactUrl: 'https://shrusara.com/contact-shrusara-bangalore/',
   landingPages: {
-    bridal: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
-    designer: 'https://www.shrusara.com/customized-designer-outfits-bangalore/',
-    occasionWear: 'https://www.shrusara.com/customized-occasion-wear-bangalore/',
-    readyToWearSaree: 'https://www.shrusara.com/ready-to-wear-saree-bangalore/'
+    bridal: 'https://shrusara.com/customized-bridal-blouse-bangalore/',
+    designer: 'https://shrusara.com/customized-designer-outfits-bangalore/',
+    occasionWear: 'https://shrusara.com/customized-occasion-wear-bangalore/',
+    readyToWearSaree: 'https://shrusara.com/ready-to-wear-saree-bangalore/'
   },
   categories: {
     'Bridal Blouses': {
       purpose: 'Blogs about customized bridal blouses.',
       primaryCta: 'Explore Bridal Blouse Designs',
-      primaryCtaLink: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/customized-bridal-blouse-bangalore/',
       ctaDescription: 'Explore customized bridal blouse designs, hand embroidery, and premium fitting options at Shrusara.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -61,7 +61,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Bridal Lehengas & Gowns': {
       purpose: 'Blogs about customized bridal outfits.',
       primaryCta: 'Explore Bridal Collection',
-      primaryCtaLink: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/customized-bridal-blouse-bangalore/',
       ctaDescription: 'Explore bridal lehengas, gowns, reception outfits, and complete bridal couture options.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -75,7 +75,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Maggam & Aari Work': {
       purpose: 'Blogs about bridal hand embroidery.',
       primaryCta: 'Explore Hand Embroidery Designs',
-      primaryCtaLink: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/customized-bridal-blouse-bangalore/',
       ctaDescription: 'See handcrafted Maggam and Aari work ideas for bridal blouses and occasion wear.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -89,7 +89,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Luxury Occasion Wear': {
       purpose: 'Designer blouses, gowns and premium occasion wear.',
       primaryCta: 'Explore Luxury Occasion Wear',
-      primaryCtaLink: 'https://www.shrusara.com/customized-occasion-wear-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/customized-occasion-wear-bangalore/',
       ctaDescription: 'Explore customized designer blouses, gowns, Indo-western outfits, and premium occasion wear.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -103,7 +103,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Ready to Wear Sarees': {
       purpose: 'Transform your own saree into a Ready to Wear Saree.',
       primaryCta: 'Explore Ready to Wear Saree Service',
-      primaryCtaLink: 'https://www.shrusara.com/ready-to-wear-saree-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/ready-to-wear-saree-bangalore/',
       ctaDescription: 'Learn how Shrusara can convert your own saree into a ready-to-wear saree with permanent pleats.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -117,7 +117,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Fashion & Styling Tips': {
       purpose: 'Educational fashion blogs.',
       primaryCta: 'Explore Customized Designer Outfits',
-      primaryCtaLink: 'https://www.shrusara.com/customized-designer-outfits-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/customized-designer-outfits-bangalore/',
       ctaDescription: 'Explore customized designer outfit ideas for bridal, festive, and special occasion styling.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -131,7 +131,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Bangalore Boutique Guide': {
       purpose: 'Guides about boutiques in Bangalore.',
       primaryCta: 'Contact Our Designer',
-      primaryCtaLink: 'https://www.shrusara.com/contact-shrusara-bangalore/',
+      primaryCtaLink: 'https://shrusara.com/contact-shrusara-bangalore/',
       ctaDescription: 'Visit or contact Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -145,7 +145,7 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Business Insights': {
       purpose: 'General business articles.',
       primaryCta: 'Explore More Blogs',
-      primaryCtaLink: 'https://www.shrusara.com/',
+      primaryCtaLink: 'https://shrusara.com/',
       ctaDescription: 'Read more Shrusara guides and boutique insights.',
       developerNote: 'Auto-load when this category is selected.',
       faqs: [
@@ -763,9 +763,10 @@ export function getPostUrl(post = {}) {
   return `${BLOG_BASE_PATH}/${post.slug || slugify(post.title || post.id)}`;
 }
 
-export function getAbsoluteUrl(pathOrUrl = '') {
+export function getAbsoluteUrl(pathOrUrl = '', siteUrl = '') {
   if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
-  return new URL(pathOrUrl || '/', contactLinks.siteUrl).toString();
+  const base = siteUrl || contactLinks.siteUrl || 'https://shrusara.com';
+  return new URL(pathOrUrl || '/', base).toString();
 }
 
 export function buildWhatsAppUrl(number, message) {
@@ -796,10 +797,11 @@ export function getTableOfContents(post = {}) {
     .filter((item) => item.text);
 }
 
-export function buildBlogSchema(post = {}, relatedPosts = []) {
+export function buildBlogSchema(post = {}, relatedPosts = [], siteUrl = '') {
   const normalized = normalizePost(post);
-  const canonicalUrl = getAbsoluteUrl(getPostUrl(normalized));
-  const imageUrl = getAbsoluteUrl(normalized.featuredImage.url || normalized.coverImage || DEFAULT_BLOG_IMAGE);
+  const baseSiteUrl = siteUrl || contactLinks.siteUrl || 'https://shrusara.com';
+  const canonicalUrl = getAbsoluteUrl(getPostUrl(normalized), baseSiteUrl);
+  const imageUrl = getAbsoluteUrl(normalized.featuredImage?.url || normalized.coverImage || DEFAULT_BLOG_IMAGE, baseSiteUrl);
   const publishedDate = toDate(normalized.publishedAt || normalized.createdAt)?.toISOString();
   const modifiedDate = toDate(normalized.updatedAt || normalized.publishedAt || normalized.createdAt)?.toISOString();
   const faqs = (normalized.faqs || []).filter((faq) => faq.question && faq.answer);
@@ -807,41 +809,52 @@ export function buildBlogSchema(post = {}, relatedPosts = []) {
   const schemas = [
     {
       '@context': 'https://schema.org',
-      '@type': 'Article',
+      '@type': 'BlogPosting',
+      '@id': `${canonicalUrl}#blogposting`,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalUrl
+      },
       headline: normalized.seoTitle || normalized.title,
+      name: normalized.title,
       description: normalized.metaDescription || normalized.excerpt,
+      url: canonicalUrl,
       image: [imageUrl],
+      datePublished: publishedDate,
+      dateModified: modifiedDate,
       author: {
         '@type': 'Person',
-        name: normalized.author
+        name: normalized.author || 'Shrusara Fashion Boutique',
+        url: getAbsoluteUrl('/about-shrusara-boutique', baseSiteUrl)
       },
       publisher: {
         '@type': 'Organization',
         name: 'Shrusara Fashion Boutique',
+        url: getAbsoluteUrl('/', baseSiteUrl),
         logo: {
           '@type': 'ImageObject',
-          url: getAbsoluteUrl('/videos/Revisedlogo.webp')
+          url: getAbsoluteUrl('/videos/Revisedlogo.webp', baseSiteUrl)
         }
       },
-      datePublished: publishedDate,
-      dateModified: modifiedDate,
-      mainEntityOfPage: canonicalUrl
+      articleSection: normalized.category || 'Bridal Blouses',
+      inLanguage: 'en-IN'
     },
     {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
       itemListElement: [
         {
           '@type': 'ListItem',
           position: 1,
           name: 'Home',
-          item: getAbsoluteUrl('/')
+          item: getAbsoluteUrl('/', baseSiteUrl)
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'Blog',
-          item: getAbsoluteUrl(BLOG_BASE_PATH)
+          item: getAbsoluteUrl(BLOG_BASE_PATH, baseSiteUrl)
         },
         {
           '@type': 'ListItem',
@@ -855,7 +868,7 @@ export function buildBlogSchema(post = {}, relatedPosts = []) {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'Shrusara Fashion Boutique',
-      url: contactLinks.siteUrl,
+      url: getAbsoluteUrl('/', baseSiteUrl),
       telephone: contactLinks.phoneDisplay,
       email: contactLinks.email,
       address: contactLinks.address
@@ -866,6 +879,7 @@ export function buildBlogSchema(post = {}, relatedPosts = []) {
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
       mainEntity: faqs.map((faq) => ({
         '@type': 'Question',
         name: faq.question,
@@ -884,7 +898,7 @@ export function buildBlogSchema(post = {}, relatedPosts = []) {
       itemListElement: relatedPosts.map((item, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: getAbsoluteUrl(getPostUrl(item)),
+        url: getAbsoluteUrl(getPostUrl(item), baseSiteUrl),
         name: item.title
       }))
     });

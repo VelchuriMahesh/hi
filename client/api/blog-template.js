@@ -1,5 +1,5 @@
 const BLOG_BASE_PATH = '/bridal-fashion-blog-bangalore';
-const DEFAULT_SITE_URL = 'https://www.shrusara.com';
+const DEFAULT_SITE_URL = 'https://shrusara.com';
 const DEFAULT_API_BASE = 'https://hi-jtc6.onrender.com/api';
 
 function toStringValue(value = '') {
@@ -9,6 +9,7 @@ function toStringValue(value = '') {
 function normalizeSiteUrl(value = '') {
   return toStringValue(value || DEFAULT_SITE_URL)
     .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, DEFAULT_SITE_URL)
+    .replace(/^https?:\/\/www\.shrusara\.com\/?$/i, DEFAULT_SITE_URL)
     .replace(/\/+$/, '');
 }
 
@@ -52,6 +53,27 @@ function toAbsoluteUrl(value = '', siteUrl = DEFAULT_SITE_URL) {
   }
 }
 
+function toIsoDate(value) {
+  if (!value) return new Date().toISOString();
+  try {
+    if (typeof value === 'object' && value !== null) {
+      if (typeof value.toDate === 'function') {
+        return value.toDate().toISOString();
+      }
+      if (typeof value._seconds === 'number') {
+        return new Date(value._seconds * 1000).toISOString();
+      }
+    }
+    const d = new Date(value);
+    if (!isNaN(d.getTime())) {
+      return d.toISOString();
+    }
+  } catch {
+    // fallback
+  }
+  return new Date().toISOString();
+}
+
 function escapeHtml(value = '') {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -86,11 +108,115 @@ function upsertCanonical(html, canonicalUrl) {
   );
 }
 
+function buildBlogSchemas(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
+  const postSlug = toStringValue(post.slug || slug);
+  const canonicalUrl = toAbsoluteUrl(`${BLOG_BASE_PATH}/${postSlug}`, siteUrl);
+  const title = toStringValue(post.seoTitle || post.metaTitle || post.title || 'Shrusara Blog');
+  const description = toStringValue(post.metaDescription || post.excerpt || '');
+  const imageUrl = toAbsoluteUrl(
+    getImageUrl(post.openGraph?.image) ||
+    getImageUrl(post.featuredImage) ||
+    post.coverImage ||
+    '/videos/logo.png',
+    siteUrl
+  );
+  const publishedDate = toIsoDate(post.publishedAt || post.createdAt);
+  const modifiedDate = toIsoDate(post.updatedAt || post.publishedAt || post.createdAt);
+  const faqs = (Array.isArray(post.faqs) ? post.faqs : []).filter((faq) => faq?.question && faq?.answer);
+
+  const schemas = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      '@id': `${canonicalUrl}#blogposting`,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalUrl
+      },
+      headline: title,
+      name: toStringValue(post.title || title),
+      description,
+      url: canonicalUrl,
+      image: [imageUrl].filter(Boolean),
+      datePublished: publishedDate,
+      dateModified: modifiedDate,
+      author: {
+        '@type': 'Person',
+        name: toStringValue(post.author || 'Shrusara Fashion Boutique'),
+        url: toAbsoluteUrl('/about-shrusara-boutique', siteUrl)
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Shrusara Fashion Boutique',
+        url: toAbsoluteUrl('/', siteUrl),
+        logo: {
+          '@type': 'ImageObject',
+          url: toAbsoluteUrl('/videos/Revisedlogo.webp', siteUrl)
+        }
+      },
+      articleSection: toStringValue(post.category || 'Bridal Blouses'),
+      inLanguage: 'en-IN'
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: toAbsoluteUrl('/', siteUrl)
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Blog',
+          item: toAbsoluteUrl(BLOG_BASE_PATH, siteUrl)
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: toStringValue(post.title || title),
+          item: canonicalUrl
+        }
+      ]
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Shrusara Fashion Boutique',
+      url: toAbsoluteUrl('/', siteUrl),
+      telephone: '+919741827558',
+      email: 'help@shrusara.com',
+      address: 'Shrusara Fashion Boutique, 106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086'
+    }
+  ];
+
+  if (faqs.length) {
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer
+        }
+      }))
+    });
+  }
+
+  return schemas;
+}
+
 function buildBlogSeo(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
   const postSlug = toStringValue(post.slug || slug);
   const canonicalUrl = toAbsoluteUrl(`${BLOG_BASE_PATH}/${postSlug}`, siteUrl);
   const title = toStringValue(post.seoTitle || post.metaTitle || post.title || 'Shrusara Blog');
-  const description = toStringValue(post.metaDescription || '');
+  const description = toStringValue(post.metaDescription || post.excerpt || '');
   const image = toAbsoluteUrl(
     getImageUrl(post.openGraph?.image) ||
     getImageUrl(post.featuredImage) ||
@@ -104,11 +230,11 @@ function buildBlogSeo(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
     description,
     canonicalUrl,
     image,
-    robots: 'index,follow'
+    robots: 'index, follow'
   };
 }
 
-function injectBlogSeo(html, seo) {
+function injectBlogSeo(html, seo, schemas) {
   let output = upsertHeadTag(
     html,
     /<title>[\s\S]*?<\/title>/i,
@@ -129,6 +255,13 @@ function injectBlogSeo(html, seo) {
     output = upsertMeta(output, 'property', 'og:image', seo.image);
     output = upsertMeta(output, 'name', 'twitter:image', seo.image);
   }
+
+  // Remove existing static structured data scripts from home template
+  output = output.replace(/<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, '');
+
+  // Inject blog structured data JSON-LD (BlogPosting, BreadcrumbList, etc.)
+  const jsonLdTag = `<script type="application/ld+json" id="page-structured-data">\n${JSON.stringify(schemas, null, 2)}\n    </script>`;
+  output = upsertHeadTag(output, /<script\s+id=["']page-structured-data["'][^>]*>[\s\S]*?<\/script>/i, jsonLdTag);
 
   return output;
 }
@@ -165,6 +298,7 @@ export default async function handler(req, res) {
   const slug = toStringValue(req.query.slug);
 
   if (!slug) {
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow');
     res.status(404).send('Blog post not found.');
     return;
   }
@@ -177,15 +311,19 @@ export default async function handler(req, res) {
 
     if (!post) {
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow');
       res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
       res.status(404).send(html);
       return;
     }
 
-    const seo = buildBlogSeo(post, slug, getPublicSiteUrl(req));
-    const output = injectBlogSeo(html, seo);
+    const siteUrl = getPublicSiteUrl(req);
+    const seo = buildBlogSeo(post, slug, siteUrl);
+    const schemas = buildBlogSchemas(post, slug, siteUrl);
+    const output = injectBlogSeo(html, seo, schemas);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('X-Robots-Tag', 'index, follow');
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400');
     res.status(200).send(output);
   } catch (error) {
