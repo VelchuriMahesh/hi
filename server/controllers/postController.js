@@ -9,8 +9,9 @@ const BLOG_SETTINGS_COLLECTION = 'blogSettings';
 const BLOG_SETTINGS_DOC_ID = 'global';
 
 function getPublicSiteUrl() {
-  return String(process.env.SITE_URL || 'https://shrusara.com')
-    .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, 'https://shrusara.com')
+  return String(process.env.SITE_URL || 'https://www.shrusara.com')
+    .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, 'https://www.shrusara.com')
+    .replace(/^https?:\/\/shrusara\.com\/?$/i, 'https://www.shrusara.com')
     .replace(/\/+$/, '');
 }
 
@@ -693,11 +694,35 @@ export async function getPostsSitemap(req, res, next) {
  */
 export async function getPostBySlug(req, res, next) {
   try {
-    const slug = slugify(req.params.slug);
-    const snapshot = await db.collection('posts').where('slug', '==', slug).limit(1).get();
+    const rawSlug = String(req.params.slug || '').trim();
+    const slug = slugify(rawSlug);
+    let snapshot = await db.collection('posts').where('slug', '==', slug).limit(1).get();
+
+    if (snapshot.empty && rawSlug !== slug) {
+      snapshot = await db.collection('posts').where('slug', '==', rawSlug).limit(1).get();
+    }
 
     if (snapshot.empty) {
-      return res.status(404).json({ message: 'Blog post not found.' });
+      const allSnapshot = await db.collection('posts').get();
+      const matchedDoc = allSnapshot.docs.find((doc) => {
+        const data = doc.data();
+        return (
+          slugify(data.slug || '') === slug ||
+          slugify(data.title || '') === slug ||
+          doc.id === rawSlug
+        );
+      });
+
+      if (!matchedDoc) {
+        return res.status(404).json({ message: 'Blog post not found.' });
+      }
+
+      const item = mapDocument(matchedDoc);
+      if (!isPostPublic(item) && req.user?.role !== 'admin') {
+        return res.status(404).json({ message: 'Blog post not found.' });
+      }
+
+      return res.json({ item });
     }
 
     const item = mapDocument(snapshot.docs[0]);
@@ -708,7 +733,7 @@ export async function getPostBySlug(req, res, next) {
 
     res.json({ item });
   } catch (error) {
-    console.error("ðŸ”¥ Firestore Error in getPostBySlug:", error.message);
+    console.error("🔥 Firestore Error in getPostBySlug:", error.message);
     next(error);
   }
 }

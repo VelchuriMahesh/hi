@@ -1,5 +1,5 @@
 const BLOG_BASE_PATH = '/bridal-fashion-blog-bangalore';
-const DEFAULT_SITE_URL = 'https://shrusara.com';
+const DEFAULT_SITE_URL = 'https://www.shrusara.com';
 const DEFAULT_API_BASE = 'https://hi-jtc6.onrender.com/api';
 
 const STATIC_PAGES = [
@@ -66,6 +66,7 @@ function toStringValue(value = '') {
 function normalizeSiteUrl(value = '') {
   return toStringValue(value || DEFAULT_SITE_URL)
     .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, DEFAULT_SITE_URL)
+    .replace(/^https?:\/\/shrusara\.com\/?$/i, DEFAULT_SITE_URL)
     .replace(/\/+$/, '');
 }
 
@@ -128,27 +129,30 @@ function isPostPublic(post) {
 }
 
 async function fetchPublishedPosts() {
-  try {
-    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const timeoutId = controller ? setTimeout(() => controller.abort(), 8000) : null;
+  const apiBase = getApiBase();
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timeoutId = controller ? setTimeout(() => controller.abort(), 9000) : null;
 
-    const response = await fetch(`${getApiBase()}/posts`, {
-      headers: { accept: 'application/json' },
-      signal: controller?.signal
-    });
+      const response = await fetch(`${apiBase}/posts`, {
+        headers: { accept: 'application/json' },
+        signal: controller?.signal
+      });
 
-    if (timeoutId) clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
 
-    if (!response.ok) {
-      return [];
+      if (response.ok) {
+        const payload = await response.json();
+        if (Array.isArray(payload.items)) return payload.items;
+      }
+    } catch (error) {
+      if (attempt === 2) {
+        console.warn('Failed to fetch posts for sitemap:', error.message);
+      }
     }
-
-    const payload = await response.json();
-    return Array.isArray(payload.items) ? payload.items : [];
-  } catch (error) {
-    console.warn('Failed to fetch posts for sitemap:', error.message);
-    return [];
   }
+  return [];
 }
 
 export function buildSitemapXml(siteUrl, posts = []) {

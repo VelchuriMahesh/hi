@@ -6,10 +6,10 @@ const email = env.VITE_CONTACT_EMAIL || 'help@shrusara.com';
 const address =
   env.VITE_BOUTIQUE_ADDRESS ||
   'Shrusara Fashion Boutique, 106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086';
-const configuredSiteUrl = env.VITE_SITE_URL || 'https://shrusara.com';
+const configuredSiteUrl = env.VITE_SITE_URL || 'https://www.shrusara.com';
 const siteUrl = configuredSiteUrl
-  .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, 'https://shrusara.com')
-  .replace(/^https?:\/\/www\.shrusara\.com\/?$/i, 'https://shrusara.com')
+  .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, 'https://www.shrusara.com')
+  .replace(/^https?:\/\/shrusara\.com\/?$/i, 'https://www.shrusara.com')
   .replace(/\/+$/, '');
 
 export function buildDesignWhatsAppLink(designName = 'this design') {

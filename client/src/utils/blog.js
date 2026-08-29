@@ -34,14 +34,14 @@ export const DEFAULT_BLOG_SETTINGS = {
     'Hello! I was reading your blog on the Shrusara website and would like to know more about your customized bridal and designer wear services.',
   authorSignature:
     'Warm Regards,\n\nShruthi Ajith\nFounder & Chief Designer\nShrusara Fashion Boutique\nCustomized Bridal & Designer Wear | Bangalore',
-  homepageUrl: 'https://shrusara.com/',
-  aboutUrl: 'https://shrusara.com/about-shrusara-boutique/',
-  contactUrl: 'https://shrusara.com/contact-shrusara-bangalore/',
+  homepageUrl: 'https://www.shrusara.com/',
+  aboutUrl: 'https://www.shrusara.com/about-shrusara-boutique/',
+  contactUrl: 'https://www.shrusara.com/contact-shrusara-bangalore/',
   landingPages: {
-    bridal: 'https://shrusara.com/customized-bridal-blouse-bangalore/',
-    designer: 'https://shrusara.com/customized-designer-outfits-bangalore/',
-    occasionWear: 'https://shrusara.com/customized-occasion-wear-bangalore/',
-    readyToWearSaree: 'https://shrusara.com/ready-to-wear-saree-bangalore/'
+    bridal: 'https://www.shrusara.com/customized-bridal-blouse-bangalore/',
+    designer: 'https://www.shrusara.com/customized-designer-outfits-bangalore/',
+    occasionWear: 'https://www.shrusara.com/customized-occasion-wear-bangalore/',
+    readyToWearSaree: 'https://www.shrusara.com/ready-to-wear-saree-bangalore/'
   },
   categories: {
     'Bridal Blouses': {
@@ -184,6 +184,14 @@ export function slugify(value) {
     .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
     .replace(/-+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+export function slugToTitle(slug = '') {
+  return String(slug || '')
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 }
 
 export function newId(prefix = 'item') {
@@ -799,7 +807,7 @@ export function getTableOfContents(post = {}) {
 
 export function buildBlogSchema(post = {}, relatedPosts = [], siteUrl = '') {
   const normalized = normalizePost(post);
-  const baseSiteUrl = siteUrl || contactLinks.siteUrl || 'https://shrusara.com';
+  const baseSiteUrl = siteUrl || contactLinks.siteUrl || 'https://www.shrusara.com';
   const canonicalUrl = getAbsoluteUrl(getPostUrl(normalized), baseSiteUrl);
   const imageUrl = getAbsoluteUrl(normalized.featuredImage?.url || normalized.coverImage || DEFAULT_BLOG_IMAGE, baseSiteUrl);
   const publishedDate = toDate(normalized.publishedAt || normalized.createdAt)?.toISOString();

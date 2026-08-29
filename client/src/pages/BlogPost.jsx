@@ -18,7 +18,8 @@ import {
   normalizeBlogSettings,
   normalizeImage,
   normalizePost,
-  slugify
+  slugify,
+  slugToTitle
 } from '../utils/blog';
 
 function getRelatedPosts(post, posts) {
@@ -314,11 +315,22 @@ export default function BlogPost() {
     label: `Chapter ${index + 1}`
   }));
 
+  const fallbackTitle = `${slugToTitle(slug)} | Shrusara`;
+  const fallbackDescription = `Discover customized bridal and designer wear insights on ${slugToTitle(slug)} by Shrusara Fashion Boutique Bangalore.`;
+  const fallbackCanonicalPath = `${BLOG_BASE_PATH}/${slug}`;
+  const fallbackSchema = buildBlogSchema({ title: slugToTitle(slug), slug, category: 'Bridal & Designer Wear' });
+
   if (loading) {
     return (
       <>
         <BlogStateStyles />
-        <PageMeta title="Loading Blog | Shrusara" description="Loading Shrusara blog post." canonicalPath={`${BLOG_BASE_PATH}/${slug}`} />
+        <PageMeta
+          title={fallbackTitle}
+          description={fallbackDescription}
+          canonicalPath={fallbackCanonicalPath}
+          robots="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+          schema={fallbackSchema}
+        />
         <main className="bp-page">
           <div className="bp-shell">
             <div className="bp-skeleton" />
@@ -333,7 +345,13 @@ export default function BlogPost() {
     return (
       <>
         <BlogStateStyles />
-        <PageMeta title="Blog Not Found | Shrusara" description="The requested blog post was not found." canonicalPath={`${BLOG_BASE_PATH}/${slug}`} robots="noindex,nofollow" />
+        <PageMeta
+          title={fallbackTitle}
+          description={fallbackDescription}
+          canonicalPath={fallbackCanonicalPath}
+          robots="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+          schema={fallbackSchema}
+        />
         <main className="bp-page">
           <section className="bp-shell">
             <div className="bp-state-card">
@@ -472,7 +490,7 @@ export default function BlogPost() {
         title={title}
         description={description}
         canonicalPath={canonicalPath}
-        robots="index,follow"
+        robots="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
         image={image}
         type="article"
         schema={schema}

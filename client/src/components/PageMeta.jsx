@@ -6,7 +6,13 @@ function upsertMeta(selector, value, attribute = 'name') {
     return;
   }
 
-  let element = document.head.querySelector(`meta[${attribute}="${selector}"]`);
+  const elements = document.head.querySelectorAll(`meta[${attribute}="${selector}"]`);
+  if (elements.length > 1) {
+    for (let i = 1; i < elements.length; i++) {
+      elements[i].remove();
+    }
+  }
+  let element = elements[0];
 
   if (!element) {
     element = document.createElement('meta');
@@ -18,7 +24,13 @@ function upsertMeta(selector, value, attribute = 'name') {
 }
 
 function upsertLink(rel, href) {
-  let element = document.head.querySelector(`link[rel="${rel}"]`);
+  const elements = document.head.querySelectorAll(`link[rel="${rel}"]`);
+  if (elements.length > 1) {
+    for (let i = 1; i < elements.length; i++) {
+      elements[i].remove();
+    }
+  }
+  let element = elements[0];
 
   if (!element) {
     element = document.createElement('link');
@@ -34,7 +46,7 @@ export default function PageMeta({
   description,
   keywords,
   canonicalPath = '/',
-  robots = 'index,follow',
+  robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1',
   image,
   type = 'website',
   schema
@@ -49,6 +61,7 @@ export default function PageMeta({
     upsertMeta('description', safeDescription);
     upsertMeta('keywords', keywords);
     upsertMeta('robots', robots);
+    upsertMeta('googlebot', robots);
     upsertMeta('og:title', safeTitle, 'property');
     upsertMeta('og:description', safeDescription, 'property');
     upsertMeta('og:type', type, 'property');
@@ -79,3 +92,4 @@ export default function PageMeta({
 
   return null;
 }
+
