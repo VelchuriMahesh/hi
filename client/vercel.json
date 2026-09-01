@@ -10,6 +10,10 @@
       "destination": "/api/blog-template?slug=:slug"
     },
     {
+      "source": "/bridal-fashion-blog-bangalore/:slug/",
+      "destination": "/api/blog-template?slug=:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }

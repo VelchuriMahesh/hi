@@ -226,17 +226,36 @@ function BlogCard({ post, loading }) {
   return (
     <article className="blg-card">
       <div className="blg-card-img-wrap">
-        <LazyImage
-          src={image}
-          alt={normalized.featuredImage?.alt || ''}
-          sizes="(min-width: 1280px) 33vw, (min-width: 1024px) 50vw, 100vw"
-          wrapperClassName="blg-card-img"
-        />
+        {articleUrl ? (
+          <Link to={articleUrl} aria-label={normalized.title}>
+            <LazyImage
+              src={image}
+              alt={normalized.featuredImage?.alt || normalized.title || ''}
+              sizes="(min-width: 1280px) 33vw, (min-width: 1024px) 50vw, 100vw"
+              wrapperClassName="blg-card-img"
+            />
+          </Link>
+        ) : (
+          <LazyImage
+            src={image}
+            alt={normalized.featuredImage?.alt || normalized.title || ''}
+            sizes="(min-width: 1280px) 33vw, (min-width: 1024px) 50vw, 100vw"
+            wrapperClassName="blg-card-img"
+          />
+        )}
         {normalized.category && <span className="blg-card-tag">{normalized.category}</span>}
       </div>
       <div className="blg-card-body">
         {date && <p className="blg-card-date">{formatDate(date)} · {calculateReadingTime(normalized)} min read</p>}
-        <h2 className="blg-card-title">{normalized.title}</h2>
+        <h2 className="blg-card-title">
+          {articleUrl ? (
+            <Link to={articleUrl} style={{ color: 'inherit', textDecoration: 'none' }}>
+              {normalized.title}
+            </Link>
+          ) : (
+            normalized.title
+          )}
+        </h2>
         <p className="blg-card-excerpt">{normalized.excerpt}</p>
         {expanded && normalized.content && (
           <p className="blg-card-content">{normalized.content}</p>

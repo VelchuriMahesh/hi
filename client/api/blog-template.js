@@ -282,9 +282,9 @@ function renderServerBody(post, seo, slug, siteUrl) {
     sectionsHtml = sections
       .filter((sec) => sec.paragraph || sec.html || sec.image?.url)
       .map((sec, idx) => {
-        const pText = sec.paragraph || '';
-        const img = sec.image?.url ? `<figure><img src="${escapeHtml(sec.image.url)}" alt="${escapeHtml(sec.image.alt || title)}" /><figcaption>${escapeHtml(sec.caption || '')}</figcaption></figure>` : '';
-        return `<section class="bp-server-section"><h3>Chapter ${idx + 1}</h3>${pText ? `<p>${escapeHtml(pText)}</p>` : ''}${img}</section>`;
+        const textMarkup = sec.html || (sec.paragraph ? `<p>${escapeHtml(sec.paragraph)}</p>` : '');
+        const img = sec.image?.url ? `<figure><img src="${escapeHtml(sec.image.url)}" alt="${escapeHtml(sec.image.alt || title)}" />${sec.caption ? `<figcaption>${escapeHtml(sec.caption)}</figcaption>` : ''}</figure>` : '';
+        return `<section class="bp-server-section"><h3>Chapter ${idx + 1}</h3>${textMarkup}${img}</section>`;
       })
       .join('\n');
   } else if (post.contentHtml) {
@@ -342,7 +342,11 @@ function injectBlogSeo(html, seo, schemas, post, slug, siteUrl) {
 
   // Pre-render content inside <div id="root"> for crawlers
   const serverBody = renderServerBody(post, seo, slug, siteUrl);
-  output = output.replace(/<div id="root"><\/div>/i, `<div id="root">${serverBody}</div>`);
+  if (/<div id="root"[^>]*>/i.test(output)) {
+    output = output.replace(/<div id="root"[^>]*>[\s\S]*?<\/div>/i, `<div id="root">\n${serverBody}\n</div>`);
+  } else {
+    output = output.replace(/<body[^>]*>/i, `$&<div id="root">\n${serverBody}\n</div>`);
+  }
 
   return output;
 }
@@ -451,7 +455,7 @@ async function fetchPost(slug) {
 }
 
 export default async function handler(req, res) {
-  const rawSlug = toStringValue(req.query.slug);
+  const rawSlug = toStringValue(req.query.slug).replace(/^\/+|\/+$/g, '');
   const slug = rawSlug || 'bridal-fashion-blog-bangalore';
 
   try {
