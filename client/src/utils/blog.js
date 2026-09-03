@@ -212,8 +212,16 @@ export function toArray(value) {
 export function toDate(value) {
   if (!value) return null;
 
-  if (value.seconds) {
-    return new Date(value.seconds * 1000);
+  if (typeof value === 'object') {
+    if (typeof value.toDate === 'function') {
+      return value.toDate();
+    }
+    if (typeof value.seconds === 'number') {
+      return new Date(value.seconds * 1000);
+    }
+    if (typeof value._seconds === 'number') {
+      return new Date(value._seconds * 1000);
+    }
   }
 
   const date = new Date(value);
@@ -810,8 +818,8 @@ export function buildBlogSchema(post = {}, relatedPosts = [], siteUrl = '') {
   const baseSiteUrl = siteUrl || contactLinks.siteUrl || 'https://www.shrusara.com';
   const canonicalUrl = getAbsoluteUrl(getPostUrl(normalized), baseSiteUrl);
   const imageUrl = getAbsoluteUrl(normalized.featuredImage?.url || normalized.coverImage || DEFAULT_BLOG_IMAGE, baseSiteUrl);
-  const publishedDate = toDate(normalized.publishedAt || normalized.createdAt)?.toISOString();
-  const modifiedDate = toDate(normalized.updatedAt || normalized.publishedAt || normalized.createdAt)?.toISOString();
+  const publishedDate = toDate(normalized.publishedAt || normalized.createdAt)?.toISOString() || new Date().toISOString();
+  const modifiedDate = toDate(normalized.updatedAt || normalized.publishedAt || normalized.createdAt)?.toISOString() || publishedDate;
   const faqs = (normalized.faqs || []).filter((faq) => faq.question && faq.answer);
 
   const schemas = [
@@ -827,7 +835,7 @@ export function buildBlogSchema(post = {}, relatedPosts = [], siteUrl = '') {
       name: normalized.title,
       description: normalized.metaDescription || normalized.excerpt,
       url: canonicalUrl,
-      image: [imageUrl],
+      image: [imageUrl].filter(Boolean),
       datePublished: publishedDate,
       dateModified: modifiedDate,
       author: {
@@ -844,7 +852,7 @@ export function buildBlogSchema(post = {}, relatedPosts = [], siteUrl = '') {
           url: getAbsoluteUrl('/videos/Revisedlogo.webp', baseSiteUrl)
         }
       },
-      articleSection: normalized.category || 'Bridal Blouses',
+      articleSection: normalized.category || 'Bridal & Designer Wear',
       inLanguage: 'en-IN'
     },
     {
@@ -875,11 +883,59 @@ export function buildBlogSchema(post = {}, relatedPosts = [], siteUrl = '') {
     {
       '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': `${getAbsoluteUrl('/', baseSiteUrl)}#organization`,
       name: 'Shrusara Fashion Boutique',
       url: getAbsoluteUrl('/', baseSiteUrl),
+      logo: {
+        '@type': 'ImageObject',
+        url: getAbsoluteUrl('/videos/Revisedlogo.webp', baseSiteUrl)
+      },
       telephone: contactLinks.phoneDisplay,
       email: contactLinks.email,
-      address: contactLinks.address
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+        addressLocality: 'Bangalore',
+        addressRegion: 'Karnataka',
+        postalCode: '560086',
+        addressCountry: 'IN'
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': ['LocalBusiness', 'ClothingStore'],
+      '@id': `${getAbsoluteUrl('/', baseSiteUrl)}#localbusiness`,
+      name: 'Shrusara Fashion Boutique',
+      url: getAbsoluteUrl('/', baseSiteUrl),
+      logo: getAbsoluteUrl('/videos/Revisedlogo.webp', baseSiteUrl),
+      image: getAbsoluteUrl('/videos/logo.png', baseSiteUrl),
+      telephone: contactLinks.phoneDisplay,
+      email: contactLinks.email,
+      priceRange: '₹₹',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+        addressLocality: 'Bangalore',
+        addressRegion: 'Karnataka',
+        postalCode: '560086',
+        addressCountry: 'IN'
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 13.0077,
+        longitude: 77.5487
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${getAbsoluteUrl('/', baseSiteUrl)}#website`,
+      name: 'Shrusara Fashion Boutique',
+      url: getAbsoluteUrl('/', baseSiteUrl),
+      publisher: {
+        '@id': `${getAbsoluteUrl('/', baseSiteUrl)}#organization`
+      },
+      inLanguage: 'en-IN'
     }
   ];
 

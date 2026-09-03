@@ -187,7 +187,7 @@ function buildBlogSchemas(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
           url: toAbsoluteUrl('/videos/Revisedlogo.webp', siteUrl)
         }
       },
-      articleSection: toStringValue(post.category || 'Bridal Blouses'),
+      articleSection: toStringValue(post.category || 'Bridal & Designer Wear'),
       inLanguage: 'en-IN'
     },
     {
@@ -218,11 +218,59 @@ function buildBlogSchemas(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
     {
       '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': `${toAbsoluteUrl('/', siteUrl)}#organization`,
       name: 'Shrusara Fashion Boutique',
       url: toAbsoluteUrl('/', siteUrl),
+      logo: {
+        '@type': 'ImageObject',
+        url: toAbsoluteUrl('/videos/Revisedlogo.webp', siteUrl)
+      },
       telephone: '+919741827558',
       email: 'help@shrusara.com',
-      address: 'Shrusara Fashion Boutique, 106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086'
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+        addressLocality: 'Bangalore',
+        addressRegion: 'Karnataka',
+        postalCode: '560086',
+        addressCountry: 'IN'
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': ['LocalBusiness', 'ClothingStore'],
+      '@id': `${toAbsoluteUrl('/', siteUrl)}#localbusiness`,
+      name: 'Shrusara Fashion Boutique',
+      url: toAbsoluteUrl('/', siteUrl),
+      logo: toAbsoluteUrl('/videos/Revisedlogo.webp', siteUrl),
+      image: toAbsoluteUrl('/videos/logo.png', siteUrl),
+      telephone: '+919741827558',
+      email: 'help@shrusara.com',
+      priceRange: '₹₹',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+        addressLocality: 'Bangalore',
+        addressRegion: 'Karnataka',
+        postalCode: '560086',
+        addressCountry: 'IN'
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 13.0077,
+        longitude: 77.5487
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${toAbsoluteUrl('/', siteUrl)}#website`,
+      name: 'Shrusara Fashion Boutique',
+      url: toAbsoluteUrl('/', siteUrl),
+      publisher: {
+        '@id': `${toAbsoluteUrl('/', siteUrl)}#organization`
+      },
+      inLanguage: 'en-IN'
     }
   ];
 
