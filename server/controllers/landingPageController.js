@@ -25,6 +25,126 @@ export const DEFAULT_BANGALORE_LOCATIONS = [
   { name: 'Electronic City', areaGroup: 'Bangalore South', displayOrder: 16, status: 'active' }
 ];
 
+export const DEFAULT_EXISTING_LANDING_PAGES = [
+  {
+    title: 'Customized Bridal Blouse in Bangalore | Maggam & Aari Work | Shrusara',
+    serviceCategory: 'Bridal Blouse',
+    locationName: 'Bangalore',
+    areaGroup: 'Bangalore West',
+    status: 'published',
+    slug: 'customized-bridal-blouse-bangalore',
+    url: '/customized-bridal-blouse-bangalore',
+    canonicalUrl: 'https://www.shrusara.com/customized-bridal-blouse-bangalore',
+    metaTitle: 'Customized Bridal Blouse in Bangalore | Maggam & Aari Work | Shrusara',
+    metaDescription: 'Customized bridal blouses in Bangalore with premium maggam and aari work, perfect fit, and 1-on-1 design consultation with Chief Designer Shruthi Ajith.',
+    metaKeywords: [
+      'bridal blouse bangalore',
+      'customized bridal blouse',
+      'maggam work blouse bangalore',
+      'aari work blouse',
+      'wedding blouse designer bangalore',
+      'bridal boutique bangalore'
+    ],
+    featuredImage: {
+      url: '/bridal/bridalblow/hero-bridal.webp',
+      alt: 'Customized Bridal Blouse in Bangalore'
+    }
+  },
+  {
+    title: 'Customized Designer Outfits & Gowns in Bangalore | Shrusara',
+    serviceCategory: 'Designer Outfits',
+    locationName: 'Bangalore',
+    areaGroup: 'Bangalore',
+    status: 'published',
+    slug: 'customized-designer-outfits-bangalore',
+    url: '/customized-designer-outfits-bangalore',
+    canonicalUrl: 'https://www.shrusara.com/customized-designer-outfits-bangalore',
+    metaTitle: 'Customized Designer Outfits & Gowns in Bangalore | Shrusara',
+    metaDescription: 'Customized designer gowns, indo-western outfits, and lehengas in Bangalore with personalized design, perfect fit, and boutique finishing by Shrusara.',
+    metaKeywords: [
+      'designer outfits bangalore',
+      'customized gowns bangalore',
+      'indo western wear bangalore',
+      'designer lehenga bangalore',
+      'evening gowns bangalore',
+      'designer boutique bangalore'
+    ],
+    featuredImage: {
+      url: '/videos/desingerhero.webp',
+      alt: 'Customized Designer Outfits & Gowns in Bangalore'
+    }
+  },
+  {
+    title: 'Customized Occasion Wear & Designer Outfits Bangalore | Shrusara',
+    serviceCategory: 'Occasion Wear',
+    locationName: 'Bangalore',
+    areaGroup: 'Bangalore',
+    status: 'published',
+    slug: 'customized-occasion-wear-bangalore',
+    url: '/customized-occasion-wear-bangalore',
+    canonicalUrl: 'https://www.shrusara.com/customized-occasion-wear-bangalore',
+    metaTitle: 'Customized Occasion Wear & Designer Outfits Bangalore | Shrusara',
+    metaDescription: 'Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara.',
+    metaKeywords: [
+      'occasion wear bangalore',
+      'designer gowns bangalore',
+      'crop top lehenga bangalore',
+      'half saree bangalore',
+      'boutique bangalore',
+      'party wear bangalore'
+    ],
+    featuredImage: {
+      url: '/occasion_wear/Designer%20Gowns%20&%20Indo%20western%20outfits/Designer%20Gowns%20&%20Indo%20western%20outfits/indo-western-fusion-bridal-wear-shrusara.webp',
+      alt: 'Customized Occasion Wear & Designer Outfits in Bangalore'
+    }
+  },
+  {
+    title: 'Ready-to-Wear Saree Customization in Bangalore | Shrusara',
+    serviceCategory: 'Ready-to-Wear Saree',
+    locationName: 'Bangalore',
+    areaGroup: 'Bangalore',
+    status: 'published',
+    slug: 'ready-to-wear-saree-bangalore',
+    url: '/ready-to-wear-saree-bangalore',
+    canonicalUrl: 'https://www.shrusara.com/ready-to-wear-saree-bangalore',
+    metaTitle: 'Ready-to-Wear Saree Customization in Bangalore | Shrusara',
+    metaDescription: 'Convert your own saree into a ready-to-wear saree in Bangalore with permanent pleats, premium lining, secure fit, and boutique finishing by Shrusara.',
+    metaKeywords: [
+      'ready to wear saree Bangalore',
+      'pre stitched saree Bangalore',
+      'one minute saree Bangalore',
+      'saree customization Bangalore'
+    ],
+    featuredImage: {
+      url: '/occasion_wear/sareetransformation_landing/Ready%20to%20wear%20Saree/Ready%20to%20wear%20Saree/customized-ready-to-wear-saree-front-view-bangalore.webp',
+      alt: 'Ready-to-Wear Saree Customization in Bangalore'
+    }
+  },
+  {
+    title: 'Ready-to-Wear Saree & Saree Transformation in Bangalore | Shrusara',
+    serviceCategory: 'Saree Transformation',
+    locationName: 'Bangalore',
+    areaGroup: 'Bangalore',
+    status: 'published',
+    slug: 'saree-transformation-bangalore',
+    url: '/saree-transformation-bangalore',
+    canonicalUrl: 'https://www.shrusara.com/saree-transformation-bangalore',
+    metaTitle: 'Ready-to-Wear Saree & Saree Transformation in Bangalore | Shrusara',
+    metaDescription: 'Transform your traditional sarees into ready-to-wear pre-stitched sarees, lehengas, gowns, and indo-western outfits in Bangalore at Shrusara.',
+    metaKeywords: [
+      'ready to wear saree bangalore',
+      'saree transformation bangalore',
+      'pre stitched saree bangalore',
+      'saree to lehenga bangalore',
+      'convert old saree bangalore'
+    ],
+    featuredImage: {
+      url: '/occasion_wear/sareetransformation_landing/Ready%20to%20wear%20Saree/Ready%20to%20wear%20Saree/ready-to-wear-saree-bangalore.webp',
+      alt: 'Ready-to-Wear Saree & Saree Transformation in Bangalore'
+    }
+  }
+];
+
 function getPublicSiteUrl() {
   return String(process.env.SITE_URL || 'https://www.shrusara.com')
     .replace(/^https?:\/\/(www\.)?shrusarafashion\.com\/?$/i, 'https://www.shrusara.com')
@@ -343,7 +463,23 @@ function normalizeLandingPagePayload(body = {}, existing = {}) {
  */
 export async function listLandingPages(req, res, next) {
   try {
-    const snapshot = await db.collection(LANDING_PAGE_COLLECTION).get();
+    let snapshot = await db.collection(LANDING_PAGE_COLLECTION).get();
+
+    if (snapshot.empty) {
+      // Seed default existing landing pages if collection is empty
+      const batch = db.batch();
+      for (const page of DEFAULT_EXISTING_LANDING_PAGES) {
+        const docRef = db.collection(LANDING_PAGE_COLLECTION).doc(page.slug);
+        batch.set(docRef, {
+          ...page,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        });
+      }
+      await batch.commit();
+      snapshot = await db.collection(LANDING_PAGE_COLLECTION).get();
+    }
+
     let items = snapshot.docs.map(mapDocument).filter(isPagePublic);
 
     // Optional query filters
@@ -376,7 +512,22 @@ export async function listLandingPages(req, res, next) {
  */
 export async function listAdminLandingPages(req, res, next) {
   try {
-    const snapshot = await db.collection(LANDING_PAGE_COLLECTION).get();
+    let snapshot = await db.collection(LANDING_PAGE_COLLECTION).get();
+
+    if (snapshot.empty) {
+      const batch = db.batch();
+      for (const page of DEFAULT_EXISTING_LANDING_PAGES) {
+        const docRef = db.collection(LANDING_PAGE_COLLECTION).doc(page.slug);
+        batch.set(docRef, {
+          ...page,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        });
+      }
+      await batch.commit();
+      snapshot = await db.collection(LANDING_PAGE_COLLECTION).get();
+    }
+
     const items = snapshot.docs.map(mapDocument);
 
     items.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
@@ -414,6 +565,10 @@ export async function getLandingPageBySlug(req, res, next) {
     }
 
     if (!doc) {
+      const matchedPreset = DEFAULT_EXISTING_LANDING_PAGES.find((p) => p.slug === rawSlug);
+      if (matchedPreset) {
+        return res.json({ item: { id: matchedPreset.slug, ...matchedPreset } });
+      }
       return res.status(404).json({ message: 'Landing page not found.' });
     }
 

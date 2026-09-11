@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const DEFAULT_SITE_URL = 'https://www.shrusara.com';
+const DEFAULT_API_BASE = 'https://hi-jtc6.onrender.com/api';
 
 const LANDING_PAGES = {
   'customized-bridal-blouse-bangalore': {
@@ -35,6 +36,15 @@ const LANDING_PAGES = {
     serviceType: 'Occasion Wear, Designer Gowns & Custom Party Wear Designing',
     serviceName: 'Customized Occasion Wear & Designer Outfits in Bangalore'
   },
+  'ready-to-wear-saree-bangalore': {
+    title: 'Ready-to-Wear Saree Customization in Bangalore | Shrusara',
+    description: 'Convert your own saree into a ready-to-wear saree in Bangalore with permanent pleats, premium lining, secure fit, and boutique finishing by Shrusara.',
+    keywords: 'ready to wear saree Bangalore, pre stitched saree Bangalore, one minute saree Bangalore, saree customization Bangalore',
+    image: '/occasion_wear/sareetransformation_landing/Ready%20to%20wear%20Saree/Ready%20to%20wear%20Saree/customized-ready-to-wear-saree-front-view-bangalore.webp',
+    path: '/ready-to-wear-saree-bangalore',
+    serviceType: 'Ready-to-Wear Saree Customization',
+    serviceName: 'Ready-to-Wear Saree Customization in Bangalore'
+  },
   'saree-transformation-bangalore': {
     title: 'Ready-to-Wear Saree & Saree Transformation in Bangalore | Shrusara',
     description: 'Transform your traditional sarees into ready-to-wear pre-stitched sarees, lehengas, gowns, and indo-western outfits in Bangalore at Shrusara.',
@@ -43,15 +53,6 @@ const LANDING_PAGES = {
     path: '/saree-transformation-bangalore',
     serviceType: 'Saree Transformation, Pre-Stitched Saree & Custom Outfit Conversion',
     serviceName: 'Ready-to-Wear Saree & Saree Transformation in Bangalore'
-  },
-  'ready-to-wear-saree-bangalore': {
-    title: 'Ready-to-Wear Saree Customization in Bangalore | Shrusara',
-    description: 'Convert your own saree into a ready-to-wear saree in Bangalore with permanent pleats, premium lining, secure fit, and boutique finishing by Shrusara.',
-    keywords: 'ready to wear saree Bangalore, pre stitched saree Bangalore, one minute saree Bangalore, saree customization Bangalore',
-    image: '/landingpage/customized-ready-to-wear-saree-front-view-bangalore.webp',
-    path: '/ready-to-wear-saree-bangalore',
-    serviceType: 'Ready-to-Wear Saree Customization',
-    serviceName: 'Ready-to-Wear Saree Customization in Bangalore'
   },
   'bridal-blouse-bangalore': {
     title: 'Bridal Blouse Designer in Bangalore | Maggam & Aari Work Boutique',
@@ -131,6 +132,15 @@ function getPublicSiteUrl(req) {
   );
 }
 
+function getApiBase() {
+  return toStringValue(
+    process.env.VITE_API_URL ||
+    process.env.API_BASE_URL ||
+    process.env.BACKEND_API_URL ||
+    DEFAULT_API_BASE
+  ).replace(/\/+$/, '');
+}
+
 function toAbsoluteUrl(value = '', siteUrl = DEFAULT_SITE_URL) {
   if (!value) return '';
   try {
@@ -153,31 +163,46 @@ function escapeRegExp(value = '') {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function upsertHeadTag(html, tagRegex, nextTag) {
-  if (tagRegex.test(html)) {
-    return html.replace(tagRegex, nextTag);
+function upsertHeadTag(html, pattern, tag) {
+  if (pattern && pattern.test(html)) {
+    return html.replace(pattern, tag);
   }
-  if (/<\/head>/i.test(html)) {
-    return html.replace(/<\/head>/i, `  ${nextTag}\n</head>`);
-  }
-  return `${nextTag}\n${html}`;
+  return html.replace(/<\/head>/i, `    ${tag}\n  </head>`);
 }
 
 function upsertMeta(html, attribute, name, content) {
-  const safeContent = escapeHtml(content || '');
+  if (content === undefined || content === null) return html;
   const pattern = new RegExp(`<meta\\s+[^>]*${attribute}=["']${escapeRegExp(name)}["'][^>]*>`, 'gi');
-  const nextTag = `<meta ${attribute}="${escapeHtml(name)}" content="${safeContent}" />`;
-  return upsertHeadTag(html, pattern, nextTag);
+  const cleanHtml = html.replace(pattern, '');
+  return upsertHeadTag(cleanHtml, null, `<meta ${attribute}="${name}" content="${escapeHtml(content)}" />`);
 }
 
 function upsertCanonical(html, canonicalUrl) {
-  const safeUrl = escapeHtml(canonicalUrl);
-  const pattern = /<link\s+[^>]*rel=["']canonical["'][^>]*>/gi;
-  const nextTag = `<link rel="canonical" href="${safeUrl}" />`;
-  return upsertHeadTag(html, pattern, nextTag);
+  const cleanHtml = html.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*>/gi, '');
+  return upsertHeadTag(
+    cleanHtml,
+    null,
+    `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" />`
+  );
 }
 
-function getHtmlTemplate() {
+async function fetchHomeTemplate(req) {
+  try {
+    const origin = getRequestOrigin(req);
+    const response = await fetch(`${origin}/`, {
+      headers: {
+        accept: 'text/html',
+        'user-agent': 'ShrusaraLandingSeoTemplate/1.0'
+      }
+    });
+
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch {
+    // try next
+  }
+
   const candidatePaths = [
     path.join(process.cwd(), 'dist', 'index.html'),
     path.join(process.cwd(), 'client', 'dist', 'index.html'),
@@ -208,6 +233,37 @@ function getHtmlTemplate() {
     <div id="root"></div>
   </body>
 </html>`;
+}
+
+function getImageUrl(image) {
+  if (!image) return '';
+  if (typeof image === 'string') return image;
+  return image.url || image.src || '';
+}
+
+async function fetchLandingPageFromApi(slug) {
+  const apiBase = getApiBase();
+  const targetSlug = toStringValue(slug).toLowerCase().replace(/^\/+|\/+$/g, '');
+
+  try {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 4000) : null;
+
+    const directRes = await fetch(`${apiBase}/landing-pages/slug/${encodeURIComponent(targetSlug)}`, {
+      headers: { accept: 'application/json' },
+      signal: controller?.signal
+    });
+    if (timeoutId) clearTimeout(timeoutId);
+
+    if (directRes.ok) {
+      const data = await directRes.json();
+      if (data?.item) return data.item;
+    }
+  } catch {
+    // fallback
+  }
+
+  return null;
 }
 
 function buildPageSchemas(pageConfig, canonicalUrl, imageUrl, siteUrl) {
@@ -308,39 +364,61 @@ function injectLandingSeo(html, pageConfig, siteUrl) {
   let output = html;
   const canonicalUrl = toAbsoluteUrl(pageConfig.path, siteUrl);
   const imageUrl = toAbsoluteUrl(pageConfig.image, siteUrl);
-  const robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  const isDraft = pageConfig.status === 'draft';
+  const robots = isDraft
+    ? 'noindex, nofollow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
-  // Title
+  // 1. Primary SEO (Dynamic)
+  // HTML Title -> Landing Page Meta Title
   output = output.replace(/<title>[\s\S]*?<\/title>/gi, '');
-  output = upsertHeadTag(output, new RegExp(`__NO_MATCH__`), `<title>${escapeHtml(pageConfig.title)}</title>`);
+  output = upsertHeadTag(output, null, `<title>${escapeHtml(pageConfig.title)}</title>`);
 
-  // Meta Tags
+  // Canonical -> Current Landing Page URL
+  output = upsertCanonical(output, canonicalUrl);
+
+  // Meta Description -> Landing Page Meta Description
   output = upsertMeta(output, 'name', 'description', pageConfig.description);
+
+  // Meta Keywords -> Landing Page Keywords
   if (pageConfig.keywords) {
     output = upsertMeta(output, 'name', 'keywords', pageConfig.keywords);
   }
+
+  // Robots & Googlebot
   output = upsertMeta(output, 'name', 'robots', robots);
   output = upsertMeta(output, 'name', 'googlebot', robots);
-  output = upsertCanonical(output, canonicalUrl);
 
-  // Open Graph
+  // 2. Open Graph (Dynamic)
+  // og:title -> Landing Page Meta Title
   output = upsertMeta(output, 'property', 'og:title', pageConfig.title);
+
+  // og:description -> Landing Page Meta Description
   output = upsertMeta(output, 'property', 'og:description', pageConfig.description);
+
+  // og:url -> Current Landing Page URL
   output = upsertMeta(output, 'property', 'og:url', canonicalUrl);
-  output = upsertMeta(output, 'property', 'og:type', 'website');
+
+  // og:image -> Landing Page Hero Image
   if (imageUrl) {
     output = upsertMeta(output, 'property', 'og:image', imageUrl);
   }
+  output = upsertMeta(output, 'property', 'og:type', 'website');
+  output = upsertMeta(output, 'property', 'og:site_name', 'Shrusara Fashion Boutique');
+  output = upsertMeta(output, 'property', 'og:locale', 'en_IN');
 
-  // Twitter
+  // 3. Twitter Metadata (Dynamic)
   output = upsertMeta(output, 'name', 'twitter:card', 'summary_large_image');
+  // twitter:title -> Landing Page Meta Title
   output = upsertMeta(output, 'name', 'twitter:title', pageConfig.title);
+  // twitter:description -> Landing Page Meta Description
   output = upsertMeta(output, 'name', 'twitter:description', pageConfig.description);
+  // twitter:image -> Landing Page Hero Image
   if (imageUrl) {
     output = upsertMeta(output, 'name', 'twitter:image', imageUrl);
   }
 
-  // Structured Data
+  // Structured Data (JSON-LD)
   const schemas = buildPageSchemas(pageConfig, canonicalUrl, imageUrl, siteUrl);
   output = output.replace(/<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, '');
   const jsonLdTag = `<script type="application/ld+json" id="page-structured-data">\n${JSON.stringify(schemas, null, 2)}\n    </script>`;
@@ -353,19 +431,43 @@ export default async function handler(req, res) {
   try {
     const rawPage = toStringValue(req.query?.page || req.query?.slug || '').replace(/^\/+|\/+$/g, '');
     const siteUrl = getPublicSiteUrl(req);
-    const pageConfig = LANDING_PAGES[rawPage] || LANDING_PAGES['customized-bridal-blouse-bangalore'];
 
-    const baseHtml = getHtmlTemplate();
+    // 1. Resolve base configuration from static preset
+    let pageConfig = LANDING_PAGES[rawPage] || LANDING_PAGES['customized-bridal-blouse-bangalore'];
+
+    // 2. Dynamic DB check: if edited in CMS, use the updated fields
+    try {
+      const dbPage = await fetchLandingPageFromApi(rawPage);
+      if (dbPage) {
+        pageConfig = {
+          title: toStringValue(dbPage.metaTitle || dbPage.title || pageConfig.title),
+          description: toStringValue(dbPage.metaDescription || dbPage.hero?.tagline || pageConfig.description),
+          keywords: Array.isArray(dbPage.metaKeywords)
+            ? dbPage.metaKeywords.join(', ')
+            : toStringValue(dbPage.metaKeywords || pageConfig.keywords),
+          image: getImageUrl(dbPage.featuredImage) || getImageUrl(dbPage.heroImage) || pageConfig.image,
+          path: dbPage.url || pageConfig.path,
+          serviceType: pageConfig.serviceType || dbPage.serviceCategory,
+          serviceName: pageConfig.serviceName || dbPage.title,
+          status: dbPage.status || 'published'
+        };
+      }
+    } catch {
+      // ignore API failure and proceed with preset
+    }
+
+    const baseHtml = await fetchHomeTemplate(req);
     const renderedHtml = injectLandingSeo(baseHtml, pageConfig, siteUrl);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('X-Robots-Tag', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
-    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400');
+    res.setHeader('X-Robots-Tag', pageConfig.status === 'draft' ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
     return res.status(200).send(renderedHtml);
   } catch (error) {
     console.error('Error rendering landing page SSR:', error);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('X-Robots-Tag', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
-    return res.status(200).send(getHtmlTemplate());
+    const fallbackHtml = await fetchHomeTemplate(req);
+    return res.status(200).send(fallbackHtml);
   }
 }

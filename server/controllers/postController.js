@@ -554,76 +554,87 @@ export async function listAdminPosts(req, res, next) {
   return listPosts(req, res, next);
 }
 
-const STATIC_SITEMAP_PAGES = [
+const CORE_STATIC_SITEMAP_PAGES = [
   {
     path: '',
-    lastmod: '2026-09-10',
+    lastmod: '2026-09-11',
     changefreq: 'weekly',
     priority: '1.0'
   },
   {
-    path: '/customized-bridal-blouse-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.8'
-  },
-  {
-    path: '/customized-designer-outfits-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.8'
-  },
-  {
-    path: '/customized-occasion-wear-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.8'
-  },
-  {
-    path: '/saree-transformation-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.8'
-  },
-  {
-    path: '/ready-to-wear-saree-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.8'
-  },
-  {
-    path: '/bridal-blouse-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.9'
-  },
-  {
-    path: '/designer-outfits-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.9'
-  },
-  {
-    path: '/kids-outfits-bangalore',
-    lastmod: '2026-09-10',
-    changefreq: 'weekly',
-    priority: '0.8'
-  },
-  {
     path: '/about-shrusara-boutique',
-    lastmod: '2026-09-10',
+    lastmod: '2026-09-11',
     changefreq: 'monthly',
     priority: '0.7'
   },
   {
     path: '/contact-shrusara-bangalore',
-    lastmod: '2026-09-10',
+    lastmod: '2026-09-11',
     changefreq: 'monthly',
     priority: '0.7'
   },
   {
     path: '/bridal-fashion-blog-bangalore',
-    lastmod: '2026-09-10',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  }
+];
+
+const DEFAULT_SITEMAP_LANDING_PAGES = [
+  {
+    path: '/customized-bridal-blouse-bangalore',
+    slug: 'customized-bridal-blouse-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/customized-designer-outfits-bangalore',
+    slug: 'customized-designer-outfits-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/customized-occasion-wear-bangalore',
+    slug: 'customized-occasion-wear-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/ready-to-wear-saree-bangalore',
+    slug: 'ready-to-wear-saree-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/saree-transformation-bangalore',
+    slug: 'saree-transformation-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/bridal-blouse-bangalore',
+    slug: 'bridal-blouse-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/designer-outfits-bangalore',
+    slug: 'designer-outfits-bangalore',
+    lastmod: '2026-09-11',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/kids-outfits-bangalore',
+    slug: 'kids-outfits-bangalore',
+    lastmod: '2026-09-11',
     changefreq: 'weekly',
     priority: '0.8'
   }
@@ -666,44 +677,98 @@ export async function getPostsSitemap(req, res, next) {
       db.collection('landing_pages').get().catch(() => ({ docs: [] }))
     ]);
 
-    const items = postsSnapshot.docs
+    const rawLandingPages = landingPagesSnapshot.docs.map(mapDocument);
+    const publicPosts = postsSnapshot.docs
       .map(mapDocument)
       .filter(isPostPublic)
       .sort((a, b) => new Date(b.updatedAt || b.publishedAt || b.createdAt || 0) - new Date(a.updatedAt || a.publishedAt || a.createdAt || 0));
 
-    const landingPages = landingPagesSnapshot.docs
-      .map(mapDocument)
-      .filter(isPostPublic)
-      .sort((a, b) => new Date(b.updatedAt || b.publishedAt || b.createdAt || 0) - new Date(a.updatedAt || a.publishedAt || a.createdAt || 0));
+    const publicLandingPages = rawLandingPages.filter(isPostPublic);
 
-    const staticUrls = STATIC_SITEMAP_PAGES.map((page) => ({
-      loc: `${siteUrl}${page.path ? page.path : '/'}`,
-      lastmod: page.lastmod,
-      changefreq: page.changefreq,
-      priority: page.priority
-    }));
+    const urlMap = new Map();
 
-    const blogUrls = items.map((item) => {
-      const rawDate = item.updatedAt || item.publishedAt || item.createdAt;
-      return {
-        loc: `${siteUrl}${BLOG_BASE_PATH}/${item.slug}`,
+    // 1. Core static pages (Home, About, Contact, Blog)
+    for (const page of CORE_STATIC_SITEMAP_PAGES) {
+      const loc = `${siteUrl}${page.path ? page.path : '/'}`;
+      urlMap.set(loc, {
+        loc,
+        lastmod: page.lastmod,
+        changefreq: page.changefreq,
+        priority: page.priority
+      });
+    }
+
+    // 2. Base Landing Pages (Published defaults: priority 0.8, changefreq weekly)
+    for (const page of DEFAULT_SITEMAP_LANDING_PAGES) {
+      const loc = `${siteUrl}${page.path}`;
+      urlMap.set(loc, {
+        loc,
+        lastmod: page.lastmod,
+        changefreq: 'weekly',
+        priority: '0.8',
+        slug: page.slug
+      });
+    }
+
+    // Suppress draft or unpublished landing pages from sitemap
+    for (const rawPage of rawLandingPages) {
+      if (!isPostPublic(rawPage)) {
+        const draftCandidates = [
+          rawPage.url,
+          rawPage.path,
+          `/${rawPage.slug}`,
+          `/bangalore/${rawPage.slug}`
+        ].filter(Boolean);
+
+        for (const cand of draftCandidates) {
+          const loc = `${siteUrl}${cand.startsWith('/') ? cand : '/' + cand}`;
+          urlMap.delete(loc);
+        }
+      }
+    }
+
+    // 3. Dynamic Database Landing Pages (Published only)
+    for (const page of publicLandingPages) {
+      const rawDate = page.updatedAt || page.publishedAt || page.createdAt;
+      const lastmod = formatSitemapDate(rawDate);
+
+      let pagePath = '';
+      if (page.url) {
+        pagePath = page.url;
+      } else if (page.path) {
+        pagePath = page.path;
+      } else {
+        const matchDefault = DEFAULT_SITEMAP_LANDING_PAGES.find((d) => d.slug === page.slug);
+        if (matchDefault) {
+          pagePath = matchDefault.path;
+        } else {
+          pagePath = `/bangalore/${page.slug}`;
+        }
+      }
+
+      const loc = `${siteUrl}${pagePath.startsWith('/') ? pagePath : '/' + pagePath}`;
+
+      urlMap.set(loc, {
+        loc,
+        lastmod,
+        changefreq: 'weekly',
+        priority: '0.8'
+      });
+    }
+
+    // 4. Blog Posts
+    for (const post of publicPosts) {
+      const rawDate = post.updatedAt || post.publishedAt || post.createdAt;
+      const loc = `${siteUrl}${BLOG_BASE_PATH}/${post.slug}`;
+      urlMap.set(loc, {
+        loc,
         lastmod: formatSitemapDate(rawDate),
         changefreq: 'weekly',
         priority: '0.8'
-      };
-    });
+      });
+    }
 
-    const landingPageUrls = landingPages.map((item) => {
-      const rawDate = item.updatedAt || item.publishedAt || item.createdAt;
-      return {
-        loc: `${siteUrl}/bangalore/${item.slug}`,
-        lastmod: formatSitemapDate(rawDate),
-        changefreq: 'weekly',
-        priority: '0.8'
-      };
-    });
-
-    const allUrls = [...staticUrls, ...blogUrls, ...landingPageUrls];
+    const allUrls = Array.from(urlMap.values());
 
     const xmlEntries = allUrls.map((item) => {
       return [
@@ -719,6 +784,7 @@ export async function getPostsSitemap(req, res, next) {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${xmlEntries.join('\n')}\n</urlset>\n`;
 
     res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
     res.send(xml);
   } catch (error) {
     console.error("🔥 Firestore Error in getPostsSitemap:", error.message);
