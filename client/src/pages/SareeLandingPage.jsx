@@ -1,9 +1,38 @@
 import { useState } from 'react';
+import PageMeta from '../components/PageMeta';
 import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
+
+const sareeLandingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://www.shrusara.com/saree-transformation-bangalore#service',
+  name: 'Ready-to-Wear Saree & Saree Transformation in Bangalore',
+  serviceType: 'Saree Transformation, Pre-Stitched Saree & Custom Outfit Conversion',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Shrusara Fashion Boutique',
+    url: 'https://www.shrusara.com/',
+    telephone: '+919741827558',
+    image: 'https://www.shrusara.com/occasion_wear/sareetransformation_landing/Ready%20to%20wear%20Saree/Ready%20to%20wear%20Saree/ready-to-wear-saree-bangalore.webp',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+      addressLocality: 'Bangalore',
+      addressRegion: 'Karnataka',
+      postalCode: '560086',
+      addressCountry: 'IN'
+    }
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'Bangalore'
+  },
+  description: 'Transform your traditional sarees into ready-to-wear pre-stitched sarees, lehengas, gowns, and indo-western outfits in Bangalore at Shrusara.'
+};
 
 // ─── WhatsApp Pre-filled Messages ────────────────────────────────────────────
 const WA_MESSAGES = {
@@ -223,6 +252,15 @@ function ReviewsCarousel() {
 export default function SareeLandingPage() {
   return (
     <>
+      <PageMeta
+        title="Ready-to-Wear Saree & Saree Transformation in Bangalore | Shrusara"
+        description="Transform your traditional sarees into ready-to-wear pre-stitched sarees, lehengas, gowns, and indo-western outfits in Bangalore at Shrusara."
+        keywords="ready to wear saree bangalore, saree transformation bangalore, pre stitched saree bangalore, saree to lehenga bangalore, convert old saree bangalore"
+        canonicalPath="/saree-transformation-bangalore"
+        image="/occasion_wear/sareetransformation_landing/Ready to wear Saree/Ready to wear Saree/ready-to-wear-saree-bangalore.webp"
+        schema={sareeLandingSchema}
+      />
+
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {

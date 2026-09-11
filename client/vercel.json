@@ -6,12 +6,100 @@
       "destination": "/api/sitemap"
     },
     {
+      "source": "/customized-bridal-blouse-bangalore",
+      "destination": "/api/landing-template?page=customized-bridal-blouse-bangalore"
+    },
+    {
+      "source": "/customized-bridal-blouse-bangalore/",
+      "destination": "/api/landing-template?page=customized-bridal-blouse-bangalore"
+    },
+    {
+      "source": "/customized-designer-outfits-bangalore",
+      "destination": "/api/landing-template?page=customized-designer-outfits-bangalore"
+    },
+    {
+      "source": "/customized-designer-outfits-bangalore/",
+      "destination": "/api/landing-template?page=customized-designer-outfits-bangalore"
+    },
+    {
+      "source": "/customized-occasion-wear-bangalore",
+      "destination": "/api/landing-template?page=customized-occasion-wear-bangalore"
+    },
+    {
+      "source": "/customized-occasion-wear-bangalore/",
+      "destination": "/api/landing-template?page=customized-occasion-wear-bangalore"
+    },
+    {
+      "source": "/saree-transformation-bangalore",
+      "destination": "/api/landing-template?page=saree-transformation-bangalore"
+    },
+    {
+      "source": "/saree-transformation-bangalore/",
+      "destination": "/api/landing-template?page=saree-transformation-bangalore"
+    },
+    {
+      "source": "/ready-to-wear-saree-bangalore",
+      "destination": "/api/landing-template?page=ready-to-wear-saree-bangalore"
+    },
+    {
+      "source": "/ready-to-wear-saree-bangalore/",
+      "destination": "/api/landing-template?page=ready-to-wear-saree-bangalore"
+    },
+    {
+      "source": "/bridal-blouse-bangalore",
+      "destination": "/api/landing-template?page=bridal-blouse-bangalore"
+    },
+    {
+      "source": "/bridal-blouse-bangalore/",
+      "destination": "/api/landing-template?page=bridal-blouse-bangalore"
+    },
+    {
+      "source": "/designer-outfits-bangalore",
+      "destination": "/api/landing-template?page=designer-outfits-bangalore"
+    },
+    {
+      "source": "/designer-outfits-bangalore/",
+      "destination": "/api/landing-template?page=designer-outfits-bangalore"
+    },
+    {
+      "source": "/kids-outfits-bangalore",
+      "destination": "/api/landing-template?page=kids-outfits-bangalore"
+    },
+    {
+      "source": "/kids-outfits-bangalore/",
+      "destination": "/api/landing-template?page=kids-outfits-bangalore"
+    },
+    {
+      "source": "/about-shrusara-boutique",
+      "destination": "/api/landing-template?page=about-shrusara-boutique"
+    },
+    {
+      "source": "/about-shrusara-boutique/",
+      "destination": "/api/landing-template?page=about-shrusara-boutique"
+    },
+    {
+      "source": "/contact-shrusara-bangalore",
+      "destination": "/api/landing-template?page=contact-shrusara-bangalore"
+    },
+    {
+      "source": "/contact-shrusara-bangalore/",
+      "destination": "/api/landing-template?page=contact-shrusara-bangalore"
+    },
+    {
       "source": "/bridal-fashion-blog-bangalore/:slug",
       "destination": "/api/blog-template?slug=:slug"
     },
     {
       "source": "/bridal-fashion-blog-bangalore/:slug/",
       "destination": "/api/blog-template?slug=:slug"
+    },
+    {
+      "source": "/bangalore/:slug",
+      "destination": "/api/bangalore-template?slug=:slug"
+    },
+    {
+      "source": "/bangalore/:slug/",
+      "destination": "/api/bangalore-template?slug=:slug"
     },
     {
       "source": "/(.*)",

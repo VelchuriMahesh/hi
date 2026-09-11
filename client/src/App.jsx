@@ -29,6 +29,12 @@ const BridalLandingPage       = lazy(() => import('./pages/BridalLandingPage'));
 const DesignerLandingPage     = lazy(() => import('./pages/designerLandingPage')); // NOTE: actual filename is lowercase "d"
 const OccasionWearLandingPage = lazy(() => import('./pages/OccasionWearLandingPage'));
 const SareeLandingPage        = lazy(() => import('./pages/SareeLandingPage')); // ← NEW — add this file to client/src/pages/
+const BangaloreLandingPage    = lazy(() => import('./pages/BangaloreLandingPage'));
+
+// Bangalore Landing Page CMS Admin Imports
+const LandingPageManager      = lazy(() => import('./admin/LandingPageManager'));
+const LandingPageEditor       = lazy(() => import('./admin/LandingPageEditor'));
+const LocationManager         = lazy(() => import('./admin/LocationManager'));
 
 const HASH_SCROLL_RETRY_MS = 2500;
 const HASH_SCROLL_RETRY_INTERVAL_MS = 100;
@@ -244,6 +250,9 @@ function AppRoutes() {
 
         <Route path="/ready-to-wear-saree-bangalore" element={<ReadyToWearSareeLandingPage />} />
 
+        {/* Dynamic Bangalore CMS Landing Page Route */}
+        <Route path="/bangalore/:slug" element={<BangaloreLandingPage />} />
+
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Login />} />
         <Route
@@ -259,6 +268,38 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <BlogManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/landing-pages"
+          element={
+            <ProtectedRoute>
+              <LandingPageManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/landing-pages/new"
+          element={
+            <ProtectedRoute>
+              <LandingPageEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/landing-pages/edit/:id"
+          element={
+            <ProtectedRoute>
+              <LandingPageEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/locations"
+          element={
+            <ProtectedRoute>
+              <LocationManager />
             </ProtectedRoute>
           }
         />

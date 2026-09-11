@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PageMeta from '../components/PageMeta';
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -11,6 +12,34 @@ const BRIDAL_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Bridal Blo
 const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   BRIDAL_WHATSAPP_MESSAGE
 )}`;
+
+const bridalLandingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://www.shrusara.com/customized-bridal-blouse-bangalore#service',
+  name: 'Customized Bridal Blouse in Bangalore',
+  serviceType: 'Bridal Blouse Designing & Custom Tailoring',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Shrusara Fashion Boutique',
+    url: 'https://www.shrusara.com/',
+    telephone: '+919741827558',
+    image: 'https://www.shrusara.com/bridal/bridalblow/hero-bridal.webp',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+      addressLocality: 'Bangalore',
+      addressRegion: 'Karnataka',
+      postalCode: '560086',
+      addressCountry: 'IN'
+    }
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'Bangalore'
+  },
+  description: 'Customized bridal blouses in Bangalore with premium maggam and aari work, perfect fit, and 1-on-1 design consultation with Chief Designer Shruthi Ajith.'
+};
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const galleryItems = [
@@ -175,6 +204,15 @@ const BridalLandingPage = () => {
 
   return (
     <>
+      <PageMeta
+        title="Customized Bridal Blouse in Bangalore | Maggam & Aari Work | Shrusara"
+        description="Customized bridal blouses in Bangalore with premium maggam and aari work, perfect fit, and 1-on-1 design consultation with Chief Designer Shruthi Ajith."
+        keywords="bridal blouse bangalore, customized bridal blouse, maggam work blouse bangalore, aari work blouse, wedding blouse designer bangalore, bridal boutique bangalore"
+        canonicalPath="/customized-bridal-blouse-bangalore"
+        image={heroBridal}
+        schema={bridalLandingSchema}
+      />
+
       <style>{`
         /* ── RESET & BASE ── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

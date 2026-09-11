@@ -675,7 +675,9 @@ export default function Designer() {
       <PageMeta
         title="Designer Outfits in Bangalore | Gowns, Indo-Western & Party Wear"
         description="Explore customized designer outfits in Bangalore including gowns, Indo-western sets, and party wear with premium tailoring and personalized styling at Shrusara Fashion Boutique."
+        keywords="designer outfits bangalore, designer gowns bangalore, indo western wear bangalore, party wear boutique bangalore, custom designer dress bangalore"
         canonicalPath="/designer-outfits-bangalore"
+        image="/videos/desingerhero.webp"
       />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}

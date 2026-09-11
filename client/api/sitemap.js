@@ -5,55 +5,73 @@ const DEFAULT_API_BASE = 'https://hi-jtc6.onrender.com/api';
 const STATIC_PAGES = [
   {
     path: '',
-    lastmod: '2026-04-26',
+    lastmod: '2026-09-10',
     changefreq: 'weekly',
     priority: '1.0'
   },
   {
-    path: '/bridal-blouse-bangalore',
-    lastmod: '2026-04-26',
+    path: '/customized-bridal-blouse-bangalore',
+    lastmod: '2026-09-10',
     changefreq: 'weekly',
-    priority: '0.9'
-  },
-  {
-    path: '/bridal-blouse-bangalore/consultation',
-    lastmod: '2026-04-26',
-    changefreq: 'monthly',
     priority: '0.8'
   },
   {
-    path: '/designer-outfits-bangalore',
-    lastmod: '2026-04-26',
+    path: '/customized-designer-outfits-bangalore',
+    lastmod: '2026-09-10',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/customized-occasion-wear-bangalore',
+    lastmod: '2026-09-10',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/saree-transformation-bangalore',
+    lastmod: '2026-09-10',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/ready-to-wear-saree-bangalore',
+    lastmod: '2026-09-10',
+    changefreq: 'weekly',
+    priority: '0.8'
+  },
+  {
+    path: '/bridal-blouse-bangalore',
+    lastmod: '2026-09-10',
     changefreq: 'weekly',
     priority: '0.9'
   },
   {
-    path: '/ready-to-wear-saree-bangalore',
-    lastmod: '2026-07-28',
+    path: '/designer-outfits-bangalore',
+    lastmod: '2026-09-10',
     changefreq: 'weekly',
     priority: '0.9'
   },
   {
     path: '/kids-outfits-bangalore',
-    lastmod: '2026-04-26',
+    lastmod: '2026-09-10',
     changefreq: 'weekly',
     priority: '0.8'
   },
   {
     path: '/about-shrusara-boutique',
-    lastmod: '2026-04-26',
+    lastmod: '2026-09-10',
     changefreq: 'monthly',
     priority: '0.7'
   },
   {
     path: '/contact-shrusara-bangalore',
-    lastmod: '2026-04-26',
+    lastmod: '2026-09-10',
     changefreq: 'monthly',
     priority: '0.7'
   },
   {
     path: '/bridal-fashion-blog-bangalore',
-    lastmod: '2026-04-26',
+    lastmod: '2026-09-10',
     changefreq: 'weekly',
     priority: '0.8'
   }
@@ -155,11 +173,45 @@ async function fetchPublishedPosts() {
   return [];
 }
 
-export function buildSitemapXml(siteUrl, posts = []) {
+async function fetchPublishedLandingPages() {
+  const apiBase = getApiBase();
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timeoutId = controller ? setTimeout(() => controller.abort(), 9000) : null;
+
+      const response = await fetch(`${apiBase}/landing-pages`, {
+        headers: { accept: 'application/json' },
+        signal: controller?.signal
+      });
+
+      if (timeoutId) clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const payload = await response.json();
+        if (Array.isArray(payload.items)) return payload.items;
+      }
+    } catch (error) {
+      if (attempt === 2) {
+        console.warn('Failed to fetch landing pages for sitemap:', error.message);
+      }
+    }
+  }
+  return [];
+}
+
+export function buildSitemapXml(siteUrl, posts = [], landingPages = []) {
   const publicPosts = posts.filter(isPostPublic);
+  const publicLandingPages = landingPages.filter(isPostPublic);
 
   // Sort posts by updated date descending
   publicPosts.sort((a, b) => {
+    const dateA = new Date(a.updatedAt || a.publishedAt || a.createdAt || 0).getTime();
+    const dateB = new Date(b.updatedAt || b.publishedAt || b.createdAt || 0).getTime();
+    return dateB - dateA;
+  });
+
+  publicLandingPages.sort((a, b) => {
     const dateA = new Date(a.updatedAt || a.publishedAt || a.createdAt || 0).getTime();
     const dateB = new Date(b.updatedAt || b.publishedAt || b.createdAt || 0).getTime();
     return dateB - dateA;
@@ -182,7 +234,17 @@ export function buildSitemapXml(siteUrl, posts = []) {
     };
   });
 
-  const allUrls = [...staticUrls, ...blogUrls];
+  const landingPageUrls = publicLandingPages.map((page) => {
+    const rawDate = page.updatedAt || page.publishedAt || page.createdAt;
+    return {
+      loc: `${siteUrl}/bangalore/${page.slug}`,
+      lastmod: formatLastmod(rawDate),
+      changefreq: 'weekly',
+      priority: '0.8'
+    };
+  });
+
+  const allUrls = [...staticUrls, ...blogUrls, ...landingPageUrls];
 
   const xmlEntries = allUrls.map((entry) => {
     return [
@@ -201,8 +263,11 @@ export function buildSitemapXml(siteUrl, posts = []) {
 export default async function handler(req, res) {
   try {
     const siteUrl = getPublicSiteUrl(req);
-    const posts = await fetchPublishedPosts();
-    const xml = buildSitemapXml(siteUrl, posts);
+    const [posts, landingPages] = await Promise.all([
+      fetchPublishedPosts(),
+      fetchPublishedLandingPages()
+    ]);
+    const xml = buildSitemapXml(siteUrl, posts, landingPages);
 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
@@ -211,7 +276,7 @@ export default async function handler(req, res) {
     console.error('Error generating sitemap:', error);
     // Fallback: Return static pages if an unexpected error occurs
     const siteUrl = getPublicSiteUrl(req);
-    const xml = buildSitemapXml(siteUrl, []);
+    const xml = buildSitemapXml(siteUrl, [], []);
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.status(200).send(xml);
   }

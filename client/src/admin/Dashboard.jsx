@@ -7,6 +7,7 @@ import { createPost, deleteGalleryItem, deletePost } from '../services/api';
 import {
   createVideo,
   deleteVideo,
+  fetchAdminLandingPageDocuments,
   fetchBlogDocuments,
   fetchGalleryDocuments,
   fetchVideos,
@@ -49,6 +50,7 @@ export default function Dashboard() {
   const [gallery, setGallery] = useState([]);
   const [posts, setPosts] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [landingPages, setLandingPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [savingPost, setSavingPost] = useState(false);
@@ -77,15 +79,17 @@ export default function Dashboard() {
     setMessage('');
 
     try {
-      const [galleryItems, postItems, videoItems] = await Promise.all([
+      const [galleryItems, postItems, videoItems, landingPageItems] = await Promise.all([
         fetchGalleryDocuments(),
         fetchBlogDocuments(),
-        fetchVideos()
+        fetchVideos(),
+        fetchAdminLandingPageDocuments().catch(() => [])
       ]);
 
       setGallery(sortByCreatedAt(galleryItems));
       setPosts(sortByCreatedAt(postItems));
       setVideos(sortByCreatedAt(videoItems));
+      setLandingPages(sortByCreatedAt(landingPageItems));
       setCurrentPostIndex(0);
       setCurrentVideoIndex(0);
     } catch (error) {
@@ -304,6 +308,9 @@ export default function Dashboard() {
               </h1>
             </div>
             <div className="flex flex-wrap gap-3">
+              <Link className="button-secondary" to="/admin/landing-pages">
+                📍 Landing pages (Bangalore)
+              </Link>
               <Link className="button-secondary" to="/admin/blogs">
                 Manage blogs
               </Link>
@@ -322,7 +329,7 @@ export default function Dashboard() {
             </div>
           ) : null}
 
-          <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-7">
+          <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-8">
             {[
               { label: 'Total images', value: gallery.length },
               { label: 'Home', value: categoryCounts.home || 0 },
@@ -330,6 +337,7 @@ export default function Dashboard() {
               { label: 'Designer', value: categoryCounts.designer || 0 },
               { label: 'Kids', value: categoryCounts.kids || 0 },
               { label: 'Blog posts', value: posts.length },
+              { label: 'Landing pages', value: landingPages.length },
               { label: 'Videos', value: videos.length }
             ].map((card) => (
               <article key={card.label} className="luxury-card">

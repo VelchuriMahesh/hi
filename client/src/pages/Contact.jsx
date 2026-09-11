@@ -9,7 +9,9 @@ export default function Contact() {
       <PageMeta
         title="Contact Bridal Boutique in Bangalore | Shrusara Fashion Boutique"
         description="Visit Shrusara Fashion Boutique in Mahalakshmipuram, Bangalore or connect via WhatsApp or call to book your bridal and designer outfit consultation."
+        keywords="contact shrusara boutique, bridal boutique contact bangalore, boutique appointment bangalore, mahalakshmipuram boutique phone"
         canonicalPath="/contact-shrusara-bangalore"
+        image="/videos/logo.png"
       />
 
       <section className="section-shell pb-12 pt-8 sm:pb-16">

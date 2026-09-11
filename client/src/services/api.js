@@ -272,3 +272,98 @@ export const deleteVideo = (token, id) =>
 
 // REVIEWS
 export const fetchReviews = () => request('/reviews');
+
+// BANGALORE LANDING PAGES (CMS)
+export const fetchLandingPages = (params = {}) => {
+  const query = new URLSearchParams();
+  if (params.service) query.set('service', params.service);
+  if (params.location) query.set('location', params.location);
+  if (params.area) query.set('area', params.area);
+  const qStr = query.toString();
+  return request(`/landing-pages${qStr ? `?${qStr}` : ''}`);
+};
+
+export const fetchAdminLandingPages = (token) =>
+  request('/landing-pages/admin', {
+    headers: { Authorization: `Bearer ${token}` }
+  }).catch((error) => {
+    if (error.status === 404) {
+      return fetchLandingPages();
+    }
+    throw error;
+  });
+
+export const fetchLandingPageBySlug = (slug) =>
+  request(`/landing-pages/slug/${encodeURIComponent(slug)}`).catch(async (error) => {
+    if (error.status !== 404) {
+      throw error;
+    }
+    const targetSlug = String(slug || '').toLowerCase().trim();
+    const response = await fetchLandingPages();
+    const item = (response.items || []).find((page) => {
+      const candidates = [
+        page.slug,
+        page.title,
+        page.id,
+        String(page.url || '').split('/').filter(Boolean).pop()
+      ];
+      return candidates.some((c) => String(c || '').toLowerCase().trim() === targetSlug);
+    });
+
+    if (!item) {
+      throw error;
+    }
+    return { item };
+  });
+
+export const fetchLandingPageById = (id) =>
+  request(`/landing-pages/${id}`);
+
+export const createLandingPage = (token, data) =>
+  request('/landing-pages', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data)
+  });
+
+export const updateLandingPage = (token, id, data) =>
+  request(`/landing-pages/${id}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data)
+  });
+
+export const deleteLandingPage = (token, id) =>
+  request(`/landing-pages/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+export const duplicateLandingPage = (token, id) =>
+  request(`/landing-pages/${id}/duplicate`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+export const trackLandingPageView = (id) =>
+  request(`/landing-pages/${id}/view`, {
+    method: 'POST'
+  });
+
+// BANGALORE LOCATIONS (CMS)
+export const fetchBangaloreLocations = () =>
+  request('/landing-pages/locations');
+
+export const saveBangaloreLocation = (token, data) =>
+  request('/landing-pages/locations', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data)
+  });
+
+export const deleteBangaloreLocation = (token, id) =>
+  request(`/landing-pages/locations/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+

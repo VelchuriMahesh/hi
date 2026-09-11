@@ -122,3 +122,38 @@ export async function updateVideo(token, id, payload) {
 export async function deleteVideo(token, id) {
   await deleteVideoApi(token, id);
 }
+
+const LANDING_PAGE_COLLECTION = 'landing_pages';
+const LOCATION_COLLECTION = 'bangalore_locations';
+
+export async function fetchLandingPageDocuments() {
+  try {
+    const { fetchLandingPages: fetchLandingPagesApi } = await import('./api');
+    const response = await fetchLandingPagesApi();
+    return response.items || [];
+  } catch (err) {
+    return fetchCollectionDocuments(LANDING_PAGE_COLLECTION);
+  }
+}
+
+export async function fetchAdminLandingPageDocuments() {
+  try {
+    const token = getAdminToken();
+    const { fetchAdminLandingPages: fetchAdminLandingPagesApi } = await import('./api');
+    const response = token ? await fetchAdminLandingPagesApi(token) : await fetchLandingPageDocuments();
+    return response.items || [];
+  } catch (err) {
+    return fetchCollectionDocuments(LANDING_PAGE_COLLECTION);
+  }
+}
+
+export async function fetchBangaloreLocationDocuments() {
+  try {
+    const { fetchBangaloreLocations: fetchBangaloreLocationsApi } = await import('./api');
+    const response = await fetchBangaloreLocationsApi();
+    return response.items || [];
+  } catch (err) {
+    return fetchCollectionDocuments(LOCATION_COLLECTION);
+  }
+}
+

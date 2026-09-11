@@ -1,10 +1,39 @@
 import { useState } from 'react';
+import PageMeta from '../components/PageMeta';
 import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
 const OCCASION_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Designer Outfits.";
+
+const occasionLandingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://www.shrusara.com/customized-occasion-wear-bangalore#service',
+  name: 'Customized Occasion Wear & Designer Outfits in Bangalore',
+  serviceType: 'Occasion Wear, Designer Gowns & Custom Party Wear Designing',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Shrusara Fashion Boutique',
+    url: 'https://www.shrusara.com/',
+    telephone: '+919741827558',
+    image: 'https://www.shrusara.com/occasion_wear/Designer%20Gowns%20&%20Indo%20western%20outfits/Designer%20Gowns%20&%20Indo%20western%20outfits/indo-western-fusion-bridal-wear-shrusara.webp',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+      addressLocality: 'Bangalore',
+      addressRegion: 'Karnataka',
+      postalCode: '560086',
+      addressCountry: 'IN'
+    }
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'Bangalore'
+  },
+  description: 'Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara.'
+};
 
 // ─── WhatsApp Pre-filled Messages ────────────────────────────────────────────
 const WA_MESSAGES = {
@@ -245,6 +274,15 @@ function ReviewsCarousel() {
 export default function OccasionWearLandingPage() {
   return (
     <>
+      <PageMeta
+        title="Customized Occasion Wear & Designer Outfits Bangalore | Shrusara"
+        description="Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara."
+        keywords="occasion wear bangalore, designer gowns bangalore, crop top lehenga bangalore, half saree bangalore, boutique bangalore, party wear bangalore"
+        canonicalPath="/customized-occasion-wear-bangalore"
+        image="/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/indo-western-fusion-bridal-wear-shrusara.webp"
+        schema={occasionLandingSchema}
+      />
+
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {

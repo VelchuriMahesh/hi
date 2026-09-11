@@ -316,7 +316,9 @@ export default function Kids() {
       <PageMeta
         title="Kids Outfit Boutique in Bangalore | Customized Kids Wear"
         description="Customized kids outfits in Bangalore designed for comfort, movement, and special occasions with premium fabrics and boutique finishing at Shrusara Fashion Boutique."
+        keywords="kids outfits bangalore, customized kids wear bangalore, kids boutique bangalore, children designer wear bangalore"
         canonicalPath="/kids-outfits-bangalore"
+        image="/videos/logo.png"
       />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}

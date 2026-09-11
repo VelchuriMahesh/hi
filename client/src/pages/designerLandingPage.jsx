@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PageMeta from '../components/PageMeta';
 import { trackWhatsApp, trackPhoneCall } from '../utils/tracking';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -9,6 +10,34 @@ const DESIGNER_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Designer
 const WA_PREFILL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   DESIGNER_WHATSAPP_MESSAGE
 )}`;
+
+const designerLandingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://www.shrusara.com/customized-designer-outfits-bangalore#service',
+  name: 'Customized Designer Outfits & Gowns in Bangalore',
+  serviceType: 'Designer Outfits, Gowns & Indo-Western Custom Tailoring',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Shrusara Fashion Boutique',
+    url: 'https://www.shrusara.com/',
+    telephone: '+919741827558',
+    image: 'https://www.shrusara.com/videos/desingerhero.webp',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+      addressLocality: 'Bangalore',
+      addressRegion: 'Karnataka',
+      postalCode: '560086',
+      addressCountry: 'IN'
+    }
+  },
+  areaServed: {
+    '@type': 'City',
+    name: 'Bangalore'
+  },
+  description: 'Customized designer gowns, indo-western outfits, and lehengas in Bangalore with personalized design, perfect fit, and boutique finishing by Shrusara.'
+};
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const galleryItems = [
@@ -342,6 +371,15 @@ const DesignerLandingPage = () => {
 
   return (
     <>
+      <PageMeta
+        title="Customized Designer Outfits & Gowns in Bangalore | Shrusara"
+        description="Customized designer gowns, indo-western outfits, and lehengas in Bangalore with personalized design, perfect fit, and boutique finishing by Shrusara."
+        keywords="designer outfits bangalore, customized gowns bangalore, indo western wear bangalore, designer lehenga bangalore, evening gowns bangalore, designer boutique bangalore"
+        canonicalPath="/customized-designer-outfits-bangalore"
+        image="/videos/desingerhero.webp"
+        schema={designerLandingSchema}
+      />
+
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {

@@ -966,7 +966,9 @@ body { background: var(--c-bg); }
       <PageMeta
         title="About Shrusara Fashion Boutique | Bridal Designer in Bangalore"
         description="Learn about Shrusara Fashion Boutique, a Bangalore-based bridal and designer boutique led by Chief Designer Shruthi Ajith, specializing in customized outfits with perfect fit and premium finishing."
+        keywords="about shrusara boutique, bridal designer bangalore, shruthi ajith designer, boutique mahalakshmipuram bangalore"
         canonicalPath="/about-shrusara-boutique"
+        image="/videos/logo.png"
       />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}

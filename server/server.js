@@ -8,6 +8,7 @@ import helmet from 'helmet';
 
 import authRoutes from './routes/authRoutes.js';
 import galleryRoutes from './routes/galleryRoutes.js';
+import landingPageRoutes from './routes/landingPageRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import videoRoutes from './routes/videoRoutes.js';
@@ -77,6 +78,7 @@ app.get('/sitemap.xml', getPostsSitemap);
 // ✅ Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/landing-pages', landingPageRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/videos', videoRoutes);
