@@ -721,9 +721,10 @@ export default function Home() {
 
       <PageMeta
         title="Bridal & Designer Boutique in Bangalore | Shrusara Fashion Boutique"
-        description="Customized bridal blouses, designer outfits, lehengas, and gowns in Bangalore with perfect fit, premium finishing, and personalized styling by Shrusara Fashion Boutique."
+        description="Customized bridal blouses, Maggam & Aari work, designer gowns, lehengas and luxury occasion wear in Bangalore. Personalized consultation with Chief Designer Shruthi Ajith."
         keywords="Bridal blouse designer Bangalore, Maggam work blouse, Boutique Bangalore, Designer boutique Bangalore"
         canonicalPath="/"
+        image="/videos/logo.png"
         schema={schema}
       />
 

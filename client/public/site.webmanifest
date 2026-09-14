@@ -1,0 +1,21 @@
+{
+  "name": "Shrusara Fashion Boutique",
+  "short_name": "Shrusara",
+  "description": "Customized bridal blouses, Maggam & Aari work, designer gowns, lehengas and luxury occasion wear in Bangalore.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f2eb",
+  "theme_color": "#f7f2eb",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
