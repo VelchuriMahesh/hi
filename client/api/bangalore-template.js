@@ -182,7 +182,7 @@ function buildSchemas(page, seo, siteUrl) {
         '@type': 'ListItem',
         position: 2,
         name: 'Bangalore Boutique Services',
-        item: `${siteUrl}/bridal-blouse-bangalore`
+        item: `${siteUrl}${BANGALORE_BASE_PATH}`
       },
       {
         '@type': 'ListItem',
@@ -193,7 +193,36 @@ function buildSchemas(page, seo, siteUrl) {
     ]
   };
 
-  const schemas = [serviceSchema, breadcrumbSchema];
+  const localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': ['LocalBusiness', 'ClothingStore'],
+    '@id': `${seo.canonicalUrl}#localbusiness`,
+    name: `Shrusara Fashion Boutique - ${serviceCategory} in ${locationName}`,
+    url: seo.canonicalUrl,
+    telephone: '+919741827558',
+    priceRange: '₹₹₹',
+    image: seo.image,
+    description: seo.description,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '106, 6th Main Road, Mahalakshmipuram',
+      addressLocality: 'Bangalore',
+      addressRegion: 'Karnataka',
+      postalCode: '560086',
+      addressCountry: 'IN'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '13.0135',
+      longitude: '77.5385'
+    },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: locationName
+    }
+  };
+
+  const schemas = [serviceSchema, breadcrumbSchema, localBusinessSchema];
 
   const faqs = (Array.isArray(page.faqs) ? page.faqs : []).filter((f) => f?.question && f?.answer);
   if (faqs.length > 0) {
@@ -241,7 +270,7 @@ function renderServerBody(page, seo, slug) {
     <main style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; font-family: sans-serif; color: #2D231E;">
       <nav aria-label="Breadcrumb" style="font-size: 0.85rem; color: #777; margin-bottom: 1.5rem;">
         <a href="/" style="color: #6E2D33; text-decoration: none;">Home</a> /
-        <a href="/bridal-blouse-bangalore" style="color: #6E2D33; text-decoration: none;">Bangalore Services</a> /
+        <a href="/bangalore" style="color: #6E2D33; text-decoration: none;">Bangalore Services</a> /
         <span>${escapeHtml(locationName)}</span>
       </nav>
 

@@ -15,8 +15,10 @@ import {
   BANGALORE_LOCATIONS_PRESET,
   DEFAULT_SITE_URL,
   SERVICE_CATEGORIES,
+  buildLandingPageFromMaster,
   generateLandingPageSchemas,
   generatePresetContent,
+  normalizeServiceCategory,
   slugifyBangalorePage
 } from '../utils/bangaloreLandingPage';
 
@@ -46,11 +48,11 @@ export default function LandingPageEditor() {
   const [uploadingImage, setUploadingImage] = useState(false);
 
   // Preset Selector States
-  const [presetService, setPresetService] = useState('Bridal Blouse');
+  const [presetService, setPresetService] = useState('Ready-to-Wear Saree Customization');
   const [presetLocation, setPresetLocation] = useState('Rajajinagar');
 
   // Main Form State
-  const [page, setPage] = useState(() => generatePresetContent('Bridal Blouse', 'Rajajinagar', 'Bangalore West'));
+  const [page, setPage] = useState(() => generatePresetContent('Ready-to-Wear Saree Customization', 'Rajajinagar', 'Bangalore West'));
 
   useEffect(() => {
     const token = getAdminToken();
@@ -68,8 +70,13 @@ export default function LandingPageEditor() {
         if (isEditing) {
           const res = await fetchLandingPageById(id);
           if (res?.item) {
-            setPage(res.item);
-            setPresetService(res.item.serviceCategory || 'Bridal Blouse');
+            const normalized = buildLandingPageFromMaster(
+              res.item.serviceCategory || 'Ready-to-Wear Saree Customization',
+              res.item.locationName || 'Rajajinagar',
+              res.item
+            );
+            setPage({ ...res.item, ...normalized });
+            setPresetService(normalizeServiceCategory(res.item.serviceCategory || 'Ready-to-Wear Saree Customization'));
             setPresetLocation(res.item.locationName || 'Rajajinagar');
           } else {
             setMessage('Landing page not found.');
@@ -1175,6 +1182,103 @@ export default function LandingPageEditor() {
                       }
                       className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
                     />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Nearby Localities (Comma-separated for internal linking)
+                  </label>
+                  <input
+                    type="text"
+                    value={Array.isArray(page.proximity?.nearbyAreas) ? page.proximity.nearbyAreas.join(', ') : page.proximity?.nearbyAreas || ''}
+                    onChange={(e) =>
+                      setPage({
+                        ...page,
+                        proximity: {
+                          ...page.proximity,
+                          nearbyAreas: e.target.value.split(',').map((s) => s.trim()).filter(Boolean)
+                        }
+                      })
+                    }
+                    placeholder="e.g. Rajajinagar, Malleshwaram, Basaveshwaranagar"
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Boutique Visit Options
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPage({
+                          ...page,
+                          proximity: {
+                            ...page.proximity,
+                            boutiqueVisitOptions: [
+                              ...(page.proximity?.boutiqueVisitOptions || []),
+                              { title: 'New Option', description: '' }
+                            ]
+                          }
+                        })
+                      }
+                      className="text-xs text-cocoa font-semibold hover:underline"
+                    >
+                      + Add Visit Option
+                    </button>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {(page.proximity?.boutiqueVisitOptions || []).map((opt, idx) => (
+                      <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-xs text-cocoa">Option #{idx + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newOpts = page.proximity.boutiqueVisitOptions.filter((_, i) => i !== idx);
+                              setPage({
+                                ...page,
+                                proximity: { ...page.proximity, boutiqueVisitOptions: newOpts }
+                              });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="Option Title"
+                          value={opt.title || ''}
+                          onChange={(e) => {
+                            const newOpts = [...page.proximity.boutiqueVisitOptions];
+                            newOpts[idx] = { ...newOpts[idx], title: e.target.value };
+                            setPage({
+                              ...page,
+                              proximity: { ...page.proximity, boutiqueVisitOptions: newOpts }
+                            });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs font-semibold text-ink outline-none focus:border-cocoa"
+                        />
+                        <textarea
+                          rows={2}
+                          placeholder="Option Description"
+                          value={opt.description || ''}
+                          onChange={(e) => {
+                            const newOpts = [...page.proximity.boutiqueVisitOptions];
+                            newOpts[idx] = { ...newOpts[idx], description: e.target.value };
+                            setPage({
+                              ...page,
+                              proximity: { ...page.proximity, boutiqueVisitOptions: newOpts }
+                            });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs text-stone-700 outline-none focus:border-cocoa"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

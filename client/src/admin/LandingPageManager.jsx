@@ -9,7 +9,7 @@ import {
   fetchBangaloreLocations,
   updateLandingPage
 } from '../services/api';
-import { BANGALORE_BASE_PATH, SERVICE_CATEGORIES } from '../utils/bangaloreLandingPage';
+import { BANGALORE_BASE_PATH, SERVICE_CATEGORIES, normalizeServiceCategory } from '../utils/bangaloreLandingPage';
 
 export default function LandingPageManager() {
   const navigate = useNavigate();
@@ -114,6 +114,7 @@ export default function LandingPageManager() {
 
       const matchesService =
         selectedService === 'all' ||
+        normalizeServiceCategory(page.serviceCategory || '') === selectedService ||
         String(page.serviceCategory || '').toLowerCase() === selectedService.toLowerCase();
 
       const matchesLocation =
