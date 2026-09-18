@@ -92,6 +92,8 @@ export default function LandingPageEditor() {
     init();
   }, [id, isEditing, navigate]);
 
+  const [isCustomLocationInput, setIsCustomLocationInput] = useState(false);
+
   function handleApplyPreset() {
     const selectedLocObj = locations.find((l) => l.name.toLowerCase() === presetLocation.toLowerCase()) || {
       name: presetLocation,
@@ -103,10 +105,10 @@ export default function LandingPageEditor() {
         `Auto-generate preset content for "${presetService}" in "${presetLocation}"? This will populate all 10 sections.`
       )
     ) {
-      const generated = generatePresetContent(
+      const generated = buildLandingPageFromMaster(
         presetService,
         presetLocation,
-        selectedLocObj.areaGroup || 'Bangalore West'
+        { locationObj: selectedLocObj }
       );
       setPage((prev) => ({
         ...prev,
@@ -115,6 +117,70 @@ export default function LandingPageEditor() {
       }));
       setMessage(`Generated customized template for ${presetService} in ${presetLocation}.`);
     }
+  }
+
+  function handleTargetLocationChange(e) {
+    const val = e.target.value;
+    if (val === '_custom') {
+      setIsCustomLocationInput(true);
+      return;
+    }
+    setIsCustomLocationInput(false);
+    const locObj = locations.find((l) => l.name.toLowerCase() === val.toLowerCase());
+    applySelectedLocation(val, locObj);
+  }
+
+  function handleCustomLocationNameChange(val) {
+    applySelectedLocation(val, { name: val, areaGroup: page.areaGroup || 'Bangalore West' });
+  }
+
+  function applySelectedLocation(locationName, locObj) {
+    const fallbackObj = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === String(locationName || '').toLowerCase()) || {
+      name: locationName,
+      areaGroup: 'Bangalore West'
+    };
+    const targetObj = locObj || fallbackObj;
+
+    setPage((prev) => {
+      const updatedSlug = slugifyBangalorePage(prev.serviceCategory, locationName);
+      return {
+        ...prev,
+        locationName,
+        areaGroup: targetObj.areaGroup || prev.areaGroup || 'Bangalore West',
+        slug: prev.slug === slugifyBangalorePage(prev.serviceCategory, prev.locationName) ? updatedSlug : prev.slug,
+        proximity: {
+          ...prev.proximity,
+          locationName,
+          areaGroup: targetObj.areaGroup || prev.areaGroup || 'Bangalore West',
+          landmark: targetObj.landmark || prev.proximity?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
+          travelTime: targetObj.travelTime || prev.proximity?.travelTime || '10-15 mins',
+          distanceNote: targetObj.distanceNote || prev.proximity?.distanceNote || `Easily accessible from ${locationName}. Doorstep Porter & express courier delivery available across Bangalore.`,
+          nearbyAreas: (targetObj.nearbyAreas?.length ? targetObj.nearbyAreas : null) || prev.proximity?.nearbyAreas || []
+        }
+      };
+    });
+    setPresetLocation(locationName);
+  }
+
+  function handleSyncLocationToContent() {
+    if (
+      !window.confirm(
+        `Re-apply master template for "${page.serviceCategory}" in "${page.locationName}"? This will refresh location mentions across Headings, FAQs, Proximity, and SEO metadata while preserving current status.`
+      )
+    ) {
+      return;
+    }
+    const locObj = locations.find((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase());
+    const refreshed = buildLandingPageFromMaster(page.serviceCategory, page.locationName, {
+      ...page,
+      locationObj: locObj
+    });
+    setPage((prev) => ({
+      ...prev,
+      ...refreshed,
+      status: prev.status || 'draft'
+    }));
+    setMessage(`Successfully synchronized template content for "${page.serviceCategory}" in "${page.locationName}".`);
   }
 
   async function handleImageUpload(e, target = 'featuredImage') {
@@ -362,16 +428,66 @@ export default function LandingPageEditor() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                      Target Bangalore Location *
-                    </label>
-                    <input
-                      type="text"
-                      value={page.locationName}
-                      onChange={(e) => setPage({ ...page, locationName: e.target.value })}
-                      placeholder="e.g. Rajajinagar, Malleshwaram"
-                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
-                    />
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                        Target Bangalore Location *
+                      </label>
+                      <Link
+                        to="/admin/locations"
+                        target="_blank"
+                        className="text-[11px] font-medium text-cocoa hover:underline"
+                      >
+                        ⚙ Manage Locations
+                      </Link>
+                    </div>
+                    <select
+                      value={locations.some((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase()) && !isCustomLocationInput ? page.locationName : '_custom'}
+                      onChange={handleTargetLocationChange}
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
+                    >
+                      <option value="" disabled>-- Select a Bangalore Locality --</option>
+                      {Object.entries(
+                        locations.reduce((acc, loc) => {
+                          const grp = loc.areaGroup || 'Bangalore West';
+                          if (!acc[grp]) acc[grp] = [];
+                          acc[grp].push(loc);
+                          return acc;
+                        }, {})
+                      ).map(([group, locs]) => (
+                        <optgroup key={group} label={group}>
+                          {locs.map((loc) => (
+                            <option key={loc.id || loc.name} value={loc.name}>
+                              {loc.name} {loc.isMainBoutique ? '★ (Boutique Hub)' : ''}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                      <option value="_custom">✏ Custom / Other Location (Enter Below)</option>
+                    </select>
+
+                    {/* Custom location write-in field */}
+                    {(isCustomLocationInput || !locations.some((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase())) && (
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          value={page.locationName}
+                          onChange={(e) => handleCustomLocationNameChange(e.target.value)}
+                          placeholder="Type custom location name (e.g. Sarjapur Road)"
+                          className="w-full rounded-xl border border-cocoa/30 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                        />
+                      </div>
+                    )}
+
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleSyncLocationToContent}
+                        className="text-xs font-semibold text-cocoa bg-cocoa/10 hover:bg-cocoa/20 px-3 py-1 rounded-lg transition"
+                        title="Re-run template placeholders to update Titles, FAQs, Alt tags, and Proximity for this location"
+                      >
+                        ⚡ Re-apply Template for &quot;{page.locationName || 'Location'}&quot;
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -1096,7 +1212,7 @@ export default function LandingPageEditor() {
               <div className="space-y-6">
                 <h2 className="font-heading text-xl text-ink">7. Location & Proximity Advantage</h2>
 
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-3">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
                       Boutique Address
@@ -1125,6 +1241,24 @@ export default function LandingPageEditor() {
                         setPage({
                           ...page,
                           proximity: { ...page.proximity, landmark: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Estimated Travel Time
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 10-15 mins, 20 mins via Metro"
+                      value={page.proximity?.travelTime || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          proximity: { ...page.proximity, travelTime: e.target.value }
                         })
                       }
                       className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"

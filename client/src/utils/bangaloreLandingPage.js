@@ -2012,13 +2012,16 @@ export function slugifyBangalorePage(serviceCategory = 'Ready-to-Wear Saree Cust
 export function buildLandingPageFromMaster(serviceCategory = 'Ready-to-Wear Saree Customization', locationName = 'Rajajinagar', overrides = {}) {
   const normService = normalizeServiceCategory(serviceCategory);
   const master = MASTER_SERVICE_TEMPLATES[normService] || MASTER_SERVICE_TEMPLATES['Ready-to-Wear Saree Customization'];
-  const locPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === String(locationName || '').toLowerCase()) || {
-    name: locationName || 'Bangalore',
-    areaGroup: overrides.areaGroup || 'Bangalore West',
-    distanceNote: `Easily accessible from ${locationName}. Doorstep Porter & express courier delivery available across Bangalore.`,
-    landmark: 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
-    travelTime: '10-15 mins',
-    nearbyAreas: ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']
+  const locObj = overrides.locationObj || overrides.locationData || {};
+  const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === String(locationName || '').toLowerCase());
+
+  const locPreset = {
+    name: locationName || locObj.name || foundPreset?.name || 'Bangalore',
+    areaGroup: locObj.areaGroup || overrides.areaGroup || foundPreset?.areaGroup || 'Bangalore West',
+    distanceNote: locObj.distanceNote || overrides.proximity?.distanceNote || foundPreset?.distanceNote || `Easily accessible from ${locationName}. Doorstep Porter & express courier delivery available across Bangalore.`,
+    landmark: locObj.landmark || overrides.proximity?.landmark || foundPreset?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
+    travelTime: locObj.travelTime || overrides.proximity?.travelTime || foundPreset?.travelTime || '10-15 mins',
+    nearbyAreas: (locObj.nearbyAreas?.length ? locObj.nearbyAreas : null) || (overrides.proximity?.nearbyAreas?.length ? overrides.proximity.nearbyAreas : null) || foundPreset?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']
   };
 
   const loc = locPreset.name;
@@ -2090,14 +2093,14 @@ export function buildLandingPageFromMaster(serviceCategory = 'Ready-to-Wear Sare
   const proximity = {
     locationName: loc,
     areaGroup: locPreset.areaGroup || overrides.areaGroup || 'Bangalore West',
-    boutiqueAddress: BOUTIQUE_ADDRESS,
+    boutiqueAddress: overrides.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
     landmark: locPreset.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
     travelTime: locPreset.travelTime || '10-15 mins',
     distanceNote: locPreset.distanceNote || `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`,
     nearbyAreas: locPreset.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar'],
-    workingHours: 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
-    googleMapsUrl: 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
-    boutiqueVisitOptions: [
+    workingHours: overrides.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
+    googleMapsUrl: overrides.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
+    boutiqueVisitOptions: overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : [
       { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
       { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
       { title: 'Video Consultation Available', description: 'Virtual design sessions for clients in ' + loc + ' unable to visit in person.' },

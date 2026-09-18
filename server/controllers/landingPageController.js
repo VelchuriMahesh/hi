@@ -7,22 +7,167 @@ const LANDING_PAGE_COLLECTION = 'landing_pages';
 const LOCATION_COLLECTION = 'bangalore_locations';
 
 export const DEFAULT_BANGALORE_LOCATIONS = [
-  { name: 'Mahalakshmipuram', areaGroup: 'Bangalore West', displayOrder: 1, status: 'active', isMainBoutique: true },
-  { name: 'Rajajinagar', areaGroup: 'Bangalore West', displayOrder: 2, status: 'active' },
-  { name: 'Malleshwaram', areaGroup: 'Bangalore West', displayOrder: 3, status: 'active' },
-  { name: 'Basaveshwaranagar', areaGroup: 'Bangalore West', displayOrder: 4, status: 'active' },
-  { name: 'Vijayanagar', areaGroup: 'Bangalore West', displayOrder: 5, status: 'active' },
-  { name: 'Yeshwanthpur', areaGroup: 'Bangalore North', displayOrder: 6, status: 'active' },
-  { name: 'Nandini Layout', areaGroup: 'Bangalore North', displayOrder: 7, status: 'active' },
-  { name: 'Sadashivanagar', areaGroup: 'Bangalore North', displayOrder: 8, status: 'active' },
-  { name: 'Hebbal', areaGroup: 'Bangalore North', displayOrder: 9, status: 'active' },
-  { name: 'Indiranagar', areaGroup: 'Bangalore East', displayOrder: 10, status: 'active' },
-  { name: 'Whitefield', areaGroup: 'Bangalore East', displayOrder: 11, status: 'active' },
-  { name: 'Koramangala', areaGroup: 'Bangalore South', displayOrder: 12, status: 'active' },
-  { name: 'HSR Layout', areaGroup: 'Bangalore South', displayOrder: 13, status: 'active' },
-  { name: 'Jayanagar', areaGroup: 'Bangalore South', displayOrder: 14, status: 'active' },
-  { name: 'JP Nagar', areaGroup: 'Bangalore South', displayOrder: 15, status: 'active' },
-  { name: 'Electronic City', areaGroup: 'Bangalore South', displayOrder: 16, status: 'active' }
+  {
+    name: 'Mahalakshmipuram',
+    areaGroup: 'Bangalore West',
+    displayOrder: 1,
+    status: 'active',
+    isMainBoutique: true,
+    distanceNote: 'Our flagship boutique studio is located in Mahalakshmipuram.',
+    landmark: 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
+    travelTime: 'Boutique Location',
+    nearbyAreas: ['Rajajinagar', 'Basaveshwaranagar', 'Nandini Layout', 'West of Chord Road', 'Kurubarahalli']
+  },
+  {
+    name: 'Rajajinagar',
+    areaGroup: 'Bangalore West',
+    displayOrder: 2,
+    status: 'active',
+    distanceNote: '5-10 minutes from Rajajinagar 1st Block & Rajajinagar Metro Station.',
+    landmark: '5 mins via 1st Block / Chord Road',
+    travelTime: '5-10 mins',
+    nearbyAreas: ['Mahalakshmipuram', 'Basaveshwaranagar', 'Malleshwaram', 'Navrang Circle', 'Prakash Nagar']
+  },
+  {
+    name: 'Malleshwaram',
+    areaGroup: 'Bangalore West',
+    displayOrder: 3,
+    status: 'active',
+    distanceNote: '10-15 minutes from 8th Cross & Margosa Road, Malleshwaram.',
+    landmark: '10-12 mins via Link Road / Chord Road',
+    travelTime: '10-15 mins',
+    nearbyAreas: ['Rajajinagar', 'Sadashivanagar', 'Yeshwanthpur', 'Seshadripuram', 'Vyalikaval']
+  },
+  {
+    name: 'Basaveshwaranagar',
+    areaGroup: 'Bangalore West',
+    displayOrder: 4,
+    status: 'active',
+    distanceNote: '10 minutes from Basaveshwaranagar 80 Feet Road.',
+    landmark: '10 mins via Shankar Mutt / 80 Feet Road',
+    travelTime: '10 mins',
+    nearbyAreas: ['Rajajinagar', 'Vijayanagar', 'Mahalakshmipuram', 'Kamakshipalya', 'West of Chord Road']
+  },
+  {
+    name: 'Vijayanagar',
+    areaGroup: 'Bangalore West',
+    displayOrder: 5,
+    status: 'active',
+    distanceNote: '15 minutes via Chord Road from Vijayanagar.',
+    landmark: '15 mins via West of Chord Road',
+    travelTime: '15 mins',
+    nearbyAreas: ['Basaveshwaranagar', 'Rajajinagar', 'Attiguppe', 'Nagarbhavi', 'Chandra Layout']
+  },
+  {
+    name: 'Yeshwanthpur',
+    areaGroup: 'Bangalore North',
+    displayOrder: 6,
+    status: 'active',
+    distanceNote: '10 minutes from Yeshwanthpur Circle and Railway Station.',
+    landmark: '10 mins via Tumkur Road / Chord Road',
+    travelTime: '10 mins',
+    nearbyAreas: ['Malleshwaram', 'Sadashivanagar', 'Nandini Layout', 'Mathikere', 'Goraguntepalya']
+  },
+  {
+    name: 'Nandini Layout',
+    areaGroup: 'Bangalore North',
+    displayOrder: 7,
+    status: 'active',
+    distanceNote: '5 minutes from Nandini Layout & Mahalakshmi Layout.',
+    landmark: '5 mins from Nandini Layout Circle',
+    travelTime: '5 mins',
+    nearbyAreas: ['Mahalakshmipuram', 'Yeshwanthpur', 'Laggere', 'Kanteerava Studio', 'Peenya']
+  },
+  {
+    name: 'Sadashivanagar',
+    areaGroup: 'Bangalore North',
+    displayOrder: 8,
+    status: 'active',
+    distanceNote: '15-20 minutes from Sadashivanagar & Sankey Tank.',
+    landmark: '15 mins via Sankey Road & CV Raman Road',
+    travelTime: '15-20 mins',
+    nearbyAreas: ['Malleshwaram', 'Yeshwanthpur', 'Sanjay Nagar', 'RMV Extension', 'Vasanth Nagar']
+  },
+  {
+    name: 'Hebbal',
+    areaGroup: 'Bangalore North',
+    displayOrder: 9,
+    status: 'active',
+    distanceNote: '20-25 minutes via Outer Ring Road / Bellary Road from Hebbal.',
+    landmark: '20 mins via Outer Ring Road',
+    travelTime: '20-25 mins',
+    nearbyAreas: ['Sahakara Nagar', 'Sadashivanagar', 'Yelahanka', 'RT Nagar', 'Nagavara']
+  },
+  {
+    name: 'Indiranagar',
+    areaGroup: 'Bangalore East',
+    displayOrder: 10,
+    status: 'active',
+    distanceNote: 'Direct connectivity via Metro or Porter doorstep courier pickup available.',
+    landmark: 'Metro connectivity via Green/Purple Line & express courier delivery',
+    travelTime: '30-35 mins (Doorstep pickup available)',
+    nearbyAreas: ['Domlur', 'Halasuru', 'Old Airport Road', 'Koramangala', 'CV Raman Nagar']
+  },
+  {
+    name: 'Whitefield',
+    areaGroup: 'Bangalore East',
+    displayOrder: 11,
+    status: 'active',
+    distanceNote: 'Convenient Purple Line Metro connectivity or door-to-door courier fabric delivery.',
+    landmark: 'Direct Purple Line Metro to Majestic / Chord Road & doorstep courier',
+    travelTime: '45 mins via Metro / Doorstep courier',
+    nearbyAreas: ['ITPL', 'Kadugodi', 'Marathahalli', 'Brookefield', 'Hoodi']
+  },
+  {
+    name: 'Koramangala',
+    areaGroup: 'Bangalore South',
+    displayOrder: 12,
+    status: 'active',
+    distanceNote: 'Easily accessible via Inner Ring Road or convenient doorstep sample pickup.',
+    landmark: 'Via Inner Ring Road / Hosur Road & door-to-door pickup',
+    travelTime: '30-40 mins',
+    nearbyAreas: ['HSR Layout', 'BTM Layout', 'Jayanagar', 'Ejipura', 'Domlur']
+  },
+  {
+    name: 'HSR Layout',
+    areaGroup: 'Bangalore South',
+    displayOrder: 13,
+    status: 'active',
+    distanceNote: 'Convenient doorstep courier fabric pickup and express delivery across HSR Sectors.',
+    landmark: 'Via Outer Ring Road / Hosur Road & door-to-door pickup',
+    travelTime: '35-40 mins',
+    nearbyAreas: ['Koramangala', 'BTM Layout', 'Bellandur', 'Sarjapur Road', 'Bommanahalli']
+  },
+  {
+    name: 'Jayanagar',
+    areaGroup: 'Bangalore South',
+    displayOrder: 14,
+    status: 'active',
+    distanceNote: '20-25 minutes via Green Line Metro direct from Jayanagar to Mahalakshmi.',
+    landmark: 'Direct Green Line Metro (Jayanagar 4th Block to Mahalakshmi Station)',
+    travelTime: '20-25 mins (Direct Metro)',
+    nearbyAreas: ['JP Nagar', 'Basavanagudi', 'Banashankari', 'BTM Layout', 'South End Circle']
+  },
+  {
+    name: 'JP Nagar',
+    areaGroup: 'Bangalore South',
+    displayOrder: 15,
+    status: 'active',
+    distanceNote: '25 minutes via Green Line Metro or Outer Ring Road.',
+    landmark: 'Direct Green Line Metro (Yelachenahalli/JP Nagar to Mahalakshmi)',
+    travelTime: '25-30 mins',
+    nearbyAreas: ['Jayanagar', 'Banashankari', 'BTM Layout', 'Bannerghatta Road', 'Kumaraswamy Layout']
+  },
+  {
+    name: 'Electronic City',
+    areaGroup: 'Bangalore South',
+    displayOrder: 16,
+    status: 'active',
+    distanceNote: 'Doorstep fabric pickup and delivery via Porter/courier available across E-City.',
+    landmark: 'Elevated Expressway & doorstep courier/sample pickup',
+    travelTime: '45-50 mins (Doorstep courier available)',
+    nearbyAreas: ['Hosa Road', 'Bommasandra', 'Singasandra', 'HSR Layout', 'Kudlu Gate']
+  }
 ];
 
 export const DEFAULT_EXISTING_LANDING_PAGES = [
@@ -354,16 +499,29 @@ function normalizeLandingPagePayload(body = {}, existing = {}) {
   const proximity = {
     locationName,
     areaGroup,
-    boutiqueAddress: '106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086',
+    boutiqueAddress: toStringValue(body.proximity?.boutiqueAddress || '106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086'),
     landmark: toStringValue(body.proximity?.landmark || 'Near Mahalakshmi Metro Station / Rajajinagar 1st Block'),
+    travelTime: toStringValue(body.proximity?.travelTime || '10-15 mins'),
     distanceNote: toStringValue(
       body.proximity?.distanceNote ||
         `Easily accessible from ${locationName}. We also offer Porter courier pick-up & delivery for fabric handover and trials across Bangalore.`
     ),
+    nearbyAreas: toArray(body.proximity?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']),
     workingHours: toStringValue(body.proximity?.workingHours || 'Mon - Sun: 10:30 AM to 8:30 PM (By Appointment & Walk-in)'),
     googleMapsUrl: toStringValue(
       body.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore'
-    )
+    ),
+    boutiqueVisitOptions: Array.isArray(body.proximity?.boutiqueVisitOptions) && body.proximity.boutiqueVisitOptions.length
+      ? body.proximity.boutiqueVisitOptions.map((opt) => ({
+          title: toStringValue(opt.title),
+          description: toStringValue(opt.description)
+        }))
+      : [
+          { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
+          { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
+          { title: 'Video Consultation Available', description: `Virtual design sessions for clients in ${locationName} unable to visit in person.` },
+          { title: 'Pickup & Courier Available Across Bangalore', description: `Reliable Porter fabric pickup and doorstep delivery across ${locationName}.` }
+        ]
   };
 
   // Testimonials
@@ -835,10 +993,15 @@ export async function saveLocation(req, res, next) {
     }
 
     const id = req.body.id || slugify(name);
-    const areaGroup = toStringValue(req.body.areaGroup || 'Bangalore');
+    const areaGroup = toStringValue(req.body.areaGroup || 'Bangalore West');
     const displayOrder = Number(req.body.displayOrder) || 10;
     const status = req.body.status === 'inactive' ? 'inactive' : 'active';
     const distanceNote = toStringValue(req.body.distanceNote || '');
+    const landmark = toStringValue(req.body.landmark || '');
+    const travelTime = toStringValue(req.body.travelTime || '');
+    const nearbyAreas = toArray(req.body.nearbyAreas || []);
+    const isMainBoutique = Boolean(req.body.isMainBoutique);
+    const googleMapsUrl = toStringValue(req.body.googleMapsUrl || '');
 
     const docRef = db.collection(LOCATION_COLLECTION).doc(id);
     const existing = await docRef.get();
@@ -849,6 +1012,11 @@ export async function saveLocation(req, res, next) {
       displayOrder,
       status,
       distanceNote,
+      landmark,
+      travelTime,
+      nearbyAreas,
+      isMainBoutique,
+      googleMapsUrl,
       updatedAt: Timestamp.now(),
       createdAt: existing.exists ? existing.data().createdAt || Timestamp.now() : Timestamp.now()
     };
@@ -877,8 +1045,24 @@ export async function deleteLocation(req, res, next) {
       return res.status(404).json({ message: 'Location not found.' });
     }
 
+    const locationData = snapshot.data();
+    const locName = locationData.name || req.params.id;
+
+    // Safety rule: A location can only be deleted if NOT used by any landing page
+    const inUseSnapshot = await db
+      .collection(LANDING_PAGE_COLLECTION)
+      .where('locationName', '==', locName)
+      .limit(1)
+      .get();
+
+    if (!inUseSnapshot.empty) {
+      return res.status(400).json({
+        message: `Cannot delete location "${locName}" because it is currently used by one or more landing pages. Please reassign or delete those landing pages first.`
+      });
+    }
+
     await docRef.delete();
-    res.json({ message: 'Location deleted successfully.' });
+    res.json({ message: `Location "${locName}" deleted successfully.` });
   } catch (error) {
     console.error('🔥 Firestore Error in deleteLocation:', error.message);
     next(error);

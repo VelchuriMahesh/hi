@@ -30,7 +30,10 @@ export default function LocationManager() {
     areaGroup: 'Bangalore West',
     displayOrder: 1,
     status: 'active',
-    distanceNote: ''
+    travelTime: '',
+    landmark: '',
+    distanceNote: '',
+    nearbyAreas: ''
   });
 
   useEffect(() => {
@@ -63,7 +66,10 @@ export default function LocationManager() {
       areaGroup: loc.areaGroup || 'Bangalore West',
       displayOrder: loc.displayOrder || 1,
       status: loc.status || 'active',
-      distanceNote: loc.distanceNote || ''
+      travelTime: loc.travelTime || '',
+      landmark: loc.landmark || '',
+      distanceNote: loc.distanceNote || '',
+      nearbyAreas: Array.isArray(loc.nearbyAreas) ? loc.nearbyAreas.join(', ') : loc.nearbyAreas || ''
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -75,7 +81,10 @@ export default function LocationManager() {
       areaGroup: 'Bangalore West',
       displayOrder: locations.length + 1,
       status: 'active',
-      distanceNote: ''
+      travelTime: '',
+      landmark: '',
+      distanceNote: '',
+      nearbyAreas: ''
     });
   }
 
@@ -92,10 +101,17 @@ export default function LocationManager() {
     setSaving(true);
     setMessage('');
 
+    const nearbyArray = typeof form.nearbyAreas === 'string'
+      ? form.nearbyAreas.split(',').map((s) => s.trim()).filter(Boolean)
+      : Array.isArray(form.nearbyAreas)
+      ? form.nearbyAreas
+      : [];
+
     try {
       await saveBangaloreLocation(token, {
         ...form,
-        displayOrder: Number(form.displayOrder) || 1
+        displayOrder: Number(form.displayOrder) || 1,
+        nearbyAreas: nearbyArray
       });
       setMessage(editingLoc ? 'Location updated successfully.' : 'Location added successfully.');
       handleCancelEdit();
@@ -275,13 +291,52 @@ export default function LocationManager() {
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Landmark / Route Reference
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Near Mahalakshmi Metro / 5 mins via Chord Road"
+                    value={form.landmark}
+                    onChange={(e) => setForm({ ...form, landmark: e.target.value })}
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none transition focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Travel Time
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 5-10 mins, 20 mins via Metro"
+                    value={form.travelTime}
+                    onChange={(e) => setForm({ ...form, travelTime: e.target.value })}
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none transition focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
                     Distance / Connectivity Note
                   </label>
                   <textarea
-                    rows={3}
-                    placeholder="e.g. 10 mins from Rajajinagar Metro, Porter delivery available."
+                    rows={2}
+                    placeholder="e.g. 5-10 minutes from Rajajinagar 1st Block & Metro Station. Doorstep pickup available."
                     value={form.distanceNote}
                     onChange={(e) => setForm({ ...form, distanceNote: e.target.value })}
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none transition focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Nearby Localities (comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Rajajinagar, Malleshwaram, Basaveshwaranagar"
+                    value={form.nearbyAreas}
+                    onChange={(e) => setForm({ ...form, nearbyAreas: e.target.value })}
                     className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none transition focus:border-cocoa"
                   />
                 </div>
@@ -344,32 +399,68 @@ export default function LocationManager() {
                     <thead>
                       <tr className="border-b border-ink/10 text-xs font-semibold uppercase tracking-wider text-cocoa">
                         <th className="pb-3 pr-2">#</th>
-                        <th className="pb-3 pr-4">Location</th>
+                        <th className="pb-3 pr-4">Location & Details</th>
                         <th className="pb-3 pr-4">Zone</th>
+                        <th className="pb-3 pr-4">Nearby Localities</th>
                         <th className="pb-3 pr-4">Status</th>
                         <th className="pb-3 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-ink/5">
                       {locations.map((loc) => (
-                        <tr key={loc.id} className="hover:bg-ink/[0.02]">
+                        <tr key={loc.id || loc.name} className="hover:bg-ink/[0.02]">
                           <td className="py-3 pr-2 font-mono text-xs text-stone-400">
                             {loc.displayOrder || 1}
                           </td>
                           <td className="py-3 pr-4">
-                            <div className="font-semibold text-ink">{loc.name}</div>
+                            <div className="flex items-center gap-1.5 font-semibold text-ink">
+                              <span>{loc.name}</span>
+                              {loc.isMainBoutique && (
+                                <span className="rounded bg-cocoa/10 px-1.5 py-0.5 text-[10px] font-bold text-cocoa">
+                                  ★ Boutique Hub
+                                </span>
+                              )}
+                            </div>
+                            {loc.landmark ? (
+                              <div className="text-xs text-stone-600">
+                                📍 {loc.landmark}
+                              </div>
+                            ) : null}
+                            {loc.travelTime ? (
+                              <div className="text-xs text-stone-500">
+                                ⏱ {loc.travelTime}
+                              </div>
+                            ) : null}
                             {loc.distanceNote ? (
-                              <div className="line-clamp-1 text-xs text-stone-500">
+                              <div className="line-clamp-1 text-[11px] text-stone-400">
                                 {loc.distanceNote}
                               </div>
                             ) : null}
                           </td>
                           <td className="py-3 pr-4">
-                            <span className="rounded-md bg-ink/5 px-2 py-1 text-xs font-medium text-stone-700">
+                            <span className="rounded-md bg-ink/5 px-2 py-1 text-xs font-medium text-stone-700 whitespace-nowrap">
                               {loc.areaGroup || 'Bangalore'}
                             </span>
                           </td>
-                          <td className="py-3 pr-4">
+                          <td className="py-3 pr-4 max-w-[200px]">
+                            {Array.isArray(loc.nearbyAreas) && loc.nearbyAreas.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {loc.nearbyAreas.slice(0, 3).map((area, aIdx) => (
+                                  <span key={aIdx} className="rounded bg-stone-100 px-1.5 py-0.5 text-[10px] text-stone-600">
+                                    {area}
+                                  </span>
+                                ))}
+                                {loc.nearbyAreas.length > 3 && (
+                                  <span className="text-[10px] text-stone-400">
+                                    +{loc.nearbyAreas.length - 3} more
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-xs text-stone-400">—</span>
+                            )}
+                          </td>
+                          <td className="py-3 pr-4 whitespace-nowrap">
                             <button
                               type="button"
                               onClick={() => handleToggleStatus(loc)}
@@ -382,7 +473,7 @@ export default function LocationManager() {
                               {loc.status === 'active' ? 'Active' : 'Inactive'}
                             </button>
                           </td>
-                          <td className="py-3 text-right">
+                          <td className="py-3 text-right whitespace-nowrap">
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 type="button"
@@ -393,7 +484,7 @@ export default function LocationManager() {
                               </button>
                               <button
                                 type="button"
-                                onClick={() => handleDelete(loc.id, loc.name)}
+                                onClick={() => handleDelete(loc.id || loc.name, loc.name)}
                                 className="text-xs font-semibold text-red-600 hover:underline"
                               >
                                 Delete
