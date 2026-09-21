@@ -1,0 +1,1430 @@
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import PageMeta from '../components/PageMeta';
+import { getAdminToken } from '../components/ProtectedRoute';
+import {
+  fetchMasterTemplates,
+  fetchMasterTemplateById,
+  saveMasterTemplate,
+  fetchBangaloreLocations
+} from '../services/api';
+import {
+  SERVICE_CATEGORIES,
+  MASTER_SERVICE_TEMPLATES,
+  normalizeServiceCategory
+} from '../utils/bangaloreLandingPage';
+
+const TABS = [
+  { id: 'seo', label: '1. SEO & Metadata' },
+  { id: 'hero', label: '2. Hero Section' },
+  { id: 'about', label: '3. About & Features' },
+  { id: 'why', label: '4. Why Choose Us' },
+  { id: 'process', label: '5. 5-Step Process' },
+  { id: 'gallery', label: '6. Gallery Showcase' },
+  { id: 'proximity', label: '7. Proximity & Maps' },
+  { id: 'testimonials', label: '8. Testimonials' },
+  { id: 'faqs', label: '9. FAQs (Schema)' },
+  { id: 'cta', label: '10. Bottom CTA' }
+];
+
+function slugifyService(serviceName = '') {
+  return String(serviceName)
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export default function MasterTemplateManager() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [selectedService, setSelectedService] = useState(() => {
+    const fromParam = searchParams.get('service');
+    return fromParam ? normalizeServiceCategory(fromParam) : SERVICE_CATEGORIES[0];
+  });
+
+  const [activeTab, setActiveTab] = useState('seo');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState('');
+  const [testLocation, setTestLocation] = useState('Malleshwaram');
+  const [locations, setLocations] = useState([]);
+
+  // Remote templates map: { [id]: template }
+  const [backendTemplates, setBackendTemplates] = useState({});
+  // Active editing template
+  const [template, setTemplate] = useState(null);
+
+  useEffect(() => {
+    const token = getAdminToken();
+    if (!token) {
+      navigate('/admin', { replace: true });
+      return;
+    }
+    loadAll();
+  }, [navigate]);
+
+  async function loadAll() {
+    setLoading(true);
+    setMessage('');
+    try {
+      const [tplRes, locRes] = await Promise.all([
+        fetchMasterTemplates().catch(() => ({ items: [] })),
+        fetchBangaloreLocations().catch(() => ({ items: [] }))
+      ]);
+
+      const map = {};
+      (tplRes?.items || []).forEach((t) => {
+        if (t.id) map[t.id] = t;
+        if (t.serviceCategory) map[t.serviceCategory] = t;
+      });
+      setBackendTemplates(map);
+      setLocations(locRes?.items || []);
+
+      initTemplateForService(selectedService, map);
+    } catch {
+      initTemplateForService(selectedService, {});
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function initTemplateForService(serviceName, templatesMap = backendTemplates) {
+    const sId = slugifyService(serviceName);
+    const existing = templatesMap[sId] || templatesMap[serviceName];
+
+    if (existing) {
+      setTemplate(JSON.parse(JSON.stringify(existing)));
+      return;
+    }
+
+    // Fall back to preset from MASTER_SERVICE_TEMPLATES
+    const preset = MASTER_SERVICE_TEMPLATES[serviceName] || MASTER_SERVICE_TEMPLATES[normalizeServiceCategory(serviceName)] || MASTER_SERVICE_TEMPLATES['Bridal Blouse'] || {};
+
+    const defaultTpl = {
+      id: sId,
+      serviceCategory: serviceName,
+      singular: preset.singular || serviceName,
+      plural: preset.plural || `${serviceName}s`,
+      heroImage: preset.heroImage || '',
+      featuredImage: {
+        url: preset.heroImage || '',
+        alt: `${serviceName} in {Location}, Bangalore – Shrusara Fashion Boutique`,
+        title: `${serviceName} in {Location}`,
+        caption: `100% Customized ${serviceName} tailored by Shrusara Fashion Boutique in Bangalore.`
+      },
+      seo: {
+        metaTitleTemplate: preset.seo?.metaTitleTemplate || `${serviceName} in {Location}, Bangalore | Shrusara Fashion Boutique`,
+        metaDescriptionTemplate: preset.seo?.metaDescriptionTemplate || `Customized ${serviceName} in {Location}, Bangalore. Perfect fit, hand embroidery & 1-on-1 consultation with Chief Designer Shruthi Ajith.`,
+        metaKeywords: [
+          `${serviceName.toLowerCase()} in {Location}`,
+          `${serviceName.toLowerCase()} bangalore`,
+          `customized ${serviceName.toLowerCase()}`,
+          `best ${serviceName.toLowerCase()} near {Location}`,
+          'shrusara fashion boutique'
+        ],
+        canonicalUrlPattern: `/bangalore/${slugifyService(serviceName)}-stitching-{location}`
+      },
+      hero: {
+        badgeTemplate: preset.hero?.badgeTemplate || `100% Customized | {Location}, Bangalore`,
+        headingTemplate: preset.hero?.headingTemplate || `${serviceName} in {Location}, Bangalore`,
+        taglineTemplate: preset.hero?.taglineTemplate || `Experience bespoke luxury, meticulous craftsmanship, and personalized consultation for clients in {Location}, Bangalore.`,
+        highlights: preset.hero?.highlights || [
+          '1-on-1 Consultation with Chief Designer Shruthi Ajith',
+          'Personalized Measurements & Trial Fitting',
+          'Try Before You Customize (Boutique Exclusive)',
+          'Video Consultation Available Across Bangalore',
+          'Pickup & Courier Delivery Across Bangalore',
+          'Comfortable Customized Stitching'
+        ],
+        primaryCtaText: preset.hero?.primaryCtaText || 'Chat on WhatsApp',
+        primaryCtaMessageTemplate: preset.hero?.primaryCtaMessageTemplate || `Hi Shrusara! I'd like to know more about ${serviceName} in {Location}.`,
+        secondaryCtaText: preset.hero?.secondaryCtaText || 'Call Shrusara Boutique',
+        secondaryCtaLink: preset.hero?.secondaryCtaLink || '#contact'
+      },
+      about: {
+        headingTemplate: preset.about?.headingTemplate || `Customized ${serviceName} in {Location}`,
+        introTemplate: preset.about?.introTemplate || `At Shrusara Fashion Boutique, we specialize exclusively in bespoke ${serviceName}. We do not sell mass-produced ready-made garments. Every single piece is tailored uniquely to your body contours, measurements, and personal style.`,
+        descriptionTemplate: preset.about?.descriptionTemplate || `Clients from {Location} and across Bangalore trust Shrusara for heirloom-quality finish, comfortable fit, and stress-free tailoring with dedicated trials.`,
+        highlights: preset.about?.highlights || [
+          { title: 'Personalized Fitting', description: 'Tailored precisely to your exact measurements, posture, and preferences.' },
+          { title: 'Premium Craftsmanship', description: 'Handcrafted by master artisans with high-grade interlinings and finished seams.' },
+          { title: 'Try Before You Customize', description: 'Visit our Mahalakshmipuram studio to inspect samples and silhouettes firsthand.' }
+        ]
+      },
+      whyChooseUs: {
+        headingTemplate: preset.whyChooseUs?.headingTemplate || `Why Clients in {Location} Choose Shrusara for ${serviceName}`,
+        introTemplate: preset.whyChooseUs?.introTemplate || `Serving Bangalore's discerning clients with unmatched design expertise, precision fitting, and transparent timelines.`,
+        cards: preset.whyChooseUs?.cards || [
+          { title: 'Direct Designer Access', description: 'Work directly with Chief Designer Shruthi Ajith throughout your consultation and trial.' },
+          { title: 'Stress-Free Timelines', description: 'Guaranteed delivery dates planned well ahead of your special occasions.' },
+          { title: 'Doorstep Courier & Porter', description: 'Reliable pickup and drop-off available directly to your home in {Location}.' }
+        ]
+      },
+      processSteps: preset.processSteps || [
+        { stepNumber: 1, title: 'Design Consultation & Fabric Selection', description: 'Discuss your outfit style, necklines, sleeves, and fabric requirements.', duration: 'Day 1' },
+        { stepNumber: 2, title: 'Measurements & Silhouette Planning', description: 'Precision measurements taken with posture evaluation and trial fit checks.', duration: 'Day 1-2' },
+        { stepNumber: 3, title: 'Master Cutting & Artisan Crafting', description: 'Hand-cut by master cutters and crafted with premium reinforcements.', duration: 'Day 3-5' },
+        { stepNumber: 4, title: 'Trial Fitting & Comfort Check', description: 'Try on the outfit to verify posture, seam comfort, and armhole fit.', duration: 'Day 5-6' },
+        { stepNumber: 5, title: 'Steam Finishing & Handover to {Location}', description: 'Final quality inspection, steam press, and boutique pickup or courier delivery.', duration: 'Final Delivery' }
+      ],
+      gallery: (preset.gallery || [
+        { url: '/bridal/bridalblow/hero-bridal.webp', title: `${serviceName} Showcase`, caption: 'Mastercrafted finishing' },
+        { url: '/bridal/bridalblow/IMG-20220609-WA0069.webp', title: `${serviceName} Silhouette`, caption: 'Exquisite attention to detail' }
+      ]).map((g) => ({
+        url: g.url || '',
+        title: g.title || `${serviceName} in {Location}`,
+        alt: g.alt || `${serviceName} in {Location}, Bangalore – Shrusara Fashion Boutique`,
+        caption: g.caption || ''
+      })),
+      proximity: {
+        defaultLandmark: 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
+        defaultTravelTime: '10-15 mins',
+        defaultDistanceNote: 'Easily accessible from {Location}. Doorstep Porter & express courier delivery available across Bangalore.',
+        workingHours: 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
+        boutiqueAddress: '106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086',
+        googleMapsUrl: 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore'
+      },
+      testimonials: preset.testimonials || [
+        { name: 'Pooja K.', location: '{Location}, Bangalore', rating: 5, outfitType: serviceName, reviewText: `Shrusara exceeded all my expectations for ${serviceName}. The fit was absolutely flawless and Shruthi ma'am understood my style instantly. Highly recommended for everyone in {Location}!` },
+        { name: 'Divya M.', location: '{Location}, Bangalore', rating: 5, outfitType: serviceName, reviewText: `The attention to detail and trial session made all the difference. Delivered right on schedule to my home in {Location}.` }
+      ],
+      faqs: preset.faqs || [
+        { question: `Can I get customized ${serviceName} in {Location}?`, answer: `Yes! Shrusara Fashion Boutique caters to clients across {Location}, Bangalore. You can visit our Mahalakshmipuram studio (conveniently connected) or book a virtual video consultation with doorstep courier pickup and delivery.` },
+        { question: `How long does customized ${serviceName} take?`, answer: `Standard crafting takes approximately 5 to 7 days, including design consultation and trial fitting. For emergency wedding dates or immediate events in {Location}, priority express slots are also accommodated.` },
+        { question: `Do you provide home pickup and delivery in {Location}?`, answer: `Yes, we arrange reliable door-to-door Porter fabric pickup and courier delivery across all localities in {Location}, Bangalore.` }
+      ],
+      cta: {
+        headingTemplate: preset.cta?.headingTemplate || `Customized ${serviceName} Near {Location}, Bangalore`,
+        subheadingTemplate: preset.cta?.subheadingTemplate || `Book your consultation with Chief Designer Shruthi Ajith today. Experience bespoke luxury in Bangalore.`,
+        whatsappText: 'Chat on WhatsApp',
+        callText: 'Call Shrusara Boutique'
+      }
+    };
+
+    setTemplate(defaultTpl);
+  }
+
+  function handleSwitchService(serviceName) {
+    setSelectedService(serviceName);
+    setSearchParams({ service: serviceName });
+    initTemplateForService(serviceName);
+    setMessage('');
+  }
+
+  async function handleSave() {
+    const token = getAdminToken();
+    if (!token) {
+      setMessage('Session expired. Please log in again.');
+      return;
+    }
+
+    setSaving(true);
+    setMessage('');
+    try {
+      const sId = slugifyService(selectedService);
+      const payload = {
+        ...template,
+        id: sId,
+        serviceCategory: selectedService,
+        updatedAt: new Date().toISOString()
+      };
+
+      const res = await saveMasterTemplate(token, sId, payload);
+      setBackendTemplates((prev) => ({
+        ...prev,
+        [sId]: payload,
+        [selectedService]: payload
+      }));
+      setMessage(res?.message || `✅ Master Template for "${selectedService}" saved successfully!`);
+    } catch (err) {
+      setMessage(err.message || 'Failed to save master template');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  // Helper to preview text replacing {Location}
+  function preview(text = '') {
+    return String(text || '').replace(/\{Location\}/g, testLocation);
+  }
+
+  if (loading || !template) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-sand text-ink">
+        <div className="text-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-cocoa border-t-transparent mx-auto" />
+          <p className="mt-4 text-sm font-medium">Loading Master Templates...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <PageMeta
+        title="Master Templates CMS V2 | Shrusara Admin"
+        description="Configure Master Templates for 8 Core Service Categories across Bangalore."
+      />
+
+      <div className="min-h-screen bg-sand px-4 py-8 text-ink sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          {/* Top Bar */}
+          <div className="flex flex-col gap-4 border-b border-ink/10 pb-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <Link to="/admin/landing-pages" className="text-xs font-semibold text-cocoa hover:underline">
+                  ← Bangalore Landing Pages
+                </Link>
+                <span className="text-stone-400">/</span>
+                <span className="text-xs uppercase tracking-wider text-stone-500">
+                  Master Templates (CMS V2)
+                </span>
+              </div>
+              <h1 className="mt-1 font-heading text-3xl text-ink">
+                Service Master Templates
+              </h1>
+              <p className="mt-1 text-sm text-stone-600">
+                The single source of truth for each service. When a Bangalore location is selected, the CMS dynamically duplicates this content and substitutes <code className="rounded bg-linen px-1 py-0.5 font-mono text-cocoa font-bold">{"{Location}"}</code>.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <Link to="/admin/landing-pages" className="button-secondary py-2 text-xs font-semibold">
+                View All Pages
+              </Link>
+              <Link
+                to={`/admin/landing-pages/new?service=${encodeURIComponent(selectedService)}&location=${encodeURIComponent(testLocation)}`}
+                className="rounded-xl bg-linen border border-cocoa/30 px-3.5 py-2 text-xs font-semibold text-cocoa shadow-sm hover:bg-cocoa/10 transition"
+                title="Create a new landing page pre-filled with this master template"
+              >
+                ➕ Create Page with Template
+              </Link>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={handleSave}
+                className="button-primary py-2 text-xs font-semibold shadow-md"
+              >
+                {saving ? 'Saving...' : `💾 Save Master Template`}
+              </button>
+            </div>
+          </div>
+
+          {/* User Feedback Notice */}
+          {message && (
+            <div className="mt-4 rounded-2xl border border-cocoa/20 bg-white px-5 py-3 text-sm text-cocoa shadow-card">
+              {message}
+            </div>
+          )}
+
+          {/* Service Categories Bar */}
+          <div className="mt-6">
+            <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+              Select Service Category (8 Core Services):
+            </p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
+              {SERVICE_CATEGORIES.map((srv) => {
+                const sId = slugifyService(srv);
+                const isCustomized = Boolean(backendTemplates[sId] || backendTemplates[srv]);
+                const isSelected = selectedService === srv;
+
+                // Category icon map for fast visual recognition
+                const ICON_MAP = {
+                  'Bridal Blouse': '👰',
+                  'Maggam & Aari Work Bridal Blouse': '🪡',
+                  'Designer Blouse': '✨',
+                  'Designer Gown': '👗',
+                  'Bridal Lehenga': '👑',
+                  'Luxury Occasion Wear': '🌟',
+                  'Ready-to-Wear Saree Customization': '🥻',
+                  'Kids Boutique': '👧'
+                };
+                const icon = ICON_MAP[srv] || '✨';
+
+                return (
+                  <button
+                    key={srv}
+                    type="button"
+                    onClick={() => handleSwitchService(srv)}
+                    className={`flex flex-col justify-between rounded-xl p-3 text-left transition ${
+                      isSelected
+                        ? 'bg-cocoa text-white shadow-md'
+                        : 'bg-white border border-ink/10 text-ink hover:bg-linen'
+                    }`}
+                  >
+                    <div>
+                      <span className="text-base mb-1 block">{icon}</span>
+                      <span className="text-xs font-semibold line-clamp-2 leading-tight">
+                        {srv}
+                      </span>
+                    </div>
+                    <span
+                      className={`mt-2 inline-block rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+                        isSelected
+                          ? 'bg-white/20 text-white'
+                          : isCustomized
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-stone-100 text-stone-600'
+                      }`}
+                    >
+                      {isCustomized ? '● Saved' : '○ Default'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Real-Time Preview Simulator Bar */}
+          <div className="mt-6 rounded-2xl border border-cocoa/30 bg-gradient-to-r from-cocoa/10 via-linen to-cocoa/5 p-4 shadow-sm">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-cocoa">
+                  🔍 Live Location Simulator
+                </p>
+                <p className="text-xs text-stone-600">
+                  Type or choose any location to preview how <code className="font-mono text-cocoa font-bold">{"{Location}"}</code> tags evaluate for your customers.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={testLocation}
+                  onChange={(e) => setTestLocation(e.target.value)}
+                  placeholder="e.g. Malleshwaram"
+                  className="rounded-xl border border-ink/15 bg-white px-3 py-1.5 text-xs font-medium text-ink outline-none"
+                />
+                {locations.length > 0 && (
+                  <select
+                    value={testLocation}
+                    onChange={(e) => setTestLocation(e.target.value)}
+                    className="rounded-xl border border-ink/15 bg-white px-3 py-1.5 text-xs font-medium text-ink outline-none"
+                  >
+                    {locations.map((loc) => (
+                      <option key={loc.id || loc.name} value={loc.name}>
+                        {loc.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            </div>
+
+            {/* Live Preview Snippet */}
+            <div className="mt-3 rounded-xl bg-white p-3 border border-ink/10 text-xs text-stone-700">
+              <span className="font-bold text-cocoa">Hero Heading Sample: </span>
+              <span className="font-medium text-ink">"{preview(template.hero?.headingTemplate)}"</span>
+              <span className="mx-2 text-stone-300">|</span>
+              <span className="font-bold text-cocoa">Gallery Alt: </span>
+              <span className="font-medium text-ink">"{preview(template.gallery?.[0]?.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`)}"</span>
+            </div>
+          </div>
+
+          {/* Tabs Navigation */}
+          <div className="mt-6 overflow-x-auto border-b border-ink/10 pb-px">
+            <div className="flex gap-1 min-w-max">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`rounded-t-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition ${
+                    activeTab === tab.id
+                      ? 'bg-white border-t-2 border-cocoa text-cocoa shadow-sm'
+                      : 'text-stone-600 hover:text-ink hover:bg-linen/50'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* TAB CONTENTS */}
+          <div className="mt-4 rounded-2xl border border-ink/10 bg-white p-6 shadow-card">
+            {/* TAB 1: SEO */}
+            {activeTab === 'seo' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-heading text-xl text-ink">1. SEO & Metadata Templates</h2>
+                  <p className="text-xs text-stone-500">
+                    Defines Meta Title, Meta Description, Keywords, and Canonical URL pattern for all localized pages of "{selectedService}".
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Meta Title Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.seo?.metaTitleTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        seo: { ...template.seo, metaTitleTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.seo?.metaTitleTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Meta Description Template
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={template.seo?.metaDescriptionTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        seo: { ...template.seo, metaDescriptionTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.seo?.metaDescriptionTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Canonical URL Pattern
+                  </label>
+                  <input
+                    type="text"
+                    value={template.seo?.canonicalUrlPattern || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        seo: { ...template.seo, canonicalUrlPattern: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Example: <code className="font-mono text-cocoa">/bangalore/{slugifyService(selectedService)}-stitching-malleshwaram</code>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Keywords Template (Comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={Array.isArray(template.seo?.metaKeywords) ? template.seo.metaKeywords.join(', ') : template.seo?.metaKeywords || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        seo: {
+                          ...template.seo,
+                          metaKeywords: e.target.value.split(',').map((k) => k.trim()).filter(Boolean)
+                        }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: HERO */}
+            {activeTab === 'hero' && (
+              <div className="space-y-6">
+                <h2 className="font-heading text-xl text-ink">2. Hero Section Template</h2>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Badge Template
+                    </label>
+                    <input
+                      type="text"
+                      value={template.hero?.badgeTemplate || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          hero: { ...template.hero, badgeTemplate: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                    <p className="mt-1 text-[11px] text-stone-500">
+                      Preview: <strong className="text-cocoa">{preview(template.hero?.badgeTemplate)}</strong>
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Hero Image URL
+                    </label>
+                    <input
+                      type="text"
+                      value={template.heroImage || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          heroImage: e.target.value,
+                          featuredImage: { ...template.featuredImage, url: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Hero Main Heading Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.hero?.headingTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        hero: { ...template.hero, headingTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa font-semibold">{preview(template.hero?.headingTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Hero Tagline Template
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={template.hero?.taglineTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        hero: { ...template.hero, taglineTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.hero?.taglineTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    WhatsApp Message Template (Auto-populated on user click)
+                  </label>
+                  <input
+                    type="text"
+                    value={template.hero?.primaryCtaMessageTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        hero: { ...template.hero, primaryCtaMessageTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-2">
+                    Hero Highlights (Bullet Points)
+                  </label>
+                  {(template.hero?.highlights || []).map((item, idx) => (
+                    <div key={idx} className="mb-2 flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => {
+                          const updated = [...(template.hero?.highlights || [])];
+                          updated[idx] = e.target.value;
+                          setTemplate({
+                            ...template,
+                            hero: { ...template.hero, highlights: updated }
+                          });
+                        }}
+                        className="flex-1 rounded-xl border border-ink/10 bg-linen px-3 py-1.5 text-xs text-ink outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = template.hero?.highlights.filter((_, i) => i !== idx);
+                          setTemplate({
+                            ...template,
+                            hero: { ...template.hero, highlights: updated }
+                          });
+                        }}
+                        className="rounded-lg bg-red-50 px-2 py-1 text-xs text-red-600 hover:bg-red-100"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = [...(template.hero?.highlights || []), 'New Highlight Feature'];
+                      setTemplate({
+                        ...template,
+                        hero: { ...template.hero, highlights: updated }
+                      });
+                    }}
+                    className="mt-2 rounded-xl border border-dashed border-cocoa/40 px-3 py-1 text-xs font-semibold text-cocoa hover:bg-linen"
+                  >
+                    + Add Highlight
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: ABOUT */}
+            {activeTab === 'about' && (
+              <div className="space-y-6">
+                <h2 className="font-heading text-xl text-ink">3. About & Features Template</h2>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Heading Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.about?.headingTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        about: { ...template.about, headingTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.about?.headingTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Intro Template
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={template.about?.introTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        about: { ...template.about, introTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Description Template
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={template.about?.descriptionTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        about: { ...template.about, descriptionTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-2">
+                    Feature Highlights
+                  </label>
+                  {(template.about?.highlights || []).map((h, idx) => (
+                    <div key={idx} className="mb-3 rounded-xl border border-ink/10 bg-sand/30 p-3">
+                      <div className="flex items-center justify-between">
+                        <input
+                          type="text"
+                          placeholder="Feature Title"
+                          value={h.title}
+                          onChange={(e) => {
+                            const updated = [...template.about.highlights];
+                            updated[idx] = { ...updated[idx], title: e.target.value };
+                            setTemplate({
+                              ...template,
+                              about: { ...template.about, highlights: updated }
+                            });
+                          }}
+                          className="w-2/3 rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = template.about.highlights.filter((_, i) => i !== idx);
+                            setTemplate({
+                              ...template,
+                              about: { ...template.about, highlights: updated }
+                            });
+                          }}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <textarea
+                        rows={2}
+                        placeholder="Feature Description"
+                        value={h.description}
+                        onChange={(e) => {
+                          const updated = [...template.about.highlights];
+                          updated[idx] = { ...updated[idx], description: e.target.value };
+                          setTemplate({
+                            ...template,
+                            about: { ...template.about, highlights: updated }
+                          });
+                        }}
+                        className="mt-2 w-full rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-700"
+                      />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = [
+                        ...(template.about?.highlights || []),
+                        { title: 'New Feature Highlight', description: 'Description of the feature for {Location}.' }
+                      ];
+                      setTemplate({
+                        ...template,
+                        about: { ...template.about, highlights: updated }
+                      });
+                    }}
+                    className="rounded-xl border border-dashed border-cocoa/40 px-3 py-1 text-xs font-semibold text-cocoa hover:bg-linen"
+                  >
+                    + Add Feature Highlight
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: WHY CHOOSE US */}
+            {activeTab === 'why' && (
+              <div className="space-y-6">
+                <h2 className="font-heading text-xl text-ink">4. Why Choose Us Section</h2>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Heading Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.whyChooseUs?.headingTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        whyChooseUs: { ...template.whyChooseUs, headingTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.whyChooseUs?.headingTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Intro Template
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={template.whyChooseUs?.introTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        whyChooseUs: { ...template.whyChooseUs, introTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-2">
+                    Why Choose Cards
+                  </label>
+                  {(template.whyChooseUs?.cards || []).map((card, idx) => (
+                    <div key={idx} className="mb-3 rounded-xl border border-ink/10 bg-sand/30 p-3">
+                      <div className="flex items-center justify-between">
+                        <input
+                          type="text"
+                          placeholder="Card Title"
+                          value={card.title}
+                          onChange={(e) => {
+                            const updated = [...template.whyChooseUs.cards];
+                            updated[idx] = { ...updated[idx], title: e.target.value };
+                            setTemplate({
+                              ...template,
+                              whyChooseUs: { ...template.whyChooseUs, cards: updated }
+                            });
+                          }}
+                          className="w-2/3 rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = template.whyChooseUs.cards.filter((_, i) => i !== idx);
+                            setTemplate({
+                              ...template,
+                              whyChooseUs: { ...template.whyChooseUs, cards: updated }
+                            });
+                          }}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <textarea
+                        rows={2}
+                        placeholder="Card Description"
+                        value={card.description}
+                        onChange={(e) => {
+                          const updated = [...template.whyChooseUs.cards];
+                          updated[idx] = { ...updated[idx], description: e.target.value };
+                          setTemplate({
+                            ...template,
+                            whyChooseUs: { ...template.whyChooseUs, cards: updated }
+                          });
+                        }}
+                        className="mt-2 w-full rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-700"
+                      />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = [
+                        ...(template.whyChooseUs?.cards || []),
+                        { title: 'New Advantage', description: 'Why customers in {Location} love this service.' }
+                      ];
+                      setTemplate({
+                        ...template,
+                        whyChooseUs: { ...template.whyChooseUs, cards: updated }
+                      });
+                    }}
+                    className="rounded-xl border border-dashed border-cocoa/40 px-3 py-1 text-xs font-semibold text-cocoa hover:bg-linen"
+                  >
+                    + Add Card
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: PROCESS STEPS */}
+            {activeTab === 'process' && (
+              <div className="space-y-6">
+                <h2 className="font-heading text-xl text-ink">5. 5-Step Process Template</h2>
+                <p className="text-xs text-stone-500">
+                  Walk through the step-by-step experience from consultation to delivery in {"{Location}"}.
+                </p>
+
+                {(template.processSteps || []).map((step, idx) => (
+                  <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cocoa text-xs font-bold text-white">
+                        {step.stepNumber || idx + 1}
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Step Title"
+                        value={step.title}
+                        onChange={(e) => {
+                          const updated = [...template.processSteps];
+                          updated[idx] = { ...updated[idx], title: e.target.value };
+                          setTemplate({ ...template, processSteps: updated });
+                        }}
+                        className="flex-1 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs font-semibold text-ink"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Duration (e.g. Day 1)"
+                        value={step.duration}
+                        onChange={(e) => {
+                          const updated = [...template.processSteps];
+                          updated[idx] = { ...updated[idx], duration: e.target.value };
+                          setTemplate({ ...template, processSteps: updated });
+                        }}
+                        className="w-32 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs text-stone-600"
+                      />
+                    </div>
+                    <textarea
+                      rows={2}
+                      placeholder="Step Description"
+                      value={step.description}
+                      onChange={(e) => {
+                        const updated = [...template.processSteps];
+                        updated[idx] = { ...updated[idx], description: e.target.value };
+                        setTemplate({ ...template, processSteps: updated });
+                      }}
+                      className="mt-2 w-full rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs text-stone-700"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* TAB 6: GALLERY */}
+            {activeTab === 'gallery' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-heading text-xl text-ink">6. Gallery Showcase Template</h2>
+                  <p className="mt-1 text-xs text-stone-500">
+                    Alt text automatically resolves to: <code className="font-mono text-cocoa font-bold">"{selectedService} in {"{Location}"}, Bangalore – Shrusara Fashion Boutique"</code>
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {(template.gallery || []).map((img, idx) => (
+                    <div key={idx} className="overflow-hidden rounded-xl border border-ink/10 bg-sand/20 p-3">
+                      {img.url ? (
+                        <img
+                          src={img.url}
+                          alt={preview(img.alt)}
+                          className="h-36 w-full rounded-lg object-cover bg-linen"
+                        />
+                      ) : (
+                        <div className="flex h-36 w-full items-center justify-center rounded-lg bg-linen text-xs text-stone-400">
+                          No Image URL
+                        </div>
+                      )}
+
+                      <div className="mt-2 space-y-1.5">
+                        <input
+                          type="text"
+                          placeholder="Image URL"
+                          value={img.url}
+                          onChange={(e) => {
+                            const updated = [...template.gallery];
+                            updated[idx] = { ...updated[idx], url: e.target.value };
+                            setTemplate({ ...template, gallery: updated });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Title Template"
+                          value={img.title || ''}
+                          onChange={(e) => {
+                            const updated = [...template.gallery];
+                            updated[idx] = { ...updated[idx], title: e.target.value };
+                            setTemplate({ ...template, gallery: updated });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Alt Tag Template"
+                          value={img.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`}
+                          onChange={(e) => {
+                            const updated = [...template.gallery];
+                            updated[idx] = { ...updated[idx], alt: e.target.value };
+                            setTemplate({ ...template, gallery: updated });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-600"
+                        />
+                        <p className="text-[10px] text-stone-500">
+                          Alt Preview: <span className="text-cocoa font-medium">{preview(img.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`)}</span>
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = template.gallery.filter((_, i) => i !== idx);
+                            setTemplate({ ...template, gallery: updated });
+                          }}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Remove Photo
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = [
+                      ...(template.gallery || []),
+                      {
+                        url: '',
+                        title: `${selectedService} in {Location}`,
+                        alt: `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`,
+                        caption: 'Customized bespoke design.'
+                      }
+                    ];
+                    setTemplate({ ...template, gallery: updated });
+                  }}
+                  className="rounded-xl border border-dashed border-cocoa/40 px-4 py-2 text-xs font-semibold text-cocoa hover:bg-linen"
+                >
+                  + Add Image to Gallery
+                </button>
+              </div>
+            )}
+
+            {/* TAB 7: PROXIMITY & MAPS */}
+            {activeTab === 'proximity' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-heading text-xl text-ink">7. Location, Distance & Maps Defaults</h2>
+                  <p className="text-xs text-stone-500">
+                    Default proximity settings when generating a page. Location-specific travel times and landmarks are automatically merged from the Bangalore Locations directory.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Boutique Address
+                    </label>
+                    <input
+                      type="text"
+                      value={template.proximity?.boutiqueAddress || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          proximity: { ...template.proximity, boutiqueAddress: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Working Hours
+                    </label>
+                    <input
+                      type="text"
+                      value={template.proximity?.workingHours || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          proximity: { ...template.proximity, workingHours: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Default Distance Note Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.proximity?.defaultDistanceNote || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        proximity: { ...template.proximity, defaultDistanceNote: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.proximity?.defaultDistanceNote)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Google Maps Direction URL
+                  </label>
+                  <input
+                    type="text"
+                    value={template.proximity?.googleMapsUrl || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        proximity: { ...template.proximity, googleMapsUrl: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 8: TESTIMONIALS */}
+            {activeTab === 'testimonials' && (
+              <div className="space-y-6">
+                <h2 className="font-heading text-xl text-ink">8. Testimonials Template</h2>
+
+                {(template.testimonials || []).map((t, idx) => (
+                  <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="text"
+                          placeholder="Client Name"
+                          value={t.name}
+                          onChange={(e) => {
+                            const updated = [...template.testimonials];
+                            updated[idx] = { ...updated[idx], name: e.target.value };
+                            setTemplate({ ...template, testimonials: updated });
+                          }}
+                          className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Location Template (e.g. {Location}, Bangalore)"
+                          value={t.location || ''}
+                          onChange={(e) => {
+                            const updated = [...template.testimonials];
+                            updated[idx] = { ...updated[idx], location: e.target.value };
+                            setTemplate({ ...template, testimonials: updated });
+                          }}
+                          className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-600"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = template.testimonials.filter((_, i) => i !== idx);
+                          setTemplate({ ...template, testimonials: updated });
+                        }}
+                        className="text-xs text-red-600 hover:underline"
+                      >
+                        Remove Testimonial
+                      </button>
+                    </div>
+
+                    <textarea
+                      rows={2}
+                      placeholder="Review Text"
+                      value={t.reviewText}
+                      onChange={(e) => {
+                        const updated = [...template.testimonials];
+                        updated[idx] = { ...updated[idx], reviewText: e.target.value };
+                        setTemplate({ ...template, testimonials: updated });
+                      }}
+                      className="mt-2 w-full rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs text-stone-700"
+                    />
+                    <p className="mt-1 text-[11px] text-stone-500">
+                      Preview: <span className="text-cocoa font-medium">"{preview(t.reviewText)}"</span>
+                    </p>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = [
+                      ...(template.testimonials || []),
+                      {
+                        name: 'Boutique Client',
+                        location: '{Location}, Bangalore',
+                        rating: 5,
+                        outfitType: selectedService,
+                        reviewText: `Shrusara provided exceptional customized ${selectedService} in {Location}. I received compliments all evening!`
+                      }
+                    ];
+                    setTemplate({ ...template, testimonials: updated });
+                  }}
+                  className="rounded-xl border border-dashed border-cocoa/40 px-3 py-1 text-xs font-semibold text-cocoa hover:bg-linen"
+                >
+                  + Add Testimonial
+                </button>
+              </div>
+            )}
+
+            {/* TAB 9: FAQS */}
+            {activeTab === 'faqs' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-heading text-xl text-ink">9. FAQs (Google FAQ Schema)</h2>
+                  <p className="text-xs text-stone-500">
+                    These questions and answers feed directly into Google Structured Data (FAQPage schema) for rich SERP snippets.
+                  </p>
+                </div>
+
+                {(template.faqs || []).map((faq, idx) => (
+                  <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-cocoa">Q{idx + 1}:</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = template.faqs.filter((_, i) => i !== idx);
+                          setTemplate({ ...template, faqs: updated });
+                        }}
+                        className="text-xs text-red-600 hover:underline"
+                      >
+                        Remove FAQ
+                      </button>
+                    </div>
+
+                    <input
+                      type="text"
+                      placeholder="Question (use {Location})"
+                      value={faq.question}
+                      onChange={(e) => {
+                        const updated = [...template.faqs];
+                        updated[idx] = { ...updated[idx], question: e.target.value };
+                        setTemplate({ ...template, faqs: updated });
+                      }}
+                      className="mt-1 w-full rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs font-semibold text-ink"
+                    />
+                    <textarea
+                      rows={2}
+                      placeholder="Answer (use {Location})"
+                      value={faq.answer}
+                      onChange={(e) => {
+                        const updated = [...template.faqs];
+                        updated[idx] = { ...updated[idx], answer: e.target.value };
+                        setTemplate({ ...template, faqs: updated });
+                      }}
+                      className="mt-2 w-full rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs text-stone-700"
+                    />
+                    <p className="mt-1 text-[11px] text-stone-500">
+                      Answer Preview: <span className="text-cocoa font-medium">{preview(faq.answer)}</span>
+                    </p>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = [
+                      ...(template.faqs || []),
+                      {
+                        question: `How do I book an appointment for ${selectedService} from {Location}?`,
+                        answer: `You can reach Shrusara on WhatsApp or call our boutique. We will arrange a 1-on-1 consultation or virtual session with door-to-door courier service across {Location}.`
+                      }
+                    ];
+                    setTemplate({ ...template, faqs: updated });
+                  }}
+                  className="rounded-xl border border-dashed border-cocoa/40 px-3 py-1 text-xs font-semibold text-cocoa hover:bg-linen"
+                >
+                  + Add FAQ
+                </button>
+              </div>
+            )}
+
+            {/* TAB 10: BOTTOM CTA */}
+            {activeTab === 'cta' && (
+              <div className="space-y-6">
+                <h2 className="font-heading text-xl text-ink">10. Bottom Call-To-Action (CTA)</h2>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Heading Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.cta?.headingTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        cta: { ...template.cta, headingTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.cta?.headingTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Subheading Template
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={template.cta?.subheadingTemplate || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        cta: { ...template.cta, subheadingTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.cta?.subheadingTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      WhatsApp Button Text
+                    </label>
+                    <input
+                      type="text"
+                      value={template.cta?.whatsappText || 'Chat on WhatsApp'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          cta: { ...template.cta, whatsappText: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Call Button Text
+                    </label>
+                    <input
+                      type="text"
+                      value={template.cta?.callText || 'Call Shrusara Boutique'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          cta: { ...template.cta, callText: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Save Action */}
+          <div className="mt-6 flex items-center justify-between border-t border-ink/10 pt-6">
+            <p className="text-xs text-stone-500">
+              Changes will immediately take effect for all newly created pages and batch generations of <strong className="text-cocoa">{selectedService}</strong>.
+            </p>
+            <button
+              type="button"
+              disabled={saving}
+              onClick={handleSave}
+              className="button-primary py-2.5 px-6 text-sm font-semibold shadow-md"
+            >
+              {saving ? 'Saving...' : `💾 Save Master Template`}
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

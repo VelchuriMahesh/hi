@@ -311,6 +311,9 @@ export default function Dashboard() {
               <Link className="button-secondary" to="/admin/landing-pages">
                 📍 Landing pages (Bangalore)
               </Link>
+              <Link className="button-secondary" to="/admin/master-templates">
+                ✨ Master templates
+              </Link>
               <Link className="button-secondary" to="/admin/blogs">
                 Manage blogs
               </Link>

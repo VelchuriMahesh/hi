@@ -1,6 +1,16 @@
 import { DEFAULT_BLOG_SETTINGS, normalizeBlogSettings } from '../utils/blog';
 
-const API_BASE = import.meta.env.VITE_API_URL;
+function getApiBase() {
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return '/api';
+    }
+  }
+  return import.meta.env.VITE_API_URL || '/api';
+}
+
+const API_BASE = getApiBase();
 const BLOG_SETTINGS_CACHE_KEY = 'shrusara-blog-settings';
 
 function getCachedBlogSettings() {
@@ -365,5 +375,83 @@ export const deleteBangaloreLocation = (token, id) =>
   request(`/landing-pages/locations/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` }
+  });
+
+// MASTER TEMPLATES (CMS V2)
+export const fetchMasterTemplates = async () => {
+  try {
+    return await request('/landing-pages/master-templates');
+  } catch (error) {
+    if (error.status === 404 || String(error.message || '').includes('Cannot connect')) {
+      const items = [];
+      if (typeof window !== 'undefined' && window.localStorage) {
+        for (let i = 0; i < window.localStorage.length; i++) {
+          const key = window.localStorage.key(i);
+          if (key && key.startsWith('shrusara_master_tpl_')) {
+            try {
+              const val = JSON.parse(window.localStorage.getItem(key));
+              if (val) items.push(val);
+            } catch {
+              // ignore
+            }
+          }
+        }
+      }
+      return { items, count: items.length };
+    }
+    throw error;
+  }
+};
+
+export const fetchMasterTemplateById = async (id) => {
+  try {
+    return await request(`/landing-pages/master-templates/${encodeURIComponent(id)}`);
+  } catch (error) {
+    if (error.status === 404 && typeof window !== 'undefined' && window.localStorage) {
+      const cached = window.localStorage.getItem(`shrusara_master_tpl_${id}`);
+      if (cached) {
+        return { item: JSON.parse(cached) };
+      }
+    }
+    throw error;
+  }
+};
+
+export const saveMasterTemplate = async (token, id, data) => {
+  try {
+    const res = await request(`/landing-pages/master-templates/${encodeURIComponent(id)}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data)
+    });
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem(`shrusara_master_tpl_${id}`, JSON.stringify(data));
+    }
+    return res;
+  } catch (error) {
+    if (error.status === 404 && typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem(`shrusara_master_tpl_${id}`, JSON.stringify(data));
+      return {
+        success: true,
+        item: data,
+        message: 'Master template saved locally in browser cache. (Deploy latest backend code to cloud to persist in remote database).'
+      };
+    }
+    throw error;
+  }
+};
+
+export const generateLandingPageFromMaster = (token, data) =>
+  request('/landing-pages/master-templates/generate', {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: JSON.stringify(data)
+  });
+
+export const batchGenerateLandingPages = (token, data) =>
+  request('/landing-pages/master-templates/batch-generate', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data)
   });
 

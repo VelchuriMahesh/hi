@@ -35,6 +35,7 @@ const BangaloreLandingPage    = lazy(() => import('./pages/BangaloreLandingPage'
 const LandingPageManager      = lazy(() => import('./admin/LandingPageManager'));
 const LandingPageEditor       = lazy(() => import('./admin/LandingPageEditor'));
 const LocationManager         = lazy(() => import('./admin/LocationManager'));
+const MasterTemplateManager   = lazy(() => import('./admin/MasterTemplateManager'));
 
 const HASH_SCROLL_RETRY_MS = 2500;
 const HASH_SCROLL_RETRY_INTERVAL_MS = 100;
@@ -300,6 +301,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <LocationManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/master-templates"
+          element={
+            <ProtectedRoute>
+              <MasterTemplateManager />
             </ProtectedRoute>
           }
         />

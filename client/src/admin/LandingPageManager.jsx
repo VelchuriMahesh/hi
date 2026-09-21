@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import PageMeta from '../components/PageMeta';
 import { getAdminToken } from '../components/ProtectedRoute';
 import {
+  batchGenerateLandingPages,
   deleteLandingPage,
   duplicateLandingPage,
   fetchAdminLandingPages,
@@ -23,6 +24,56 @@ export default function LandingPageManager() {
   const [selectedService, setSelectedService] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
+
+  // Batch Generation State
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
+  const [batchService, setBatchService] = useState(SERVICE_CATEGORIES[0]);
+  const [batchLocations, setBatchLocations] = useState([]);
+  const [batchStatus, setBatchStatus] = useState('draft');
+  const [batchGenerating, setBatchGenerating] = useState(false);
+  const [batchResult, setBatchResult] = useState(null);
+
+  function toggleBatchLocation(name) {
+    setBatchLocations((prev) =>
+      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
+    );
+  }
+
+  function handleSelectAllLocations() {
+    setBatchLocations(locations.map((l) => l.name));
+  }
+
+  function handleDeselectAllLocations() {
+    setBatchLocations([]);
+  }
+
+  async function handleRunBatch() {
+    const token = getAdminToken();
+    if (!token) return;
+
+    if (batchLocations.length === 0) {
+      alert('Please select at least one Bangalore location.');
+      return;
+    }
+
+    setBatchGenerating(true);
+    setBatchResult(null);
+    try {
+      const payload = {
+        serviceCategory: batchService,
+        locations: batchLocations,
+        status: batchStatus
+      };
+      const res = await batchGenerateLandingPages(token, payload);
+      setBatchResult(res);
+      setMessage(res.message || 'Batch generation completed.');
+      await loadData();
+    } catch (err) {
+      alert(err.message || 'Batch generation failed.');
+    } finally {
+      setBatchGenerating(false);
+    }
+  }
 
   useEffect(() => {
     const token = getAdminToken();
@@ -162,7 +213,21 @@ export default function LandingPageManager() {
                 Create and manage high-converting localized SEO pages across Bangalore with auto-schemas and canonical tags.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setBatchLocations(locations.map((l) => l.name));
+                  setIsBatchModalOpen(true);
+                  setBatchResult(null);
+                }}
+                className="rounded-xl bg-amber-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-amber-700 transition"
+              >
+                ⚡ Batch Generate Pages
+              </button>
+              <Link to="/admin/master-templates" className="button-secondary text-sm">
+                ✨ Master Templates
+              </Link>
               <Link to="/admin/landing-pages/new" className="button-primary text-sm font-semibold">
                 + New Landing Page
               </Link>
@@ -369,6 +434,146 @@ export default function LandingPageManager() {
           </div>
         </div>
       </div>
+
+      {/* Batch Generation Modal */}
+      {isBatchModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl text-ink">
+            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
+                  ⚡ CMS V2 Batch Engine
+                </p>
+                <h2 className="font-heading text-2xl text-ink">Batch Generate Landing Pages</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsBatchModalOpen(false)}
+                className="rounded-full bg-linen p-2 text-stone-600 hover:text-ink"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-4">
+              <p className="text-xs text-stone-600">
+                Generate high-converting SEO landing pages across multiple Bangalore areas in seconds.
+                The system copies the <strong>Master Template</strong> for the chosen service and automatically personalizes all 10 sections, metadata, travel times, landmarks, and alt tags for each location.
+              </p>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                  Select Service Category (Master Template)
+                </label>
+                <select
+                  value={batchService}
+                  onChange={(e) => setBatchService(e.target.value)}
+                  className="mt-1 w-full rounded-xl border border-ink/15 bg-linen px-3 py-2 text-sm font-medium text-ink outline-none focus:border-cocoa"
+                >
+                  {SERVICE_CATEGORIES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Publish Status
+                  </label>
+                  <select
+                    value={batchStatus}
+                    onChange={(e) => setBatchStatus(e.target.value)}
+                    className="mt-1 w-full rounded-xl border border-ink/15 bg-linen px-3 py-2 text-sm font-medium text-ink outline-none focus:border-cocoa"
+                  >
+                    <option value="draft">Draft (Review before publishing)</option>
+                    <option value="published">Published (Immediately live)</option>
+                  </select>
+                </div>
+                <div className="flex items-end gap-2 pb-1">
+                  <button
+                    type="button"
+                    onClick={handleSelectAllLocations}
+                    className="text-xs font-semibold text-cocoa hover:underline"
+                  >
+                    Select All ({locations.length})
+                  </button>
+                  <span className="text-stone-300">|</span>
+                  <button
+                    type="button"
+                    onClick={handleDeselectAllLocations}
+                    className="text-xs font-semibold text-stone-500 hover:underline"
+                  >
+                    Deselect All
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1">
+                  Target Bangalore Locations ({batchLocations.length} selected)
+                </label>
+                <div className="max-h-60 overflow-y-auto rounded-2xl border border-ink/10 bg-sand/30 p-3">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {locations.map((loc) => {
+                      const isChecked = batchLocations.includes(loc.name);
+                      return (
+                        <label
+                          key={loc.id || loc.name}
+                          className={`flex items-center gap-2 rounded-xl p-2 text-xs transition cursor-pointer ${
+                            isChecked ? 'bg-cocoa/10 font-semibold text-cocoa' : 'hover:bg-linen text-stone-700'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => toggleBatchLocation(loc.name)}
+                            className="rounded accent-cocoa"
+                          />
+                          <span className="truncate">{loc.name}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {batchResult && (
+                <div className="rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-xs text-emerald-900">
+                  <p className="font-bold text-sm">🎉 {batchResult.message}</p>
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    <div>Total Processed: <strong>{batchResult.total}</strong></div>
+                    <div>Newly Created: <strong>{batchResult.created}</strong></div>
+                    <div>Updated: <strong>{batchResult.updated}</strong></div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6 flex items-center justify-end gap-3 border-t border-ink/10 pt-4">
+              <button
+                type="button"
+                onClick={() => setIsBatchModalOpen(false)}
+                className="button-secondary py-2 text-xs font-semibold"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                disabled={batchGenerating || batchLocations.length === 0}
+                onClick={handleRunBatch}
+                className="button-primary py-2 px-5 text-xs font-semibold shadow-md"
+              >
+                {batchGenerating
+                  ? 'Generating Pages...'
+                  : `⚡ Generate ${batchLocations.length} Pages Now`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import PageMeta from '../components/PageMeta';
 import { getAdminToken } from '../components/ProtectedRoute';
 import {
@@ -7,6 +7,7 @@ import {
   fetchAdminLandingPages,
   fetchBangaloreLocations,
   fetchLandingPageById,
+  generateLandingPageFromMaster,
   updateLandingPage
 } from '../services/api';
 import { uploadImageToImgbb } from '../services/uploaders';
@@ -37,6 +38,10 @@ const TABS = [
 
 export default function LandingPageEditor() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const queryService = searchParams.get('service');
+  const queryLocation = searchParams.get('location');
+
   const isEditing = Boolean(id);
   const navigate = useNavigate();
 
@@ -47,12 +52,68 @@ export default function LandingPageEditor() {
   const [message, setMessage] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  // Preset Selector States
-  const [presetService, setPresetService] = useState('Ready-to-Wear Saree Customization');
-  const [presetLocation, setPresetLocation] = useState('Rajajinagar');
+  // Master Template Loading State
+  const initialService = queryService ? normalizeServiceCategory(queryService) : 'Ready-to-Wear Saree Customization';
+  const initialLocation = queryLocation || 'Malleshwaram';
+  const [isApplyingMaster, setIsApplyingMaster] = useState(false);
 
   // Main Form State
-  const [page, setPage] = useState(() => generatePresetContent('Ready-to-Wear Saree Customization', 'Rajajinagar', 'Bangalore West'));
+  const [page, setPage] = useState(() => {
+    const locObj = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === initialLocation.toLowerCase());
+    return buildLandingPageFromMaster(initialService, initialLocation, { locationObj: locObj });
+  });
+
+  // Core helper: fetch from backend or fallback to local master template and update page state
+  async function applyMasterTemplate(targetService, targetLocation, currentOverrides = {}) {
+    const srv = normalizeServiceCategory(targetService || page.serviceCategory || initialService);
+    const loc = targetLocation || page.locationName || initialLocation;
+    const token = getAdminToken();
+
+    setIsApplyingMaster(true);
+    try {
+      try {
+        const res = await generateLandingPageFromMaster(token, {
+          serviceCategory: srv,
+          locationName: loc
+        });
+        if (res?.item) {
+          setPage((prev) => ({
+            ...res.item,
+            ...currentOverrides,
+            id: prev.id,
+            status: prev.status || 'draft',
+            serviceCategory: srv,
+            locationName: loc
+          }));
+          setMessage(`✨ Loaded Master Template for "${srv}" in "${loc}". All 10 sections populated!`);
+          return;
+        }
+      } catch (err) {
+        console.warn('Backend master template fetch failed, falling back to local master template:', err);
+      }
+
+      const locObj = (locations?.length ? locations : BANGALORE_LOCATIONS_PRESET).find(
+        (l) => l.name.toLowerCase() === loc.toLowerCase()
+      ) || { name: loc, areaGroup: 'Bangalore West' };
+
+      const generated = buildLandingPageFromMaster(srv, loc, {
+        ...currentOverrides,
+        locationObj: locObj
+      });
+
+      setPage((prev) => ({
+        ...generated,
+        ...currentOverrides,
+        id: prev.id,
+        status: prev.status || 'draft',
+        serviceCategory: srv,
+        locationName: loc
+      }));
+      setMessage(`✨ Loaded Master Template for "${srv}" in "${loc}". All 10 sections populated!`);
+    } finally {
+      setIsApplyingMaster(false);
+    }
+  }
 
   useEffect(() => {
     const token = getAdminToken();
@@ -71,16 +132,17 @@ export default function LandingPageEditor() {
           const res = await fetchLandingPageById(id);
           if (res?.item) {
             const normalized = buildLandingPageFromMaster(
-              res.item.serviceCategory || 'Ready-to-Wear Saree Customization',
-              res.item.locationName || 'Rajajinagar',
+              res.item.serviceCategory || initialService,
+              res.item.locationName || initialLocation,
               res.item
             );
             setPage({ ...res.item, ...normalized });
-            setPresetService(normalizeServiceCategory(res.item.serviceCategory || 'Ready-to-Wear Saree Customization'));
-            setPresetLocation(res.item.locationName || 'Rajajinagar');
           } else {
             setMessage('Landing page not found.');
           }
+        } else {
+          // Creating a new page: automatically populate from Master Template
+          await applyMasterTemplate(initialService, initialLocation);
         }
       } catch (err) {
         setMessage(err.message || 'Error loading page');
@@ -94,93 +156,37 @@ export default function LandingPageEditor() {
 
   const [isCustomLocationInput, setIsCustomLocationInput] = useState(false);
 
-  function handleApplyPreset() {
-    const selectedLocObj = locations.find((l) => l.name.toLowerCase() === presetLocation.toLowerCase()) || {
-      name: presetLocation,
-      areaGroup: 'Bangalore West'
-    };
-
-    if (
-      window.confirm(
-        `Auto-generate preset content for "${presetService}" in "${presetLocation}"? This will populate all 10 sections.`
-      )
-    ) {
-      const generated = buildLandingPageFromMaster(
-        presetService,
-        presetLocation,
-        { locationObj: selectedLocObj }
-      );
-      setPage((prev) => ({
-        ...prev,
-        ...generated,
-        status: prev.status || 'draft'
-      }));
-      setMessage(`Generated customized template for ${presetService} in ${presetLocation}.`);
-    }
+  // When user changes Service in header or Tab 1
+  function handleServiceChange(newService) {
+    const normalized = normalizeServiceCategory(newService);
+    applyMasterTemplate(normalized, page.locationName || initialLocation);
   }
 
-  function handleTargetLocationChange(e) {
-    const val = e.target.value;
-    if (val === '_custom') {
+  // When user changes Location in header or Tab 1
+  function handleLocationChange(newLocation) {
+    if (newLocation === '_custom') {
       setIsCustomLocationInput(true);
       return;
     }
     setIsCustomLocationInput(false);
-    const locObj = locations.find((l) => l.name.toLowerCase() === val.toLowerCase());
-    applySelectedLocation(val, locObj);
+    applyMasterTemplate(page.serviceCategory || initialService, newLocation);
   }
 
   function handleCustomLocationNameChange(val) {
-    applySelectedLocation(val, { name: val, areaGroup: page.areaGroup || 'Bangalore West' });
-  }
-
-  function applySelectedLocation(locationName, locObj) {
-    const fallbackObj = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === String(locationName || '').toLowerCase()) || {
-      name: locationName,
-      areaGroup: 'Bangalore West'
-    };
-    const targetObj = locObj || fallbackObj;
-
-    setPage((prev) => {
-      const updatedSlug = slugifyBangalorePage(prev.serviceCategory, locationName);
-      return {
-        ...prev,
-        locationName,
-        areaGroup: targetObj.areaGroup || prev.areaGroup || 'Bangalore West',
-        slug: prev.slug === slugifyBangalorePage(prev.serviceCategory, prev.locationName) ? updatedSlug : prev.slug,
-        proximity: {
-          ...prev.proximity,
-          locationName,
-          areaGroup: targetObj.areaGroup || prev.areaGroup || 'Bangalore West',
-          landmark: targetObj.landmark || prev.proximity?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
-          travelTime: targetObj.travelTime || prev.proximity?.travelTime || '10-15 mins',
-          distanceNote: targetObj.distanceNote || prev.proximity?.distanceNote || `Easily accessible from ${locationName}. Doorstep Porter & express courier delivery available across Bangalore.`,
-          nearbyAreas: (targetObj.nearbyAreas?.length ? targetObj.nearbyAreas : null) || prev.proximity?.nearbyAreas || []
-        }
-      };
-    });
-    setPresetLocation(locationName);
-  }
-
-  function handleSyncLocationToContent() {
-    if (
-      !window.confirm(
-        `Re-apply master template for "${page.serviceCategory}" in "${page.locationName}"? This will refresh location mentions across Headings, FAQs, Proximity, and SEO metadata while preserving current status.`
-      )
-    ) {
-      return;
-    }
-    const locObj = locations.find((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase());
-    const refreshed = buildLandingPageFromMaster(page.serviceCategory, page.locationName, {
-      ...page,
-      locationObj: locObj
-    });
     setPage((prev) => ({
       ...prev,
-      ...refreshed,
-      status: prev.status || 'draft'
+      locationName: val,
+      slug: slugifyBangalorePage(prev.serviceCategory, val),
+      proximity: {
+        ...prev.proximity,
+        locationName: val,
+        distanceNote: `Easily accessible from ${val}. Doorstep Porter & express courier delivery available across Bangalore.`
+      }
     }));
-    setMessage(`Successfully synchronized template content for "${page.serviceCategory}" in "${page.locationName}".`);
+  }
+
+  async function handleReloadMasterTemplate() {
+    await applyMasterTemplate(page.serviceCategory, page.locationName);
   }
 
   async function handleImageUpload(e, target = 'featuredImage') {
@@ -334,50 +340,103 @@ export default function LandingPageEditor() {
             </div>
           ) : null}
 
-          {/* 1-Click Smart Preset Generator Toolbar */}
-          <div className="mt-6 rounded-2xl border border-cocoa/30 bg-gradient-to-r from-cocoa/10 via-linen to-cocoa/5 p-4 shadow-sm">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-cocoa">
-                  ⚡ 1-Click Smart Content Generator
-                </p>
-                <p className="text-xs text-stone-600">
-                  Select Service & Bangalore Location to instantly generate SEO-optimized content across all 10 sections.
+          {/* Master Template Control Card */}
+          <div className="mt-6 rounded-2xl border-2 border-cocoa/30 bg-gradient-to-r from-cocoa/10 via-linen to-white p-5 shadow-sm">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 border border-emerald-300">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Master Template Active
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-cocoa">
+                    SHRUSARA CMS V2
+                  </span>
+                </div>
+                <h3 className="font-heading text-lg text-ink font-semibold">
+                  {page.serviceCategory} — {page.locationName}
+                </h3>
+                <p className="text-xs text-stone-600 max-w-xl">
+                  Selecting a Service & Location automatically populates and formats all 10 sections (Headings, SEO, FAQs, Alt tags, Travel time, CTA, and Schema) from the service&apos;s master template.
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <select
-                  value={presetService}
-                  onChange={(e) => setPresetService(e.target.value)}
-                  className="rounded-xl border border-ink/15 bg-white px-3 py-1.5 text-xs font-medium text-ink outline-none"
-                >
-                  {SERVICE_CATEGORIES.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                    1. Service Category
+                  </span>
+                  <select
+                    value={page.serviceCategory}
+                    disabled={isApplyingMaster}
+                    onChange={(e) => handleServiceChange(e.target.value)}
+                    className="rounded-xl border border-ink/20 bg-white px-3 py-2 text-xs font-semibold text-ink shadow-sm outline-none focus:border-cocoa"
+                  >
+                    {SERVICE_CATEGORIES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                <select
-                  value={presetLocation}
-                  onChange={(e) => setPresetLocation(e.target.value)}
-                  className="rounded-xl border border-ink/15 bg-white px-3 py-1.5 text-xs font-medium text-ink outline-none"
-                >
-                  {locations.map((loc) => (
-                    <option key={loc.id || loc.name} value={loc.name}>
-                      {loc.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                    2. Bangalore Location
+                  </span>
+                  <select
+                    value={locations.some((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase()) && !isCustomLocationInput ? page.locationName : '_custom'}
+                    disabled={isApplyingMaster}
+                    onChange={(e) => handleLocationChange(e.target.value)}
+                    className="rounded-xl border border-ink/20 bg-white px-3 py-2 text-xs font-semibold text-ink shadow-sm outline-none focus:border-cocoa"
+                  >
+                    <option value="" disabled>-- Select Locality --</option>
+                    {Object.entries(
+                      locations.reduce((acc, loc) => {
+                        const grp = loc.areaGroup || 'Bangalore West';
+                        if (!acc[grp]) acc[grp] = [];
+                        acc[grp].push(loc);
+                        return acc;
+                      }, {})
+                    ).map(([group, locs]) => (
+                      <optgroup key={group} label={group}>
+                        {locs.map((loc) => (
+                          <option key={loc.id || loc.name} value={loc.name}>
+                            {loc.name} {loc.isMainBoutique ? '★ (Boutique Hub)' : ''}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                    <option value="_custom">✏ Custom / Other Location...</option>
+                  </select>
+                </div>
 
-                <button
-                  type="button"
-                  onClick={handleApplyPreset}
-                  className="rounded-xl bg-cocoa px-4 py-1.5 text-xs font-semibold text-white shadow hover:bg-cocoa/90 transition"
-                >
-                  Auto-Generate All 10 Sections
-                </button>
+                <div className="flex flex-col justify-end">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-transparent mb-1 select-none">
+                    Actions
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={isApplyingMaster}
+                      onClick={handleReloadMasterTemplate}
+                      title="Re-populate all 10 sections from master template"
+                      className="rounded-xl bg-cocoa px-3.5 py-2 text-xs font-semibold text-white shadow hover:bg-cocoa/90 transition disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      {isApplyingMaster ? 'Syncing...' : '🔄 Reload Template'}
+                    </button>
+
+                    <Link
+                      to={`/admin/master-templates?service=${encodeURIComponent(page.serviceCategory)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-xl border border-ink/20 bg-white px-3 py-2 text-xs font-semibold text-stone-700 shadow-sm hover:bg-linen transition flex items-center gap-1"
+                      title="Edit master template for this service"
+                    >
+                      ⚙️ Edit Master ↗
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -407,7 +466,22 @@ export default function LandingPageEditor() {
             {/* TAB 1: SEO & URL SETTINGS */}
             {activeTab === 'seo' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">1. Technical SEO & Canonical URL Settings</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-ink/10 pb-4">
+                  <div>
+                    <h2 className="font-heading text-xl text-ink">1. Technical SEO & Canonical URL Settings</h2>
+                    <p className="text-xs text-stone-500 mt-0.5">
+                      Changing Service or Location instantly synchronizes all 10 sections from the Master Template.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={isApplyingMaster}
+                    onClick={handleReloadMasterTemplate}
+                    className="text-xs font-semibold text-cocoa bg-cocoa/10 hover:bg-cocoa/20 px-3 py-1.5 rounded-xl transition flex items-center gap-1 self-start"
+                  >
+                    ⚡ Sync All Sections from Master
+                  </button>
+                </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
@@ -416,8 +490,9 @@ export default function LandingPageEditor() {
                     </label>
                     <select
                       value={page.serviceCategory}
-                      onChange={(e) => setPage({ ...page, serviceCategory: e.target.value })}
-                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                      disabled={isApplyingMaster}
+                      onChange={(e) => handleServiceChange(e.target.value)}
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
                     >
                       {SERVICE_CATEGORIES.map((cat) => (
                         <option key={cat} value={cat}>
@@ -442,7 +517,8 @@ export default function LandingPageEditor() {
                     </div>
                     <select
                       value={locations.some((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase()) && !isCustomLocationInput ? page.locationName : '_custom'}
-                      onChange={handleTargetLocationChange}
+                      disabled={isApplyingMaster}
+                      onChange={(e) => handleLocationChange(e.target.value)}
                       className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
                     >
                       <option value="" disabled>-- Select a Bangalore Locality --</option>
@@ -477,17 +553,6 @@ export default function LandingPageEditor() {
                         />
                       </div>
                     )}
-
-                    <div className="mt-2 flex flex-wrap items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={handleSyncLocationToContent}
-                        className="text-xs font-semibold text-cocoa bg-cocoa/10 hover:bg-cocoa/20 px-3 py-1 rounded-lg transition"
-                        title="Re-run template placeholders to update Titles, FAQs, Alt tags, and Proximity for this location"
-                      >
-                        ⚡ Re-apply Template for &quot;{page.locationName || 'Location'}&quot;
-                      </button>
-                    </div>
                   </div>
                 </div>
 
@@ -540,18 +605,9 @@ export default function LandingPageEditor() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                      Meta Title (Recommended: 50-60 chars)
-                    </label>
-                    <span
-                      className={`text-xs font-mono ${
-                        (page.metaTitle?.length || 0) > 60 ? 'text-amber-600' : 'text-emerald-700'
-                      }`}
-                    >
-                      {page.metaTitle?.length || 0}/60 chars
-                    </span>
-                  </div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Meta Title
+                  </label>
                   <input
                     type="text"
                     value={page.metaTitle}
@@ -561,18 +617,9 @@ export default function LandingPageEditor() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                      Meta Description (Recommended: 140-160 chars)
-                    </label>
-                    <span
-                      className={`text-xs font-mono ${
-                        (page.metaDescription?.length || 0) > 160 ? 'text-amber-600' : 'text-emerald-700'
-                      }`}
-                    >
-                      {page.metaDescription?.length || 0}/160 chars
-                    </span>
-                  </div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Meta Description
+                  </label>
                   <textarea
                     rows={3}
                     value={page.metaDescription}
