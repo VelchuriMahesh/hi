@@ -8,6 +8,8 @@ import {
   fetchBangaloreLocations,
   fetchLandingPageById,
   generateLandingPageFromMaster,
+  saveMasterTemplate,
+  syncLandingPageFromMaster,
   updateLandingPage
 } from '../services/api';
 import { uploadImageToImgbb } from '../services/uploaders';
@@ -17,10 +19,12 @@ import {
   DEFAULT_SITE_URL,
   SERVICE_CATEGORIES,
   buildLandingPageFromMaster,
+  extractMasterTemplateFromPage,
   generateLandingPageSchemas,
   generatePresetContent,
   normalizeServiceCategory,
-  slugifyBangalorePage
+  slugifyBangalorePage,
+  slugifyService
 } from '../utils/bangaloreLandingPage';
 
 const TABS = [
@@ -51,6 +55,7 @@ export default function LandingPageEditor() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [autoSyncMaster, setAutoSyncMaster] = useState(true);
 
   // Master Template Loading State
   const initialService = queryService ? normalizeServiceCategory(queryService) : 'Ready-to-Wear Saree Customization';
@@ -238,7 +243,26 @@ export default function LandingPageEditor() {
     ) {
       return;
     }
-    await applyMasterTemplate(page.serviceCategory, page.locationName);
+
+    setIsApplyingMaster(true);
+    setMessage('');
+    try {
+      if (isEditing && id) {
+        const token = getAdminToken();
+        const syncRes = await syncLandingPageFromMaster(token, id);
+        if (syncRes?.item) {
+          setPage(syncRes.item);
+          setMessage(`✅ Successfully synced and updated with the latest "${page.serviceCategory}" Master Template! Changes are live.`);
+          return;
+        }
+      }
+      await applyMasterTemplate(page.serviceCategory, page.locationName);
+    } catch (err) {
+      console.warn('Server sync failed, applying master in local editor state:', err);
+      await applyMasterTemplate(page.serviceCategory, page.locationName);
+    } finally {
+      setIsApplyingMaster(false);
+    }
   }
 
   async function handleImageUpload(e, target = 'featuredImage') {
@@ -280,6 +304,30 @@ export default function LandingPageEditor() {
     }
   }
 
+  async function handlePushToMasterTemplate() {
+    const token = getAdminToken();
+    if (!token) return;
+
+    setSaving(true);
+    setMessage('');
+    try {
+      const srv = page.serviceCategory;
+      const sId = slugifyService(srv);
+      const masterPayload = extractMasterTemplateFromPage(page);
+
+      await saveMasterTemplate(token, sId, masterPayload);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`shrusara_master_tpl_${sId}`, JSON.stringify(masterPayload));
+        window.localStorage.setItem(`shrusara_master_tpl_${srv}`, JSON.stringify(masterPayload));
+      }
+      setMessage(`🌟 Master Template for "${srv}" successfully updated from this page! New pages created for "${srv}" will automatically inherit these headings, copy, and settings.`);
+    } catch (err) {
+      setMessage(`⚠️ Failed to update Master Template: ${err.message || 'Unknown error'}`);
+    } finally {
+      setSaving(false);
+    }
+  }
+
   async function handleSave(newStatus) {
     const token = getAdminToken();
     if (!token) return;
@@ -303,13 +351,31 @@ export default function LandingPageEditor() {
     try {
       if (isEditing) {
         await updateLandingPage(token, id, payload);
-        setMessage('Landing page updated successfully!');
       } else {
         const res = await createLandingPage(token, payload);
-        setMessage('Landing page created successfully!');
         if (res?.item?.id) {
           navigate(`/admin/landing-pages/edit/${res.item.id}`, { replace: true });
         }
+      }
+
+      // Auto-sync edits into the Service Master Template so new pages inherit these changes!
+      if (autoSyncMaster) {
+        const srv = payload.serviceCategory;
+        const sId = slugifyService(srv);
+        const masterPayload = extractMasterTemplateFromPage(payload);
+        try {
+          await saveMasterTemplate(token, sId, masterPayload);
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.setItem(`shrusara_master_tpl_${sId}`, JSON.stringify(masterPayload));
+            window.localStorage.setItem(`shrusara_master_tpl_${srv}`, JSON.stringify(masterPayload));
+          }
+          setMessage(`✅ Landing page saved & Master Template for "${srv}" updated! (New "${srv}" pages will automatically inherit these edits)`);
+        } catch (masterErr) {
+          console.warn('Master template auto-sync warning:', masterErr);
+          setMessage('Landing page saved successfully!');
+        }
+      } else {
+        setMessage('Landing page saved successfully!');
       }
     } catch (err) {
       setMessage(err.message || 'Failed to save landing page.');
@@ -360,35 +426,57 @@ export default function LandingPageEditor() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2.5">
-              {page.slug ? (
-                <a
-                  href={`/bangalore/${page.slug}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="button-secondary py-2 text-xs font-semibold"
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <label className="flex items-center gap-1.5 text-xs font-semibold text-cocoa cursor-pointer select-none bg-cocoa/5 px-3 py-2 rounded-xl border border-cocoa/20">
+                <input
+                  type="checkbox"
+                  checked={autoSyncMaster}
+                  onChange={(e) => setAutoSyncMaster(e.target.checked)}
+                  className="rounded border-ink/20 text-cocoa focus:ring-cocoa"
+                />
+                <span>Auto-sync changes to <strong>{page.serviceCategory}</strong> Master Template</span>
+              </label>
+
+              <div className="flex flex-wrap items-center gap-2">
+                {page.slug ? (
+                  <a
+                    href={`/bangalore/${page.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button-secondary py-2 text-xs font-semibold"
+                  >
+                    Preview Live ↗
+                  </a>
+                ) : null}
+
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => handleSave('draft')}
+                  className="rounded-xl border border-ink/20 bg-white px-4 py-2 text-xs font-semibold text-stone-700 shadow-sm hover:bg-linen transition disabled:opacity-50"
                 >
-                  Preview Live ↗
-                </a>
-              ) : null}
+                  {saving && page.status === 'draft' ? 'Saving...' : 'Save Draft'}
+                </button>
 
-              <button
-                type="button"
-                disabled={saving}
-                onClick={() => handleSave('draft')}
-                className="rounded-xl border border-ink/20 bg-white px-4 py-2 text-xs font-semibold text-stone-700 shadow-sm hover:bg-linen"
-              >
-                {saving && page.status === 'draft' ? 'Saving...' : 'Save Draft'}
-              </button>
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => handleSave('published')}
+                  className="button-primary py-2 text-xs font-semibold shadow-md transition disabled:opacity-50"
+                >
+                  {saving && page.status === 'published' ? 'Publishing...' : '🚀 Publish Page'}
+                </button>
 
-              <button
-                type="button"
-                disabled={saving}
-                onClick={() => handleSave('published')}
-                className="button-primary py-2 text-xs font-semibold shadow-md"
-              >
-                {saving && page.status === 'published' ? 'Publishing...' : '🚀 Publish Page'}
-              </button>
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={handlePushToMasterTemplate}
+                  title="Save current page content directly into the Master Template for this service"
+                  className="rounded-xl border border-cocoa/30 bg-linen px-3.5 py-2 text-xs font-semibold text-cocoa shadow-sm hover:bg-cocoa/10 transition disabled:opacity-50 flex items-center gap-1"
+                >
+                  🌟 Push to Master
+                </button>
+              </div>
             </div>
           </div>
 
@@ -487,9 +575,19 @@ export default function LandingPageEditor() {
                       disabled={isApplyingMaster}
                       onClick={handleReloadMasterTemplate}
                       title="Re-populate all 10 sections from master template"
+                      className="rounded-xl bg-stone-100 border border-ink/20 px-3 py-2 text-xs font-semibold text-stone-800 shadow-sm hover:bg-stone-200 transition disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      {isApplyingMaster ? 'Syncing...' : '🔄 Pull from Master'}
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={saving}
+                      onClick={handlePushToMasterTemplate}
+                      title="Update the Master Template for this service using the current edits"
                       className="rounded-xl bg-cocoa px-3.5 py-2 text-xs font-semibold text-white shadow hover:bg-cocoa/90 transition disabled:opacity-50 flex items-center gap-1.5"
                     >
-                      {isApplyingMaster ? 'Syncing...' : '🔄 Sync from Master'}
+                      🌟 Push to Master
                     </button>
 
                     <Link

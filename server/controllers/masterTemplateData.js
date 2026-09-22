@@ -226,27 +226,40 @@ export const DEFAULT_MASTER_TEMPLATES = [
     categoryOrder: 2,
     featuredImage: {
       url: '/bridal/bridalblow/hero-bridal.webp',
-      alt: 'Bridal Blouse in {Location}, Bangalore – Shrusara Fashion Boutique',
+      alt: 'Customized Bridal Blouse in {Location}, Bangalore – Shrusara Fashion Boutique',
       title: 'Customized Bridal Blouse in {Location}',
-      caption: 'Bespoke bridal blouse tailored to individual posture with flawless neckline and armhole contour.'
+      caption: '100% Customized Bridal Blouse tailored by Shrusara Fashion Boutique in Bangalore.'
     },
     seo: {
       titleTemplate: 'Customized Bridal Blouse in {Location}, Bangalore | Shrusara',
       metaTitleTemplate: 'Customized Bridal Blouse in {Location}, Bangalore | Shrusara Fashion Boutique',
-      metaDescriptionTemplate: 'Customized bridal blouses in {Location}, Bangalore with perfect fit, handcrafted detailing & 1-on-1 consultation with Chief Designer Shruthi Ajith.',
-      metaKeywordsTemplate: 'bridal blouse {Location}, customized bridal blouse {Location}, bridal blouse designer {Location}, bridal blouse stitching near {Location}, bridal blouse designer bangalore, customized bridal blouse bangalore, wedding blouse tailoring bangalore, shrusara fashion boutique'
+      metaDescriptionTemplate: 'Customized bridal blouse stitching in {Location}, Bangalore with perfect fit, personalized measurements, trial fitting and one-on-one consultation with Chief Designer Shruthi Ajith.',
+      metaKeywordsTemplate: 'bridal blouse {Location}, customized bridal blouse {Location}, bridal blouse designer {Location}, bridal blouse stitching near {Location}, bridal blouse designer bangalore, customized bridal blouse bangalore, wedding blouse tailoring bangalore, shrusara fashion boutique',
+      metaKeywords: [
+        'bridal blouse {location}',
+        'bridal blouse stitching {location}',
+        'customized bridal blouse {location}',
+        'bridal blouse boutique {location}',
+        'bridal blouse stitching Bangalore',
+        'customized bridal blouse Bangalore',
+        'wedding blouse stitching Bangalore',
+        'silk saree bridal blouse Bangalore',
+        'bridal boutique Bangalore',
+        'Shrusara Fashion Boutique Bangalore'
+      ],
+      canonicalUrlPattern: '/bangalore/bridal-blouse-stitching-{location-slug}'
     },
     hero: {
-      badgeTemplate: '100% Customized | {Location}, Bangalore',
+      badgeTemplate: '100% Customized Bridal Blouse in {Location}, Bangalore',
       headingTemplate: 'Customized Bridal Blouse in {Location}, Bangalore',
-      taglineTemplate: 'Customized bridal blouses tailored to your unique posture, silhouette, and wedding silk saree. Handcrafted embroidery, precision cups, and personalized consultation with Chief Designer Shruthi Ajith for brides in {Location}, Bangalore.',
+      taglineTemplate: 'Every bridal blouse at Shrusara Fashion Boutique is designed exclusively for you. From personalized measurements and neckline styling to trial fitting and handcrafted finishing, Chief Designer Shruthi Ajith helps create a bridal blouse that matches your wedding saree, body shape and personal style.',
       highlights: [
         '1-on-1 Consultation with Chief Designer Shruthi Ajith',
         'Personalized Measurements & Trial Fitting',
-        'Try Before You Customize (Boutique Exclusive)',
-        'Video Consultation Available Across Bangalore',
+        'Customized Bridal Blouse for Every Wedding Occasion',
+        'Video Consultation Available for the measurement guidance Across Bangalore',
         'Pickup & Courier Delivery Across Bangalore',
-        'Comfortable Customized Stitching'
+        'Comfortable Customized Stitching with Premium Finish'
       ],
       primaryCtaText: 'Chat on WhatsApp',
       primaryCtaMessageTemplate: "Hi Shrusara! I'd like to know more about Customized Bridal Blouses in {Location}.",
@@ -255,93 +268,95 @@ export const DEFAULT_MASTER_TEMPLATES = [
     },
     about: {
       headingTemplate: 'Bespoke Bridal Blouse Tailoring for Brides in {Location}',
-      descriptionTemplate: 'At Shrusara Fashion Boutique, we believe your bridal blouse is the focal point of your wedding ensemble. We specialize strictly in 100% customized bridal tailoring. Every blouse is individually patterned from scratch to eliminate shoulder drooping, neck gaping, and armhole tightness.\n\nFrom traditional South Indian muhurtham silk saree blouses to contemporary reception designs, our master artisans combine bespoke pattern drafting with generational embroidery techniques. Brides in {Location} and across Bangalore trust Shrusara for impeccable bridal fit, breathable cotton linings, and stress-free wedding timelines.',
+      introTemplate: 'Every bride has a different saree, body shape, and blouse design preference. At Shrusara Fashion Boutique, every bridal blouse is customized to suit your measurements, wedding saree, and personal style. We focus on perfect fitting, comfort, and beautiful finishing for your special day.',
+      descriptionTemplate: 'Shrusara Fashion Boutique specializes in customized bridal blouse stitching in Bangalore. Every bridal blouse is stitched according to your body measurements, saree design, neckline, sleeve style, and wedding occasion. Whether you are looking for a Muhurtham blouse, Reception blouse, Engagement blouse, Haldi blouse, Mehendi blouse, or Sangeet blouse, we design each blouse to match your complete bridal look.\n\nOur focus is on accurate measurements, comfortable fitting, neat finishing, and a bridal blouse that looks elegant throughout your wedding celebrations.',
       highlights: [
         {
           title: 'Custom Body-Pattern Drafting',
-          description: 'No standard sizing templates. We draft individual master patterns taking into account shoulder slope, bust shape, and back contour.'
+          description: 'Every bridal blouse is drafted from scratch using your individual body measurements for a flattering fit, balanced shoulders and comfortable arm movement.'
         },
         {
-          title: 'High-Grade Skin-Friendly Linings',
-          description: 'Pure breathable cotton and silk linings with cushioned piping ensuring hours of itch-free comfort during long wedding rituals.'
+          title: 'Premium Bridal Lining & Finishing',
+          description: 'We use soft cotton and silk linings with neat finishing, piping, and padding options for comfort, support, and a premium bridal look.'
         },
         {
-          title: 'Try Before You Customize',
-          description: 'Experience fit samples at our Mahalakshmipuram studio to finalize necklines, sleeve cuts, and cup shaping.'
+          title: 'Neckline, Sleeve & Cup Customization',
+          description: 'Choose from a wide range of neckline styles, sleeve designs, blouse cups, back patterns, tassels and bridal finishing details to match your saree.'
         },
         {
-          title: 'Dedicated Trial & Precision Fitting',
-          description: 'Intermediate trial fitting before final embroidery closure to guarantee zero gaping and complete arm movement ease.'
+          title: 'Bridal Blouses for Every Wedding Function',
+          description: 'We customize bridal blouses for Muhurtham, Reception, Engagement, Haldi, Mehendi, Sangeet, and Wedding ceremonies, with styling that matches each occasion.'
         },
         {
-          title: 'Video Consultation for Measurements',
-          description: 'Virtual styling consultation and measurement guidance for brides in {Location} and abroad.'
+          title: 'Comfortable All-Day Bridal Wear',
+          description: 'Every blouse is stitched for long hours of comfort, allowing easy movement while maintaining a structured and elegant bridal silhouette.'
         },
         {
-          title: 'Doorstep Courier Across Bangalore',
-          description: 'Porter fabric pickup and safe courier delivery right to your doorstep in {Location}.'
+          title: 'Handcrafted Bridal Blouse Stitching',
+          description: 'Every bridal blouse is carefully stitched by experienced artisans with attention to fitting, finishing, durability, and bridal detailing.'
         }
       ]
     },
     whyChooseUs: {
-      headingTemplate: 'Why Brides in {Location} Choose Shrusara Boutique',
+      headingTemplate: 'Why Brides in {Location} Choose Shrusara Fashion Boutique',
+      introTemplate: 'Choosing a bridal blouse is about more than stitching. At Shrusara Fashion Boutique, we guide every bride through personalized design consultation, accurate measurements, trial fitting, and careful finishing to create a bridal blouse that is comfortable, elegant, and made especially for her wedding day.',
       descriptionTemplate: 'Located in Mahalakshmipuram, Shrusara Fashion Boutique is easily accessible from {Location}. Here is why over a thousand Bangalore brides have chosen us:',
       cards: [
         {
-          title: 'Personalized Design Consultation',
-          description: 'One-on-one session with Chief Designer Shruthi Ajith to discuss neck cuts, sleeve styles, and saree pairing.'
+          title: '1-on-1 Bridal Design Consultation',
+          description: 'Meet Chief Designer Shruthi Ajith to discuss your bridal blouse design, neckline, sleeves, blouse pattern, and styling based on your wedding saree.'
         },
         {
-          title: 'Customized for Your Body Fit',
-          description: 'Custom anatomical measurements for flawless bust support, zero shoulder drop, and perfect back fit.'
+          title: 'Personalized Measurements for Every Bride',
+          description: 'Every bridal blouse is stitched using your individual body measurements for a comfortable fit, balanced silhouette, and confident bridal look.'
         },
         {
-          title: 'Try Before You Customize (Shrusara Exclusive)',
-          description: 'Test blouse armhole comfort and neckline depths before final crafting.'
+          title: 'Sample Blouse Preview Before Final Stitching',
+          description: 'Visit our boutique to check the blouse fitting, neckline, sleeves, and overall design before the final stitching and finishing are completed.'
         },
         {
           title: 'Trial Fitting Before Final Delivery',
-          description: 'Mandatory trial fitting session so any minute fitting preference is perfected before your big day.'
+          description: 'We do a trial fitting before final delivery to make sure your bridal blouse fits comfortably and is ready for your wedding day.'
         },
         {
-          title: 'Video Consultation Available',
-          description: 'Virtual design sessions for NRI brides and clients in {Location} with tight schedules.'
+          title: 'Video Consultation Available Across Bangalore',
+          description: 'If visiting the boutique is not convenient, we provide a video consultation to discuss your bridal blouse design and guide you with measurements before your boutique visit or stitching process.'
         },
         {
-          title: 'Pickup & Courier Across Bangalore',
-          description: 'Reliable doorstep collection of your saree fabrics and express delivery across {Location}.'
+          title: 'Porter Pickup & Courier Assistance Across Bangalore',
+          description: 'If you are unable to visit our Mahalakshmipuram boutique, we help coordinate Porter pickup and courier delivery across Bangalore. Our team will receive your fabric, complete the customization, carefully pack it, and hand it over for delivery.'
         }
       ]
     },
     processSteps: [
       {
         stepNumber: 1,
-        title: 'Consultation & Style Discussion',
-        description: 'Understand your wedding theme, saree colors, neckline preference, and personal comfort priorities.',
+        title: 'Design Consultation with Chief Designer',
+        description: 'Meet Chief Designer Shruthi Ajith for a one-on-one consultation. Discuss your wedding saree, blouse design, neckline, sleeve style, embroidery and fitting preferences.',
         duration: 'Day 1'
       },
       {
         stepNumber: 2,
-        title: 'Measurements & Pattern Drafting',
-        description: 'Take over 20 anatomical measurements and draft a customized blueprint pattern for your blouse.',
+        title: 'Measurements & Pattern Making',
+        description: 'We take detailed body measurements and create a custom blouse pattern based on your posture, bust shape, shoulder fit, armhole, sleeve length, and blouse length.',
         duration: 'Day 1-2'
       },
       {
         stepNumber: 3,
-        title: 'Artisan Crafting & Stitching',
-        description: 'Precision cutting, padding integration, and hand-tailoring executed by veteran bridal masters.',
+        title: 'Handcrafted Stitching & Embroidery',
+        description: 'Your bridal blouse is stitched with precision and finished with handcrafted embroidery or detailing based on your selected design, fabric, and wedding occasion.',
         duration: 'Day 3-10'
       },
       {
         stepNumber: 4,
-        title: 'Intermediate Trial & Fit Check',
-        description: 'Wear the blouse during a trial session to confirm neckline comfort, armhole ease, and silhouette.',
-        duration: 'Day 10-12'
+        title: 'Trial Fitting & Final Adjustments',
+        description: 'Visit our boutique for a trial fitting. We make final adjustments for neckline, sleeve fit, bust fitting, waist shape and overall comfort before delivery.',
+        duration: 'Day 10-15'
       },
       {
         stepNumber: 5,
-        title: 'Boutique Pickup / Bangalore Courier Delivery',
-        description: 'Final touches, steam pressing, and handover at our studio or doorstep delivery to {Location}.',
+        title: 'Final Delivery or Bangalore Courier',
+        description: "After quality checking and final finishing, collect your customized bridal blouse from our Mahalakshmipuram boutique. If you're unable to visit, our team can help coordinate Porter pickup or courier delivery within Bangalore.",
         duration: 'Final Delivery'
       }
     ],
@@ -365,6 +380,12 @@ export const DEFAULT_MASTER_TEMPLATES = [
         caption: 'Deep-back silhouette with comfortable padded support.'
       }
     ],
+    proximity: {
+      defaultDistanceNote: 'Shrusara Fashion Boutique is located in Mahalakshmipuram, just a short drive from {Location}, Bangalore. We welcome bridal clients from {Location} for one-on-one design consultations, measurements, trial fitting, and customized bridal blouse stitching.',
+      googleMapsUrl: 'https://goo.gl/maps/CaxMWN7JQXwCXAjE6',
+      boutiqueAddress: 'Shrusara Fashion Boutique 106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086',
+      workingHours: 'Monday – Saturday 10:00 AM – 7:30 PM'
+    },
     testimonials: [
       {
         name: 'Kavya Murali',
@@ -390,43 +411,47 @@ export const DEFAULT_MASTER_TEMPLATES = [
     ],
     faqs: [
       {
-        question: 'How far in advance should I book my bridal blouse consultation in {Location}?',
-        answer: 'We recommend booking your consultation 3 to 5 weeks before your wedding or muhurtham date. This provides ample time for detailed pattern drafting, hand crafting, and an intermediate trial fitting. Express slots are also available for urgent dates.'
+        question: 'How early should I book my bridal blouse consultation  ?',
+        answer: 'We recommend booking your bridal blouse consultation 3 to 5 weeks before your wedding or muhurtham date. This gives enough time for consultation, measurements, stitching, trial fitting, and final finishing. If your wedding is approaching soon, we also accept urgent orders based on availability.'
       },
       {
-        question: 'Do you customize blouses for South Indian weddings (Muhurtham, Reception, Sangeet)?',
-        answer: 'Yes! We customize blouses for every wedding ceremony including muhurtham Kanjeevaram blouses, reception party blouses with sheer backs, haldi boat necks, and sangeet corset blouses.'
+        question: 'Do you customize bridal blouses for South Indian weddings?',
+        answer: 'Yes. We customize bridal blouses for Muhurtham, Reception, Engagement, Haldi, Sangeet, and other wedding functions. Every blouse is designed based on your saree, occasion, and personal style.'
       },
       {
         question: 'Can I bring my own saree and blouse fabric?',
-        answer: 'Yes. You can bring your saree and unstitched blouse material. If you need contrast fabrics, dupion silk, raw silk, or designer brocades, our designer will assist you in sourcing matching premium fabrics.'
+        answer: 'Yes. You can bring your wedding saree and blouse material. If you need matching blouse fabric, lining, piping, cups, or contrast fabrics, our designer will help you choose suitable options during your consultation.'
       },
       {
         question: 'Do you offer trial fittings before final delivery?',
-        answer: 'Yes! Every customized bridal blouse undergoes an intermediate trial fitting session. We inspect neckline depth, armhole contour, and cup placement so that your final fit is 100% flawless.'
+        answer: 'Yes. Every customized bridal blouse includes a trial fitting before final delivery. We check neckline, armhole comfort, bust fitting, sleeve fitting, and overall comfort before completing the blouse.'
       },
       {
-        question: 'Do you provide doorstep pickup and delivery in {Location}?',
-        answer: 'Yes, we provide secure Porter doorstep pickup of your fabrics from {Location} and safe delivery of your finished bridal outfit across Bangalore.'
+        question: 'Do you provide pickup and courier delivery across Bangalore?',
+        answer: "Yes. If you're unable to visit our Mahalakshmipuram boutique, our team can help coordinate Porter pickup and courier delivery across Bangalore. We receive your fabric, complete the customization, carefully pack it, and hand it over for delivery."
       },
       {
-        question: 'Can you customize modern necklines like corsets, sheer backs, and halter styles?',
-        answer: 'Yes. Our chief designer specializes in both heritage traditional cuts and modern high-fashion silhouettes such as corset waistlines, sweetheart necklines, sheer illusion backs, and halter cuts.'
+        question: 'Can you customize modern and traditional bridal blouse designs?',
+        answer: 'Yes. We customize both traditional South Indian bridal blouses and modern bridal blouse designs, including sweetheart necklines, deep backs, boat necks, elbow sleeves, puff sleeves, corset-inspired blouses, and contemporary reception styles.'
       },
       {
-        question: 'What lining fabrics do you use for bridal blouses?',
-        answer: 'We use high-count, pre-shrunk, pure breathable cotton linings and soft silk interlinings with cushioned seam piping to protect your skin from irritation during long wedding events.'
+        question: 'What fabrics and linings do you use for bridal blouses?',
+        answer: 'We use comfortable, skin-friendly cotton and soft silk linings based on your blouse design and fabric. We also recommend suitable lining, cups, piping, and finishing options for better comfort, support, and shape.'
       },
       {
-        question: 'Why choose Shrusara Fashion Boutique in Bangalore?',
-        answer: 'Shrusara is strictly custom-only with direct designer guidance from Founder Shruthi Ajith. You never deal with middlemen, ensuring your bridal vision is executed with couture precision.'
+        question: 'Why choose Shrusara Fashion Boutique for bridal blouse stitching in Bangalore?',
+        answer: 'Shrusara Fashion Boutique specializes in 100% customized bridal blouse stitching in Bangalore. Every blouse is created after a personal consultation with Chief Designer Shruthi Ajith, with custom measurements, trial fitting, and handcrafted finishing for a comfortable and elegant fit.'
+      },
+      {
+        question: 'Do you sell ready-made bridal blouses or bridal outfits?',
+        answer: 'No. Shrusara Fashion Boutique is a 100% customization-only boutique. We do not sell ready-made bridal blouses, bridal lehengas, gowns, or other bridal outfits. Every outfit is customized after a personal consultation, body measurements, design selection, and stitching based on your requirements.'
       }
     ],
     cta: {
       headingTemplate: 'Customized Bridal Blouse Tailoring Near {Location}, Bangalore',
-      subheadingTemplate: 'Schedule your 1-on-1 bridal consultation with Chief Designer Shruthi Ajith. Experience bespoke luxury and guaranteed perfect fit.',
+      subheadingTemplate: 'Looking for a customized bridal blouse in {Location}? Chat with Chief Designer Shruthi Ajith for a one-on-one consultation, measurements, and personalized bridal blouse stitching at Shrusara Fashion Boutique.',
       whatsappText: 'Chat on WhatsApp',
-      callText: 'Call Shrusara Boutique'
+      callText: 'Call Shrusara Fashion Boutique'
     }
   },
 

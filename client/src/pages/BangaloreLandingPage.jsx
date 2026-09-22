@@ -34,13 +34,8 @@ export default function BangaloreLandingPage() {
         const res = await fetchLandingPageBySlug(slug);
         if (isMounted) {
           if (res?.item) {
-            // Merge with master template to ensure all 10 V2 sections are always hydrated
-            const hydrated = buildLandingPageFromMaster(
-              res.item.serviceCategory || 'Ready-to-Wear Saree Customization',
-              res.item.locationName || 'Bangalore',
-              res.item
-            );
-            setPage(hydrated);
+            // Use API item directly as single source of truth from Master Template
+            setPage(res.item);
             if (res.item.id) {
               void trackLandingPageView(res.item.id);
             }
@@ -405,10 +400,20 @@ export default function BangaloreLandingPage() {
               <h2 className="mt-2 font-heading text-3xl text-ink sm:text-4xl">
                 {whyChooseUs.heading || `Why Clients in ${locationName} Choose Shrusara Boutique`}
               </h2>
-              <p className="mt-4 text-sm leading-relaxed text-stone-700">
-                {whyChooseUs.intro ||
-                  'Shrusara is strictly a customization-only studio in Mahalakshmipuram, easily accessible from across Bangalore. We do not sell mass-produced ready-made stock. Every single piece is individually envisioned, cut, and tailored for your unique body contours.'}
-              </p>
+              {whyChooseUs.intro && (
+                <p className="mt-4 text-base font-medium leading-relaxed text-stone-800">
+                  {whyChooseUs.intro}
+                </p>
+              )}
+              {whyChooseUs.description && whyChooseUs.description !== whyChooseUs.intro ? (
+                <p className="mt-3 text-sm leading-relaxed text-stone-600">
+                  {whyChooseUs.description}
+                </p>
+              ) : !whyChooseUs.intro ? (
+                <p className="mt-4 text-sm leading-relaxed text-stone-700">
+                  Shrusara is strictly a customization-only studio in Mahalakshmipuram, easily accessible from across Bangalore. We do not sell mass-produced ready-made stock. Every single piece is individually envisioned, cut, and tailored for your unique body contours.
+                </p>
+              ) : null}
             </div>
 
             {whyChooseUs.cards?.length ? (

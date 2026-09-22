@@ -41,7 +41,12 @@ export default function MasterTemplateManager() {
 
   const [selectedService, setSelectedService] = useState(() => {
     const fromParam = searchParams.get('service');
-    return fromParam ? normalizeServiceCategory(fromParam) : SERVICE_CATEGORIES[0];
+    if (fromParam) return normalizeServiceCategory(fromParam);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const saved = window.localStorage.getItem('shrusara_active_master_service');
+      if (saved) return normalizeServiceCategory(saved);
+    }
+    return SERVICE_CATEGORIES[0];
   });
 
   const [activeTab, setActiveTab] = useState('seo');
@@ -76,8 +81,36 @@ export default function MasterTemplateManager() {
 
       const map = {};
       (tplRes?.items || []).forEach((t) => {
-        if (t.id) map[t.id] = t;
-        if (t.serviceCategory) map[t.serviceCategory] = t;
+        if (!t) return;
+        const norm = normalizeServiceCategory(t.serviceName || t.serviceCategory || t.id);
+        const keys = [
+          t.id,
+          slugifyService(t.id),
+          t.serviceName,
+          slugifyService(t.serviceName),
+          t.serviceCategory,
+          slugifyService(t.serviceCategory),
+          norm,
+          slugifyService(norm),
+          String(t.serviceName || '').toLowerCase(),
+          String(t.serviceCategory || '').toLowerCase()
+        ].filter(Boolean);
+
+        keys.forEach((k) => {
+          if (!map[k] || new Date(t.updatedAt || 0) >= new Date(map[k].updatedAt || 0)) {
+            map[k] = t;
+          }
+        });
+
+        if (typeof window !== 'undefined' && window.localStorage) {
+          try {
+            keys.forEach((k) => {
+              window.localStorage.setItem(`shrusara_master_tpl_${k}`, JSON.stringify(t));
+            });
+          } catch {
+            // ignore localStorage quota errors
+          }
+        }
       });
       setBackendTemplates(map);
       setLocations(locRes?.items || []);
@@ -92,10 +125,39 @@ export default function MasterTemplateManager() {
 
   function initTemplateForService(serviceName, templatesMap = backendTemplates) {
     const sId = slugifyService(serviceName);
-    const existing = templatesMap[sId] || templatesMap[serviceName];
+    const norm = normalizeServiceCategory(serviceName);
+    const normSlug = slugifyService(norm);
+
+    let existing =
+      templatesMap[serviceName] ||
+      templatesMap[sId] ||
+      templatesMap[norm] ||
+      templatesMap[normSlug] ||
+      templatesMap[String(serviceName).toLowerCase()];
+
+    // Also check localStorage if not found in memory map
+    if (!existing && typeof window !== 'undefined' && window.localStorage) {
+      const keys = [serviceName, sId, norm, normSlug, `shrusara_master_tpl_${sId}`, `shrusara_master_tpl_${serviceName}`];
+      for (const k of keys) {
+        try {
+          const raw = window.localStorage.getItem(k.startsWith('shrusara_master_tpl_') ? k : `shrusara_master_tpl_${k}`);
+          if (raw) {
+            existing = JSON.parse(raw);
+            break;
+          }
+        } catch {}
+      }
+    }
 
     if (existing) {
-      setTemplate(JSON.parse(JSON.stringify(existing)));
+      const t = JSON.parse(JSON.stringify(existing));
+      if (!t.heroImage && t.featuredImage?.url) {
+        t.heroImage = t.featuredImage.url;
+      }
+      if (!t.featuredImage && t.heroImage) {
+        t.featuredImage = { url: t.heroImage, alt: `${serviceName} in {Location}` };
+      }
+      setTemplate(t);
       return;
     }
 
@@ -208,6 +270,11 @@ export default function MasterTemplateManager() {
 
   function handleSwitchService(serviceName) {
     setSelectedService(serviceName);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        window.localStorage.setItem('shrusara_active_master_service', serviceName);
+      } catch {}
+    }
     setSearchParams({ service: serviceName });
     initTemplateForService(serviceName);
     setMessage('');
@@ -224,19 +291,65 @@ export default function MasterTemplateManager() {
     setMessage('');
     try {
       const sId = slugifyService(selectedService);
+      const norm = normalizeServiceCategory(selectedService);
+      const normSlug = slugifyService(norm);
+      const headingTpl =
+        template.hero?.headingTemplate ||
+        template.titleTemplate ||
+        template.seo?.titleTemplate ||
+        `${selectedService} in {Location}, Bangalore`;
+
       const payload = {
         ...template,
         id: sId,
+        serviceName: selectedService,
         serviceCategory: selectedService,
+        serviceSlug: sId,
+        titleTemplate: headingTpl,
+        heroImage: template.heroImage || template.featuredImage?.url || '',
+        featuredImage: {
+          url: template.heroImage || template.featuredImage?.url || '',
+          alt: template.featuredImage?.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`,
+          title: template.featuredImage?.title || `${selectedService} in {Location}`,
+          caption: template.featuredImage?.caption || `100% Customized ${selectedService} tailored by Shrusara Fashion Boutique in Bangalore.`
+        },
+        seo: {
+          ...template.seo,
+          titleTemplate: headingTpl
+        },
+        hero: {
+          ...template.hero,
+          headingTemplate: headingTpl
+        },
         updatedAt: new Date().toISOString()
       };
 
       const res = await saveMasterTemplate(token, sId, payload);
-      setBackendTemplates((prev) => ({
-        ...prev,
-        [sId]: payload,
-        [selectedService]: payload
-      }));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        try {
+          const keys = [
+            selectedService,
+            sId,
+            norm,
+            normSlug,
+            `shrusara_master_tpl_${sId}`,
+            `shrusara_master_tpl_${selectedService}`
+          ];
+          keys.forEach((k) => {
+            window.localStorage.setItem(k.startsWith('shrusara_master_tpl_') ? k : `shrusara_master_tpl_${k}`, JSON.stringify(payload));
+          });
+          window.localStorage.setItem('shrusara_active_master_service', selectedService);
+        } catch {
+          // ignore quota errors
+        }
+      }
+      setBackendTemplates((prev) => {
+        const next = { ...prev };
+        [selectedService, sId, norm, normSlug].forEach((k) => {
+          next[k] = payload;
+        });
+        return next;
+      });
       setMessage(res?.message || `✅ Master Template for "${selectedService}" saved successfully!`);
     } catch (err) {
       setMessage(err.message || 'Failed to save master template');
@@ -457,6 +570,29 @@ export default function MasterTemplateManager() {
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Page Title (H1) / Main Heading Template
+                  </label>
+                  <input
+                    type="text"
+                    value={template.hero?.headingTemplate || template.titleTemplate || template.seo?.titleTemplate || ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setTemplate({
+                        ...template,
+                        titleTemplate: val,
+                        seo: { ...template.seo, titleTemplate: val },
+                        hero: { ...template.hero, headingTemplate: val }
+                      });
+                    }}
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa font-semibold">{preview(template.hero?.headingTemplate || template.titleTemplate || template.seo?.titleTemplate)}</strong>
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
                     Meta Title Template
                   </label>
                   <input
@@ -588,17 +724,20 @@ export default function MasterTemplateManager() {
                   </label>
                   <input
                     type="text"
-                    value={template.hero?.headingTemplate || ''}
-                    onChange={(e) =>
+                    value={template.hero?.headingTemplate || template.titleTemplate || template.seo?.titleTemplate || ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
                       setTemplate({
                         ...template,
-                        hero: { ...template.hero, headingTemplate: e.target.value }
-                      })
-                    }
+                        titleTemplate: val,
+                        seo: { ...template.seo, titleTemplate: val },
+                        hero: { ...template.hero, headingTemplate: val }
+                      });
+                    }}
                     className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
                   />
                   <p className="mt-1 text-[11px] text-stone-500">
-                    Preview: <strong className="text-cocoa font-semibold">{preview(template.hero?.headingTemplate)}</strong>
+                    Preview: <strong className="text-cocoa font-semibold">{preview(template.hero?.headingTemplate || template.titleTemplate || template.seo?.titleTemplate)}</strong>
                   </p>
                 </div>
 

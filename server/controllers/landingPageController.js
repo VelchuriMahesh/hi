@@ -396,21 +396,68 @@ export function slugifyBangaloreLandingPage(serviceCategory = 'Ready-to-Wear Sar
   return `${serviceSlug}-stitching-${locSlug}`.replace(/--+/g, '-');
 }
 
+export async function getEffectiveMasterTemplate(serviceCategory) {
+  const norm = toStringValue(serviceCategory);
+  if (!norm) return findDefaultMasterTemplate('Ready-to-Wear Saree Customization');
+
+  try {
+    const tplSnapshot = await db.collection(MASTER_TEMPLATE_COLLECTION).get();
+    if (!tplSnapshot.empty) {
+      const templates = tplSnapshot.docs.map(mapDocument);
+      // Sort newest updated first
+      templates.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+
+      const normSlug = slugify(norm);
+      const normSlugWithAnd = norm.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+      const matched = templates.find((t) => {
+        const tName = String(t.serviceName || '').toLowerCase();
+        const tCat = String(t.serviceCategory || '').toLowerCase();
+        const tId = String(t.id || '').toLowerCase();
+        const tSlug = String(t.serviceSlug || '').toLowerCase();
+
+        return (
+          tName === norm.toLowerCase() ||
+          tCat === norm.toLowerCase() ||
+          tId === normSlug ||
+          tId === normSlugWithAnd ||
+          tSlug === normSlug ||
+          tSlug === normSlugWithAnd ||
+          tName.includes(norm.toLowerCase()) ||
+          norm.toLowerCase().includes(tName)
+        );
+      });
+      if (matched) return matched;
+    }
+  } catch (err) {
+    console.warn('Could not fetch master template from Firestore, using default:', err.message);
+  }
+
+  return findDefaultMasterTemplate(norm);
+}
+
 export function applyMasterTemplateToLocation(master, locationName = 'Bangalore', locObj = {}, overrides = {}) {
   const loc = toStringValue(locationName || 'Bangalore');
-  const serviceName = toStringValue(master?.serviceName || 'Custom Boutique Service');
+  const locSlug = slugify(loc);
+  const serviceName = toStringValue(master?.serviceName || master?.serviceCategory || 'Custom Boutique Service');
+  const serviceSlug = toStringValue(master?.serviceSlug || slugify(serviceName));
   const replaceLoc = (str = '') =>
     String(str || '')
       .replace(/\{Location\}/g, loc)
       .replace(/\[Location\]/g, loc)
+      .replace(/\{location\}/g, loc)
+      .replace(/\{location-slug\}/g, locSlug)
+      .replace(/\{Location-slug\}/g, locSlug)
       .replace(/\{Service\}/g, serviceName)
-      .replace(/\[Service\]/g, serviceName);
+      .replace(/\[Service\]/g, serviceName)
+      .replace(/\{service\}/g, serviceName)
+      .replace(/\{service-slug\}/g, serviceSlug);
 
-  const title = replaceLoc(overrides.title || master?.seo?.titleTemplate || `${serviceName} in ${loc}, Bangalore`);
+  const title = replaceLoc(overrides.title || master?.hero?.headingTemplate || master?.seo?.titleTemplate || master?.seo?.metaTitleTemplate || `${serviceName} in ${loc}, Bangalore`);
   const metaTitle = replaceLoc(overrides.metaTitle || master?.seo?.metaTitleTemplate || `${serviceName} in ${loc}, Bangalore | Shrusara Fashion Boutique`);
   const metaDescription = replaceLoc(overrides.metaDescription || master?.seo?.metaDescriptionTemplate || `Customized ${serviceName} in ${loc}, Bangalore with perfect fit and personalized consultation by Shrusara.`);
 
-  const rawKeywords = overrides.metaKeywords || master?.seo?.metaKeywordsTemplate || '';
+  const rawKeywords = overrides.metaKeywords || master?.seo?.metaKeywords || master?.seo?.metaKeywordsTemplate || '';
   const metaKeywords = Array.isArray(rawKeywords)
     ? rawKeywords.map(replaceLoc)
     : toArray(rawKeywords).map(replaceLoc);
@@ -436,7 +483,7 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
   const about = {
     heading: replaceLoc(overrides.about?.heading || master?.about?.headingTemplate || `Customized ${serviceName} in ${loc}`),
     intro: replaceLoc(overrides.about?.intro || master?.about?.introTemplate || ''),
-    description: replaceLoc(overrides.about?.description || master?.about?.descriptionTemplate || ''),
+    description: replaceLoc(overrides.about?.description || master?.about?.descriptionTemplate || master?.about?.introTemplate || ''),
     highlights: (overrides.about?.highlights?.length ? overrides.about.highlights : master?.about?.highlights || []).map((h) => ({
       title: replaceLoc(h.title),
       description: replaceLoc(h.description)
@@ -444,9 +491,9 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
   };
 
   const whyChooseUs = {
-    heading: replaceLoc(overrides.whyChooseUs?.heading || master?.whyChooseUs?.headingTemplate || `Why Clients in ${loc} Choose Shrusara`),
-    intro: replaceLoc(overrides.whyChooseUs?.intro || master?.whyChooseUs?.introTemplate || ''),
-    description: replaceLoc(overrides.whyChooseUs?.description || master?.whyChooseUs?.descriptionTemplate || ''),
+    heading: replaceLoc(overrides.whyChooseUs?.heading || master?.whyChooseUs?.headingTemplate || `Why Clients in ${loc} Choose Shrusara for ${serviceName}`),
+    intro: replaceLoc(overrides.whyChooseUs?.intro || master?.whyChooseUs?.introTemplate || master?.whyChooseUs?.descriptionTemplate || ''),
+    description: replaceLoc(overrides.whyChooseUs?.description || master?.whyChooseUs?.descriptionTemplate || master?.whyChooseUs?.introTemplate || ''),
     cards: (overrides.whyChooseUs?.cards?.length ? overrides.whyChooseUs.cards : master?.whyChooseUs?.cards || []).map((c) => ({
       title: replaceLoc(c.title),
       description: replaceLoc(c.description)
@@ -471,10 +518,10 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     locationName: loc,
     areaGroup: locObj.areaGroup || overrides.areaGroup || 'Bangalore West',
     boutiqueAddress: toStringValue(overrides.proximity?.boutiqueAddress || master?.proximity?.boutiqueAddress || locObj.boutiqueAddress || '106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086'),
-    landmark: toStringValue(overrides.proximity?.landmark || locObj.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar'),
-    travelTime: toStringValue(overrides.proximity?.travelTime || locObj.travelTime || '10-15 mins'),
+    landmark: toStringValue(overrides.proximity?.landmark || locObj.landmark || master?.proximity?.defaultLandmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar'),
+    travelTime: toStringValue(overrides.proximity?.travelTime || locObj.travelTime || master?.proximity?.defaultTravelTime || '10-15 mins'),
     distanceNote: replaceLoc(toStringValue(overrides.proximity?.distanceNote || master?.proximity?.defaultDistanceNote || locObj.distanceNote || `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`)),
-    nearbyAreas: (locObj.nearbyAreas?.length ? locObj.nearbyAreas : null) || toArray(overrides.proximity?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']),
+    nearbyAreas: (locObj.nearbyAreas?.length ? locObj.nearbyAreas : null) || toArray(overrides.proximity?.nearbyAreas || master?.proximity?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']),
     workingHours: toStringValue(overrides.proximity?.workingHours || master?.proximity?.workingHours || locObj.workingHours || 'Monday – Sunday 10:00 AM – 7:30 PM'),
     googleMapsUrl: toStringValue(overrides.proximity?.googleMapsUrl || master?.proximity?.googleMapsUrl || locObj.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore'),
     boutiqueVisitOptions: (overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : (master?.proximity?.boutiqueVisitOptions?.length ? master.proximity.boutiqueVisitOptions : [
@@ -506,7 +553,7 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
   };
 
   const featuredImage = overrides.featuredImage?.url ? overrides.featuredImage : {
-    url: master?.featuredImage?.url || DEFAULT_LANDING_IMAGE,
+    url: master?.featuredImage?.url || master?.heroImage || DEFAULT_LANDING_IMAGE,
     alt: replaceLoc(master?.featuredImage?.alt || `${serviceName} in ${loc}, Bangalore – Shrusara Fashion Boutique`),
     title: replaceLoc(master?.featuredImage?.title || `${serviceName} in ${loc}`),
     caption: replaceLoc(master?.featuredImage?.caption || `Customized ${serviceName} by Shrusara Fashion Boutique.`)
@@ -533,14 +580,100 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
   };
 }
 
-function normalizeLandingPagePayload(body = {}, existing = {}) {
+export async function parseServiceAndLocationFromSlug(rawSlug) {
+  if (!rawSlug) return null;
+  const clean = String(rawSlug).toLowerCase().trim();
+
+  let allLocations = DEFAULT_BANGALORE_LOCATIONS;
+  try {
+    const locSnap = await db.collection(LOCATION_COLLECTION).get();
+    if (!locSnap.empty) {
+      allLocations = locSnap.docs.map(mapDocument);
+    }
+  } catch {}
+
+  let allTemplates = DEFAULT_MASTER_TEMPLATES;
+  try {
+    const tplSnap = await db.collection(MASTER_TEMPLATE_COLLECTION).get();
+    if (!tplSnap.empty) {
+      allTemplates = tplSnap.docs.map(mapDocument);
+    }
+  } catch {}
+
+  let servicePart = '';
+  let locationPart = '';
+  let matchedLocObj = null;
+
+  if (clean.includes('-stitching-')) {
+    const parts = clean.split('-stitching-');
+    servicePart = parts[0];
+    locationPart = parts.slice(1).join('-stitching-');
+  }
+
+  if (locationPart) {
+    matchedLocObj = allLocations.find(
+      (l) => slugify(l.name) === locationPart || String(l.name).toLowerCase() === locationPart.toLowerCase()
+    );
+  }
+
+  if (!matchedLocObj) {
+    const sortedLocs = [...allLocations].sort((a, b) => b.name.length - a.name.length);
+    for (const loc of sortedLocs) {
+      const lSlug = slugify(loc.name);
+      if (clean.endsWith(`-stitching-${lSlug}`)) {
+        servicePart = clean.slice(0, -(`-stitching-${lSlug}`.length));
+        matchedLocObj = loc;
+        break;
+      } else if (clean.endsWith(`-${lSlug}`)) {
+        servicePart = clean.slice(0, -(`-${lSlug}`.length)).replace(/-stitching$/, '');
+        matchedLocObj = loc;
+        break;
+      }
+    }
+  }
+
+  if (!matchedLocObj) {
+    const defaultName = locationPart ? locationPart.charAt(0).toUpperCase() + locationPart.slice(1) : 'Bangalore';
+    matchedLocObj = {
+      name: defaultName,
+      areaGroup: 'Bangalore West'
+    };
+  }
+
+  const cleanServicePart = servicePart.replace(/-/g, ' ');
+  let master = allTemplates.find(
+    (t) =>
+      t.id === servicePart ||
+      t.serviceSlug === servicePart ||
+      String(t.serviceName || '').toLowerCase() === cleanServicePart ||
+      String(t.serviceCategory || '').toLowerCase() === cleanServicePart ||
+      slugify(t.serviceName || '') === servicePart
+  );
+
+  if (!master) {
+    master = findDefaultMasterTemplate(cleanServicePart);
+  }
+
+  if (!master) {
+    return null;
+  }
+
+  return {
+    serviceName: master.serviceName || master.serviceCategory || cleanServicePart,
+    locationName: matchedLocObj.name,
+    locObj: matchedLocObj,
+    master
+  };
+}
+
+async function normalizeLandingPagePayload(body = {}, existing = {}) {
   const serviceCategory = toStringValue(body.serviceCategory || existing.serviceCategory || 'Ready-to-Wear Saree Customization');
   const locationName = toStringValue(body.locationName || body.location || existing.locationName || 'Bangalore');
   const areaGroup = toStringValue(body.areaGroup || existing.areaGroup || 'Bangalore West');
 
-  // Load fallback master template for this service category
-  const defaultMaster = findDefaultMasterTemplate(serviceCategory);
-  const masterFallback = applyMasterTemplateToLocation(defaultMaster, locationName, { areaGroup });
+  // Load master template from Firestore (with preset fallback)
+  const master = await getEffectiveMasterTemplate(serviceCategory);
+  const masterFallback = applyMasterTemplateToLocation(master, locationName, { areaGroup });
 
   const title = toStringValue(body.title || body.pageTitle || existing.title || masterFallback.title);
   const status = ['draft', 'published', 'scheduled'].includes(body.status)
@@ -819,6 +952,25 @@ export async function getLandingPageBySlug(req, res, next) {
       if (matchedPreset) {
         return res.json({ item: { id: matchedPreset.slug, ...matchedPreset } });
       }
+
+      // Dynamic generation from Master Template!
+      const parsed = await parseServiceAndLocationFromSlug(rawSlug);
+      if (parsed) {
+        const { serviceName, locationName, locObj, master } = parsed;
+        const dynamicPage = applyMasterTemplateToLocation(master, locationName, locObj);
+        return res.json({
+          item: {
+            ...dynamicPage,
+            id: rawSlug,
+            slug: rawSlug,
+            url: `${BANGALORE_BASE_PATH}/${rawSlug}`,
+            canonicalUrl: `${getPublicSiteUrl()}${BANGALORE_BASE_PATH}/${rawSlug}`,
+            status: 'published',
+            isDynamic: true
+          }
+        });
+      }
+
       return res.status(404).json({ message: 'Landing page not found.' });
     }
 
@@ -871,7 +1023,7 @@ export async function getLandingPageById(req, res, next) {
  */
 export async function createLandingPage(req, res, next) {
   try {
-    const normalized = normalizeLandingPagePayload(req.body);
+    const normalized = await normalizeLandingPagePayload(req.body);
     const slug = await buildUniqueSlug(req.body.slug || normalized.title);
     const url = `${BANGALORE_BASE_PATH}/${slug}`;
 
@@ -919,7 +1071,7 @@ export async function updateLandingPageById(req, res, next) {
     }
 
     const existing = snapshot.data();
-    const normalized = normalizeLandingPagePayload(req.body, existing);
+    const normalized = await normalizeLandingPagePayload(req.body, existing);
 
     let slug = existing.slug;
     if (req.body.slug && req.body.slug !== existing.slug) {
@@ -1296,12 +1448,25 @@ export async function saveMasterTemplate(req, res, next) {
       ...req.body,
       id,
       serviceName,
+      serviceCategory: serviceName,
       serviceSlug: req.body.serviceSlug || slugify(serviceName),
       updatedAt: Timestamp.now(),
       createdAt: existing.exists ? existing.data().createdAt || Timestamp.now() : Timestamp.now()
     };
 
     await docRef.set(payload, { merge: true });
+
+    // If Maggam work, keep both hyphen-and and hyphen versions in sync
+    if (id === 'maggam-and-aari-work-bridal-blouse') {
+      try {
+        await db.collection(MASTER_TEMPLATE_COLLECTION).doc('maggam-aari-work-bridal-blouse').set(payload, { merge: true });
+      } catch {}
+    } else if (id === 'maggam-aari-work-bridal-blouse') {
+      try {
+        await db.collection(MASTER_TEMPLATE_COLLECTION).doc('maggam-and-aari-work-bridal-blouse').set(payload, { merge: true });
+      } catch {}
+    }
+
     const saved = await docRef.get();
 
     res.json({
@@ -1325,21 +1490,8 @@ export async function generatePageFromMaster(req, res, next) {
       return res.status(400).json({ message: 'serviceCategory and locationName are required.' });
     }
 
-    // 1. Fetch Master Template
-    let master = null;
-    const tplSnapshot = await db.collection(MASTER_TEMPLATE_COLLECTION).get();
-    if (!tplSnapshot.empty) {
-      const templates = tplSnapshot.docs.map(mapDocument);
-      master = templates.find(
-        (t) =>
-          String(t.serviceName || '').toLowerCase() === String(serviceCategory).toLowerCase() ||
-          t.id === slugify(serviceCategory) ||
-          t.serviceSlug === slugify(serviceCategory)
-      );
-    }
-    if (!master) {
-      master = findDefaultMasterTemplate(serviceCategory);
-    }
+    // 1. Fetch Master Template from Firestore
+    const master = await getEffectiveMasterTemplate(serviceCategory);
 
     // 2. Fetch Location
     let locObj = null;
@@ -1409,20 +1561,7 @@ export async function batchGenerateLandingPages(req, res, next) {
     }
 
     // 1. Fetch Master Template from Firestore
-    let master = null;
-    const tplSnapshot = await db.collection(MASTER_TEMPLATE_COLLECTION).get();
-    if (!tplSnapshot.empty) {
-      const templates = tplSnapshot.docs.map(mapDocument);
-      master = templates.find(
-        (t) =>
-          String(t.serviceName || '').toLowerCase() === String(serviceCategory).toLowerCase() ||
-          t.id === slugify(serviceCategory) ||
-          t.serviceSlug === slugify(serviceCategory)
-      );
-    }
-    if (!master) {
-      master = findDefaultMasterTemplate(serviceCategory);
-    }
+    const master = await getEffectiveMasterTemplate(serviceCategory);
 
     // 2. Fetch all locations from database
     const locSnapshot = await db.collection(LOCATION_COLLECTION).get();
@@ -1532,20 +1671,7 @@ export async function syncLandingPageFromMaster(req, res, next) {
     const locationName = existing.locationName || 'Bangalore';
 
     // 1. Fetch Master Template from Firestore
-    let master = null;
-    const tplSnapshot = await db.collection(MASTER_TEMPLATE_COLLECTION).get();
-    if (!tplSnapshot.empty) {
-      const templates = tplSnapshot.docs.map(mapDocument);
-      master = templates.find(
-        (t) =>
-          String(t.serviceName || '').toLowerCase() === String(serviceCategory).toLowerCase() ||
-          t.id === slugify(serviceCategory) ||
-          t.serviceSlug === slugify(serviceCategory)
-      );
-    }
-    if (!master) {
-      master = findDefaultMasterTemplate(serviceCategory);
-    }
+    const master = await getEffectiveMasterTemplate(serviceCategory);
 
     // 2. Fetch Location info
     let locObj = null;

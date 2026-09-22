@@ -423,17 +423,36 @@ export const MASTER_SERVICE_TEMPLATES = {
     singular: 'Bridal Blouse',
     plural: 'Bridal Blouses',
     heroImage: '/bridal/bridalblow/hero-bridal.webp',
+    seo: {
+      titleTemplate: 'Customized Bridal Blouse in {Location}, Bangalore | Shrusara',
+      metaTitleTemplate: 'Customized Bridal Blouse in {Location}, Bangalore | Shrusara Fashion Boutique',
+      metaDescriptionTemplate: 'Customized bridal blouse stitching in {Location}, Bangalore with perfect fit, personalized measurements, trial fitting and one-on-one consultation with Chief Designer Shruthi Ajith.',
+      metaKeywordsTemplate: 'bridal blouse {Location}, customized bridal blouse {Location}, bridal blouse designer {Location}, bridal blouse stitching near {Location}, bridal blouse designer bangalore, customized bridal blouse bangalore, wedding blouse tailoring bangalore, shrusara fashion boutique',
+      metaKeywords: [
+        'bridal blouse {location}',
+        'bridal blouse stitching {location}',
+        'customized bridal blouse {location}',
+        'bridal blouse boutique {location}',
+        'bridal blouse stitching Bangalore',
+        'customized bridal blouse Bangalore',
+        'wedding blouse stitching Bangalore',
+        'silk saree bridal blouse Bangalore',
+        'bridal boutique Bangalore',
+        'Shrusara Fashion Boutique Bangalore'
+      ],
+      canonicalUrlPattern: '/bangalore/bridal-blouse-stitching-{location-slug}'
+    },
     hero: {
-      badgeTemplate: '100% Customized | {Location}, Bangalore',
+      badgeTemplate: '100% Customized Bridal Blouse in {Location}, Bangalore',
       headingTemplate: 'Customized Bridal Blouse in {Location}, Bangalore',
-      taglineTemplate: 'Customized bridal blouses tailored to your unique posture, silhouette, and wedding silk saree. Handcrafted embroidery, precision cups, and personalized consultation with Chief Designer Shruthi Ajith for brides in {Location}, Bangalore.',
+      taglineTemplate: 'Every bridal blouse at Shrusara Fashion Boutique is designed exclusively for you. From personalized measurements and neckline styling to trial fitting and handcrafted finishing, Chief Designer Shruthi Ajith helps create a bridal blouse that matches your wedding saree, body shape and personal style.',
       highlights: [
         '1-on-1 Consultation with Chief Designer Shruthi Ajith',
         'Personalized Measurements & Trial Fitting',
-        'Try Before You Customize (Boutique Exclusive)',
-        'Video Consultation Available Across Bangalore',
+        'Customized Bridal Blouse for Every Wedding Occasion',
+        'Video Consultation Available for the measurement guidance Across Bangalore',
         'Pickup & Courier Delivery Across Bangalore',
-        'Comfortable Customized Stitching'
+        'Comfortable Customized Stitching with Premium Finish'
       ],
       primaryCtaText: 'Chat on WhatsApp',
       primaryCtaMessageTemplate: "Hi Shrusara! I'd like to know more about Customized Bridal Blouses in {Location}.",
@@ -442,94 +461,95 @@ export const MASTER_SERVICE_TEMPLATES = {
     },
     about: {
       headingTemplate: 'Bespoke Bridal Blouse Tailoring for Brides in {Location}',
-      introTemplate: 'At Shrusara Fashion Boutique, we believe your bridal blouse is the focal point of your wedding ensemble. We specialize strictly in 100% customized bridal tailoring. Every blouse is individually patterned from scratch to eliminate shoulder drooping, neck gaping, and armhole tightness.',
-      descriptionTemplate: 'From traditional South Indian muhurtham silk saree blouses to contemporary reception designs, our master artisans combine bespoke pattern drafting with generational embroidery techniques. Brides in {Location} and across Bangalore trust Shrusara for impeccable bridal fit, breathable cotton linings, and stress-free wedding timelines.',
+      introTemplate: 'Every bride has a different saree, body shape, and blouse design preference. At Shrusara Fashion Boutique, every bridal blouse is customized to suit your measurements, wedding saree, and personal style. We focus on perfect fitting, comfort, and beautiful finishing for your special day.',
+      descriptionTemplate: 'Shrusara Fashion Boutique specializes in customized bridal blouse stitching in Bangalore. Every bridal blouse is stitched according to your body measurements, saree design, neckline, sleeve style, and wedding occasion. Whether you are looking for a Muhurtham blouse, Reception blouse, Engagement blouse, Haldi blouse, Mehendi blouse, or Sangeet blouse, we design each blouse to match your complete bridal look.\n\nOur focus is on accurate measurements, comfortable fitting, neat finishing, and a bridal blouse that looks elegant throughout your wedding celebrations.',
       highlights: [
         {
           title: 'Custom Body-Pattern Drafting',
-          description: 'No standard sizing templates. We draft individual master patterns taking into account shoulder slope, bust shape, and back contour.'
+          description: 'Every bridal blouse is drafted from scratch using your individual body measurements for a flattering fit, balanced shoulders and comfortable arm movement.'
         },
         {
-          title: 'High-Grade Skin-Friendly Linings',
-          description: 'Pure breathable cotton and silk linings with cushioned piping ensuring hours of itch-free comfort during long wedding rituals.'
+          title: 'Premium Bridal Lining & Finishing',
+          description: 'We use soft cotton and silk linings with neat finishing, piping, and padding options for comfort, support, and a premium bridal look.'
         },
         {
-          title: 'Try Before You Customize',
-          description: 'Experience fit samples at our Mahalakshmipuram studio to finalize necklines, sleeve cuts, and cup shaping.'
+          title: 'Neckline, Sleeve & Cup Customization',
+          description: 'Choose from a wide range of neckline styles, sleeve designs, blouse cups, back patterns, tassels and bridal finishing details to match your saree.'
         },
         {
-          title: 'Dedicated Trial & Precision Fitting',
-          description: 'Intermediate trial fitting before final embroidery closure to guarantee zero gaping and complete arm movement ease.'
+          title: 'Bridal Blouses for Every Wedding Function',
+          description: 'We customize bridal blouses for Muhurtham, Reception, Engagement, Haldi, Mehendi, Sangeet, and Wedding ceremonies, with styling that matches each occasion.'
         },
         {
-          title: 'Video Consultation for Measurements',
-          description: 'Virtual styling consultation and measurement guidance for brides in {Location} and abroad.'
+          title: 'Comfortable All-Day Bridal Wear',
+          description: 'Every blouse is stitched for long hours of comfort, allowing easy movement while maintaining a structured and elegant bridal silhouette.'
         },
         {
-          title: 'Doorstep Courier Across Bangalore',
-          description: 'Porter fabric pickup and safe courier delivery right to your doorstep in {Location}.'
+          title: 'Handcrafted Bridal Blouse Stitching',
+          description: 'Every bridal blouse is carefully stitched by experienced artisans with attention to fitting, finishing, durability, and bridal detailing.'
         }
       ]
     },
     whyChooseUs: {
-      headingTemplate: 'Why Brides in {Location} Choose Shrusara Boutique',
-      introTemplate: 'Located in Mahalakshmipuram, Shrusara Fashion Boutique is easily accessible from {Location}. Here is why over a thousand Bangalore brides have chosen us:',
+      headingTemplate: 'Why Brides in {Location} Choose Shrusara Fashion Boutique',
+      introTemplate: 'Choosing a bridal blouse is about more than stitching. At Shrusara Fashion Boutique, we guide every bride through personalized design consultation, accurate measurements, trial fitting, and careful finishing to create a bridal blouse that is comfortable, elegant, and made especially for her wedding day.',
+      descriptionTemplate: 'Located in Mahalakshmipuram, Shrusara Fashion Boutique is easily accessible from {Location}. Here is why over a thousand Bangalore brides have chosen us:',
       cards: [
         {
-          title: 'Personalized Design Consultation',
-          description: 'One-on-one session with Chief Designer Shruthi Ajith to discuss neck cuts, sleeve styles, and saree pairing.'
+          title: '1-on-1 Bridal Design Consultation',
+          description: 'Meet Chief Designer Shruthi Ajith to discuss your bridal blouse design, neckline, sleeves, blouse pattern, and styling based on your wedding saree.'
         },
         {
-          title: 'Customized for Your Body Fit',
-          description: 'Custom anatomical measurements for flawless bust support, zero shoulder drop, and perfect back fit.'
+          title: 'Personalized Measurements for Every Bride',
+          description: 'Every bridal blouse is stitched using your individual body measurements for a comfortable fit, balanced silhouette, and confident bridal look.'
         },
         {
-          title: 'Try Before You Customize (Shrusara Exclusive)',
-          description: 'Test blouse armhole comfort and neckline depths before final crafting.'
+          title: 'Sample Blouse Preview Before Final Stitching',
+          description: 'Visit our boutique to check the blouse fitting, neckline, sleeves, and overall design before the final stitching and finishing are completed.'
         },
         {
           title: 'Trial Fitting Before Final Delivery',
-          description: 'Mandatory trial fitting session so any minute fitting preference is perfected before your big day.'
+          description: 'We do a trial fitting before final delivery to make sure your bridal blouse fits comfortably and is ready for your wedding day.'
         },
         {
-          title: 'Video Consultation Available',
-          description: 'Virtual design sessions for NRI brides and clients in {Location} with tight schedules.'
+          title: 'Video Consultation Available Across Bangalore',
+          description: 'If visiting the boutique is not convenient, we provide a video consultation to discuss your bridal blouse design and guide you with measurements before your boutique visit or stitching process.'
         },
         {
-          title: 'Pickup & Courier Across Bangalore',
-          description: 'Reliable doorstep collection of your saree fabrics and express delivery across {Location}.'
+          title: 'Porter Pickup & Courier Assistance Across Bangalore',
+          description: 'If you are unable to visit our Mahalakshmipuram boutique, we help coordinate Porter pickup and courier delivery across Bangalore. Our team will receive your fabric, complete the customization, carefully pack it, and hand it over for delivery.'
         }
       ]
     },
     processSteps: [
       {
         stepNumber: 1,
-        title: 'Consultation & Style Discussion',
-        description: 'Understand your wedding theme, saree colors, neckline preference, and personal comfort priorities.',
+        title: 'Design Consultation with Chief Designer',
+        description: 'Meet Chief Designer Shruthi Ajith for a one-on-one consultation. Discuss your wedding saree, blouse design, neckline, sleeve style, embroidery and fitting preferences.',
         duration: 'Day 1'
       },
       {
         stepNumber: 2,
-        title: 'Measurements & Pattern Drafting',
-        description: 'Take over 20 anatomical measurements and draft a customized blueprint pattern for your blouse.',
+        title: 'Measurements & Pattern Making',
+        description: 'We take detailed body measurements and create a custom blouse pattern based on your posture, bust shape, shoulder fit, armhole, sleeve length, and blouse length.',
         duration: 'Day 1-2'
       },
       {
         stepNumber: 3,
-        title: 'Artisan Crafting & Stitching',
-        description: 'Precision cutting, padding integration, and hand-tailoring executed by veteran bridal masters.',
+        title: 'Handcrafted Stitching & Embroidery',
+        description: 'Your bridal blouse is stitched with precision and finished with handcrafted embroidery or detailing based on your selected design, fabric, and wedding occasion.',
         duration: 'Day 3-10'
       },
       {
         stepNumber: 4,
-        title: 'Intermediate Trial & Fit Check',
-        description: 'Wear the blouse during a trial session to confirm neckline comfort, armhole ease, and silhouette.',
-        duration: 'Day 10-12'
+        title: 'Trial Fitting & Final Adjustments',
+        description: 'Visit our boutique for a trial fitting. We make final adjustments for neckline, sleeve fit, bust fitting, waist shape and overall comfort before delivery.',
+        duration: 'Day 10-15'
       },
       {
         stepNumber: 5,
-        title: 'Boutique Pickup / Bangalore Courier Delivery',
-        description: 'Final touches, steam pressing, and handover at our studio or doorstep delivery to {Location}.',
+        title: 'Final Delivery or Bangalore Courier',
+        description: "After quality checking and final finishing, collect your customized bridal blouse from our Mahalakshmipuram boutique. If you're unable to visit, our team can help coordinate Porter pickup or courier delivery within Bangalore.",
         duration: 'Final Delivery'
       }
     ],
@@ -550,6 +570,12 @@ export const MASTER_SERVICE_TEMPLATES = {
         caption: 'Deep-back silhouette with comfortable padded support.'
       }
     ],
+    proximity: {
+      defaultDistanceNote: 'Shrusara Fashion Boutique is located in Mahalakshmipuram, just a short drive from {Location}, Bangalore. We welcome bridal clients from {Location} for one-on-one design consultations, measurements, trial fitting, and customized bridal blouse stitching.',
+      googleMapsUrl: 'https://goo.gl/maps/CaxMWN7JQXwCXAjE6',
+      boutiqueAddress: 'Shrusara Fashion Boutique 106, 6th Main Road, Mahalakshmipuram, Bangalore – 560086',
+      workingHours: 'Monday – Saturday 10:00 AM – 7:30 PM'
+    },
     testimonials: [
       {
         name: 'Kavya Murali',
@@ -589,57 +615,47 @@ export const MASTER_SERVICE_TEMPLATES = {
     ],
     faqs: [
       {
-        question: 'How far in advance should I book my bridal blouse consultation in {Location}?',
-        answer: 'We recommend booking your consultation 3 to 5 weeks before your wedding or muhurtham date. This provides ample time for detailed pattern drafting, hand crafting, and an intermediate trial fitting. Express slots are also available for urgent dates.'
+        question: 'How early should I book my bridal blouse consultation  ?',
+        answer: 'We recommend booking your bridal blouse consultation 3 to 5 weeks before your wedding or muhurtham date. This gives enough time for consultation, measurements, stitching, trial fitting, and final finishing. If your wedding is approaching soon, we also accept urgent orders based on availability.'
       },
       {
-        question: 'Do you customize blouses for South Indian weddings (Muhurtham, Reception, Sangeet)?',
-        answer: 'Yes! We customize blouses for every wedding ceremony including muhurtham Kanjeevaram blouses, reception party blouses with sheer backs, haldi boat necks, and sangeet corset blouses.'
+        question: 'Do you customize bridal blouses for South Indian weddings?',
+        answer: 'Yes. We customize bridal blouses for Muhurtham, Reception, Engagement, Haldi, Sangeet, and other wedding functions. Every blouse is designed based on your saree, occasion, and personal style.'
       },
       {
         question: 'Can I bring my own saree and blouse fabric?',
-        answer: 'Yes. You can bring your saree and unstitched blouse material. If you need contrast fabrics, dupion silk, raw silk, or designer brocades, our designer will assist you in sourcing matching premium fabrics.'
+        answer: 'Yes. You can bring your wedding saree and blouse material. If you need matching blouse fabric, lining, piping, cups, or contrast fabrics, our designer will help you choose suitable options during your consultation.'
       },
       {
         question: 'Do you offer trial fittings before final delivery?',
-        answer: 'Yes! Every customized bridal blouse undergoes an intermediate trial fitting session. We inspect neckline depth, armhole contour, and cup placement so that your final fit is 100% flawless.'
+        answer: 'Yes. Every customized bridal blouse includes a trial fitting before final delivery. We check neckline, armhole comfort, bust fitting, sleeve fitting, and overall comfort before completing the blouse.'
       },
       {
-        question: 'Do you provide doorstep pickup and delivery in {Location}?',
-        answer: 'Yes, we provide secure Porter doorstep pickup of your fabrics from {Location} and safe delivery of your finished bridal outfit across Bangalore.'
+        question: 'Do you provide pickup and courier delivery across Bangalore?',
+        answer: "Yes. If you're unable to visit our Mahalakshmipuram boutique, our team can help coordinate Porter pickup and courier delivery across Bangalore. We receive your fabric, complete the customization, carefully pack it, and hand it over for delivery."
       },
       {
-        question: 'Can you customize modern necklines like corsets, sheer backs, and halter styles?',
-        answer: 'Yes. Our chief designer specializes in both heritage traditional cuts and modern high-fashion silhouettes such as corset waistlines, sweetheart necklines, sheer illusion backs, and halter cuts.'
+        question: 'Can you customize modern and traditional bridal blouse designs?',
+        answer: 'Yes. We customize both traditional South Indian bridal blouses and modern bridal blouse designs, including sweetheart necklines, deep backs, boat necks, elbow sleeves, puff sleeves, corset-inspired blouses, and contemporary reception styles.'
       },
       {
-        question: 'What lining fabrics do you use for bridal blouses?',
-        answer: 'We use high-count, pre-shrunk, pure breathable cotton linings and soft silk interlinings with cushioned seam piping to protect your skin from irritation during long wedding events.'
+        question: 'What fabrics and linings do you use for bridal blouses?',
+        answer: 'We use comfortable, skin-friendly cotton and soft silk linings based on your blouse design and fabric. We also recommend suitable lining, cups, piping, and finishing options for better comfort, support, and shape.'
       },
       {
-        question: 'Why choose Shrusara Fashion Boutique in Bangalore?',
-        answer: 'Shrusara is strictly custom-only with direct designer guidance from Founder Shruthi Ajith. You never deal with middlemen, ensuring your bridal vision is executed with couture precision.'
+        question: 'Why choose Shrusara Fashion Boutique for bridal blouse stitching in Bangalore?',
+        answer: 'Shrusara Fashion Boutique specializes in 100% customized bridal blouse stitching in Bangalore. Every blouse is created after a personal consultation with Chief Designer Shruthi Ajith, with custom measurements, trial fitting, and handcrafted finishing for a comfortable and elegant fit.'
+      },
+      {
+        question: 'Do you sell ready-made bridal blouses or bridal outfits?',
+        answer: 'No. Shrusara Fashion Boutique is a 100% customization-only boutique. We do not sell ready-made bridal blouses, bridal lehengas, gowns, or other bridal outfits. Every outfit is customized after a personal consultation, body measurements, design selection, and stitching based on your requirements.'
       }
     ],
     cta: {
       headingTemplate: 'Customized Bridal Blouse Tailoring Near {Location}, Bangalore',
-      subheadingTemplate: 'Schedule your 1-on-1 bridal consultation with Chief Designer Shruthi Ajith. Experience bespoke luxury and guaranteed perfect fit.',
+      subheadingTemplate: 'Looking for a customized bridal blouse in {Location}? Chat with Chief Designer Shruthi Ajith for a one-on-one consultation, measurements, and personalized bridal blouse stitching at Shrusara Fashion Boutique.',
       whatsappText: 'Chat on WhatsApp',
-      callText: 'Call Shrusara Boutique'
-    },
-    seo: {
-      metaTitleTemplate: 'Customized Bridal Blouse in {Location}, Bangalore | Shrusara Fashion Boutique',
-      metaDescriptionTemplate: 'Customized bridal blouses in {Location}, Bangalore with perfect fit, handcrafted detailing & 1-on-1 consultation with Chief Designer Shruthi Ajith.',
-      metaKeywordsBuilder: (loc) => [
-        'bridal blouse ' + loc.toLowerCase(),
-        'customized bridal blouse ' + loc.toLowerCase(),
-        'bridal blouse designer ' + loc.toLowerCase(),
-        'bridal blouse stitching near ' + loc.toLowerCase(),
-        'bridal blouse designer bangalore',
-        'customized bridal blouse bangalore',
-        'wedding blouse tailoring bangalore',
-        'shrusara fashion boutique'
-      ]
+      callText: 'Call Shrusara Fashion Boutique'
     }
   },
 
@@ -1997,6 +2013,128 @@ export const MASTER_SERVICE_TEMPLATES = {
 MASTER_SERVICE_TEMPLATES['Bridal Blouse'] = MASTER_SERVICE_TEMPLATES['Customized Bridal Blouse'];
 MASTER_SERVICE_TEMPLATES['Bridal Lehenga'] = MASTER_SERVICE_TEMPLATES['Customized Bridal Lehenga'];
 
+export function slugifyService(serviceName = '') {
+  return String(serviceName || '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function extractMasterTemplateFromPage(page = {}) {
+  const service = normalizeServiceCategory(page.serviceCategory || 'Ready-to-Wear Saree Customization');
+  const loc = String(page.locationName || '').trim();
+  const sId = slugifyService(service);
+
+  // Helper to reverse location into {Location}
+  const toTemplate = (str = '') => {
+    if (!str || typeof str !== 'string') return str || '';
+    if (!loc) return str;
+    const escapedLoc = loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedLoc}\\b`, 'gi');
+    return str.replace(regex, '{Location}');
+  };
+
+  const heroHeading = toTemplate(page.hero?.heading || page.title || `${service} in {Location}, Bangalore`);
+  const metaTitleTpl = toTemplate(page.metaTitle || `${service} in {Location}, Bangalore | Shrusara Fashion Boutique`);
+  const metaDescTpl = toTemplate(page.metaDescription || `Customized ${service} in {Location}, Bangalore.`);
+
+  let keywordsTpl = [];
+  if (Array.isArray(page.metaKeywords)) {
+    keywordsTpl = page.metaKeywords.map(toTemplate);
+  } else if (typeof page.metaKeywords === 'string' && page.metaKeywords) {
+    keywordsTpl = page.metaKeywords.split(',').map((k) => toTemplate(k.trim())).filter(Boolean);
+  } else {
+    keywordsTpl = [
+      `${service.toLowerCase()} in {Location}`,
+      `${service.toLowerCase()} bangalore`,
+      `customized ${service.toLowerCase()}`,
+      `best ${service.toLowerCase()} near {Location}`,
+      'shrusara fashion boutique'
+    ];
+  }
+
+  return {
+    id: sId,
+    serviceCategory: service,
+    serviceName: service,
+    serviceSlug: sId,
+    heroImage: page.featuredImage?.url || page.heroImage || '',
+    featuredImage: {
+      url: page.featuredImage?.url || '',
+      alt: toTemplate(page.featuredImage?.alt || `${service} in {Location}, Bangalore – Shrusara Fashion Boutique`),
+      title: toTemplate(page.featuredImage?.title || `${service} in {Location}`),
+      caption: toTemplate(page.featuredImage?.caption || `100% Customized ${service} tailored by Shrusara Fashion Boutique in Bangalore.`)
+    },
+    titleTemplate: heroHeading,
+    seo: {
+      titleTemplate: heroHeading,
+      metaTitleTemplate: metaTitleTpl,
+      metaDescriptionTemplate: metaDescTpl,
+      metaKeywords: keywordsTpl,
+      canonicalUrlPattern: `/bangalore/${sId}-stitching-{location}`
+    },
+    hero: {
+      badgeTemplate: toTemplate(page.hero?.badge || `100% Customized | {Location}, Bangalore`),
+      headingTemplate: heroHeading,
+      taglineTemplate: toTemplate(page.hero?.tagline || `Bespoke ${service.toLowerCase()} tailored for clients in {Location}, Bangalore.`),
+      highlights: (page.hero?.highlights || []).map(toTemplate),
+      primaryCtaText: page.hero?.primaryCtaText || 'Chat on WhatsApp',
+      primaryCtaMessageTemplate: toTemplate(page.hero?.primaryCtaMessage || `Hi Shrusara! I'd like to know more about ${service} in {Location}.`),
+      secondaryCtaText: page.hero?.secondaryCtaText || 'Call Shrusara Boutique',
+      secondaryCtaLink: page.hero?.secondaryCtaLink || '#contact'
+    },
+    about: {
+      headingTemplate: toTemplate(page.about?.heading || `Customized ${service} in {Location}`),
+      introTemplate: toTemplate(page.about?.intro || ''),
+      descriptionTemplate: toTemplate(page.about?.description || ''),
+      highlights: (page.about?.highlights || []).map((h) => ({
+        title: toTemplate(h.title),
+        description: toTemplate(h.description)
+      }))
+    },
+    whyChooseUs: {
+      headingTemplate: toTemplate(page.whyChooseUs?.heading || `Why Clients in {Location} Choose Shrusara for ${service}`),
+      introTemplate: toTemplate(page.whyChooseUs?.intro || ''),
+      descriptionTemplate: toTemplate(page.whyChooseUs?.description || ''),
+      cards: (page.whyChooseUs?.cards || []).map((c) => ({
+        title: toTemplate(c.title),
+        description: toTemplate(c.description)
+      }))
+    },
+    processSteps: (page.processSteps || []).map((s) => ({
+      stepNumber: s.stepNumber,
+      title: toTemplate(s.title),
+      description: toTemplate(s.description),
+      duration: toTemplate(s.duration)
+    })),
+    gallery: (page.gallery || []).map((g) => ({
+      url: g.url,
+      title: toTemplate(g.title || `${service} in {Location}`),
+      alt: toTemplate(g.alt || `${service} in {Location}, Bangalore – Shrusara Fashion Boutique`),
+      caption: toTemplate(g.caption || '')
+    })),
+    testimonials: (page.testimonials || []).map((t) => ({
+      name: t.name,
+      location: toTemplate(t.location || `{Location}, Bangalore`),
+      rating: t.rating || 5,
+      outfitType: t.outfitType || service,
+      reviewText: toTemplate(t.reviewText)
+    })),
+    faqs: (page.faqs || []).map((f) => ({
+      question: toTemplate(f.question),
+      answer: toTemplate(f.answer)
+    })),
+    cta: {
+      headingTemplate: toTemplate(page.cta?.heading || `Customized ${service} Near {Location}, Bangalore`),
+      subheadingTemplate: toTemplate(page.cta?.subheading || `Book your consultation with Chief Designer Shruthi Ajith today.`),
+      whatsappText: page.cta?.whatsappText || 'Chat on WhatsApp',
+      callText: page.cta?.callText || 'Call Shrusara Boutique'
+    },
+    updatedAt: new Date().toISOString()
+  };
+}
+
 export function slugifyBangalorePage(serviceCategory = 'Bridal Blouse', locationName = 'Bangalore') {
   const normService = normalizeServiceCategory(serviceCategory);
   const serviceSlug = normService
@@ -2015,7 +2153,17 @@ export function slugifyBangalorePage(serviceCategory = 'Bridal Blouse', location
 
 export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', locationName = 'Rajajinagar', overrides = {}) {
   const normService = normalizeServiceCategory(serviceCategory);
-  const master = overrides.masterTemplate || MASTER_SERVICE_TEMPLATES[normService] || MASTER_SERVICE_TEMPLATES[serviceCategory] || MASTER_SERVICE_TEMPLATES['Bridal Blouse'] || MASTER_SERVICE_TEMPLATES['Ready-to-Wear Saree Customization'];
+
+  let cachedMaster = null;
+  if (!overrides.masterTemplate && typeof window !== 'undefined' && window.localStorage) {
+    const sSlug = String(normService || serviceCategory).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const raw = window.localStorage.getItem(`shrusara_master_tpl_${sSlug}`) || window.localStorage.getItem(`shrusara_master_tpl_${normService}`);
+    if (raw) {
+      try { cachedMaster = JSON.parse(raw); } catch {}
+    }
+  }
+
+  const master = overrides.masterTemplate || cachedMaster || MASTER_SERVICE_TEMPLATES[normService] || MASTER_SERVICE_TEMPLATES[serviceCategory] || MASTER_SERVICE_TEMPLATES['Bridal Blouse'] || MASTER_SERVICE_TEMPLATES['Ready-to-Wear Saree Customization'];
   const locObj = overrides.locationObj || overrides.locationData || {};
   const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === String(locationName || '').toLowerCase());
 
@@ -2029,45 +2177,97 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
   };
 
   const loc = locPreset.name;
-  const replaceLoc = (str = '') => String(str || '').replace(/\{Location\}/g, loc);
+  const locSlug = loc.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const serviceSlug = normService.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
-  const title = replaceLoc(overrides.title || `${normService} in ${loc}, Bangalore`);
+  const replaceLoc = (str = '') =>
+    String(str || '')
+      .replace(/\{Location-slug\}/gi, locSlug)
+      .replace(/\{location-slug\}/gi, locSlug)
+      .replace(/\{Location\}/g, loc)
+      .replace(/\[Location\]/g, loc)
+      .replace(/\{location\}/g, loc.toLowerCase())
+      .replace(/\{service-slug\}/gi, serviceSlug)
+      .replace(/\{Service\}/g, normService)
+      .replace(/\{service\}/g, normService.toLowerCase());
+
+  const title = replaceLoc(
+    overrides.title ||
+    overrides.hero?.heading ||
+    master?.hero?.headingTemplate ||
+    master?.seo?.titleTemplate ||
+    master?.titleTemplate ||
+    master?.hero?.heading ||
+    master?.seo?.metaTitleTemplate ||
+    `${normService} in ${loc}, Bangalore`
+  );
   const slug = overrides.slug || slugifyBangalorePage(normService, loc);
-  const metaTitle = replaceLoc(overrides.metaTitle || master.seo.metaTitleTemplate);
-  const metaDescription = replaceLoc(overrides.metaDescription || master.seo.metaDescriptionTemplate);
-  const metaKeywords = overrides.metaKeywords || master.seo.metaKeywordsBuilder(loc);
+  const metaTitle = replaceLoc(overrides.metaTitle || master?.seo?.metaTitleTemplate || `${normService} in ${loc}, Bangalore | Shrusara Fashion Boutique`);
+  const metaDescription = replaceLoc(overrides.metaDescription || master?.seo?.metaDescriptionTemplate || `Customized ${normService} in ${loc}, Bangalore.`);
+
+  let metaKeywords = [];
+  if (Array.isArray(overrides.metaKeywords) && overrides.metaKeywords.length) {
+    metaKeywords = overrides.metaKeywords.map(replaceLoc);
+  } else if (typeof overrides.metaKeywords === 'string' && overrides.metaKeywords) {
+    metaKeywords = overrides.metaKeywords.split(',').map((k) => replaceLoc(k.trim())).filter(Boolean);
+  } else if (Array.isArray(master?.seo?.metaKeywords) && master.seo.metaKeywords.length) {
+    metaKeywords = master.seo.metaKeywords.map(replaceLoc);
+  } else if (typeof master?.seo?.metaKeywords === 'string' && master.seo.metaKeywords) {
+    metaKeywords = master.seo.metaKeywords.split(',').map((k) => replaceLoc(k.trim())).filter(Boolean);
+  } else if (typeof master?.seo?.metaKeywordsTemplate === 'string' && master.seo.metaKeywordsTemplate) {
+    metaKeywords = master.seo.metaKeywordsTemplate.split(',').map((k) => replaceLoc(k.trim())).filter(Boolean);
+  } else if (typeof master?.seo?.metaKeywordsBuilder === 'function') {
+    metaKeywords = master.seo.metaKeywordsBuilder(loc);
+  } else {
+    metaKeywords = [
+      `${normService.toLowerCase()} in ${loc}`,
+      `${normService.toLowerCase()} bangalore`,
+      `customized ${normService.toLowerCase()}`,
+      `best ${normService.toLowerCase()} near ${loc}`,
+      'shrusara fashion boutique'
+    ];
+  }
 
   const hero = {
-    badge: replaceLoc(overrides.hero?.badge || master.hero.badgeTemplate),
-    heading: replaceLoc(overrides.hero?.heading || master.hero.headingTemplate),
-    tagline: replaceLoc(overrides.hero?.tagline || master.hero.taglineTemplate),
-    highlights: overrides.hero?.highlights?.length ? overrides.hero.highlights : master.hero.highlights,
-    primaryCtaText: overrides.hero?.primaryCtaText || master.hero.primaryCtaText,
-    primaryCtaMessage: replaceLoc(overrides.hero?.primaryCtaMessage || master.hero.primaryCtaMessageTemplate),
-    secondaryCtaText: overrides.hero?.secondaryCtaText || master.hero.secondaryCtaText,
-    secondaryCtaLink: overrides.hero?.secondaryCtaLink || master.hero.secondaryCtaLink
+    badge: replaceLoc(overrides.hero?.badge || master?.hero?.badgeTemplate || `100% Customized | ${loc}, Bangalore`),
+    heading: replaceLoc(
+      overrides.hero?.heading ||
+      overrides.title ||
+      master?.hero?.headingTemplate ||
+      master?.seo?.titleTemplate ||
+      master?.titleTemplate ||
+      master?.hero?.heading ||
+      `${normService} in ${loc}, Bangalore`
+    ),
+    tagline: replaceLoc(overrides.hero?.tagline || master?.hero?.taglineTemplate || `Bespoke ${normService} tailored for clients in ${loc}, Bangalore.`),
+    highlights: (overrides.hero?.highlights?.length ? overrides.hero.highlights : (master?.hero?.highlights || [])).map(replaceLoc),
+    primaryCtaText: overrides.hero?.primaryCtaText || master?.hero?.primaryCtaText || 'Chat on WhatsApp',
+    primaryCtaMessage: replaceLoc(overrides.hero?.primaryCtaMessage || master?.hero?.primaryCtaMessageTemplate || `Hi Shrusara! I'd like to know more about ${normService} in ${loc}.`),
+    secondaryCtaText: overrides.hero?.secondaryCtaText || master?.hero?.secondaryCtaText || 'Call Shrusara Boutique',
+    secondaryCtaLink: overrides.hero?.secondaryCtaLink || master?.hero?.secondaryCtaLink || '#contact'
   };
 
   const about = {
-    heading: replaceLoc(overrides.about?.heading || master.about.headingTemplate),
-    intro: replaceLoc(overrides.about?.intro || master.about.introTemplate),
-    description: replaceLoc(overrides.about?.description || master.about.descriptionTemplate),
-    highlights: (overrides.about?.highlights?.length ? overrides.about.highlights : master.about.highlights).map((h) => ({
+    heading: replaceLoc(overrides.about?.heading || master?.about?.headingTemplate || `Customized ${normService} in ${loc}`),
+    intro: replaceLoc(overrides.about?.intro || master?.about?.introTemplate || ''),
+    description: replaceLoc(overrides.about?.description || master?.about?.descriptionTemplate || ''),
+    highlights: (overrides.about?.highlights?.length ? overrides.about.highlights : (master?.about?.highlights || [])).map((h) => ({
       title: replaceLoc(h.title),
       description: replaceLoc(h.description)
     }))
   };
 
   const whyChooseUs = {
-    heading: replaceLoc(overrides.whyChooseUs?.heading || master.whyChooseUs.headingTemplate),
-    intro: replaceLoc(overrides.whyChooseUs?.intro || master.whyChooseUs.introTemplate),
-    cards: (overrides.whyChooseUs?.cards?.length ? overrides.whyChooseUs.cards : master.whyChooseUs.cards).map((c) => ({
+    heading: replaceLoc(overrides.whyChooseUs?.heading || master?.whyChooseUs?.headingTemplate || `Why Clients in ${loc} Choose Shrusara for ${normService}`),
+    intro: replaceLoc(overrides.whyChooseUs?.intro || master?.whyChooseUs?.introTemplate || master?.whyChooseUs?.intro || master?.whyChooseUs?.descriptionTemplate || ''),
+    description: replaceLoc(overrides.whyChooseUs?.description || master?.whyChooseUs?.descriptionTemplate || master?.whyChooseUs?.description || master?.whyChooseUs?.introTemplate || ''),
+    cards: (overrides.whyChooseUs?.cards?.length ? overrides.whyChooseUs.cards : (master?.whyChooseUs?.cards || [])).map((c) => ({
       title: replaceLoc(c.title),
       description: replaceLoc(c.description)
     }))
   };
 
-  const processSteps = (overrides.processSteps?.length ? overrides.processSteps : master.processSteps).map((s) => ({
+  const processSteps = (overrides.processSteps?.length ? overrides.processSteps : (master?.processSteps || [])).map((s) => ({
     stepNumber: s.stepNumber,
     title: replaceLoc(s.title),
     description: replaceLoc(s.description),
@@ -2081,7 +2281,7 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
     caption: replaceLoc(g.caption || '')
   }));
 
-  const testimonials = (overrides.testimonials?.length ? overrides.testimonials : master.testimonials).map((t) => ({
+  const testimonials = (overrides.testimonials?.length ? overrides.testimonials : (master?.testimonials || [])).map((t) => ({
     name: t.name,
     location: replaceLoc(t.location || `${loc}, Bangalore`),
     rating: t.rating || 5,
@@ -2089,7 +2289,7 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
     reviewText: replaceLoc(t.reviewText)
   }));
 
-  const faqs = (overrides.faqs?.length ? overrides.faqs : master.faqs).map((f) => ({
+  const faqs = (overrides.faqs?.length ? overrides.faqs : (master?.faqs || [])).map((f) => ({
     question: replaceLoc(f.question),
     answer: replaceLoc(f.answer)
   }));
@@ -2097,13 +2297,19 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
   const proximity = {
     locationName: loc,
     areaGroup: locPreset.areaGroup || overrides.areaGroup || 'Bangalore West',
-    boutiqueAddress: overrides.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
-    landmark: locPreset.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
-    travelTime: locPreset.travelTime || '10-15 mins',
-    distanceNote: locPreset.distanceNote || `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`,
-    nearbyAreas: locPreset.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar'],
-    workingHours: overrides.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
-    googleMapsUrl: overrides.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
+    boutiqueAddress: overrides.proximity?.boutiqueAddress || master?.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
+    landmark: locPreset.landmark || overrides.proximity?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
+    travelTime: locPreset.travelTime || overrides.proximity?.travelTime || '10-15 mins',
+    distanceNote: replaceLoc(
+      overrides.proximity?.distanceNote ||
+      master?.proximity?.defaultDistanceNote ||
+      master?.proximity?.distanceNote ||
+      locPreset.distanceNote ||
+      `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`
+    ),
+    nearbyAreas: locPreset.nearbyAreas || overrides.proximity?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar'],
+    workingHours: overrides.proximity?.workingHours || master?.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
+    googleMapsUrl: overrides.proximity?.googleMapsUrl || master?.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
     boutiqueVisitOptions: overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : [
       { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
       { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
@@ -2113,14 +2319,14 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
   };
 
   const cta = {
-    heading: replaceLoc(overrides.cta?.heading || master.cta.headingTemplate),
-    subheading: replaceLoc(overrides.cta?.subheading || master.cta.subheadingTemplate),
-    whatsappText: overrides.cta?.whatsappText || master.cta.whatsappText,
-    callText: overrides.cta?.callText || master.cta.callText
+    heading: replaceLoc(overrides.cta?.heading || master?.cta?.headingTemplate || `Customized ${normService} Near ${loc}, Bangalore`),
+    subheading: replaceLoc(overrides.cta?.subheading || master?.cta?.subheadingTemplate || `Book your consultation with Chief Designer Shruthi Ajith today.`),
+    whatsappText: overrides.cta?.whatsappText || master?.cta?.whatsappText || 'Chat on WhatsApp',
+    callText: overrides.cta?.callText || master?.cta?.callText || 'Call Shrusara Boutique'
   };
 
   const featuredImage = overrides.featuredImage?.url ? overrides.featuredImage : {
-    url: master.heroImage,
+    url: master?.heroImage || '/bridal/bridalblow/hero-bridal.webp',
     alt: `${normService} in ${loc}, Bangalore – Shrusara Fashion Boutique`,
     title: `${normService} in ${loc}`,
     caption: `100% Customized ${normService} tailored by Shrusara Fashion Boutique in Bangalore.`
