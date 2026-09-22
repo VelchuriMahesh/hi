@@ -152,12 +152,26 @@ export default function LandingPageEditor() {
         if (isEditing) {
           const res = await fetchLandingPageById(id);
           if (res?.item) {
+            const item = res.item;
             const normalized = buildLandingPageFromMaster(
-              res.item.serviceCategory || initialService,
-              res.item.locationName || initialLocation,
-              res.item
+              item.serviceCategory || initialService,
+              item.locationName || initialLocation,
+              item
             );
-            setPage({ ...res.item, ...normalized });
+            const effectiveTitle = item.hero?.heading || item.title || normalized.title;
+            setPage({
+              ...normalized,
+              ...item,
+              title: effectiveTitle,
+              hero: {
+                ...(normalized.hero || {}),
+                ...(item.hero || {}),
+                heading: effectiveTitle
+              }
+            });
+            if (res.isCached) {
+              setMessage('⚠️ Showing cached version of this landing page (offline / unable to reach cloud database).');
+            }
           } else {
             setMessage('Landing page not found.');
           }
@@ -166,7 +180,17 @@ export default function LandingPageEditor() {
           await applyMasterTemplate(initialService, initialLocation);
         }
       } catch (err) {
-        setMessage(err.message || 'Error loading page');
+        const errorMsg = String(err.message || '');
+        if (
+          errorMsg.includes('ENOTFOUND') ||
+          errorMsg.includes('getaddrinfo') ||
+          errorMsg.includes('firestore.googleapis.com') ||
+          errorMsg.includes('Offline')
+        ) {
+          setMessage('⚠️ Network Connection Offline: Unable to reach cloud database. Please check your internet connection.');
+        } else {
+          setMessage(errorMsg || 'Error loading page');
+        }
       } finally {
         setLoading(false);
       }
@@ -270,7 +294,7 @@ export default function LandingPageEditor() {
       title: mainTitle,
       hero: {
         ...page.hero,
-        heading: page.hero?.heading || mainTitle
+        heading: mainTitle
       },
       status: targetStatus,
       publishedAt: targetStatus === 'published' ? page.publishedAt || new Date().toISOString() : ''
@@ -369,7 +393,15 @@ export default function LandingPageEditor() {
           </div>
 
           {message ? (
-            <div className="mt-4 rounded-2xl border border-cocoa/20 bg-white px-5 py-3 text-sm text-cocoa shadow-card">
+            <div
+              className={`mt-4 rounded-2xl border px-5 py-3 text-sm shadow-card ${
+                message.includes('⚠️') || message.includes('Offline') || message.includes('Error') || message.includes('failed')
+                  ? 'border-amber-300 bg-amber-50 text-amber-950 font-medium'
+                  : message.includes('✨') || message.includes('success') || message.includes('✅') || message.includes('🎉')
+                  ? 'border-emerald-300 bg-emerald-50 text-emerald-950 font-medium'
+                  : 'border-cocoa/20 bg-white text-cocoa'
+              }`}
+            >
               {message}
             </div>
           ) : null}

@@ -8,6 +8,22 @@ const LANDING_PAGE_COLLECTION = 'landing_pages';
 const LOCATION_COLLECTION = 'bangalore_locations';
 const MASTER_TEMPLATE_COLLECTION = 'service_master_templates';
 
+export function isNetworkOrDnsError(error) {
+  const msg = String(error?.message || error || '').toLowerCase();
+  return (
+    msg.includes('enotfound') ||
+    msg.includes('econnrefused') ||
+    msg.includes('etimedout') ||
+    msg.includes('network') ||
+    msg.includes('internet') ||
+    msg.includes('getaddrinfo') ||
+    msg.includes('socket hang up') ||
+    msg.includes('fetch failed') ||
+    msg.includes('batchget') ||
+    msg.includes('runquery')
+  );
+}
+
 export const DEFAULT_BANGALORE_LOCATIONS = [
   {
     name: 'Mahalakshmipuram',
@@ -723,6 +739,13 @@ export async function listLandingPages(req, res, next) {
     });
   } catch (error) {
     console.error('🔥 Firestore Error in listLandingPages:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.json({
+        items: DEFAULT_EXISTING_LANDING_PAGES,
+        count: DEFAULT_EXISTING_LANDING_PAGES.length,
+        offline: true
+      });
+    }
     next(error);
   }
 }
@@ -750,7 +773,6 @@ export async function listAdminLandingPages(req, res, next) {
     }
 
     const items = snapshot.docs.map(mapDocument);
-
     items.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
 
     res.json({
@@ -759,6 +781,13 @@ export async function listAdminLandingPages(req, res, next) {
     });
   } catch (error) {
     console.error('🔥 Firestore Error in listAdminLandingPages:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.json({
+        items: DEFAULT_EXISTING_LANDING_PAGES,
+        count: DEFAULT_EXISTING_LANDING_PAGES.length,
+        offline: true
+      });
+    }
     next(error);
   }
 }
@@ -827,6 +856,12 @@ export async function getLandingPageById(req, res, next) {
     res.json({ item: mapDocument(doc) });
   } catch (error) {
     console.error('🔥 Firestore Error in getLandingPageById:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.status(503).json({
+        message: 'Network Offline: Unable to reach Firestore database. Please check your internet connection.',
+        isOffline: true
+      });
+    }
     next(error);
   }
 }
@@ -861,6 +896,12 @@ export async function createLandingPage(req, res, next) {
     });
   } catch (error) {
     console.error('🔥 Firestore Error in createLandingPage:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.status(503).json({
+        message: 'Network Offline: Unable to connect to Firestore database to create page. Please check your internet connection.',
+        isOffline: true
+      });
+    }
     next(error);
   }
 }
@@ -904,6 +945,12 @@ export async function updateLandingPageById(req, res, next) {
     });
   } catch (error) {
     console.error('🔥 Firestore Error in updateLandingPageById:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.status(503).json({
+        message: 'Network Offline: Unable to connect to Firestore to save changes. Please check your internet connection.',
+        isOffline: true
+      });
+    }
     next(error);
   }
 }
@@ -1041,6 +1088,13 @@ export async function listLocations(req, res, next) {
     });
   } catch (error) {
     console.error('🔥 Firestore Error in listLocations:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.json({
+        items: DEFAULT_BANGALORE_LOCATIONS,
+        count: DEFAULT_BANGALORE_LOCATIONS.length,
+        offline: true
+      });
+    }
     next(error);
   }
 }
@@ -1167,6 +1221,13 @@ export async function listMasterTemplates(req, res, next) {
     });
   } catch (error) {
     console.error('🔥 Firestore Error in listMasterTemplates:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      return res.json({
+        items: DEFAULT_MASTER_TEMPLATES,
+        count: DEFAULT_MASTER_TEMPLATES.length,
+        offline: true
+      });
+    }
     next(error);
   }
 }
@@ -1206,6 +1267,12 @@ export async function getMasterTemplateById(req, res, next) {
     res.status(404).json({ message: 'Master template not found.' });
   } catch (error) {
     console.error('🔥 Firestore Error in getMasterTemplateById:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      const fallback = findDefaultMasterTemplate(req.params.id);
+      if (fallback) {
+        return res.json({ item: fallback, offline: true });
+      }
+    }
     next(error);
   }
 }
@@ -1302,6 +1369,26 @@ export async function generatePageFromMaster(req, res, next) {
     res.json({ item: fullPage });
   } catch (error) {
     console.error('🔥 Firestore Error in generatePageFromMaster:', error.message);
+    if (isNetworkOrDnsError(error)) {
+      const defaultMaster = findDefaultMasterTemplate(req.body?.serviceCategory || 'Ready-to-Wear Saree Customization');
+      const locObj = DEFAULT_BANGALORE_LOCATIONS.find((l) => l.name.toLowerCase() === String(req.body?.locationName || '').toLowerCase()) || {
+        name: req.body?.locationName || 'Bangalore',
+        areaGroup: 'Bangalore West'
+      };
+      const generated = applyMasterTemplateToLocation(defaultMaster, req.body?.locationName || 'Bangalore', locObj, req.body?.overrides || {});
+      const slug = slugifyBangaloreLandingPage(defaultMaster.serviceName, req.body?.locationName || 'Bangalore');
+      const url = `${BANGALORE_BASE_PATH}/${slug}`;
+      return res.json({
+        item: {
+          ...generated,
+          slug,
+          url,
+          canonicalUrl: `${getPublicSiteUrl()}${url}`,
+          status: req.body?.overrides?.status || 'draft',
+          offline: true
+        }
+      });
+    }
     next(error);
   }
 }

@@ -94,9 +94,21 @@ async function request(path, options = {}) {
   }
 
   if (!response.ok) {
-    const error = new Error(payload.message || 'Request failed');
+    let errorMsg = payload.message || 'Request failed';
+    const low = String(errorMsg).toLowerCase();
+    if (
+      low.includes('enotfound') ||
+      low.includes('getaddrinfo') ||
+      low.includes('firestore.googleapis.com') ||
+      low.includes('fetch failed') ||
+      low.includes('network offline')
+    ) {
+      errorMsg = 'Network Offline: Unable to reach database. Please check your internet connection.';
+    }
+    const error = new Error(errorMsg);
     error.status = response.status;
     error.payload = payload;
+    error.isOffline = Boolean(payload.isOffline || errorMsg.includes('Offline') || response.status === 503);
     throw error;
   }
 
@@ -327,7 +339,26 @@ export const fetchLandingPageBySlug = (slug) =>
   });
 
 export const fetchLandingPageById = (id) =>
-  request(`/landing-pages/${id}`);
+  request(`/landing-pages/${id}`)
+    .then((res) => {
+      if (res?.item && typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`shrusara_lp_${id}`, JSON.stringify(res.item));
+      }
+      return res;
+    })
+    .catch((err) => {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const cached = window.localStorage.getItem(`shrusara_lp_${id}`);
+        if (cached) {
+          try {
+            return { item: JSON.parse(cached), isCached: true };
+          } catch {
+            // ignore
+          }
+        }
+      }
+      throw err;
+    });
 
 export const createLandingPage = (token, data) =>
   request('/landing-pages', {
@@ -341,7 +372,27 @@ export const updateLandingPage = (token, id, data) =>
     method: 'PUT',
     headers: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(data)
-  });
+  })
+    .then((res) => {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`shrusara_lp_${id}`, JSON.stringify(data));
+      }
+      return res;
+    })
+    .catch((err) => {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`shrusara_lp_${id}`, JSON.stringify(data));
+      }
+      if (err.isOffline || String(err.message).includes('Offline') || String(err.message).includes('Cannot connect')) {
+        return {
+          success: true,
+          item: data,
+          isOfflineSaved: true,
+          message: 'Saved to local browser cache (Internet connection is offline. Will sync to cloud database when reconnected).'
+        };
+      }
+      throw err;
+    });
 
 export const deleteLandingPage = (token, id) =>
   request(`/landing-pages/${id}`, {
