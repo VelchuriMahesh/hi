@@ -57,9 +57,15 @@ export default function LandingPageEditor() {
   const initialLocation = queryLocation || 'Malleshwaram';
   const [isApplyingMaster, setIsApplyingMaster] = useState(false);
 
-  // Main Form State
+  // Main Form State: Pre-loaded synchronously so ALL fields are 100% filled from Master Template instantly
   const [page, setPage] = useState(() => {
-    const locObj = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === initialLocation.toLowerCase());
+    const locObj = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === initialLocation.toLowerCase()) || {
+      name: initialLocation,
+      areaGroup: 'Bangalore West',
+      landmark: '10-12 mins via Link Road / Chord Road',
+      travelTime: '10-15 mins',
+      distanceNote: '10-15 minutes from 8th Cross & Margosa Road, Malleshwaram.'
+    };
     return buildLandingPageFromMaster(initialService, initialLocation, { locationObj: locObj });
   });
 
@@ -89,7 +95,21 @@ export default function LandingPageEditor() {
           return;
         }
       } catch (err) {
-        console.warn('Backend master template fetch failed, falling back to local master template:', err);
+        console.warn('Backend master template fetch failed, checking local cache & master presets:', err);
+      }
+
+      // Check localStorage for saved master template
+      let localMaster = null;
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const sKey = String(srv).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        const raw = window.localStorage.getItem(`shrusara_master_tpl_${sKey}`);
+        if (raw) {
+          try {
+            localMaster = JSON.parse(raw);
+          } catch {
+            // ignore
+          }
+        }
       }
 
       const locObj = (locations?.length ? locations : BANGALORE_LOCATIONS_PRESET).find(
@@ -98,6 +118,7 @@ export default function LandingPageEditor() {
 
       const generated = buildLandingPageFromMaster(srv, loc, {
         ...currentOverrides,
+        masterTemplate: localMaster,
         locationObj: locObj
       });
 
@@ -186,6 +207,13 @@ export default function LandingPageEditor() {
   }
 
   async function handleReloadMasterTemplate() {
+    if (
+      !window.confirm(
+        `Pull latest content from "${page.serviceCategory}" Master Template for "${page.locationName}"?\n\nThis will re-populate all 10 sections with the customized Master Template copy saved in Master Templates CMS.`
+      )
+    ) {
+      return;
+    }
     await applyMasterTemplate(page.serviceCategory, page.locationName);
   }
 
@@ -236,8 +264,14 @@ export default function LandingPageEditor() {
     setMessage('');
 
     const targetStatus = newStatus || page.status || 'draft';
+    const mainTitle = page.title || page.hero?.heading || '';
     const payload = {
       ...page,
+      title: mainTitle,
+      hero: {
+        ...page.hero,
+        heading: page.hero?.heading || mainTitle
+      },
       status: targetStatus,
       publishedAt: targetStatus === 'published' ? page.publishedAt || new Date().toISOString() : ''
     };
@@ -423,7 +457,7 @@ export default function LandingPageEditor() {
                       title="Re-populate all 10 sections from master template"
                       className="rounded-xl bg-cocoa px-3.5 py-2 text-xs font-semibold text-white shadow hover:bg-cocoa/90 transition disabled:opacity-50 flex items-center gap-1.5"
                     >
-                      {isApplyingMaster ? 'Syncing...' : '🔄 Reload Template'}
+                      {isApplyingMaster ? 'Syncing...' : '🔄 Sync from Master'}
                     </button>
 
                     <Link
@@ -564,7 +598,17 @@ export default function LandingPageEditor() {
                     type="text"
                     required
                     value={page.title}
-                    onChange={(e) => setPage({ ...page, title: e.target.value })}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setPage((prev) => ({
+                        ...prev,
+                        title: val,
+                        hero: {
+                          ...prev.hero,
+                          heading: val
+                        }
+                      }));
+                    }}
                     className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
                   />
                 </div>
@@ -677,14 +721,19 @@ export default function LandingPageEditor() {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                      Hero Heading
+                      Hero Heading (H1)
                     </label>
                     <input
                       type="text"
-                      value={page.hero?.heading || ''}
-                      onChange={(e) =>
-                        setPage({ ...page, hero: { ...page.hero, heading: e.target.value } })
-                      }
+                      value={page.hero?.heading || page.title || ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setPage((prev) => ({
+                          ...prev,
+                          title: val,
+                          hero: { ...prev.hero, heading: val }
+                        }));
+                      }}
                       className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
                     />
                   </div>

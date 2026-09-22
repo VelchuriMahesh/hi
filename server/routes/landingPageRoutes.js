@@ -15,6 +15,7 @@ import {
   listMasterTemplates,
   saveLocation,
   saveMasterTemplate,
+  syncLandingPageFromMaster,
   trackLandingPageView,
   updateLandingPageById
 } from '../controllers/landingPageController.js';
@@ -38,6 +39,7 @@ router.post('/master-templates', requireAuth, saveMasterTemplate);
 router.post('/master-templates/:id', requireAuth, saveMasterTemplate);
 router.put('/master-templates/:id', requireAuth, saveMasterTemplate);
 router.post('/master-templates/batch-generate', requireAuth, batchGenerateLandingPages);
+router.post('/:id/sync-master', requireAuth, syncLandingPageFromMaster);
 router.post('/', requireAuth, createLandingPage);
 router.post('/:id/duplicate', requireAuth, duplicateLandingPageById);
 router.post('/:id/view', trackLandingPageView);

@@ -8,6 +8,7 @@ import {
   duplicateLandingPage,
   fetchAdminLandingPages,
   fetchBangaloreLocations,
+  syncLandingPageFromMaster,
   updateLandingPage
 } from '../services/api';
 import { BANGALORE_BASE_PATH, SERVICE_CATEGORIES, normalizeServiceCategory } from '../utils/bangaloreLandingPage';
@@ -30,8 +31,10 @@ export default function LandingPageManager() {
   const [batchService, setBatchService] = useState(SERVICE_CATEGORIES[0]);
   const [batchLocations, setBatchLocations] = useState([]);
   const [batchStatus, setBatchStatus] = useState('draft');
+  const [batchOverwrite, setBatchOverwrite] = useState(true);
   const [batchGenerating, setBatchGenerating] = useState(false);
   const [batchResult, setBatchResult] = useState(null);
+  const [syncingId, setSyncingId] = useState(null);
 
   function toggleBatchLocation(name) {
     setBatchLocations((prev) =>
@@ -61,17 +64,74 @@ export default function LandingPageManager() {
     try {
       const payload = {
         serviceCategory: batchService,
+        locationNames: batchLocations,
         locations: batchLocations,
-        status: batchStatus
+        status: batchStatus,
+        overwriteExisting: batchOverwrite
       };
       const res = await batchGenerateLandingPages(token, payload);
       setBatchResult(res);
-      setMessage(res.message || 'Batch generation completed.');
+      setMessage(`🎉 ${res.message || 'Batch generation completed.'}`);
       await loadData();
     } catch (err) {
       alert(err.message || 'Batch generation failed.');
     } finally {
       setBatchGenerating(false);
+    }
+  }
+
+  async function handleSyncPage(page) {
+    const token = getAdminToken();
+    if (!token) return;
+
+    if (!window.confirm(`Sync "${page.locationName} - ${page.serviceCategory}" with its latest Master Template?\n\nThis will refresh all 10 sections with the content saved in Master Templates CMS.`)) {
+      return;
+    }
+
+    setSyncingId(page.id);
+    setMessage('');
+    try {
+      const res = await syncLandingPageFromMaster(token, page.id);
+      setMessage(`✅ ${res.message || 'Page refreshed successfully from Master Template!'}`);
+      await loadData();
+    } catch (err) {
+      alert(err.message || 'Failed to sync with Master Template.');
+    } finally {
+      setSyncingId(null);
+    }
+  }
+
+  async function handleSyncAllForService(serviceToSync) {
+    const token = getAdminToken();
+    if (!token) return;
+
+    const targetService = serviceToSync || (selectedService !== 'all' ? selectedService : batchService);
+    const matchingPages = pages.filter((p) => String(p.serviceCategory || '').toLowerCase() === String(targetService).toLowerCase());
+    if (matchingPages.length === 0) {
+      alert(`No landing pages found for "${targetService}". Use "⚡ Batch Generate" to create them first!`);
+      return;
+    }
+
+    if (!window.confirm(`Sync all ${matchingPages.length} landing pages for "${targetService}" with its latest Master Template? This will update each location page with the latest Master Template copy.`)) {
+      return;
+    }
+
+    setLoading(true);
+    setMessage('');
+    try {
+      const locNames = matchingPages.map((p) => p.locationName).filter(Boolean);
+      const res = await batchGenerateLandingPages(token, {
+        serviceCategory: targetService,
+        locationNames: locNames,
+        locations: locNames,
+        overwriteExisting: true
+      });
+      setMessage(`✅ Successfully synced ${res.createdCount || matchingPages.length} landing pages for "${targetService}" with latest Master Template!`);
+      await loadData();
+    } catch (err) {
+      alert(err.message || 'Failed to sync pages.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -218,17 +278,23 @@ export default function LandingPageManager() {
                 type="button"
                 onClick={() => {
                   setBatchLocations(locations.map((l) => l.name));
+                  if (selectedService !== 'all') {
+                    setBatchService(selectedService);
+                  }
                   setIsBatchModalOpen(true);
                   setBatchResult(null);
                 }}
                 className="rounded-xl bg-amber-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-amber-700 transition"
               >
-                ⚡ Batch Generate Pages
+                ⚡ Batch Generate / Sync Pages
               </button>
               <Link to="/admin/master-templates" className="button-secondary text-sm">
                 ✨ Master Templates
               </Link>
-              <Link to="/admin/landing-pages/new" className="button-primary text-sm font-semibold">
+              <Link
+                to={`/admin/landing-pages/new${selectedService !== 'all' ? `?service=${encodeURIComponent(selectedService)}` : ''}`}
+                className="button-primary text-sm font-semibold"
+              >
                 + New Landing Page
               </Link>
               <Link to="/admin/locations" className="button-secondary text-sm">
@@ -395,6 +461,15 @@ export default function LandingPageManager() {
                         </td>
                         <td className="py-3.5 pl-3 pr-4 text-right">
                           <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              disabled={syncingId === page.id}
+                              onClick={() => handleSyncPage(page)}
+                              className="rounded-lg border border-cocoa/30 bg-linen px-2.5 py-1 text-xs font-semibold text-cocoa hover:bg-cocoa hover:text-white transition disabled:opacity-50 flex items-center gap-1"
+                              title="Sync all 10 sections of this page with the latest Master Template for this service"
+                            >
+                              {syncingId === page.id ? 'Syncing...' : '🔄 Sync Master'}
+                            </button>
                             <a
                               href={`/bangalore/${page.slug}`}
                               target="_blank"
@@ -511,6 +586,18 @@ export default function LandingPageManager() {
                 </div>
               </div>
 
+              <label className="flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-xs text-amber-900 font-medium cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={batchOverwrite}
+                  onChange={(e) => setBatchOverwrite(e.target.checked)}
+                  className="rounded accent-cocoa h-4 w-4 mt-0.5"
+                />
+                <span>
+                  <strong>Overwrite / Sync Existing Pages:</strong> If checked, locations that already exist will be updated with the latest content saved in the Master Template.
+                </span>
+              </label>
+
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1">
                   Target Bangalore Locations ({batchLocations.length} selected)
@@ -544,9 +631,9 @@ export default function LandingPageManager() {
                 <div className="rounded-2xl border border-emerald-300 bg-emerald-50 p-4 text-xs text-emerald-900">
                   <p className="font-bold text-sm">🎉 {batchResult.message}</p>
                   <div className="mt-2 grid grid-cols-3 gap-2">
-                    <div>Total Processed: <strong>{batchResult.total}</strong></div>
-                    <div>Newly Created: <strong>{batchResult.created}</strong></div>
-                    <div>Updated: <strong>{batchResult.updated}</strong></div>
+                    <div>Total Processed: <strong>{batchResult.total ?? batchLocations.length}</strong></div>
+                    <div>Created / Updated: <strong>{batchResult.createdCount ?? batchResult.created ?? 0}</strong></div>
+                    <div>Skipped: <strong>{batchResult.skippedCount ?? batchResult.skipped ?? 0}</strong></div>
                   </div>
                 </div>
               )}
@@ -568,7 +655,7 @@ export default function LandingPageManager() {
               >
                 {batchGenerating
                   ? 'Generating Pages...'
-                  : `⚡ Generate ${batchLocations.length} Pages Now`}
+                  : `⚡ ${batchOverwrite ? 'Generate & Sync' : 'Generate'} ${batchLocations.length} Pages Now`}
               </button>
             </div>
           </div>

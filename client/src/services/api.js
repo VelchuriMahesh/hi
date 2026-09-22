@@ -455,3 +455,9 @@ export const batchGenerateLandingPages = (token, data) =>
     body: JSON.stringify(data)
   });
 
+export const syncLandingPageFromMaster = (token, id) =>
+  request(`/landing-pages/${id}/sync-master`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+

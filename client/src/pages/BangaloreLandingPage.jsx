@@ -263,7 +263,7 @@ export default function BangaloreLandingPage() {
 
                 {/* Main H1 */}
                 <h1 className="mt-4 font-heading text-3xl font-normal leading-tight text-ink sm:text-4xl lg:text-5xl">
-                  {hero.heading || `${serviceCategory} in ${locationName}, Bangalore`}
+                  {hero.heading || title || `${serviceCategory} in ${locationName}, Bangalore`}
                 </h1>
 
                 {/* Subtitle */}
