@@ -409,24 +409,33 @@ export async function getEffectiveMasterTemplate(serviceCategory) {
 
       const normSlug = slugify(norm);
       const normSlugWithAnd = norm.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      const normLower = norm.trim().toLowerCase();
 
-      const matched = templates.find((t) => {
-        const tName = String(t.serviceName || '').toLowerCase();
-        const tCat = String(t.serviceCategory || '').toLowerCase();
-        const tId = String(t.id || '').toLowerCase();
-        const tSlug = String(t.serviceSlug || '').toLowerCase();
-
-        return (
-          tName === norm.toLowerCase() ||
-          tCat === norm.toLowerCase() ||
-          tId === normSlug ||
-          tId === normSlugWithAnd ||
-          tSlug === normSlug ||
-          tSlug === normSlugWithAnd ||
-          tName.includes(norm.toLowerCase()) ||
-          norm.toLowerCase().includes(tName)
-        );
+      // PRIORITY 1: Exact ID or exact slug match (highest precision)
+      let matched = templates.find((t) => {
+        const tId = String(t.id || '').trim().toLowerCase();
+        const tSlug = String(t.serviceSlug || '').trim().toLowerCase();
+        return tId === normSlug || tId === normSlugWithAnd || tSlug === normSlug || tSlug === normSlugWithAnd;
       });
+
+      // PRIORITY 2: Exact Name or Category match
+      if (!matched) {
+        matched = templates.find((t) => {
+          const tName = String(t.serviceName || '').trim().toLowerCase();
+          const tCat = String(t.serviceCategory || '').trim().toLowerCase();
+          return tName === normLower || tCat === normLower;
+        });
+      }
+
+      // PRIORITY 3: Fallback only if no exact match exists: substring match
+      if (!matched) {
+        matched = templates.find((t) => {
+          const tName = String(t.serviceName || '').trim().toLowerCase();
+          const tCat = String(t.serviceCategory || '').trim().toLowerCase();
+          return tName.includes(normLower) || normLower.includes(tName) || tCat.includes(normLower);
+        });
+      }
+
       if (matched) return matched;
     }
   } catch (err) {
@@ -441,73 +450,219 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
   const locSlug = slugify(loc);
   const serviceName = toStringValue(master?.serviceName || master?.serviceCategory || 'Custom Boutique Service');
   const serviceSlug = toStringValue(master?.serviceSlug || slugify(serviceName));
-  const replaceLoc = (str = '') =>
-    String(str || '')
+
+  const replaceLoc = (str = '') => {
+    if (typeof str !== 'string') return str;
+    return str
+      .replace(/\{Location-slug\}/gi, locSlug)
+      .replace(/\{location-slug\}/gi, locSlug)
       .replace(/\{Location\}/g, loc)
       .replace(/\[Location\]/g, loc)
-      .replace(/\{location\}/g, loc)
-      .replace(/\{location-slug\}/g, locSlug)
-      .replace(/\{Location-slug\}/g, locSlug)
+      .replace(/\{location\}/g, loc.toLowerCase())
+      .replace(/\{Service-slug\}/gi, serviceSlug)
+      .replace(/\{service-slug\}/gi, serviceSlug)
       .replace(/\{Service\}/g, serviceName)
       .replace(/\[Service\]/g, serviceName)
-      .replace(/\{service\}/g, serviceName)
-      .replace(/\{service-slug\}/g, serviceSlug);
+      .replace(/\{service\}/g, serviceName.toLowerCase());
+  };
 
-  const title = replaceLoc(overrides.title || master?.hero?.headingTemplate || master?.seo?.titleTemplate || master?.seo?.metaTitleTemplate || `${serviceName} in ${loc}, Bangalore`);
-  const metaTitle = replaceLoc(overrides.metaTitle || master?.seo?.metaTitleTemplate || `${serviceName} in ${loc}, Bangalore | Shrusara Fashion Boutique`);
-  const metaDescription = replaceLoc(overrides.metaDescription || master?.seo?.metaDescriptionTemplate || `Customized ${serviceName} in ${loc}, Bangalore with perfect fit and personalized consultation by Shrusara.`);
+  const deepReplace = (obj) => {
+    if (typeof obj === 'string') return replaceLoc(obj);
+    if (Array.isArray(obj)) return obj.map(deepReplace);
+    if (obj !== null && typeof obj === 'object') {
+      const out = {};
+      for (const k of Object.keys(obj)) {
+        out[k] = deepReplace(obj[k]);
+      }
+      return out;
+    }
+    return obj;
+  };
+
+  const title = replaceLoc(
+    overrides.title ||
+    overrides.hero?.heading ||
+    master?.hero?.headingTemplate ||
+    master?.hero?.heading ||
+    master?.seo?.titleTemplate ||
+    master?.seo?.metaTitleTemplate ||
+    master?.titleTemplate ||
+    `${serviceName} in ${loc}, Bangalore`
+  );
+
+  const metaTitle = replaceLoc(
+    overrides.metaTitle ||
+    master?.seo?.metaTitleTemplate ||
+    master?.seo?.titleTemplate ||
+    `${serviceName} in ${loc}, Bangalore | Shrusara Fashion Boutique`
+  );
+
+  const metaDescription = replaceLoc(
+    overrides.metaDescription ||
+    master?.seo?.metaDescriptionTemplate ||
+    master?.seo?.descriptionTemplate ||
+    `Customized ${serviceName} in ${loc}, Bangalore with perfect fit and personalized consultation by Shrusara.`
+  );
 
   const rawKeywords = overrides.metaKeywords || master?.seo?.metaKeywords || master?.seo?.metaKeywordsTemplate || '';
   const metaKeywords = Array.isArray(rawKeywords)
     ? rawKeywords.map(replaceLoc)
     : toArray(rawKeywords).map(replaceLoc);
 
+  const heroHeading = replaceLoc(
+    overrides.hero?.heading ||
+    overrides.title ||
+    master?.hero?.headingTemplate ||
+    master?.hero?.heading ||
+    title
+  );
+
+  const heroBadge = replaceLoc(
+    overrides.hero?.badge ||
+    master?.hero?.badgeTemplate ||
+    master?.hero?.badge ||
+    `100% Customized | ${loc}, Bangalore`
+  );
+
+  const heroTagline = replaceLoc(
+    overrides.hero?.tagline ||
+    master?.hero?.taglineTemplate ||
+    master?.hero?.tagline ||
+    `Customized to your exact measurements in ${loc}, Bangalore.`
+  );
+
+  const heroPrimaryCtaMessage = replaceLoc(
+    overrides.hero?.primaryCtaMessage ||
+    master?.hero?.primaryCtaMessageTemplate ||
+    master?.hero?.primaryCtaMessage ||
+    `Hi Shrusara, I would like to know about ${serviceName} in ${loc}, Bangalore.`
+  );
+
+  const heroHighlights = (
+    overrides.hero?.highlights?.length
+      ? overrides.hero.highlights
+      : (master?.hero?.highlights?.length ? master.hero.highlights : [
+          '1-on-1 Consultation with Chief Designer Shruthi Ajith',
+          'Personalized Measurements & Trial Fitting',
+          'Try Before You Customize (Boutique Exclusive)',
+          'Video Consultation Available Across Bangalore',
+          'Pickup & Courier Delivery Across Bangalore',
+          'Comfortable Customized Stitching'
+        ])
+  ).map(replaceLoc);
+
   const hero = {
-    badge: replaceLoc(overrides.hero?.badge || master?.hero?.badgeTemplate || `100% Customized | ${loc}, Bangalore`),
-    heading: replaceLoc(overrides.hero?.heading || master?.hero?.headingTemplate || `${serviceName} in ${loc}, Bangalore`),
-    tagline: replaceLoc(overrides.hero?.tagline || master?.hero?.taglineTemplate || `Customized to your exact measurements in ${loc}, Bangalore.`),
-    highlights: (overrides.hero?.highlights?.length ? overrides.hero.highlights : master?.hero?.highlights || [
-      '1-on-1 Consultation with Chief Designer Shruthi Ajith',
-      'Personalized Measurements & Trial Fitting',
-      'Try Before You Customize (Boutique Exclusive)',
-      'Video Consultation Available Across Bangalore',
-      'Pickup & Courier Delivery Across Bangalore',
-      'Comfortable Customized Stitching'
-    ]).map(replaceLoc),
+    badge: heroBadge,
+    badgeTemplate: heroBadge,
+    heading: heroHeading,
+    headingTemplate: heroHeading,
+    tagline: heroTagline,
+    taglineTemplate: heroTagline,
+    highlights: heroHighlights,
     primaryCtaText: overrides.hero?.primaryCtaText || master?.hero?.primaryCtaText || 'Chat on WhatsApp',
-    primaryCtaMessage: replaceLoc(overrides.hero?.primaryCtaMessage || master?.hero?.primaryCtaMessageTemplate || `Hi Shrusara, I would like to know about ${serviceName} in ${loc}, Bangalore.`),
+    primaryCtaMessage: heroPrimaryCtaMessage,
+    primaryCtaMessageTemplate: heroPrimaryCtaMessage,
     secondaryCtaText: overrides.hero?.secondaryCtaText || master?.hero?.secondaryCtaText || 'Call Shrusara Boutique',
     secondaryCtaLink: overrides.hero?.secondaryCtaLink || master?.hero?.secondaryCtaLink || '#contact'
   };
 
+  const aboutHeading = replaceLoc(
+    overrides.about?.heading ||
+    master?.about?.headingTemplate ||
+    master?.about?.heading ||
+    `Customized ${serviceName} in ${loc}`
+  );
+
+  const aboutIntro = replaceLoc(
+    overrides.about?.intro ||
+    master?.about?.introTemplate ||
+    master?.about?.intro ||
+    ''
+  );
+
+  const aboutDescription = replaceLoc(
+    overrides.about?.description ||
+    master?.about?.descriptionTemplate ||
+    master?.about?.description ||
+    master?.about?.introTemplate ||
+    aboutIntro ||
+    `At Shrusara Fashion Boutique, we specialize exclusively in bespoke ${serviceName}. Every piece is tailored uniquely to your body contours, measurements, and personal style.`
+  );
+
+  const rawAboutHighlights = overrides.about?.highlights?.length
+    ? overrides.about.highlights
+    : (master?.about?.highlights?.length
+        ? master.about.highlights
+        : (master?.about?.features?.length ? master.about.features : []));
+
+  const aboutHighlights = deepReplace(rawAboutHighlights);
+
   const about = {
-    heading: replaceLoc(overrides.about?.heading || master?.about?.headingTemplate || `Customized ${serviceName} in ${loc}`),
-    intro: replaceLoc(overrides.about?.intro || master?.about?.introTemplate || ''),
-    description: replaceLoc(overrides.about?.description || master?.about?.descriptionTemplate || master?.about?.introTemplate || ''),
-    highlights: (overrides.about?.highlights?.length ? overrides.about.highlights : master?.about?.highlights || []).map((h) => ({
-      title: replaceLoc(h.title),
-      description: replaceLoc(h.description)
-    }))
+    heading: aboutHeading,
+    headingTemplate: aboutHeading,
+    intro: aboutIntro,
+    introTemplate: aboutIntro,
+    description: aboutDescription,
+    descriptionTemplate: aboutDescription,
+    highlights: aboutHighlights
   };
+
+  const whyHeading = replaceLoc(
+    overrides.whyChooseUs?.heading ||
+    master?.whyChooseUs?.headingTemplate ||
+    master?.whyChooseUs?.heading ||
+    `Why Clients in ${loc} Choose Shrusara for ${serviceName}`
+  );
+
+  const whyIntro = replaceLoc(
+    overrides.whyChooseUs?.intro ||
+    master?.whyChooseUs?.introTemplate ||
+    master?.whyChooseUs?.intro ||
+    master?.whyChooseUs?.descriptionTemplate ||
+    ''
+  );
+
+  const whyDescription = replaceLoc(
+    overrides.whyChooseUs?.description ||
+    master?.whyChooseUs?.descriptionTemplate ||
+    master?.whyChooseUs?.description ||
+    master?.whyChooseUs?.introTemplate ||
+    whyIntro ||
+    `Located in Mahalakshmipuram, Shrusara Fashion Boutique is easily accessible from ${loc}.`
+  );
+
+  const whyCards = deepReplace(
+    overrides.whyChooseUs?.cards?.length
+      ? overrides.whyChooseUs.cards
+      : (master?.whyChooseUs?.cards?.length ? master.whyChooseUs.cards : [])
+  );
 
   const whyChooseUs = {
-    heading: replaceLoc(overrides.whyChooseUs?.heading || master?.whyChooseUs?.headingTemplate || `Why Clients in ${loc} Choose Shrusara for ${serviceName}`),
-    intro: replaceLoc(overrides.whyChooseUs?.intro || master?.whyChooseUs?.introTemplate || master?.whyChooseUs?.descriptionTemplate || ''),
-    description: replaceLoc(overrides.whyChooseUs?.description || master?.whyChooseUs?.descriptionTemplate || master?.whyChooseUs?.introTemplate || ''),
-    cards: (overrides.whyChooseUs?.cards?.length ? overrides.whyChooseUs.cards : master?.whyChooseUs?.cards || []).map((c) => ({
-      title: replaceLoc(c.title),
-      description: replaceLoc(c.description)
-    }))
+    heading: whyHeading,
+    headingTemplate: whyHeading,
+    intro: whyIntro,
+    introTemplate: whyIntro,
+    description: whyDescription,
+    descriptionTemplate: whyDescription,
+    cards: whyCards
   };
 
-  const processSteps = (overrides.processSteps?.length ? overrides.processSteps : master?.processSteps || []).map((s, idx) => ({
+  const processSteps = deepReplace(
+    overrides.processSteps?.length
+      ? overrides.processSteps
+      : (master?.processSteps?.length ? master.processSteps : [])
+  ).map((s, idx) => ({
     stepNumber: s.stepNumber || idx + 1,
-    title: replaceLoc(s.title),
-    description: replaceLoc(s.description),
-    duration: replaceLoc(s.duration)
+    title: replaceLoc(s.title || `Step ${idx + 1}`),
+    description: replaceLoc(s.description || ''),
+    duration: replaceLoc(s.duration || '')
   }));
 
-  const gallery = (overrides.gallery?.length ? overrides.gallery : master?.gallery || []).map((g) => ({
+  const gallery = deepReplace(
+    overrides.gallery?.length
+      ? overrides.gallery
+      : (master?.gallery?.length ? master.gallery : [])
+  ).map((g) => ({
     url: g.url,
     title: replaceLoc(g.title || `${serviceName} in ${loc}`),
     alt: replaceLoc(g.alt || `${serviceName} in ${loc}, Bangalore – Shrusara Fashion Boutique`),
@@ -517,37 +672,67 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
   const proximity = {
     locationName: loc,
     areaGroup: locObj.areaGroup || overrides.areaGroup || 'Bangalore West',
-    boutiqueAddress: toStringValue(overrides.proximity?.boutiqueAddress || master?.proximity?.boutiqueAddress || locObj.boutiqueAddress || '106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086'),
-    landmark: toStringValue(overrides.proximity?.landmark || locObj.landmark || master?.proximity?.defaultLandmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar'),
-    travelTime: toStringValue(overrides.proximity?.travelTime || locObj.travelTime || master?.proximity?.defaultTravelTime || '10-15 mins'),
-    distanceNote: replaceLoc(toStringValue(overrides.proximity?.distanceNote || master?.proximity?.defaultDistanceNote || locObj.distanceNote || `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`)),
+    boutiqueAddress: replaceLoc(toStringValue(overrides.proximity?.boutiqueAddress || master?.proximity?.boutiqueAddress || locObj.boutiqueAddress || '106, 6th Main Road, Mahalakshmipuram, Bangalore - 560086')),
+    landmark: replaceLoc(toStringValue(overrides.proximity?.landmark || locObj.landmark || master?.proximity?.landmark || master?.proximity?.defaultLandmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar')),
+    travelTime: replaceLoc(toStringValue(overrides.proximity?.travelTime || locObj.travelTime || master?.proximity?.travelTime || master?.proximity?.defaultTravelTime || '10-15 mins')),
+    distanceNote: replaceLoc(toStringValue(overrides.proximity?.distanceNote || master?.proximity?.distanceNote || master?.proximity?.defaultDistanceNote || locObj.distanceNote || `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`)),
     nearbyAreas: (locObj.nearbyAreas?.length ? locObj.nearbyAreas : null) || toArray(overrides.proximity?.nearbyAreas || master?.proximity?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']),
-    workingHours: toStringValue(overrides.proximity?.workingHours || master?.proximity?.workingHours || locObj.workingHours || 'Monday – Sunday 10:00 AM – 7:30 PM'),
-    googleMapsUrl: toStringValue(overrides.proximity?.googleMapsUrl || master?.proximity?.googleMapsUrl || locObj.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore'),
-    boutiqueVisitOptions: (overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : (master?.proximity?.boutiqueVisitOptions?.length ? master.proximity.boutiqueVisitOptions : [
-      { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
-      { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
-      { title: 'Video Consultation Available', description: `Virtual design sessions for clients in ${loc} unable to visit in person.` },
-      { title: 'Pickup & Courier Available Across Bangalore', description: `Reliable Porter fabric pickup and doorstep delivery across ${loc}.` }
-    ])).map((opt) => ({ title: replaceLoc(opt.title), description: replaceLoc(opt.description) }))
+    workingHours: replaceLoc(toStringValue(overrides.proximity?.workingHours || master?.proximity?.workingHours || locObj.workingHours || 'Monday – Sunday 10:00 AM – 7:30 PM')),
+    googleMapsUrl: replaceLoc(toStringValue(overrides.proximity?.googleMapsUrl || master?.proximity?.googleMapsUrl || locObj.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore')),
+    boutiqueVisitOptions: deepReplace(
+      overrides.proximity?.boutiqueVisitOptions?.length
+        ? overrides.proximity.boutiqueVisitOptions
+        : (master?.proximity?.boutiqueVisitOptions?.length
+            ? master.proximity.boutiqueVisitOptions
+            : [
+                { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
+                { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
+                { title: 'Video Consultation Available', description: `Virtual design sessions for clients in ${loc} unable to visit in person.` },
+                { title: 'Pickup & Courier Available Across Bangalore', description: `Reliable Porter fabric pickup and doorstep delivery across ${loc}.` }
+              ])
+    )
   };
 
-  const testimonials = (overrides.testimonials?.length ? overrides.testimonials : master?.testimonials || []).map((t) => ({
-    name: t.name,
+  const testimonials = deepReplace(
+    overrides.testimonials?.length
+      ? overrides.testimonials
+      : (master?.testimonials?.length ? master.testimonials : [])
+  ).map((t) => ({
+    name: t.name || 'Bangalore Client',
     location: replaceLoc(t.location || `${loc}, Bangalore`),
     rating: Number(t.rating) || 5,
     outfitType: t.outfitType || serviceName,
-    reviewText: replaceLoc(t.reviewText)
+    reviewText: replaceLoc(t.reviewText || '')
   }));
 
-  const faqs = (overrides.faqs?.length ? overrides.faqs : master?.faqs || []).map((f) => ({
-    question: replaceLoc(f.question),
-    answer: replaceLoc(f.answer)
+  const faqs = deepReplace(
+    overrides.faqs?.length
+      ? overrides.faqs
+      : (master?.faqs?.length ? master.faqs : [])
+  ).map((f) => ({
+    question: replaceLoc(f.question || ''),
+    answer: replaceLoc(f.answer || '')
   }));
+
+  const ctaHeading = replaceLoc(
+    overrides.cta?.heading ||
+    master?.cta?.headingTemplate ||
+    master?.cta?.heading ||
+    `${serviceName} Near ${loc}, Bangalore`
+  );
+
+  const ctaSubheading = replaceLoc(
+    overrides.cta?.subheading ||
+    master?.cta?.subheadingTemplate ||
+    master?.cta?.subheading ||
+    `Book your consultation with Chief Designer Shruthi Ajith today. Experience bespoke luxury in Bangalore.`
+  );
 
   const cta = {
-    heading: replaceLoc(overrides.cta?.heading || master?.cta?.headingTemplate || `${serviceName} Near ${loc}, Bangalore`),
-    subheading: replaceLoc(overrides.cta?.subheading || master?.cta?.subheadingTemplate || `Book your consultation with Chief Designer Shruthi Ajith today. Experience bespoke luxury in Bangalore.`),
+    heading: ctaHeading,
+    headingTemplate: ctaHeading,
+    subheading: ctaSubheading,
+    subheadingTemplate: ctaSubheading,
     whatsappText: overrides.cta?.whatsappText || master?.cta?.whatsappText || 'Chat on WhatsApp',
     callText: overrides.cta?.callText || master?.cta?.callText || 'Call Shrusara Boutique'
   };

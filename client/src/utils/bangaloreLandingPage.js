@@ -2151,6 +2151,254 @@ export function slugifyBangalorePage(serviceCategory = 'Bridal Blouse', location
   return `${serviceSlug}-stitching-${locSlug}`.replace(/--+/g, '-');
 }
 
+export function deepReplacePlaceholders(obj, replacements) {
+  if (typeof obj === 'string') {
+    let result = obj;
+    for (const [pattern, value] of replacements) {
+      result = result.replace(pattern, value);
+    }
+    return result;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepReplacePlaceholders(item, replacements));
+  }
+  if (obj !== null && typeof obj === 'object') {
+    const out = {};
+    for (const key of Object.keys(obj)) {
+      out[key] = deepReplacePlaceholders(obj[key], replacements);
+    }
+    return out;
+  }
+  return obj;
+}
+
+export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationName = 'Bangalore', options = {}) {
+  const normService = normalizeServiceCategory(
+    options.serviceCategory || rawMaster?.serviceCategory || rawMaster?.serviceName || 'Bridal Blouse'
+  );
+  const loc = String(locationName || 'Bangalore').trim() || 'Bangalore';
+  const locSlug = loc.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const serviceSlug = normService.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+  const replacements = [
+    [/\{Location-slug\}/gi, locSlug],
+    [/\{location-slug\}/gi, locSlug],
+    [/\{Location\}/g, loc],
+    [/\[Location\]/g, loc],
+    [/\{location\}/g, loc.toLowerCase()],
+    [/\{Service-slug\}/gi, serviceSlug],
+    [/\{service-slug\}/gi, serviceSlug],
+    [/\{Service\}/g, normService],
+    [/\[Service\]/g, normService],
+    [/\{service\}/g, normService.toLowerCase()]
+  ];
+
+  // Deep clone master and replace all placeholders in every string/array/object
+  const master = deepReplacePlaceholders(JSON.parse(JSON.stringify(rawMaster || {})), replacements);
+  const locObj = options.locationObj || options.locationData || {};
+  const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === loc.toLowerCase());
+
+  const locPreset = {
+    name: loc,
+    areaGroup: locObj.areaGroup || options.areaGroup || foundPreset?.areaGroup || 'Bangalore West',
+    distanceNote: locObj.distanceNote || foundPreset?.distanceNote || `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`,
+    landmark: locObj.landmark || foundPreset?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
+    travelTime: locObj.travelTime || foundPreset?.travelTime || '10-15 mins',
+    nearbyAreas: (locObj.nearbyAreas?.length ? locObj.nearbyAreas : null) || foundPreset?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']
+  };
+
+  const overrides = options.overrides || {};
+  const targetSlug = overrides.slug || options.slug || slugifyBangalorePage(normService, loc);
+  const url = `${BANGALORE_BASE_PATH}/${targetSlug}`;
+
+  // 1. Technical SEO & Metadata
+  const mainTitle = overrides.title || overrides.hero?.heading || master.hero?.headingTemplate || master.seo?.metaTitleTemplate || master.seo?.titleTemplate || master.titleTemplate || master.hero?.heading || `${normService} in ${loc}, Bangalore`;
+  const metaTitle = overrides.metaTitle || master.seo?.metaTitleTemplate || master.seo?.titleTemplate || `${normService} in ${loc}, Bangalore | Shrusara Fashion Boutique`;
+  const metaDescription = overrides.metaDescription || master.seo?.metaDescriptionTemplate || `Customized ${normService} in ${loc}, Bangalore with perfect fit and personalized consultation by Shrusara.`;
+
+  let metaKeywords = [];
+  if (Array.isArray(overrides.metaKeywords) && overrides.metaKeywords.length) {
+    metaKeywords = overrides.metaKeywords;
+  } else if (typeof overrides.metaKeywords === 'string' && overrides.metaKeywords) {
+    metaKeywords = overrides.metaKeywords.split(',').map((k) => k.trim()).filter(Boolean);
+  } else if (Array.isArray(master.seo?.metaKeywords) && master.seo.metaKeywords.length) {
+    metaKeywords = master.seo.metaKeywords;
+  } else if (typeof master.seo?.metaKeywords === 'string' && master.seo.metaKeywords) {
+    metaKeywords = master.seo.metaKeywords.split(',').map((k) => k.trim()).filter(Boolean);
+  } else if (typeof master.seo?.metaKeywordsTemplate === 'string' && master.seo.metaKeywordsTemplate) {
+    metaKeywords = master.seo.metaKeywordsTemplate.split(',').map((k) => k.trim()).filter(Boolean);
+  } else {
+    metaKeywords = [
+      `${normService.toLowerCase()} in ${loc.toLowerCase()}`,
+      `${normService.toLowerCase()} bangalore`,
+      `customized ${normService.toLowerCase()}`,
+      `best ${normService.toLowerCase()} near ${loc.toLowerCase()}`,
+      'shrusara fashion boutique'
+    ];
+  }
+
+  // 2. Hero Section
+  const heroBadge = overrides.hero?.badge || master.hero?.badgeTemplate || master.hero?.badge || `100% Customized | ${loc}, Bangalore`;
+  const heroHeading = overrides.hero?.heading || overrides.title || master.hero?.headingTemplate || master.hero?.heading || mainTitle;
+  const heroTagline = overrides.hero?.tagline || master.hero?.taglineTemplate || master.hero?.tagline || `Bespoke ${normService} tailored for clients in ${loc}, Bangalore.`;
+  const heroHighlights = overrides.hero?.highlights?.length ? overrides.hero.highlights : (master.hero?.highlights?.length ? master.hero.highlights : [
+    '1-on-1 Consultation with Chief Designer Shruthi Ajith',
+    'Personalized Measurements & Trial Fitting',
+    'Try Before You Customize (Boutique Exclusive)',
+    'Video Consultation Available Across Bangalore',
+    'Pickup & Courier Delivery Across Bangalore',
+    'Comfortable Customized Stitching'
+  ]);
+  const heroPrimaryCtaText = overrides.hero?.primaryCtaText || master.hero?.primaryCtaText || 'Chat on WhatsApp';
+  const heroPrimaryCtaMessage = overrides.hero?.primaryCtaMessage || master.hero?.primaryCtaMessageTemplate || master.hero?.primaryCtaMessage || `Hi Shrusara! I'd like to know more about ${normService} in ${loc}.`;
+  const heroSecondaryCtaText = overrides.hero?.secondaryCtaText || master.hero?.secondaryCtaText || 'Call Shrusara Boutique';
+  const heroSecondaryCtaLink = overrides.hero?.secondaryCtaLink || master.hero?.secondaryCtaLink || '#contact';
+
+  const featuredImage = overrides.featuredImage?.url ? overrides.featuredImage : {
+    url: master.featuredImage?.url || master.heroImage || '/bridal/bridalblow/hero-bridal.webp',
+    alt: master.featuredImage?.alt || `${normService} in ${loc}, Bangalore – Shrusara Fashion Boutique`,
+    title: master.featuredImage?.title || `${normService} in ${loc}`,
+    caption: master.featuredImage?.caption || `100% Customized ${normService} tailored by Shrusara Fashion Boutique in Bangalore.`
+  };
+
+  // 3. About & Features
+  const aboutHeading = overrides.about?.heading || master.about?.headingTemplate || master.about?.heading || `Customized ${normService} in ${loc}`;
+  const aboutIntro = overrides.about?.intro || master.about?.introTemplate || master.about?.intro || '';
+  const aboutDescription = overrides.about?.description || master.about?.descriptionTemplate || master.about?.description || aboutIntro || `At Shrusara Fashion Boutique, we specialize exclusively in bespoke ${normService}. Every single piece is tailored uniquely to your body contours, measurements, and personal style.`;
+  const aboutHighlights = overrides.about?.highlights?.length ? overrides.about.highlights : (master.about?.highlights?.length ? master.about.highlights : [
+    { title: 'Personalized Fitting', description: `Tailored precisely to your exact measurements for clients in ${loc}.` },
+    { title: 'Premium Craftsmanship', description: 'Handcrafted by master artisans with high-grade interlinings and finished seams.' },
+    { title: 'Try Before You Customize', description: 'Visit our Mahalakshmipuram studio to inspect samples firsthand.' }
+  ]);
+
+  // 4. Why Choose Us
+  const whyHeading = overrides.whyChooseUs?.heading || master.whyChooseUs?.headingTemplate || master.whyChooseUs?.heading || `Why Clients in ${loc} Choose Shrusara for ${normService}`;
+  const whyIntro = overrides.whyChooseUs?.intro || master.whyChooseUs?.introTemplate || master.whyChooseUs?.intro || master.whyChooseUs?.descriptionTemplate || master.whyChooseUs?.description || '';
+  const whyDescription = overrides.whyChooseUs?.description || master.whyChooseUs?.descriptionTemplate || master.whyChooseUs?.description || whyIntro || `Located in Mahalakshmipuram, Shrusara Fashion Boutique is easily accessible from ${loc}.`;
+  const whyCards = overrides.whyChooseUs?.cards?.length ? overrides.whyChooseUs.cards : (master.whyChooseUs?.cards?.length ? master.whyChooseUs.cards : [
+    { title: '1-on-1 Design Consultation', description: 'Work directly with Chief Designer Shruthi Ajith throughout your consultation and trial.' },
+    { title: 'Stress-Free Timelines', description: 'Guaranteed delivery dates planned well ahead of your special occasions.' },
+    { title: 'Doorstep Courier & Porter', description: `Reliable pickup and drop-off available directly to your home in ${loc}.` }
+  ]);
+
+  // 5. 5-Step Process
+  const processSteps = overrides.processSteps?.length ? overrides.processSteps : (master.processSteps?.length ? master.processSteps : [
+    { stepNumber: 1, title: 'Design Consultation & Fabric Selection', description: 'Discuss your outfit style, necklines, sleeves, and fabric requirements.', duration: 'Day 1' },
+    { stepNumber: 2, title: 'Measurements & Silhouette Planning', description: 'Precision measurements taken with posture evaluation and trial fit checks.', duration: 'Day 1-2' },
+    { stepNumber: 3, title: 'Master Cutting & Artisan Crafting', description: 'Hand-cut by master cutters and crafted with premium reinforcements.', duration: 'Day 3-5' },
+    { stepNumber: 4, title: 'Trial Fitting & Comfort Check', description: 'Try on the outfit to verify posture, seam comfort, and armhole fit.', duration: 'Day 5-6' },
+    { stepNumber: 5, title: `Steam Finishing & Handover to ${loc}`, description: 'Final quality inspection, steam press, and boutique pickup or courier delivery.', duration: 'Final Delivery' }
+  ]);
+
+  // 6. Curated Gallery
+  const gallery = overrides.gallery?.length ? overrides.gallery : (master.gallery?.length ? master.gallery : [
+    { url: '/bridal/bridalblow/hero-bridal.webp', title: `${normService} Showcase`, alt: `${normService} in ${loc}, Bangalore – Shrusara Fashion Boutique`, caption: 'Mastercrafted finishing' },
+    { url: '/bridal/bridalblow/IMG-20220609-WA0069.webp', title: `${normService} Silhouette`, alt: `${normService} design in ${loc}, Bangalore`, caption: 'Exquisite attention to detail' }
+  ]);
+
+  // 7. Location & Maps (Proximity)
+  const proximity = {
+    locationName: loc,
+    areaGroup: locPreset.areaGroup,
+    boutiqueAddress: overrides.proximity?.boutiqueAddress || master.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
+    landmark: overrides.proximity?.landmark || master.proximity?.landmark || master.proximity?.defaultLandmark || locPreset.landmark,
+    travelTime: overrides.proximity?.travelTime || master.proximity?.travelTime || master.proximity?.defaultTravelTime || locPreset.travelTime,
+    distanceNote: overrides.proximity?.distanceNote || master.proximity?.distanceNote || master.proximity?.defaultDistanceNote || locPreset.distanceNote,
+    nearbyAreas: overrides.proximity?.nearbyAreas?.length ? overrides.proximity.nearbyAreas : (master.proximity?.nearbyAreas?.length ? master.proximity.nearbyAreas : locPreset.nearbyAreas),
+    workingHours: overrides.proximity?.workingHours || master.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
+    googleMapsUrl: overrides.proximity?.googleMapsUrl || master.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
+    boutiqueVisitOptions: overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : (master.proximity?.boutiqueVisitOptions?.length ? master.proximity.boutiqueVisitOptions : [
+      { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
+      { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
+      { title: 'Video Consultation Available', description: `Virtual design sessions for clients in ${loc} unable to visit in person.` },
+      { title: 'Pickup & Courier Available Across Bangalore', description: `Reliable Porter fabric pickup and doorstep delivery across ${loc}.` }
+    ])
+  };
+
+  // 8. Testimonials
+  const testimonials = overrides.testimonials?.length ? overrides.testimonials : (master.testimonials?.length ? master.testimonials : [
+    { name: 'Pooja K.', location: `${loc}, Bangalore`, rating: 5, outfitType: normService, reviewText: `Shrusara exceeded all my expectations for ${normService}. The fit was absolutely flawless and Shruthi ma'am understood my style instantly. Highly recommended for everyone in ${loc}!` },
+    { name: 'Divya M.', location: `${loc}, Bangalore`, rating: 5, outfitType: normService, reviewText: `The attention to detail and trial session made all the difference. Delivered right on schedule to my home in ${loc}.` }
+  ]);
+
+  // 9. Localized FAQs
+  const faqs = overrides.faqs?.length ? overrides.faqs : (master.faqs?.length ? master.faqs : [
+    { question: `Can I get customized ${normService} in ${loc}?`, answer: `Yes! Shrusara Fashion Boutique caters to clients across ${loc}, Bangalore. You can visit our Mahalakshmipuram studio (conveniently connected) or book a virtual video consultation with doorstep courier pickup and delivery.` },
+    { question: `How long does customized ${normService} take?`, answer: `Standard crafting takes approximately 5 to 7 days, including design consultation and trial fitting. For emergency wedding dates or immediate events in ${loc}, priority express slots are also accommodated.` },
+    { question: `Do you provide home pickup and delivery in ${loc}?`, answer: `Yes, we arrange reliable door-to-door Porter fabric pickup and courier delivery across all localities in ${loc}, Bangalore.` }
+  ]);
+
+  // 10. Bottom CTA
+  const cta = {
+    heading: overrides.cta?.heading || master.cta?.headingTemplate || master.cta?.heading || `Customized ${normService} Near ${loc}, Bangalore`,
+    subheading: overrides.cta?.subheading || master.cta?.subheadingTemplate || master.cta?.subheading || `Book your consultation with Chief Designer Shruthi Ajith today. Experience bespoke luxury in Bangalore.`,
+    whatsappText: overrides.cta?.whatsappText || master.cta?.whatsappText || 'Chat on WhatsApp',
+    callText: overrides.cta?.callText || master.cta?.callText || 'Call Shrusara Boutique'
+  };
+
+  return {
+    ...overrides,
+    title: mainTitle,
+    slug: targetSlug,
+    url,
+    canonicalUrl: `${DEFAULT_SITE_URL}${url}`,
+    serviceCategory: normService,
+    locationName: loc,
+    areaGroup: locPreset.areaGroup,
+    status: overrides.status || options.status || 'draft',
+    metaTitle,
+    metaDescription,
+    metaKeywords,
+    featuredImage,
+    hero: {
+      badge: heroBadge,
+      heading: heroHeading,
+      tagline: heroTagline,
+      highlights: heroHighlights,
+      primaryCtaText: heroPrimaryCtaText,
+      primaryCtaMessage: heroPrimaryCtaMessage,
+      secondaryCtaText: heroSecondaryCtaText,
+      secondaryCtaLink: heroSecondaryCtaLink,
+      badgeTemplate: heroBadge,
+      headingTemplate: heroHeading,
+      taglineTemplate: heroTagline,
+      primaryCtaMessageTemplate: heroPrimaryCtaMessage
+    },
+    about: {
+      heading: aboutHeading,
+      intro: aboutIntro,
+      description: aboutDescription,
+      highlights: aboutHighlights,
+      headingTemplate: aboutHeading,
+      introTemplate: aboutIntro,
+      descriptionTemplate: aboutDescription
+    },
+    whyChooseUs: {
+      heading: whyHeading,
+      intro: whyIntro,
+      description: whyDescription,
+      cards: whyCards,
+      headingTemplate: whyHeading,
+      introTemplate: whyIntro,
+      descriptionTemplate: whyDescription
+    },
+    processSteps,
+    gallery,
+    proximity,
+    testimonials,
+    faqs,
+    cta: {
+      heading: cta.heading,
+      subheading: cta.subheading,
+      whatsappText: cta.whatsappText,
+      callText: cta.callText,
+      headingTemplate: cta.heading,
+      subheadingTemplate: cta.subheading
+    },
+    updatedAt: new Date().toISOString()
+  };
+}
+
 export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', locationName = 'Rajajinagar', overrides = {}) {
   const normService = normalizeServiceCategory(serviceCategory);
 
@@ -2164,196 +2412,11 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
   }
 
   const master = overrides.masterTemplate || cachedMaster || MASTER_SERVICE_TEMPLATES[normService] || MASTER_SERVICE_TEMPLATES[serviceCategory] || MASTER_SERVICE_TEMPLATES['Bridal Blouse'] || MASTER_SERVICE_TEMPLATES['Ready-to-Wear Saree Customization'];
-  const locObj = overrides.locationObj || overrides.locationData || {};
-  const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === String(locationName || '').toLowerCase());
-
-  const locPreset = {
-    name: locationName || locObj.name || foundPreset?.name || 'Bangalore',
-    areaGroup: locObj.areaGroup || overrides.areaGroup || foundPreset?.areaGroup || 'Bangalore West',
-    distanceNote: locObj.distanceNote || overrides.proximity?.distanceNote || foundPreset?.distanceNote || `Easily accessible from ${locationName}. Doorstep Porter & express courier delivery available across Bangalore.`,
-    landmark: locObj.landmark || overrides.proximity?.landmark || foundPreset?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
-    travelTime: locObj.travelTime || overrides.proximity?.travelTime || foundPreset?.travelTime || '10-15 mins',
-    nearbyAreas: (locObj.nearbyAreas?.length ? locObj.nearbyAreas : null) || (overrides.proximity?.nearbyAreas?.length ? overrides.proximity.nearbyAreas : null) || foundPreset?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar']
-  };
-
-  const loc = locPreset.name;
-  const locSlug = loc.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  const serviceSlug = normService.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-
-  const replaceLoc = (str = '') =>
-    String(str || '')
-      .replace(/\{Location-slug\}/gi, locSlug)
-      .replace(/\{location-slug\}/gi, locSlug)
-      .replace(/\{Location\}/g, loc)
-      .replace(/\[Location\]/g, loc)
-      .replace(/\{location\}/g, loc.toLowerCase())
-      .replace(/\{service-slug\}/gi, serviceSlug)
-      .replace(/\{Service\}/g, normService)
-      .replace(/\{service\}/g, normService.toLowerCase());
-
-  const title = replaceLoc(
-    overrides.title ||
-    overrides.hero?.heading ||
-    master?.hero?.headingTemplate ||
-    master?.seo?.titleTemplate ||
-    master?.titleTemplate ||
-    master?.hero?.heading ||
-    master?.seo?.metaTitleTemplate ||
-    `${normService} in ${loc}, Bangalore`
-  );
-  const slug = overrides.slug || slugifyBangalorePage(normService, loc);
-  const metaTitle = replaceLoc(overrides.metaTitle || master?.seo?.metaTitleTemplate || `${normService} in ${loc}, Bangalore | Shrusara Fashion Boutique`);
-  const metaDescription = replaceLoc(overrides.metaDescription || master?.seo?.metaDescriptionTemplate || `Customized ${normService} in ${loc}, Bangalore.`);
-
-  let metaKeywords = [];
-  if (Array.isArray(overrides.metaKeywords) && overrides.metaKeywords.length) {
-    metaKeywords = overrides.metaKeywords.map(replaceLoc);
-  } else if (typeof overrides.metaKeywords === 'string' && overrides.metaKeywords) {
-    metaKeywords = overrides.metaKeywords.split(',').map((k) => replaceLoc(k.trim())).filter(Boolean);
-  } else if (Array.isArray(master?.seo?.metaKeywords) && master.seo.metaKeywords.length) {
-    metaKeywords = master.seo.metaKeywords.map(replaceLoc);
-  } else if (typeof master?.seo?.metaKeywords === 'string' && master.seo.metaKeywords) {
-    metaKeywords = master.seo.metaKeywords.split(',').map((k) => replaceLoc(k.trim())).filter(Boolean);
-  } else if (typeof master?.seo?.metaKeywordsTemplate === 'string' && master.seo.metaKeywordsTemplate) {
-    metaKeywords = master.seo.metaKeywordsTemplate.split(',').map((k) => replaceLoc(k.trim())).filter(Boolean);
-  } else if (typeof master?.seo?.metaKeywordsBuilder === 'function') {
-    metaKeywords = master.seo.metaKeywordsBuilder(loc);
-  } else {
-    metaKeywords = [
-      `${normService.toLowerCase()} in ${loc}`,
-      `${normService.toLowerCase()} bangalore`,
-      `customized ${normService.toLowerCase()}`,
-      `best ${normService.toLowerCase()} near ${loc}`,
-      'shrusara fashion boutique'
-    ];
-  }
-
-  const hero = {
-    badge: replaceLoc(overrides.hero?.badge || master?.hero?.badgeTemplate || `100% Customized | ${loc}, Bangalore`),
-    heading: replaceLoc(
-      overrides.hero?.heading ||
-      overrides.title ||
-      master?.hero?.headingTemplate ||
-      master?.seo?.titleTemplate ||
-      master?.titleTemplate ||
-      master?.hero?.heading ||
-      `${normService} in ${loc}, Bangalore`
-    ),
-    tagline: replaceLoc(overrides.hero?.tagline || master?.hero?.taglineTemplate || `Bespoke ${normService} tailored for clients in ${loc}, Bangalore.`),
-    highlights: (overrides.hero?.highlights?.length ? overrides.hero.highlights : (master?.hero?.highlights || [])).map(replaceLoc),
-    primaryCtaText: overrides.hero?.primaryCtaText || master?.hero?.primaryCtaText || 'Chat on WhatsApp',
-    primaryCtaMessage: replaceLoc(overrides.hero?.primaryCtaMessage || master?.hero?.primaryCtaMessageTemplate || `Hi Shrusara! I'd like to know more about ${normService} in ${loc}.`),
-    secondaryCtaText: overrides.hero?.secondaryCtaText || master?.hero?.secondaryCtaText || 'Call Shrusara Boutique',
-    secondaryCtaLink: overrides.hero?.secondaryCtaLink || master?.hero?.secondaryCtaLink || '#contact'
-  };
-
-  const about = {
-    heading: replaceLoc(overrides.about?.heading || master?.about?.headingTemplate || `Customized ${normService} in ${loc}`),
-    intro: replaceLoc(overrides.about?.intro || master?.about?.introTemplate || ''),
-    description: replaceLoc(overrides.about?.description || master?.about?.descriptionTemplate || ''),
-    highlights: (overrides.about?.highlights?.length ? overrides.about.highlights : (master?.about?.highlights || [])).map((h) => ({
-      title: replaceLoc(h.title),
-      description: replaceLoc(h.description)
-    }))
-  };
-
-  const whyChooseUs = {
-    heading: replaceLoc(overrides.whyChooseUs?.heading || master?.whyChooseUs?.headingTemplate || `Why Clients in ${loc} Choose Shrusara for ${normService}`),
-    intro: replaceLoc(overrides.whyChooseUs?.intro || master?.whyChooseUs?.introTemplate || master?.whyChooseUs?.intro || master?.whyChooseUs?.descriptionTemplate || ''),
-    description: replaceLoc(overrides.whyChooseUs?.description || master?.whyChooseUs?.descriptionTemplate || master?.whyChooseUs?.description || master?.whyChooseUs?.introTemplate || ''),
-    cards: (overrides.whyChooseUs?.cards?.length ? overrides.whyChooseUs.cards : (master?.whyChooseUs?.cards || [])).map((c) => ({
-      title: replaceLoc(c.title),
-      description: replaceLoc(c.description)
-    }))
-  };
-
-  const processSteps = (overrides.processSteps?.length ? overrides.processSteps : (master?.processSteps || [])).map((s) => ({
-    stepNumber: s.stepNumber,
-    title: replaceLoc(s.title),
-    description: replaceLoc(s.description),
-    duration: s.duration
-  }));
-
-  const gallery = (overrides.gallery?.length ? overrides.gallery : (master?.gallery || [])).map((g) => ({
-    url: g.url,
-    title: replaceLoc(g.title || `${normService} in ${loc}`),
-    alt: (replaceLoc(g.alt) && replaceLoc(g.alt).trim()) || `${normService} in ${loc}, Bangalore – Shrusara Fashion Boutique`,
-    caption: replaceLoc(g.caption || '')
-  }));
-
-  const testimonials = (overrides.testimonials?.length ? overrides.testimonials : (master?.testimonials || [])).map((t) => ({
-    name: t.name,
-    location: replaceLoc(t.location || `${loc}, Bangalore`),
-    rating: t.rating || 5,
-    outfitType: t.outfitType || normService,
-    reviewText: replaceLoc(t.reviewText)
-  }));
-
-  const faqs = (overrides.faqs?.length ? overrides.faqs : (master?.faqs || [])).map((f) => ({
-    question: replaceLoc(f.question),
-    answer: replaceLoc(f.answer)
-  }));
-
-  const proximity = {
-    locationName: loc,
-    areaGroup: locPreset.areaGroup || overrides.areaGroup || 'Bangalore West',
-    boutiqueAddress: overrides.proximity?.boutiqueAddress || master?.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
-    landmark: locPreset.landmark || overrides.proximity?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar',
-    travelTime: locPreset.travelTime || overrides.proximity?.travelTime || '10-15 mins',
-    distanceNote: replaceLoc(
-      overrides.proximity?.distanceNote ||
-      master?.proximity?.defaultDistanceNote ||
-      master?.proximity?.distanceNote ||
-      locPreset.distanceNote ||
-      `Easily accessible from ${loc}. Doorstep Porter & express courier delivery available across Bangalore.`
-    ),
-    nearbyAreas: locPreset.nearbyAreas || overrides.proximity?.nearbyAreas || ['Rajajinagar', 'Malleshwaram', 'Basaveshwaranagar', 'Vijayanagar'],
-    workingHours: overrides.proximity?.workingHours || master?.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
-    googleMapsUrl: overrides.proximity?.googleMapsUrl || master?.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
-    boutiqueVisitOptions: overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : [
-      { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
-      { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
-      { title: 'Video Consultation Available', description: 'Virtual design sessions for clients in ' + loc + ' unable to visit in person.' },
-      { title: 'Pickup & Courier Available Across Bangalore', description: 'Reliable Porter fabric pickup and doorstep delivery across ' + loc + '.' }
-    ]
-  };
-
-  const cta = {
-    heading: replaceLoc(overrides.cta?.heading || master?.cta?.headingTemplate || `Customized ${normService} Near ${loc}, Bangalore`),
-    subheading: replaceLoc(overrides.cta?.subheading || master?.cta?.subheadingTemplate || `Book your consultation with Chief Designer Shruthi Ajith today.`),
-    whatsappText: overrides.cta?.whatsappText || master?.cta?.whatsappText || 'Chat on WhatsApp',
-    callText: overrides.cta?.callText || master?.cta?.callText || 'Call Shrusara Boutique'
-  };
-
-  const featuredImage = overrides.featuredImage?.url ? overrides.featuredImage : {
-    url: master?.heroImage || '/bridal/bridalblow/hero-bridal.webp',
-    alt: `${normService} in ${loc}, Bangalore – Shrusara Fashion Boutique`,
-    title: `${normService} in ${loc}`,
-    caption: `100% Customized ${normService} tailored by Shrusara Fashion Boutique in Bangalore.`
-  };
-
-  return {
-    title,
-    slug,
+  return hydrateLandingPageFromMasterTemplate(master, locationName, {
     serviceCategory: normService,
-    locationName: loc,
-    areaGroup: locPreset.areaGroup || overrides.areaGroup || 'Bangalore West',
-    status: overrides.status || 'draft',
-    metaTitle,
-    metaDescription,
-    metaKeywords,
-    featuredImage,
-    hero,
-    about,
-    whyChooseUs,
-    processSteps,
-    gallery,
-    proximity,
-    testimonials,
-    faqs,
-    cta,
-    updatedAt: new Date().toISOString()
-  };
+    locationObj: overrides.locationObj || overrides.locationData,
+    overrides
+  });
 }
 
 export function generatePresetContent(serviceCategory = 'Ready-to-Wear Saree Customization', locationName = 'Rajajinagar', areaGroup = 'Bangalore West') {

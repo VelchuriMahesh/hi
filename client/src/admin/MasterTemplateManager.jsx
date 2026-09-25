@@ -70,6 +70,17 @@ export default function MasterTemplateManager() {
     loadAll();
   }, [navigate]);
 
+  useEffect(() => {
+    const fromParam = searchParams.get('service');
+    if (fromParam) {
+      const norm = normalizeServiceCategory(fromParam);
+      if (norm && norm !== selectedService) {
+        setSelectedService(norm);
+        initTemplateForService(norm, backendTemplates);
+      }
+    }
+  }, [searchParams]);
+
   async function loadAll() {
     setLoading(true);
     setMessage('');
@@ -266,6 +277,29 @@ export default function MasterTemplateManager() {
     };
 
     setTemplate(defaultTpl);
+
+    // Also attempt direct fetch from backend for this service ID if missing from current templatesMap
+    fetchMasterTemplateById(sId)
+      .then((res) => {
+        if (res?.item) {
+          const t = JSON.parse(JSON.stringify(res.item));
+          if (!t.heroImage && t.featuredImage?.url) {
+            t.heroImage = t.featuredImage.url;
+          }
+          if (!t.featuredImage && t.heroImage) {
+            t.featuredImage = { url: t.heroImage, alt: `${serviceName} in {Location}` };
+          }
+          setTemplate(t);
+          setBackendTemplates((prev) => ({
+            ...prev,
+            [sId]: t,
+            [serviceName]: t,
+            [norm]: t,
+            [normSlug]: t
+          }));
+        }
+      })
+      .catch(() => {});
   }
 
   function handleSwitchService(serviceName) {

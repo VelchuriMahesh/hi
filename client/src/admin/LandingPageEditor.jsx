@@ -7,6 +7,7 @@ import {
   fetchAdminLandingPages,
   fetchBangaloreLocations,
   fetchLandingPageById,
+  fetchMasterTemplateById,
   generateLandingPageFromMaster,
   saveMasterTemplate,
   syncLandingPageFromMaster,
@@ -19,6 +20,7 @@ import {
   DEFAULT_SITE_URL,
   SERVICE_CATEGORIES,
   buildLandingPageFromMaster,
+  hydrateLandingPageFromMasterTemplate,
   extractMasterTemplateFromPage,
   generateLandingPageSchemas,
   generatePresetContent,
@@ -82,15 +84,24 @@ export default function LandingPageEditor() {
 
     setIsApplyingMaster(true);
     try {
+      const locObj = (locations?.length ? locations : BANGALORE_LOCATIONS_PRESET).find(
+        (l) => l.name.toLowerCase() === loc.toLowerCase()
+      ) || { name: loc, areaGroup: 'Bangalore West' };
+
+      // 1. First attempt: call backend generation endpoint
       try {
         const res = await generateLandingPageFromMaster(token, {
           serviceCategory: srv,
           locationName: loc
         });
         if (res?.item) {
+          const hydrated = hydrateLandingPageFromMasterTemplate(res.item, loc, {
+            serviceCategory: srv,
+            locationObj: locObj,
+            overrides: currentOverrides
+          });
           setPage((prev) => ({
-            ...res.item,
-            ...currentOverrides,
+            ...hydrated,
             id: prev.id,
             status: prev.status || 'draft',
             serviceCategory: srv,
@@ -100,14 +111,37 @@ export default function LandingPageEditor() {
           return;
         }
       } catch (err) {
-        console.warn('Backend master template fetch failed, checking local cache & master presets:', err);
+        console.warn('Backend master template generate failed, trying direct template fetch:', err);
       }
 
-      // Check localStorage for saved master template
+      // 2. Second attempt: fetch raw master template by ID from backend
+      try {
+        const tplRes = await fetchMasterTemplateById(slugifyService(srv));
+        if (tplRes?.item) {
+          const hydrated = hydrateLandingPageFromMasterTemplate(tplRes.item, loc, {
+            serviceCategory: srv,
+            locationObj: locObj,
+            overrides: currentOverrides
+          });
+          setPage((prev) => ({
+            ...hydrated,
+            id: prev.id,
+            status: prev.status || 'draft',
+            serviceCategory: srv,
+            locationName: loc
+          }));
+          setMessage(`✨ Loaded Master Template for "${srv}" in "${loc}". All 10 sections populated!`);
+          return;
+        }
+      } catch (err) {
+        console.warn('Backend fetchMasterTemplateById failed, checking local cache & presets:', err);
+      }
+
+      // 3. Third attempt: check localStorage for saved master template
       let localMaster = null;
       if (typeof window !== 'undefined' && window.localStorage) {
-        const sKey = String(srv).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-        const raw = window.localStorage.getItem(`shrusara_master_tpl_${sKey}`);
+        const sKey = slugifyService(srv);
+        const raw = window.localStorage.getItem(`shrusara_master_tpl_${sKey}`) || window.localStorage.getItem(`shrusara_master_tpl_${srv}`);
         if (raw) {
           try {
             localMaster = JSON.parse(raw);
@@ -116,10 +150,6 @@ export default function LandingPageEditor() {
           }
         }
       }
-
-      const locObj = (locations?.length ? locations : BANGALORE_LOCATIONS_PRESET).find(
-        (l) => l.name.toLowerCase() === loc.toLowerCase()
-      ) || { name: loc, areaGroup: 'Bangalore West' };
 
       const generated = buildLandingPageFromMaster(srv, loc, {
         ...currentOverrides,
