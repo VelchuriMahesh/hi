@@ -127,6 +127,7 @@ export default function BangaloreLandingPage() {
     hero = {},
     about = {},
     chiefDesigner = {},
+    whyChooseUs = {},
     processHeading,
     processIntro,
     processSteps = [],
