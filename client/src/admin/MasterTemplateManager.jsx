@@ -1544,10 +1544,53 @@ export default function MasterTemplateManager() {
             {/* TAB 6: PROCESS STEPS */}
             {activeTab === 'process' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">6. 5-Step Process Template</h2>
-                <p className="text-xs text-stone-500">
-                  Walk through the step-by-step experience from consultation to delivery in {"{Location}"}.
-                </p>
+                <div>
+                  <h2 className="font-heading text-xl text-ink">6. 5-Step Process Template</h2>
+                  <p className="text-xs text-stone-500">
+                    Walk through the step-by-step experience from consultation to delivery in {"{Location}"}.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Process Section Heading Template
+                    </label>
+                    <input
+                      type="text"
+                      value={template.processHeading || template.process?.headingTemplate || 'Our 5-Step Customization Journey'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          processHeading: e.target.value,
+                          process: { ...(template.process || {}), headingTemplate: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                    <p className="mt-1 text-[11px] text-stone-500">
+                      Preview: <strong className="text-cocoa">{preview(template.processHeading || template.process?.headingTemplate || 'Our 5-Step Customization Journey')}</strong>
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Process Section Intro Template
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={template.processIntro || template.process?.introTemplate || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          processIntro: e.target.value,
+                          process: { ...(template.process || {}), introTemplate: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
 
                 {(template.processSteps || []).map((step, idx) => (
                   <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
@@ -1569,14 +1612,14 @@ export default function MasterTemplateManager() {
                         />
                         <input
                           type="text"
-                          placeholder="Duration (e.g. Day 1)"
+                          placeholder="Duration (e.g. Day 1-2, As discussed)"
                           value={step.duration}
                           onChange={(e) => {
                             const updated = [...template.processSteps];
                             updated[idx] = { ...updated[idx], duration: e.target.value };
                             setTemplate({ ...template, processSteps: updated });
                           }}
-                          className="w-32 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs text-stone-600"
+                          className="w-44 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs text-stone-600"
                         />
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -1648,6 +1691,42 @@ export default function MasterTemplateManager() {
                   </p>
                 </div>
 
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Gallery Section Heading Template
+                    </label>
+                    <input
+                      type="text"
+                      value={template.galleryHeading || template.gallery?.headingTemplate || `${selectedService} Gallery Showcase`}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          galleryHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Gallery Section Intro Template
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={template.galleryIntro || template.gallery?.introTemplate || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          galleryIntro: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {(template.gallery || []).map((img, idx) => (
                     <div key={idx} className="overflow-hidden rounded-xl border border-ink/10 bg-sand/20 p-3">
@@ -1688,7 +1767,18 @@ export default function MasterTemplateManager() {
                         />
                         <input
                           type="text"
-                          placeholder="Alt Tag Template"
+                          placeholder="Caption / Subtext"
+                          value={img.caption || ''}
+                          onChange={(e) => {
+                            const updated = [...template.gallery];
+                            updated[idx] = { ...updated[idx], caption: e.target.value };
+                            setTemplate({ ...template, gallery: updated });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-700"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Alt Tag Template (supports {Location})"
                           value={img.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`}
                           onChange={(e) => {
                             const updated = [...template.gallery];
@@ -1769,7 +1859,44 @@ export default function MasterTemplateManager() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                      Boutique Address
+                      Proximity Section Heading Template
+                    </label>
+                    <input
+                      type="text"
+                      value={template.proximityHeading || template.proximity?.headingTemplate || 'Convenient for Clients in {Location}, Bangalore'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          proximityHeading: e.target.value,
+                          proximity: { ...template.proximity, headingTemplate: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Maps Button Text
+                    </label>
+                    <input
+                      type="text"
+                      value={template.proximity?.mapsButtonText || 'Get Google Maps Directions'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          proximity: { ...template.proximity, mapsButtonText: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Boutique Address (Physical Hub: Mahalakshmipuram)
                     </label>
                     <input
                       type="text"
@@ -1804,10 +1931,10 @@ export default function MasterTemplateManager() {
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                    Default Distance Note Template
+                    Default Distance Note / Location Intro Template (supports {"{Location}"})
                   </label>
-                  <input
-                    type="text"
+                  <textarea
+                    rows={2}
                     value={template.proximity?.defaultDistanceNote || ''}
                     onChange={(e) =>
                       setTemplate({
@@ -1844,12 +1971,54 @@ export default function MasterTemplateManager() {
             {/* TAB 9: TESTIMONIALS */}
             {activeTab === 'testimonials' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">9. Testimonials Template</h2>
+                <div>
+                  <h2 className="font-heading text-xl text-ink">9. Testimonials Template</h2>
+                  <p className="text-xs text-stone-500">
+                    Note: Customer locations remain real actual localities (e.g. "Rajajinagar, Bangalore") and are preserved.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Testimonials Heading Template
+                    </label>
+                    <input
+                      type="text"
+                      value={template.testimonialsHeading || template.testimonials?.headingTemplate || 'Loved by Clients Across Bangalore'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          testimonialsHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Google Reviews URL (Global Link)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="https://g.page/r/..."
+                      value={template.googleReviewsUrl || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          googleReviewsUrl: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
 
                 {(template.testimonials || []).map((t, idx) => (
-                  <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                      <div className="flex items-center gap-3">
+                  <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-3 flex-1">
                         <input
                           type="text"
                           placeholder="Client Name"
@@ -1859,19 +2028,32 @@ export default function MasterTemplateManager() {
                             updated[idx] = { ...updated[idx], name: e.target.value };
                             setTemplate({ ...template, testimonials: updated });
                           }}
-                          className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
+                          className="rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs font-semibold text-ink"
                         />
                         <input
                           type="text"
-                          placeholder="Location Template (e.g. {Location}, Bangalore)"
+                          placeholder="Customer Actual Locality (e.g. Rajajinagar, Bangalore)"
                           value={t.location || ''}
                           onChange={(e) => {
                             const updated = [...template.testimonials];
                             updated[idx] = { ...updated[idx], location: e.target.value };
                             setTemplate({ ...template, testimonials: updated });
                           }}
-                          className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-600"
+                          className="rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs text-stone-600"
                         />
+                        <select
+                          value={t.rating || 5}
+                          onChange={(e) => {
+                            const updated = [...template.testimonials];
+                            updated[idx] = { ...updated[idx], rating: Number(e.target.value) };
+                            setTemplate({ ...template, testimonials: updated });
+                          }}
+                          className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-amber-600 font-bold"
+                        >
+                          <option value={5}>★★★★★ (5 Stars)</option>
+                          <option value={4}>★★★★☆ (4 Stars)</option>
+                          <option value={3}>★★★☆☆ (3 Stars)</option>
+                        </select>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
@@ -1912,11 +2094,8 @@ export default function MasterTemplateManager() {
                         updated[idx] = { ...updated[idx], reviewText: e.target.value };
                         setTemplate({ ...template, testimonials: updated });
                       }}
-                      className="mt-2 w-full rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs text-stone-700"
+                      className="w-full rounded-lg border border-ink/10 bg-white px-3 py-1.5 text-xs text-stone-700"
                     />
-                    <p className="mt-1 text-[11px] text-stone-500">
-                      Preview: <span className="text-cocoa font-medium">"{preview(t.reviewText)}"</span>
-                    </p>
                   </div>
                 ))}
 
@@ -1950,6 +2129,42 @@ export default function MasterTemplateManager() {
                   <p className="text-xs text-stone-500">
                     These questions and answers feed directly into Google Structured Data (FAQPage schema) for rich SERP snippets.
                   </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      FAQ Section Heading Template
+                    </label>
+                    <input
+                      type="text"
+                      value={template.faqsHeading || template.faqs?.headingTemplate || `${selectedService} in {Location} FAQs`}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          faqsHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      FAQ Section Intro Template
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={template.faqsIntro || template.faqs?.introTemplate || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          faqsIntro: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
                 </div>
 
                 {(template.faqs || []).map((faq, idx) => (
@@ -2037,6 +2252,24 @@ export default function MasterTemplateManager() {
             {activeTab === 'cta' && (
               <div className="space-y-6">
                 <h2 className="font-heading text-xl text-ink">11. Bottom Call-To-Action (CTA)</h2>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Offer / Highlight Badge Template
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Personalized Couture | Book Free Consultation Today"
+                    value={template.cta?.offerBadgeTemplate || 'Personalized Couture'}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        cta: { ...template.cta, offerBadgeTemplate: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
+                  />
+                </div>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
