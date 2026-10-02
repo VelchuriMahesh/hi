@@ -2102,18 +2102,32 @@ export function extractMasterTemplateFromPage(page = {}) {
         description: toTemplate(c.description)
       }))
     },
+    processHeading: toTemplate(page.processHeading || page.process?.headingTemplate || 'Our 5-Step Customization Journey'),
+    processIntro: toTemplate(page.processIntro || page.process?.introTemplate || ''),
     processSteps: (page.processSteps || []).map((s) => ({
       stepNumber: s.stepNumber,
       title: toTemplate(s.title),
       description: toTemplate(s.description),
       duration: toTemplate(s.duration)
     })),
+    galleryHeading: toTemplate(page.galleryHeading || page.gallery?.headingTemplate || `${service} Gallery Showcase`),
+    galleryIntro: toTemplate(page.galleryIntro || page.gallery?.introTemplate || ''),
     gallery: (page.gallery || []).map((g) => ({
       url: g.url,
       title: toTemplate(g.title || `${service} in {Location}`),
       alt: toTemplate(g.alt || `${service} in {Location}, Bangalore – Shrusara Fashion Boutique`),
       caption: toTemplate(g.caption || '')
     })),
+    proximityHeading: toTemplate(page.proximityHeading || page.proximity?.headingTemplate || `Convenient for Clients in {Location}, Bangalore`),
+    proximity: {
+      defaultLandmark: toTemplate(page.proximity?.landmark || 'Near Mahalakshmi Metro Station / 1st Block Rajajinagar'),
+      defaultTravelTime: toTemplate(page.proximity?.travelTime || '10-15 mins'),
+      defaultDistanceNote: toTemplate(page.proximity?.distanceNote || `Easily accessible from {Location}. Doorstep Porter & express courier delivery available across Bangalore.`),
+      workingHours: page.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
+      boutiqueAddress: page.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
+      googleMapsUrl: page.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
+      mapsButtonText: page.proximity?.mapsButtonText || 'Get Google Maps Directions'
+    },
     testimonialsHeading: toTemplate(page.testimonialsHeading || page.testimonialsHeader || 'Loved by Clients Across Bangalore'),
     testimonialsIntro: toTemplate(page.testimonialsIntro || page.testimonials?.introTemplate || ''),
     googleReviewsUrl: page.googleReviewsUrl || page.testimonials?.googleReviewsUrl || '',
@@ -2125,11 +2139,14 @@ export function extractMasterTemplateFromPage(page = {}) {
       outfitType: t.outfitType || service,
       reviewText: toTemplate(t.reviewText)
     })),
+    faqsHeading: toTemplate(page.faqsHeading || page.faqs?.headingTemplate || `${service} in {Location} FAQs`),
+    faqsIntro: toTemplate(page.faqsIntro || page.faqs?.introTemplate || ''),
     faqs: (page.faqs || []).map((f) => ({
       question: toTemplate(f.question),
       answer: toTemplate(f.answer)
     })),
     cta: {
+      offerBadgeTemplate: toTemplate(page.cta?.offerBadge || page.cta?.offerBadgeTemplate || 'Personalized Couture'),
       headingTemplate: toTemplate(page.cta?.heading || `Customized ${service} Near {Location}, Bangalore`),
       subheadingTemplate: toTemplate(page.cta?.subheading || `Book your consultation with Chief Designer Shruthi Ajith today.`),
       whatsappText: page.cta?.whatsappText || 'Chat on WhatsApp',
@@ -2303,6 +2320,8 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   ]);
 
   // 5. 5-Step Process
+  const processHeading = overrides.processHeading || master.processHeading || master.process?.headingTemplate || 'Our 5-Step Customization Journey';
+  const processIntro = overrides.processIntro || master.processIntro || master.process?.introTemplate || `From initial style consultation to final fitting, how we craft your bespoke ${normService.toLowerCase()} in Bangalore.`;
   const processSteps = overrides.processSteps?.length ? overrides.processSteps : (master.processSteps?.length ? master.processSteps : [
     { stepNumber: 1, title: 'Design Consultation & Fabric Selection', description: 'Discuss your outfit style, necklines, sleeves, and fabric requirements.', duration: 'Day 1' },
     { stepNumber: 2, title: 'Measurements & Silhouette Planning', description: 'Precision measurements taken with posture evaluation and trial fit checks.', duration: 'Day 1-2' },
@@ -2312,15 +2331,19 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   ]);
 
   // 6. Curated Gallery
+  const galleryHeading = overrides.galleryHeading || master.galleryHeading || master.gallery?.headingTemplate || `${normService} Gallery`;
+  const galleryIntro = overrides.galleryIntro || master.galleryIntro || master.gallery?.introTemplate || 'Explore bespoke creations handcrafted for celebrations across Bangalore.';
   const gallery = overrides.gallery?.length ? overrides.gallery : (master.gallery?.length ? master.gallery : [
     { url: '/bridal/bridalblow/hero-bridal.webp', title: `${normService} Showcase`, alt: `${normService} in ${loc}, Bangalore – Shrusara Fashion Boutique`, caption: 'Mastercrafted finishing' },
     { url: '/bridal/bridalblow/IMG-20220609-WA0069.webp', title: `${normService} Silhouette`, alt: `${normService} design in ${loc}, Bangalore`, caption: 'Exquisite attention to detail' }
   ]);
 
   // 7. Location & Maps (Proximity)
+  const proximityHeading = overrides.proximityHeading || master.proximityHeading || master.proximity?.headingTemplate || `Convenient for Clients in ${loc}, Bangalore`;
   const proximity = {
     locationName: loc,
     areaGroup: locPreset.areaGroup,
+    heading: proximityHeading,
     boutiqueAddress: overrides.proximity?.boutiqueAddress || master.proximity?.boutiqueAddress || BOUTIQUE_ADDRESS,
     landmark: overrides.proximity?.landmark || master.proximity?.landmark || master.proximity?.defaultLandmark || locPreset.landmark,
     travelTime: overrides.proximity?.travelTime || master.proximity?.travelTime || master.proximity?.defaultTravelTime || locPreset.travelTime,
@@ -2328,6 +2351,7 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
     nearbyAreas: overrides.proximity?.nearbyAreas?.length ? overrides.proximity.nearbyAreas : (master.proximity?.nearbyAreas?.length ? master.proximity.nearbyAreas : locPreset.nearbyAreas),
     workingHours: overrides.proximity?.workingHours || master.proximity?.workingHours || 'Monday - Sunday: 10:30 AM - 8:30 PM (By Appointment & Walk-in)',
     googleMapsUrl: overrides.proximity?.googleMapsUrl || master.proximity?.googleMapsUrl || 'https://maps.google.com/?q=Shrusara+Fashion+Boutique+Mahalakshmipuram+Bangalore',
+    mapsButtonText: overrides.proximity?.mapsButtonText || master.proximity?.mapsButtonText || 'Get Google Maps Directions',
     boutiqueVisitOptions: overrides.proximity?.boutiqueVisitOptions?.length ? overrides.proximity.boutiqueVisitOptions : (master.proximity?.boutiqueVisitOptions?.length ? master.proximity.boutiqueVisitOptions : [
       { title: 'Walk-ins Welcome', description: 'Feel free to visit our Mahalakshmipuram boutique anytime during boutique hours.' },
       { title: 'Bridal Appointments Recommended', description: 'Schedule a dedicated 1-on-1 slot with Chief Designer Shruthi Ajith.' },
@@ -2347,6 +2371,8 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   ]);
 
   // 9. Localized FAQs
+  const faqsHeading = overrides.faqsHeading || master.faqsHeading || master.faqs?.headingTemplate || `${normService} in ${loc} FAQs`;
+  const faqsIntro = overrides.faqsIntro || master.faqsIntro || master.faqs?.introTemplate || 'Everything you need to know about our customization process, fittings, and delivery.';
   const faqs = overrides.faqs?.length ? overrides.faqs : (master.faqs?.length ? master.faqs : [
     { question: `Can I get customized ${normService} in ${loc}?`, answer: `Yes! Shrusara Fashion Boutique caters to clients across ${loc}, Bangalore. You can visit our Mahalakshmipuram studio (conveniently connected) or book a virtual video consultation with doorstep courier pickup and delivery.` },
     { question: `How long does customized ${normService} take?`, answer: `Standard crafting takes approximately 5 to 7 days, including design consultation and trial fitting. For emergency wedding dates or immediate events in ${loc}, priority express slots are also accommodated.` },
@@ -2355,6 +2381,7 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
 
   // 10. Bottom CTA
   const cta = {
+    offerBadge: overrides.cta?.offerBadge || master.cta?.offerBadgeTemplate || master.cta?.offerBadge || 'Personalized Couture',
     heading: overrides.cta?.heading || master.cta?.headingTemplate || master.cta?.heading || `Customized ${normService} Near ${loc}, Bangalore`,
     subheading: overrides.cta?.subheading || master.cta?.subheadingTemplate || master.cta?.subheading || `Book your consultation with Chief Designer Shruthi Ajith today. Experience bespoke luxury in Bangalore.`,
     whatsappText: overrides.cta?.whatsappText || master.cta?.whatsappText || 'Chat on WhatsApp',
@@ -2424,8 +2451,13 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
       introTemplate: whyIntro,
       descriptionTemplate: whyDescription
     },
+    processHeading,
+    processIntro,
     processSteps,
+    galleryHeading,
+    galleryIntro,
     gallery,
+    proximityHeading,
     proximity,
     testimonials,
     testimonialsHeading,
@@ -2433,8 +2465,12 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
     testimonialsIntro,
     googleReviewsUrl,
     googleReviewButtonText,
+    faqsHeading,
+    faqsIntro,
     faqs,
     cta: {
+      offerBadge: cta.offerBadge,
+      offerBadgeTemplate: cta.offerBadge,
       heading: cta.heading,
       subheading: cta.subheading,
       whatsappText: cta.whatsappText,

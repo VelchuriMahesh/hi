@@ -141,15 +141,21 @@ export default function BangaloreLandingPage() {
     hero = {},
     about = {},
     chiefDesigner = {},
-    whyChooseUs = {},
+    processHeading,
+    processIntro,
     processSteps = [],
+    galleryHeading,
+    galleryIntro,
     gallery = [],
+    proximityHeading,
     proximity = {},
     testimonials = [],
     testimonialsHeading,
     testimonialsIntro,
     googleReviewsUrl,
     googleReviewButtonText,
+    faqsHeading,
+    faqsIntro,
     faqs = [],
     cta = {}
   } = page;
@@ -527,10 +533,10 @@ export default function BangaloreLandingPage() {
                   Step-by-Step Perfection
                 </p>
                 <h2 className="mt-2 font-heading text-3xl text-ink sm:text-4xl">
-                  Our 5-Step Customization Journey
+                  {processHeading || page.processHeading || 'Our 5-Step Customization Journey'}
                 </h2>
                 <p className="mt-3 text-sm text-stone-600">
-                  From initial style consultation to final fitting, how we craft your bespoke {serviceCategory.toLowerCase()} in Bangalore.
+                  {processIntro || page.processIntro || `From initial style consultation to final fitting, how we craft your bespoke ${serviceCategory.toLowerCase()} in Bangalore.`}
                 </p>
               </div>
 
@@ -576,10 +582,10 @@ export default function BangaloreLandingPage() {
                   Visual Masterpieces
                 </p>
                 <h2 className="mt-2 font-heading text-3xl text-ink sm:text-4xl">
-                  {serviceCategory} Gallery
+                  {galleryHeading || page.galleryHeading || `${serviceCategory} Gallery`}
                 </h2>
                 <p className="mt-3 text-sm text-stone-600">
-                  Explore bespoke creations handcrafted for celebrations across Bangalore.
+                  {galleryIntro || page.galleryIntro || 'Explore bespoke creations handcrafted for celebrations across Bangalore.'}
                 </p>
               </div>
 
@@ -646,7 +652,7 @@ export default function BangaloreLandingPage() {
                   Boutique Proximity & Delivery
                 </p>
                 <h2 className="font-heading text-3xl text-ink sm:text-4xl">
-                  Convenient for Clients in {locationName}, Bangalore
+                  {proximityHeading || page.proximityHeading || proximity.heading || `Convenient for Clients in ${locationName}, Bangalore`}
                 </h2>
                 <p className="text-sm leading-relaxed text-stone-700">
                   {proximity.distanceNote ||
@@ -683,7 +689,7 @@ export default function BangaloreLandingPage() {
                     rel="noreferrer"
                     className="button-secondary text-xs font-semibold"
                   >
-                    📍 Get Google Maps Directions
+                    📍 {proximity.mapsButtonText || 'Get Google Maps Directions'}
                   </a>
                   <a
                     href={waLink(`Hi Shrusara, I am from ${locationName} and would like to book a consultation.`)}

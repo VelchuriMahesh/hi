@@ -1577,6 +1577,42 @@ export default function LandingPageEditor() {
                   </button>
                 </div>
 
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Process Section Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.processHeading || 'Our 5-Step Customization Journey'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          processHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Process Section Intro
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={page.processIntro || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          processIntro: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-3">
                   {(page.processSteps || []).map((step, idx) => (
                     <div
@@ -1692,6 +1728,42 @@ export default function LandingPageEditor() {
                   </div>
                 </div>
 
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Gallery Section Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.galleryHeading || `${page.serviceCategory} Gallery`}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          galleryHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Gallery Section Intro
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={page.galleryIntro || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          galleryIntro: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {(page.gallery || []).map((img, idx) => (
                     <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-3 space-y-2">
@@ -1776,6 +1848,43 @@ export default function LandingPageEditor() {
             {activeTab === 'proximity' && (
               <div className="space-y-6">
                 <h2 className="font-heading text-xl text-ink">8. Location & Proximity Advantage</h2>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Proximity Section Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.proximityHeading || page.proximity?.heading || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          proximityHeading: e.target.value,
+                          proximity: { ...page.proximity, heading: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Google Maps Button Text
+                    </label>
+                    <input
+                      type="text"
+                      value={page.proximity?.mapsButtonText || 'Get Google Maps Directions'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          proximity: { ...page.proximity, mapsButtonText: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
 
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div>
@@ -2195,6 +2304,42 @@ export default function LandingPageEditor() {
                   </button>
                 </div>
 
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      FAQs Section Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.faqsHeading || `${page.serviceCategory} in ${page.locationName} FAQs`}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          faqsHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      FAQs Section Intro
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={page.faqsIntro || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          faqsIntro: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-3">
                   {(page.faqs || []).map((faq, idx) => (
                     <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-4 space-y-2">
@@ -2273,6 +2418,20 @@ export default function LandingPageEditor() {
             {activeTab === 'cta' && (
               <div className="space-y-6">
                 <h2 className="font-heading text-xl text-ink">11. Bottom Conversion CTA Banner</h2>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Offer / Highlight Badge
+                  </label>
+                  <input
+                    type="text"
+                    value={page.cta?.offerBadge || page.cta?.offerBadgeTemplate || 'Personalized Couture'}
+                    onChange={(e) =>
+                      setPage({ ...page, cta: { ...page.cta, offerBadge: e.target.value } })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
+                  />
+                </div>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
