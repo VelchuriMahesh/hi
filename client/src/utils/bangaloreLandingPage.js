@@ -2151,6 +2151,23 @@ export function slugifyBangalorePage(serviceCategory = 'Bridal Blouse', location
   return `${serviceSlug}-stitching-${locSlug}`.replace(/--+/g, '-');
 }
 
+export function replacePlaceholders(str = '', loc = 'Bangalore', service = 'Custom Boutique Service') {
+  if (typeof str !== 'string') return str || '';
+  const locSlug = String(loc || 'Bangalore').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const serviceSlug = String(service || 'Service').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return str
+    .replace(/\{Location-slug\}/gi, locSlug)
+    .replace(/\{location-slug\}/gi, locSlug)
+    .replace(/\{Location\}/g, loc)
+    .replace(/\[Location\]/g, loc)
+    .replace(/\{location\}/g, String(loc).toLowerCase())
+    .replace(/\{Service-slug\}/gi, serviceSlug)
+    .replace(/\{service-slug\}/gi, serviceSlug)
+    .replace(/\{Service\}/g, service)
+    .replace(/\[Service\]/g, service)
+    .replace(/\{service\}/g, String(service).toLowerCase());
+}
+
 export function deepReplacePlaceholders(obj, replacements) {
   if (typeof obj === 'string') {
     let result = obj;
