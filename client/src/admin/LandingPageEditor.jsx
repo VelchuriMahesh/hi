@@ -33,13 +33,14 @@ const TABS = [
   { id: 'seo', label: '1. SEO & Slug' },
   { id: 'hero', label: '2. Hero Section' },
   { id: 'about', label: '3. About & Features' },
-  { id: 'why', label: '4. Why Choose Us' },
-  { id: 'process', label: '5. 5-Step Process' },
-  { id: 'gallery', label: '6. Gallery' },
-  { id: 'proximity', label: '7. Location & Maps' },
-  { id: 'testimonials', label: '8. Testimonials' },
-  { id: 'faqs', label: '9. FAQs (Schema)' },
-  { id: 'cta', label: '10. Bottom CTA' }
+  { id: 'chiefDesigner', label: '4. Meet Our Chief Designer' },
+  { id: 'why', label: '5. Why Choose Us' },
+  { id: 'process', label: '6. 5-Step Process' },
+  { id: 'gallery', label: '7. Gallery Showcase' },
+  { id: 'proximity', label: '8. Location & Maps' },
+  { id: 'testimonials', label: '9. Testimonials' },
+  { id: 'faqs', label: '10. FAQs (Schema)' },
+  { id: 'cta', label: '11. Bottom CTA' }
 ];
 
 export default function LandingPageEditor() {
@@ -1159,7 +1160,243 @@ export default function LandingPageEditor() {
               </div>
             )}
 
-            {/* TAB 4: WHY CHOOSE US */}
+            {/* TAB 4: MEET OUR CHIEF DESIGNER */}
+            {activeTab === 'chiefDesigner' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-heading text-xl text-ink">4. Meet Our Chief Designer Section</h2>
+                  <p className="text-xs text-stone-500 mt-0.5">
+                    Highlight Chief Designer Shruthi Ajith and customize designer bio &amp; consultation CTAs.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Section Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.sectionHeading || 'Meet Our Chief Designer — Shruthi Ajith'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, sectionHeading: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Section Intro
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.sectionIntro || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, sectionIntro: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-ink/10 bg-linen/50 p-4">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Designer Image
+                  </label>
+                  <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
+                    {page.chiefDesigner?.designerImage?.url || page.chiefDesigner?.designerImage ? (
+                      <img
+                        src={typeof page.chiefDesigner.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner.designerImage?.url}
+                        alt="Designer preview"
+                        className="h-28 w-28 rounded-xl object-cover border border-ink/10"
+                      />
+                    ) : (
+                      <div className="flex h-28 w-28 items-center justify-center rounded-xl bg-ink/5 text-xs text-stone-400">
+                        No Image
+                      </div>
+                    )}
+                    <div className="flex-1 space-y-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingImage}
+                        onChange={(e) => handleImageUpload(e, 'chiefDesigner')}
+                        className="text-xs text-stone-600"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Designer Image URL"
+                        value={typeof page.chiefDesigner?.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner?.designerImage?.url || ''}
+                        onChange={(e) =>
+                          setPage({
+                            ...page,
+                            chiefDesigner: {
+                              ...page.chiefDesigner,
+                              designerImage: {
+                                ...(typeof page.chiefDesigner?.designerImage === 'object' ? page.chiefDesigner.designerImage : {}),
+                                url: e.target.value
+                              }
+                            }
+                          })
+                        }
+                        className="w-full rounded-xl border border-ink/10 bg-white px-3 py-1.5 text-xs text-ink outline-none focus:border-cocoa"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Designer Image ALT Text (supports {Location})"
+                        value={page.chiefDesigner?.designerImageAlt || page.chiefDesigner?.designerImage?.alt || ''}
+                        onChange={(e) =>
+                          setPage({
+                            ...page,
+                            chiefDesigner: {
+                              ...page.chiefDesigner,
+                              designerImageAlt: e.target.value,
+                              designerImage: {
+                                ...(typeof page.chiefDesigner?.designerImage === 'object' ? page.chiefDesigner.designerImage : {}),
+                                alt: e.target.value
+                              }
+                            }
+                          })
+                        }
+                        className="w-full rounded-xl border border-ink/10 bg-white px-3 py-1.5 text-xs text-ink outline-none focus:border-cocoa"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Designer Name
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.designerName || 'Shruthi Ajith'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, designerName: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Designation
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.designation || 'Founder & Chief Designer'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, designation: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Designer Bio / Craftsmanship Story
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={page.chiefDesigner?.designerBio || ''}
+                    onChange={(e) =>
+                      setPage({
+                        ...page,
+                        chiefDesigner: { ...page.chiefDesigner, designerBio: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      CTA Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.designerCtaHeading || 'Discuss Your Design With Shruthi'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, designerCtaHeading: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      CTA Button Text
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.designerCtaButtonText || 'Chat With Our Designer'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, designerCtaButtonText: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      CTA Action Link / WhatsApp URL
+                    </label>
+                    <input
+                      type="text"
+                      value={page.chiefDesigner?.designerCtaLink || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          chiefDesigner: { ...page.chiefDesigner, designerCtaLink: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    CTA Description Text
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={page.chiefDesigner?.designerCtaText || ''}
+                    onChange={(e) =>
+                      setPage({
+                        ...page,
+                        chiefDesigner: { ...page.chiefDesigner, designerCtaText: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: WHY CHOOSE US */}
             {activeTab === 'why' && (
               <div className="space-y-6">
                 <h2 className="font-heading text-xl text-ink">4. Why Choose Shrusara Boutique</h2>
