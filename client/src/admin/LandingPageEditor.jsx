@@ -487,9 +487,9 @@ export default function LandingPageEditor() {
               </label>
 
               <div className="flex flex-wrap items-center gap-2">
-                {page.slug ? (
+                {page.slug || page.url ? (
                   <a
-                    href={`/bangalore/${page.slug}`}
+                    href={page.url || (String(page.slug || '').startsWith('/') ? page.slug : `/bangalore/${page.slug}`)}
                     target="_blank"
                     rel="noreferrer"
                     className="button-secondary py-2 text-xs font-semibold"

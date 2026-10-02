@@ -2214,7 +2214,10 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   const normService = normalizeServiceCategory(
     options.serviceCategory || rawMaster?.serviceCategory || rawMaster?.serviceName || 'Bridal Blouse'
   );
-  const loc = String(locationName || 'Bangalore').trim() || 'Bangalore';
+  const rawLocStr = String(locationName || 'Bangalore').trim() || 'Bangalore';
+  const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === rawLocStr.toLowerCase());
+  const loc = foundPreset ? foundPreset.name : rawLocStr.split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+
   const locSlug = loc.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   const serviceSlug = normService.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
@@ -2234,7 +2237,6 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   // Deep clone master and replace all placeholders in every string/array/object
   const master = deepReplacePlaceholders(JSON.parse(JSON.stringify(rawMaster || {})), replacements);
   const locObj = options.locationObj || options.locationData || {};
-  const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === loc.toLowerCase());
 
   const locPreset = {
     name: loc,
@@ -2499,6 +2501,55 @@ export function buildLandingPageFromMaster(serviceCategory = 'Bridal Blouse', lo
     serviceCategory: normService,
     locationObj: overrides.locationObj || overrides.locationData,
     overrides
+  });
+}
+
+export function parseAndBuildLandingPageFromSlug(rawSlug = '') {
+  const clean = String(rawSlug || '').toLowerCase().trim().replace(/^\/+/g, '').replace(/^bangalore\//i, '');
+  if (!clean) return buildLandingPageFromMaster('Bridal Blouse', 'Mahalakshmipuram');
+
+  const sortedLocs = [...BANGALORE_LOCATIONS_PRESET].sort((a, b) => b.name.length - a.name.length);
+  let matchedLocName = 'Bangalore';
+  let matchedLocObj = null;
+  let servicePart = clean;
+
+  for (const loc of sortedLocs) {
+    const lSlug = loc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    if (clean.endsWith(`-stitching-${lSlug}`)) {
+      servicePart = clean.slice(0, -(`-stitching-${lSlug}`.length));
+      matchedLocName = loc.name;
+      matchedLocObj = loc;
+      break;
+    } else if (clean.endsWith(`-in-${lSlug}`)) {
+      servicePart = clean.slice(0, -(`-in-${lSlug}`.length));
+      matchedLocName = loc.name;
+      matchedLocObj = loc;
+      break;
+    } else if (clean.endsWith(`-${lSlug}`)) {
+      servicePart = clean.slice(0, -(`-${lSlug}`.length)).replace(/-stitching$/, '');
+      matchedLocName = loc.name;
+      matchedLocObj = loc;
+      break;
+    }
+  }
+
+  if (!matchedLocObj && clean.includes('-stitching-')) {
+    const parts = clean.split('-stitching-');
+    servicePart = parts[0];
+    const locPart = parts.slice(1).join('-stitching-');
+    const locPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === locPart.replace(/-/g, ' ').toLowerCase());
+    if (locPreset) {
+      matchedLocName = locPreset.name;
+      matchedLocObj = locPreset;
+    } else if (locPart) {
+      matchedLocName = locPart.replace(/-/g, ' ').split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+  }
+
+  const serviceCategory = normalizeServiceCategory(servicePart.replace(/-/g, ' '));
+  return buildLandingPageFromMaster(serviceCategory, matchedLocName, {
+    locationObj: matchedLocObj,
+    overrides: { slug: clean }
   });
 }
 

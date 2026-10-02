@@ -471,7 +471,7 @@ export default function LandingPageManager() {
                               {syncingId === page.id ? 'Syncing...' : '🔄 Sync Master'}
                             </button>
                             <a
-                              href={`/bangalore/${page.slug}`}
+                              href={page.url || (String(page.slug || '').startsWith('/') ? page.slug : `/bangalore/${page.slug}`)}
                               target="_blank"
                               rel="noreferrer"
                               className="rounded-lg border border-ink/10 px-2.5 py-1 text-xs font-semibold text-stone-700 hover:bg-linen"

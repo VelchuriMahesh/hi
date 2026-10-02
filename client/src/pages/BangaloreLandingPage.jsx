@@ -11,6 +11,7 @@ import {
   DEFAULT_SITE_URL,
   SERVICE_CATEGORIES,
   buildLandingPageFromMaster,
+  parseAndBuildLandingPageFromSlug,
   generateLandingPageSchemas,
   generatePresetContent,
   slugifyBangalorePage
@@ -40,31 +41,16 @@ export default function BangaloreLandingPage() {
               void trackLandingPageView(res.item.id);
             }
           } else {
-            // If not found in backend, parse slug and generate dynamic master template page
-            const parts = String(slug || '').split('-stitching-');
-            if (parts.length === 2) {
-              const serviceName = parts[0].replace(/-/g, ' ');
-              const locName = parts[1].replace(/-/g, ' ');
-              const fallback = buildLandingPageFromMaster(serviceName, locName);
-              setPage(fallback);
-            } else {
-              setError('Landing page not found');
-            }
+            // Robust dynamic fallback from slug
+            const fallback = parseAndBuildLandingPageFromSlug(slug);
+            setPage(fallback);
           }
         }
       } catch (err) {
         if (isMounted) {
-          // Dynamic fallback on backend error or offline
-          const parts = String(slug || '').split('-stitching-');
-          if (parts.length === 2) {
-            const serviceName = parts[0].replace(/-/g, ' ');
-            const locName = parts[1].replace(/-/g, ' ');
-            const fallback = buildLandingPageFromMaster(serviceName, locName);
-            setPage(fallback);
-          } else {
-            // General fallback
-            setPage(buildLandingPageFromMaster('Ready-to-Wear Saree Customization', 'Rajajinagar'));
-          }
+          // Robust dynamic fallback on backend error or offline
+          const fallback = parseAndBuildLandingPageFromSlug(slug);
+          setPage(fallback);
         }
       } finally {
         if (isMounted) setLoading(false);
