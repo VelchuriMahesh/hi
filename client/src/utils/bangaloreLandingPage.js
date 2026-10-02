@@ -2114,6 +2114,10 @@ export function extractMasterTemplateFromPage(page = {}) {
       alt: toTemplate(g.alt || `${service} in {Location}, Bangalore – Shrusara Fashion Boutique`),
       caption: toTemplate(g.caption || '')
     })),
+    testimonialsHeading: toTemplate(page.testimonialsHeading || page.testimonialsHeader || 'Loved by Clients Across Bangalore'),
+    testimonialsIntro: toTemplate(page.testimonialsIntro || page.testimonials?.introTemplate || ''),
+    googleReviewsUrl: page.googleReviewsUrl || page.testimonials?.googleReviewsUrl || '',
+    googleReviewButtonText: page.googleReviewButtonText || page.testimonials?.googleReviewButtonText || 'Read Our Google Reviews ↗',
     testimonials: (page.testimonials || []).map((t) => ({
       name: t.name,
       location: toTemplate(t.location || `{Location}, Bangalore`),
@@ -2333,6 +2337,10 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   };
 
   // 8. Testimonials
+  const testimonialsHeading = overrides.testimonialsHeading || overrides.testimonialsHeader || master.testimonialsHeading || master.testimonials?.headingTemplate || 'Loved by Clients Across Bangalore';
+  const testimonialsIntro = overrides.testimonialsIntro || master.testimonialsIntro || master.testimonials?.introTemplate || 'Genuine 5-star experiences from clients who trusted Shrusara with their milestone outfits.';
+  const googleReviewsUrl = overrides.googleReviewsUrl || master.googleReviewsUrl || master.testimonials?.googleReviewsUrl || 'https://g.page/r/ShrusaraFashionBoutique/review';
+  const googleReviewButtonText = overrides.googleReviewButtonText || master.googleReviewButtonText || master.testimonials?.googleReviewButtonText || 'Read Our Google Reviews ↗';
   const testimonials = overrides.testimonials?.length ? overrides.testimonials : (master.testimonials?.length ? master.testimonials : [
     { name: 'Pooja K.', location: `${loc}, Bangalore`, rating: 5, outfitType: normService, reviewText: `Shrusara exceeded all my expectations for ${normService}. The fit was absolutely flawless and Shruthi ma'am understood my style instantly. Highly recommended for everyone in ${loc}!` },
     { name: 'Divya M.', location: `${loc}, Bangalore`, rating: 5, outfitType: normService, reviewText: `The attention to detail and trial session made all the difference. Delivered right on schedule to my home in ${loc}.` }
@@ -2420,6 +2428,11 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
     gallery,
     proximity,
     testimonials,
+    testimonialsHeading,
+    testimonialsHeader: testimonialsHeading,
+    testimonialsIntro,
+    googleReviewsUrl,
+    googleReviewButtonText,
     faqs,
     cta: {
       heading: cta.heading,

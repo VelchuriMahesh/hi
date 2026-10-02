@@ -146,6 +146,10 @@ export default function BangaloreLandingPage() {
     gallery = [],
     proximity = {},
     testimonials = [],
+    testimonialsHeading,
+    testimonialsIntro,
+    googleReviewsUrl,
+    googleReviewButtonText,
     faqs = [],
     cta = {}
   } = page;
@@ -731,11 +735,24 @@ export default function BangaloreLandingPage() {
                   Client Experiences
                 </p>
                 <h2 className="mt-2 font-heading text-3xl text-ink sm:text-4xl">
-                  Loved by Clients Across Bangalore
+                  {testimonialsHeading || page.testimonialsHeading || 'Loved by Clients Across Bangalore'}
                 </h2>
                 <p className="mt-2 text-sm text-stone-600">
-                  Genuine 5-star experiences from clients who trusted Shrusara with their milestone outfits.
+                  {testimonialsIntro || page.testimonialsIntro || 'Genuine 5-star experiences from clients who trusted Shrusara with their milestone outfits.'}
                 </p>
+                {(googleReviewsUrl || page.googleReviewsUrl) ? (
+                  <div className="mt-4">
+                    <a
+                      href={googleReviewsUrl || page.googleReviewsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="button-secondary inline-flex items-center gap-2 py-2 px-4 text-xs font-semibold shadow-sm hover:shadow transition"
+                    >
+                      <span>⭐</span>
+                      <span>{googleReviewButtonText || page.googleReviewButtonText || 'Read Our Google Reviews ↗'}</span>
+                    </a>
+                  </div>
+                ) : null}
               </div>
 
               <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -1987,7 +1987,12 @@ export default function LandingPageEditor() {
             {activeTab === 'testimonials' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-heading text-xl text-ink">9. Customer Testimonials</h2>
+                  <div>
+                    <h2 className="font-heading text-xl text-ink">9. Customer Testimonials</h2>
+                    <p className="text-xs text-stone-500">
+                      Customer locations preserve actual localities (e.g. "Rajajinagar, Bangalore").
+                    </p>
+                  </div>
                   <button
                     type="button"
                     onClick={() =>
@@ -2009,6 +2014,81 @@ export default function LandingPageEditor() {
                   >
                     + Add Review
                   </button>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Testimonials Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={page.testimonialsHeading || page.testimonialsHeader || 'Loved by Clients Across Bangalore'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          testimonialsHeading: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Testimonials Intro
+                    </label>
+                    <textarea
+                      rows={2}
+                      placeholder="Genuine 5-star experiences from clients who trusted Shrusara with their milestone outfits."
+                      value={page.testimonialsIntro || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          testimonialsIntro: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Google Reviews URL
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="https://g.page/r/..."
+                      value={page.googleReviewsUrl || ''}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          googleReviewsUrl: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Google Review Button Text
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Read Our Google Reviews ↗"
+                      value={page.googleReviewButtonText || 'Read Our Google Reviews ↗'}
+                      onChange={(e) =>
+                        setPage({
+                          ...page,
+                          googleReviewButtonText: e.target.value
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
