@@ -781,6 +781,22 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     caption: replaceLoc(master?.featuredImage?.caption || `Customized ${serviceName} by Shrusara Fashion Boutique.`)
   };
 
+  const processHeading = replaceLoc(overrides.processHeading || master?.processHeading || master?.process?.headingTemplate || 'Our 5-Step Customization Journey');
+  const processIntro = replaceLoc(overrides.processIntro || master?.processIntro || master?.process?.introTemplate || `From initial style consultation to final fitting, how we craft your bespoke ${serviceName.toLowerCase()} in Bangalore.`);
+
+  const galleryHeading = replaceLoc(overrides.galleryHeading || master?.galleryHeading || master?.gallery?.headingTemplate || `${serviceName} Gallery`);
+  const galleryIntro = replaceLoc(overrides.galleryIntro || master?.galleryIntro || master?.gallery?.introTemplate || 'Explore bespoke creations handcrafted for celebrations across Bangalore.');
+
+  const proximityHeading = replaceLoc(overrides.proximityHeading || master?.proximityHeading || master?.proximity?.headingTemplate || `Convenient for Clients in ${loc}, Bangalore`);
+
+  const testimonialsHeading = replaceLoc(overrides.testimonialsHeading || master?.testimonialsHeading || master?.testimonials?.headingTemplate || 'Loved by Clients Across Bangalore');
+  const testimonialsIntro = replaceLoc(overrides.testimonialsIntro || master?.testimonialsIntro || master?.testimonials?.introTemplate || 'Genuine 5-star experiences from clients who trusted Shrusara with their milestone outfits.');
+  const googleReviewsUrl = overrides.googleReviewsUrl || master?.googleReviewsUrl || master?.testimonials?.googleReviewsUrl || '';
+  const googleReviewButtonText = overrides.googleReviewButtonText || master?.googleReviewButtonText || master?.testimonials?.googleReviewButtonText || 'Read Our Google Reviews ↗';
+
+  const faqsHeading = replaceLoc(overrides.faqsHeading || master?.faqsHeading || master?.faqs?.headingTemplate || `${serviceName} in ${loc} FAQs`);
+  const faqsIntro = replaceLoc(overrides.faqsIntro || master?.faqsIntro || master?.faqs?.introTemplate || 'Everything you need to know about our customization process, fittings, and delivery.');
+
   return {
     title,
     serviceCategory: serviceName,
@@ -794,10 +810,22 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     about,
     chiefDesigner,
     whyChooseUs,
+    processHeading,
+    processIntro,
     processSteps,
+    galleryHeading,
+    galleryIntro,
     gallery,
+    proximityHeading,
     proximity,
+    testimonialsHeading,
+    testimonialsHeader: testimonialsHeading,
+    testimonialsIntro,
+    googleReviewsUrl,
+    googleReviewButtonText,
     testimonials,
+    faqsHeading,
+    faqsIntro,
     faqs,
     cta
   };
