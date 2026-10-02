@@ -20,44 +20,43 @@ import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 export default function BangaloreLandingPage() {
   const { slug } = useParams();
-  const [page, setPage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(() => parseAndBuildLandingPageFromSlug(slug));
+  const [loading, setLoading] = useState(!page);
   const [error, setError] = useState(null);
   const [openFaqIndex, setOpenFaqIndex] = useState(0); // Open first FAQ by default
   const [selectedLightboxImage, setSelectedLightboxImage] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
-    async function loadPage() {
+    
+    // Instantly hydrate page for target slug so render is immediate (<50ms)
+    const initialLocalPage = parseAndBuildLandingPageFromSlug(slug);
+    if (initialLocalPage) {
+      setPage(initialLocalPage);
+      setLoading(false);
+    } else {
       setLoading(true);
-      setError(null);
+    }
+    setError(null);
+
+    async function loadRemotePage() {
       try {
         const res = await fetchLandingPageBySlug(slug);
-        if (isMounted) {
-          if (res?.item) {
-            // Use API item directly as single source of truth from Master Template
-            setPage(res.item);
-            if (res.item.id) {
-              void trackLandingPageView(res.item.id);
-            }
-          } else {
-            // Robust dynamic fallback from slug
-            const fallback = parseAndBuildLandingPageFromSlug(slug);
-            setPage(fallback);
+        if (isMounted && res?.item) {
+          // Update with remote database item if server overrides exist
+          setPage(res.item);
+          if (res.item.id) {
+            void trackLandingPageView(res.item.id);
           }
         }
       } catch (err) {
-        if (isMounted) {
-          // Robust dynamic fallback on backend error or offline
-          const fallback = parseAndBuildLandingPageFromSlug(slug);
-          setPage(fallback);
-        }
+        // Silent catch: page is already fully hydrated locally from Master Template
       } finally {
         if (isMounted) setLoading(false);
       }
     }
 
-    loadPage();
+    loadRemotePage();
     return () => {
       isMounted = false;
     };
@@ -317,6 +316,8 @@ export default function BangaloreLandingPage() {
                         src={featuredImage?.url || '/bridal/bridalblow/hero-bridal.webp'}
                         alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
                         title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
+                        fetchPriority="high"
+                        decoding="async"
                         className="h-full w-full object-cover transition duration-700 hover:scale-105"
                       />
                     </div>
