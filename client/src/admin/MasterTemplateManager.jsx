@@ -8,11 +8,30 @@ import {
   saveMasterTemplate,
   fetchBangaloreLocations
 } from '../services/api';
+import { uploadImageToImgbb } from '../services/uploaders';
 import {
   SERVICE_CATEGORIES,
   MASTER_SERVICE_TEMPLATES,
   normalizeServiceCategory
 } from '../utils/bangaloreLandingPage';
+
+function moveUp(list, index) {
+  if (!Array.isArray(list) || index <= 0) return list;
+  const copy = [...list];
+  const item = copy[index];
+  copy[index] = copy[index - 1];
+  copy[index - 1] = item;
+  return copy;
+}
+
+function moveDown(list, index) {
+  if (!Array.isArray(list) || index >= list.length - 1) return list;
+  const copy = [...list];
+  const item = copy[index];
+  copy[index] = copy[index + 1];
+  copy[index + 1] = item;
+  return copy;
+}
 
 const TABS = [
   { id: 'seo', label: '1. SEO & Metadata' },
@@ -57,10 +76,68 @@ export default function MasterTemplateManager() {
   const [testLocation, setTestLocation] = useState('Malleshwaram');
   const [locations, setLocations] = useState([]);
 
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   // Remote templates map: { [id]: template }
   const [backendTemplates, setBackendTemplates] = useState({});
   // Active editing template
   const [template, setTemplate] = useState(null);
+
+  async function handleImageUpload(e, target = 'heroImage', galleryIndex = null) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setMessage('');
+    try {
+      const uploaded = await uploadImageToImgbb(file);
+      if (target === 'heroImage') {
+        setTemplate((prev) => ({
+          ...prev,
+          heroImage: uploaded.url,
+          featuredImage: {
+            ...prev.featuredImage,
+            url: uploaded.url
+          }
+        }));
+      } else if (target === 'chiefDesigner') {
+        setTemplate((prev) => ({
+          ...prev,
+          chiefDesigner: {
+            ...prev.chiefDesigner,
+            designerImage: {
+              ...(typeof prev.chiefDesigner?.designerImage === 'object' ? prev.chiefDesigner.designerImage : {}),
+              url: uploaded.url
+            }
+          }
+        }));
+      } else if (target === 'gallery' && galleryIndex !== null) {
+        setTemplate((prev) => {
+          const updated = [...(prev.gallery || [])];
+          updated[galleryIndex] = { ...updated[galleryIndex], url: uploaded.url };
+          return { ...prev, gallery: updated };
+        });
+      } else if (target === 'newGallery') {
+        setTemplate((prev) => ({
+          ...prev,
+          gallery: [
+            ...(prev.gallery || []),
+            {
+              url: uploaded.url,
+              title: `${selectedService} in {Location}`,
+              alt: `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`,
+              caption: 'Customized design.'
+            }
+          ]
+        }));
+      }
+      setMessage('Image uploaded successfully.');
+    } catch (err) {
+      setMessage(err.message || 'Image upload failed.');
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   useEffect(() => {
     const token = getAdminToken();
@@ -736,20 +813,83 @@ export default function MasterTemplateManager() {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                      Hero Image URL
+                      Hero Image ALT Text Template (supports {'{Location}'})
                     </label>
                     <input
                       type="text"
-                      value={template.heroImage || ''}
+                      placeholder="Customized bridal blouse designed at Shrusara Fashion Boutique in {Location}, Bangalore"
+                      value={template.featuredImage?.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`}
                       onChange={(e) =>
                         setTemplate({
                           ...template,
-                          heroImage: e.target.value,
-                          featuredImage: { ...template.featuredImage, url: e.target.value }
+                          featuredImage: { ...template.featuredImage, alt: e.target.value }
                         })
                       }
                       className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
                     />
+                  </div>
+                </div>
+
+                {/* Hero Image Picker Card */}
+                <div className="rounded-xl border border-ink/10 bg-linen/40 p-4">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Hero Image Management
+                  </label>
+                  <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
+                    {template.heroImage || template.featuredImage?.url ? (
+                      <img
+                        src={template.heroImage || template.featuredImage?.url}
+                        alt="Hero preview"
+                        className="h-28 w-28 rounded-xl object-cover border border-ink/10"
+                      />
+                    ) : (
+                      <div className="flex h-28 w-28 items-center justify-center rounded-xl bg-ink/5 text-xs text-stone-400">
+                        No Image
+                      </div>
+                    )}
+                    <div className="flex-1 space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <label className="button-secondary cursor-pointer py-1.5 px-3 text-xs font-semibold inline-block">
+                          <span>{template.heroImage ? '📷 Replace Hero Image' : '📤 Upload Hero Image'}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            disabled={uploadingImage}
+                            onChange={(e) => handleImageUpload(e, 'heroImage')}
+                            className="hidden"
+                          />
+                        </label>
+                        {template.heroImage ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setTemplate({
+                                ...template,
+                                heroImage: '',
+                                featuredImage: { ...template.featuredImage, url: '' }
+                              })
+                            }
+                            className="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100"
+                          >
+                            ✕ Remove Image
+                          </button>
+                        ) : null}
+                      </div>
+                      {uploadingImage && <p className="text-xs text-cocoa">Uploading to server...</p>}
+                      <input
+                        type="text"
+                        placeholder="Hero Image URL / Path"
+                        value={template.heroImage || template.featuredImage?.url || ''}
+                        onChange={(e) =>
+                          setTemplate({
+                            ...template,
+                            heroImage: e.target.value,
+                            featuredImage: { ...template.featuredImage, url: e.target.value }
+                          })
+                        }
+                        className="w-full rounded-xl border border-ink/10 bg-white px-3 py-1.5 text-xs text-ink outline-none focus:border-cocoa"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -930,33 +1070,63 @@ export default function MasterTemplateManager() {
                   {(template.about?.highlights || []).map((h, idx) => (
                     <div key={idx} className="mb-3 rounded-xl border border-ink/10 bg-sand/30 p-3">
                       <div className="flex items-center justify-between">
-                        <input
-                          type="text"
-                          placeholder="Feature Title"
-                          value={h.title}
-                          onChange={(e) => {
-                            const updated = [...template.about.highlights];
-                            updated[idx] = { ...updated[idx], title: e.target.value };
-                            setTemplate({
-                              ...template,
-                              about: { ...template.about, highlights: updated }
-                            });
-                          }}
-                          className="w-2/3 rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = template.about.highlights.filter((_, i) => i !== idx);
-                            setTemplate({
-                              ...template,
-                              about: { ...template.about, highlights: updated }
-                            });
-                          }}
-                          className="text-xs text-red-600 hover:underline"
-                        >
-                          Remove
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            placeholder="Feature Title"
+                            value={h.title}
+                            onChange={(e) => {
+                              const updated = [...template.about.highlights];
+                              updated[idx] = { ...updated[idx], title: e.target.value };
+                              setTemplate({
+                                ...template,
+                                about: { ...template.about, highlights: updated }
+                              });
+                            }}
+                            className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() =>
+                              setTemplate({
+                                ...template,
+                                about: { ...template.about, highlights: moveUp(template.about.highlights, idx) }
+                              })
+                            }
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▲ Up
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === (template.about?.highlights?.length || 0) - 1}
+                            onClick={() =>
+                              setTemplate({
+                                ...template,
+                                about: { ...template.about, highlights: moveDown(template.about.highlights, idx) }
+                              })
+                            }
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▼ Down
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = template.about.highlights.filter((_, i) => i !== idx);
+                              setTemplate({
+                                ...template,
+                                about: { ...template.about, highlights: updated }
+                              });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                       <textarea
                         rows={2}
@@ -1233,7 +1403,7 @@ export default function MasterTemplateManager() {
             {/* TAB 5: WHY CHOOSE US */}
             {activeTab === 'why' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">4. Why Choose Us Section</h2>
+                <h2 className="font-heading text-xl text-ink">5. Why Choose Us Section</h2>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
@@ -1291,21 +1461,49 @@ export default function MasterTemplateManager() {
                               whyChooseUs: { ...template.whyChooseUs, cards: updated }
                             });
                           }}
-                          className="w-2/3 rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
+                          className="w-1/2 rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs font-semibold text-ink"
                         />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = template.whyChooseUs.cards.filter((_, i) => i !== idx);
-                            setTemplate({
-                              ...template,
-                              whyChooseUs: { ...template.whyChooseUs, cards: updated }
-                            });
-                          }}
-                          className="text-xs text-red-600 hover:underline"
-                        >
-                          Remove
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() =>
+                              setTemplate({
+                                ...template,
+                                whyChooseUs: { ...template.whyChooseUs, cards: moveUp(template.whyChooseUs.cards, idx) }
+                              })
+                            }
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▲ Up
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === (template.whyChooseUs?.cards?.length || 0) - 1}
+                            onClick={() =>
+                              setTemplate({
+                                ...template,
+                                whyChooseUs: { ...template.whyChooseUs, cards: moveDown(template.whyChooseUs.cards, idx) }
+                              })
+                            }
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▼ Down
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = template.whyChooseUs.cards.filter((_, i) => i !== idx);
+                              setTemplate({
+                                ...template,
+                                whyChooseUs: { ...template.whyChooseUs, cards: updated }
+                              });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                       <textarea
                         rows={2}
@@ -1343,42 +1541,72 @@ export default function MasterTemplateManager() {
               </div>
             )}
 
-            {/* TAB 5: PROCESS STEPS */}
+            {/* TAB 6: PROCESS STEPS */}
             {activeTab === 'process' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">5. 5-Step Process Template</h2>
+                <h2 className="font-heading text-xl text-ink">6. 5-Step Process Template</h2>
                 <p className="text-xs text-stone-500">
                   Walk through the step-by-step experience from consultation to delivery in {"{Location}"}.
                 </p>
 
                 {(template.processSteps || []).map((step, idx) => (
                   <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cocoa text-xs font-bold text-white">
-                        {step.stepNumber || idx + 1}
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Step Title"
-                        value={step.title}
-                        onChange={(e) => {
-                          const updated = [...template.processSteps];
-                          updated[idx] = { ...updated[idx], title: e.target.value };
-                          setTemplate({ ...template, processSteps: updated });
-                        }}
-                        className="flex-1 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs font-semibold text-ink"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Duration (e.g. Day 1)"
-                        value={step.duration}
-                        onChange={(e) => {
-                          const updated = [...template.processSteps];
-                          updated[idx] = { ...updated[idx], duration: e.target.value };
-                          setTemplate({ ...template, processSteps: updated });
-                        }}
-                        className="w-32 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs text-stone-600"
-                      />
+                    <div className="flex items-center justify-between gap-3 mb-2">
+                      <div className="flex items-center gap-2 flex-1">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cocoa text-xs font-bold text-white">
+                          {step.stepNumber || idx + 1}
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Step Title"
+                          value={step.title}
+                          onChange={(e) => {
+                            const updated = [...template.processSteps];
+                            updated[idx] = { ...updated[idx], title: e.target.value };
+                            setTemplate({ ...template, processSteps: updated });
+                          }}
+                          className="flex-1 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs font-semibold text-ink"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Duration (e.g. Day 1)"
+                          value={step.duration}
+                          onChange={(e) => {
+                            const updated = [...template.processSteps];
+                            updated[idx] = { ...updated[idx], duration: e.target.value };
+                            setTemplate({ ...template, processSteps: updated });
+                          }}
+                          className="w-32 rounded-lg border border-ink/10 bg-white px-3 py-1 text-xs text-stone-600"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => setTemplate({ ...template, processSteps: moveUp(template.processSteps, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▲ Up
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === (template.processSteps?.length || 0) - 1}
+                          onClick={() => setTemplate({ ...template, processSteps: moveDown(template.processSteps, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▼ Down
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = template.processSteps.filter((_, i) => i !== idx);
+                            setTemplate({ ...template, processSteps: updated });
+                          }}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                     <textarea
                       rows={2}
@@ -1393,14 +1621,28 @@ export default function MasterTemplateManager() {
                     />
                   </div>
                 ))}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = [
+                      ...(template.processSteps || []),
+                      { stepNumber: (template.processSteps?.length || 0) + 1, title: 'New Customization Step', description: 'Step details for {Location}.', duration: 'Day 1' }
+                    ];
+                    setTemplate({ ...template, processSteps: updated });
+                  }}
+                  className="rounded-xl border border-dashed border-cocoa/40 px-3 py-1.5 text-xs font-semibold text-cocoa hover:bg-linen"
+                >
+                  + Add Process Step
+                </button>
               </div>
             )}
 
-            {/* TAB 6: GALLERY */}
+            {/* TAB 7: GALLERY */}
             {activeTab === 'gallery' && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="font-heading text-xl text-ink">6. Gallery Showcase Template</h2>
+                  <h2 className="font-heading text-xl text-ink">7. Gallery Showcase Template</h2>
                   <p className="mt-1 text-xs text-stone-500">
                     Alt text automatically resolves to: <code className="font-mono text-cocoa font-bold">"{selectedService} in {"{Location}"}, Bangalore – Shrusara Fashion Boutique"</code>
                   </p>
@@ -1458,16 +1700,36 @@ export default function MasterTemplateManager() {
                         <p className="text-[10px] text-stone-500">
                           Alt Preview: <span className="text-cocoa font-medium">{preview(img.alt || `${selectedService} in {Location}, Bangalore – Shrusara Fashion Boutique`)}</span>
                         </p>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = template.gallery.filter((_, i) => i !== idx);
-                            setTemplate({ ...template, gallery: updated });
-                          }}
-                          className="text-xs text-red-600 hover:underline"
-                        >
-                          Remove Photo
-                        </button>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              disabled={idx === 0}
+                              onClick={() => setTemplate({ ...template, gallery: moveUp(template.gallery, idx) })}
+                              className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                            >
+                              ▲ Up
+                            </button>
+                            <button
+                              type="button"
+                              disabled={idx === (template.gallery?.length || 0) - 1}
+                              onClick={() => setTemplate({ ...template, gallery: moveDown(template.gallery, idx) })}
+                              className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                            >
+                              ▼ Down
+                            </button>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = template.gallery.filter((_, i) => i !== idx);
+                              setTemplate({ ...template, gallery: updated });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove Photo
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -1494,11 +1756,11 @@ export default function MasterTemplateManager() {
               </div>
             )}
 
-            {/* TAB 7: PROXIMITY & MAPS */}
+            {/* TAB 8: PROXIMITY & MAPS */}
             {activeTab === 'proximity' && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="font-heading text-xl text-ink">7. Location, Distance & Maps Defaults</h2>
+                  <h2 className="font-heading text-xl text-ink">8. Location, Distance & Maps Defaults</h2>
                   <p className="text-xs text-stone-500">
                     Default proximity settings when generating a page. Location-specific travel times and landmarks are automatically merged from the Bangalore Locations directory.
                   </p>
@@ -1579,14 +1841,14 @@ export default function MasterTemplateManager() {
               </div>
             )}
 
-            {/* TAB 8: TESTIMONIALS */}
+            {/* TAB 9: TESTIMONIALS */}
             {activeTab === 'testimonials' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">8. Testimonials Template</h2>
+                <h2 className="font-heading text-xl text-ink">9. Testimonials Template</h2>
 
                 {(template.testimonials || []).map((t, idx) => (
                   <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <div className="flex items-center gap-3">
                         <input
                           type="text"
@@ -1611,16 +1873,34 @@ export default function MasterTemplateManager() {
                           className="rounded-lg border border-ink/10 bg-white px-2 py-1 text-xs text-stone-600"
                         />
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const updated = template.testimonials.filter((_, i) => i !== idx);
-                          setTemplate({ ...template, testimonials: updated });
-                        }}
-                        className="text-xs text-red-600 hover:underline"
-                      >
-                        Remove Testimonial
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => setTemplate({ ...template, testimonials: moveUp(template.testimonials, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▲ Up
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === (template.testimonials?.length || 0) - 1}
+                          onClick={() => setTemplate({ ...template, testimonials: moveDown(template.testimonials, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▼ Down
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = template.testimonials.filter((_, i) => i !== idx);
+                            setTemplate({ ...template, testimonials: updated });
+                          }}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Remove Testimonial
+                        </button>
+                      </div>
                     </div>
 
                     <textarea
@@ -1662,11 +1942,11 @@ export default function MasterTemplateManager() {
               </div>
             )}
 
-            {/* TAB 9: FAQS */}
+            {/* TAB 10: FAQS */}
             {activeTab === 'faqs' && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="font-heading text-xl text-ink">9. FAQs (Google FAQ Schema)</h2>
+                  <h2 className="font-heading text-xl text-ink">10. FAQs (Google FAQ Schema)</h2>
                   <p className="text-xs text-stone-500">
                     These questions and answers feed directly into Google Structured Data (FAQPage schema) for rich SERP snippets.
                   </p>
@@ -1676,16 +1956,34 @@ export default function MasterTemplateManager() {
                   <div key={idx} className="rounded-xl border border-ink/10 bg-sand/30 p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-cocoa">Q{idx + 1}:</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const updated = template.faqs.filter((_, i) => i !== idx);
-                          setTemplate({ ...template, faqs: updated });
-                        }}
-                        className="text-xs text-red-600 hover:underline"
-                      >
-                        Remove FAQ
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => setTemplate({ ...template, faqs: moveUp(template.faqs, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▲ Up
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === (template.faqs?.length || 0) - 1}
+                          onClick={() => setTemplate({ ...template, faqs: moveDown(template.faqs, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▼ Down
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = template.faqs.filter((_, i) => i !== idx);
+                            setTemplate({ ...template, faqs: updated });
+                          }}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Remove FAQ
+                        </button>
+                      </div>
                     </div>
 
                     <input
@@ -1735,10 +2033,10 @@ export default function MasterTemplateManager() {
               </div>
             )}
 
-            {/* TAB 10: BOTTOM CTA */}
+            {/* TAB 11: BOTTOM CTA */}
             {activeTab === 'cta' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">10. Bottom Call-To-Action (CTA)</h2>
+                <h2 className="font-heading text-xl text-ink">11. Bottom Call-To-Action (CTA)</h2>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">

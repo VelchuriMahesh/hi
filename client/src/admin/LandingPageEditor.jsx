@@ -43,6 +43,24 @@ const TABS = [
   { id: 'cta', label: '11. Bottom CTA' }
 ];
 
+function moveUp(list, index) {
+  if (!Array.isArray(list) || index <= 0) return list;
+  const copy = [...list];
+  const item = copy[index];
+  copy[index] = copy[index - 1];
+  copy[index - 1] = item;
+  return copy;
+}
+
+function moveDown(list, index) {
+  if (!Array.isArray(list) || index >= list.length - 1) return list;
+  const copy = [...list];
+  const item = copy[index];
+  copy[index] = copy[index + 1];
+  copy[index + 1] = item;
+  return copy;
+}
+
 export default function LandingPageEditor() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -1399,7 +1417,7 @@ export default function LandingPageEditor() {
             {/* TAB 5: WHY CHOOSE US */}
             {activeTab === 'why' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">4. Why Choose Shrusara Boutique</h2>
+                <h2 className="font-heading text-xl text-ink">5. Why Choose Shrusara Boutique</h2>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
@@ -1465,19 +1483,37 @@ export default function LandingPageEditor() {
                       <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-3 space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="font-mono text-xs text-cocoa">Advantage #{idx + 1}</span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newCards = page.whyChooseUs.cards.filter((_, i) => i !== idx);
-                              setPage({
-                                ...page,
-                                whyChooseUs: { ...page.whyChooseUs, cards: newCards }
-                              });
-                            }}
-                            className="text-xs text-red-600 hover:underline"
-                          >
-                            Remove
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              disabled={idx === 0}
+                              onClick={() => setPage({ ...page, whyChooseUs: { ...page.whyChooseUs, cards: moveUp(page.whyChooseUs.cards, idx) } })}
+                              className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                            >
+                              ▲
+                            </button>
+                            <button
+                              type="button"
+                              disabled={idx === (page.whyChooseUs?.cards?.length || 0) - 1}
+                              onClick={() => setPage({ ...page, whyChooseUs: { ...page.whyChooseUs, cards: moveDown(page.whyChooseUs.cards, idx) } })}
+                              className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                            >
+                              ▼
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newCards = page.whyChooseUs.cards.filter((_, i) => i !== idx);
+                                setPage({
+                                  ...page,
+                                  whyChooseUs: { ...page.whyChooseUs, cards: newCards }
+                                });
+                              }}
+                              className="text-xs text-red-600 hover:underline"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
                         <input
                           type="text"
@@ -1514,11 +1550,11 @@ export default function LandingPageEditor() {
               </div>
             )}
 
-            {/* TAB 5: 5-STEP CUSTOMIZATION JOURNEY */}
+            {/* TAB 6: 5-STEP CUSTOMIZATION JOURNEY */}
             {activeTab === 'process' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-heading text-xl text-ink">5. 5-Step Customization Journey</h2>
+                  <h2 className="font-heading text-xl text-ink">6. 5-Step Customization Journey</h2>
                   <button
                     type="button"
                     onClick={() =>
@@ -1551,16 +1587,34 @@ export default function LandingPageEditor() {
                         <span className="font-heading text-sm font-bold text-cocoa">
                           Step {idx + 1}
                         </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newSteps = page.processSteps.filter((_, i) => i !== idx);
-                            setPage({ ...page, processSteps: newSteps });
-                          }}
-                          className="text-xs text-red-600 hover:underline"
-                        >
-                          Remove
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => setPage({ ...page, processSteps: moveUp(page.processSteps, idx) })}
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▲ Up
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === (page.processSteps?.length || 0) - 1}
+                            onClick={() => setPage({ ...page, processSteps: moveDown(page.processSteps, idx) })}
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▼ Down
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newSteps = page.processSteps.filter((_, i) => i !== idx);
+                              setPage({ ...page, processSteps: newSteps });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
 
                       <div className="grid gap-3 sm:grid-cols-3">
@@ -1619,11 +1673,11 @@ export default function LandingPageEditor() {
               </div>
             )}
 
-            {/* TAB 6: DESIGN GALLERY */}
+            {/* TAB 7: DESIGN GALLERY */}
             {activeTab === 'gallery' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-heading text-xl text-ink">6. Curated Design Gallery</h2>
+                  <h2 className="font-heading text-xl text-ink">7. Curated Design Gallery</h2>
                   <div className="flex items-center gap-2">
                     <label className="button-primary cursor-pointer py-1.5 px-3 text-xs font-semibold">
                       <span>{uploadingImage ? 'Uploading...' : '+ Upload Gallery Image'}</span>
@@ -1694,16 +1748,34 @@ export default function LandingPageEditor() {
                         }}
                         className="w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs text-ink outline-none focus:border-cocoa"
                       />
+                      <div className="flex items-center gap-2 pt-1">
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => setPage({ ...page, gallery: moveUp(page.gallery, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▲ Up
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === (page.gallery?.length || 0) - 1}
+                          onClick={() => setPage({ ...page, gallery: moveDown(page.gallery, idx) })}
+                          className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                        >
+                          ▼ Down
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* TAB 7: LOCATION & PROXIMITY */}
+            {/* TAB 8: LOCATION & PROXIMITY */}
             {activeTab === 'proximity' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">7. Location & Proximity Advantage</h2>
+                <h2 className="font-heading text-xl text-ink">8. Location & Proximity Advantage</h2>
 
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div>
@@ -1911,11 +1983,11 @@ export default function LandingPageEditor() {
               </div>
             )}
 
-            {/* TAB 8: TESTIMONIALS */}
+            {/* TAB 9: TESTIMONIALS */}
             {activeTab === 'testimonials' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-heading text-xl text-ink">8. Customer Testimonials</h2>
+                  <h2 className="font-heading text-xl text-ink">9. Customer Testimonials</h2>
                   <button
                     type="button"
                     onClick={() =>
@@ -1944,16 +2016,34 @@ export default function LandingPageEditor() {
                     <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-xs text-cocoa">Review #{idx + 1}</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newTestis = page.testimonials.filter((_, i) => i !== idx);
-                            setPage({ ...page, testimonials: newTestis });
-                          }}
-                          className="text-xs text-red-600 hover:underline"
-                        >
-                          Remove
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => setPage({ ...page, testimonials: moveUp(page.testimonials, idx) })}
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▲ Up
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === (page.testimonials?.length || 0) - 1}
+                            onClick={() => setPage({ ...page, testimonials: moveDown(page.testimonials, idx) })}
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▼ Down
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newTestis = page.testimonials.filter((_, i) => i !== idx);
+                              setPage({ ...page, testimonials: newTestis });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2">
@@ -1998,12 +2088,12 @@ export default function LandingPageEditor() {
               </div>
             )}
 
-            {/* TAB 9: FAQS & SCHEMA */}
+            {/* TAB 10: FAQS & SCHEMA */}
             {activeTab === 'faqs' && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="font-heading text-xl text-ink">9. Localized FAQs (Auto FAQPage Schema)</h2>
+                    <h2 className="font-heading text-xl text-ink">10. Localized FAQs (Auto FAQPage Schema)</h2>
                     <p className="text-xs text-stone-600">
                       These questions automatically render in the public accordion and generate Google `FAQPage` JSON-LD schema!
                     </p>
@@ -2030,16 +2120,34 @@ export default function LandingPageEditor() {
                     <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-4 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-xs font-semibold text-cocoa">Q#{idx + 1}</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newFaqs = page.faqs.filter((_, i) => i !== idx);
-                            setPage({ ...page, faqs: newFaqs });
-                          }}
-                          className="text-xs text-red-600 hover:underline"
-                        >
-                          Remove
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => setPage({ ...page, faqs: moveUp(page.faqs, idx) })}
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▲ Up
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === (page.faqs?.length || 0) - 1}
+                            onClick={() => setPage({ ...page, faqs: moveDown(page.faqs, idx) })}
+                            className="text-xs font-bold text-cocoa hover:underline disabled:opacity-30"
+                          >
+                            ▼ Down
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newFaqs = page.faqs.filter((_, i) => i !== idx);
+                              setPage({ ...page, faqs: newFaqs });
+                            }}
+                            className="text-xs text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
 
                       <input
@@ -2081,10 +2189,10 @@ export default function LandingPageEditor() {
               </div>
             )}
 
-            {/* TAB 10: BOTTOM CTA */}
+            {/* TAB 11: BOTTOM CTA */}
             {activeTab === 'cta' && (
               <div className="space-y-6">
-                <h2 className="font-heading text-xl text-ink">10. Bottom Conversion CTA Banner</h2>
+                <h2 className="font-heading text-xl text-ink">11. Bottom Conversion CTA Banner</h2>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
