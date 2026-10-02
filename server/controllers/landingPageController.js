@@ -737,6 +737,43 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     callText: overrides.cta?.callText || master?.cta?.callText || 'Call Shrusara Boutique'
   };
 
+  const defaultChiefDesigner = {
+    sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+    sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+    designerImage: {
+      url: '/videos/lead-of-shrusara.webp',
+      alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      title: 'Shruthi Ajith – Chief Designer'
+    },
+    designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+    designerName: 'Shruthi Ajith',
+    designation: 'Founder & Chief Designer',
+    designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+    designerCtaHeading: 'Discuss Your Design With Shruthi',
+    designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+    designerCtaButtonText: 'Chat With Our Designer',
+    designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
+  };
+
+  const rawCD = overrides.chiefDesigner || master?.chiefDesigner || defaultChiefDesigner;
+  const chiefDesigner = {
+    sectionHeading: replaceLoc(toStringValue(rawCD.sectionHeading || defaultChiefDesigner.sectionHeading)),
+    sectionIntro: replaceLoc(toStringValue(rawCD.sectionIntro || defaultChiefDesigner.sectionIntro)),
+    designerImage: {
+      url: toStringValue(rawCD.designerImage?.url || rawCD.image || defaultChiefDesigner.designerImage.url),
+      alt: replaceLoc(toStringValue(rawCD.designerImage?.alt || rawCD.designerImageAlt || defaultChiefDesigner.designerImage.alt)),
+      title: replaceLoc(toStringValue(rawCD.designerImage?.title || defaultChiefDesigner.designerImage.title))
+    },
+    designerImageAlt: replaceLoc(toStringValue(rawCD.designerImageAlt || rawCD.designerImage?.alt || defaultChiefDesigner.designerImageAlt)),
+    designerName: replaceLoc(toStringValue(rawCD.designerName || defaultChiefDesigner.designerName)),
+    designation: replaceLoc(toStringValue(rawCD.designation || defaultChiefDesigner.designation)),
+    designerBio: replaceLoc(toStringValue(rawCD.designerBio || defaultChiefDesigner.designerBio)),
+    designerCtaHeading: replaceLoc(toStringValue(rawCD.designerCtaHeading || defaultChiefDesigner.designerCtaHeading)),
+    designerCtaText: replaceLoc(toStringValue(rawCD.designerCtaText || defaultChiefDesigner.designerCtaText)),
+    designerCtaButtonText: replaceLoc(toStringValue(rawCD.designerCtaButtonText || defaultChiefDesigner.designerCtaButtonText)),
+    designerCtaLink: replaceLoc(toStringValue(rawCD.designerCtaLink || defaultChiefDesigner.designerCtaLink))
+  };
+
   const featuredImage = overrides.featuredImage?.url ? overrides.featuredImage : {
     url: master?.featuredImage?.url || master?.heroImage || DEFAULT_LANDING_IMAGE,
     alt: replaceLoc(master?.featuredImage?.alt || `${serviceName} in ${loc}, Bangalore – Shrusara Fashion Boutique`),
@@ -755,6 +792,7 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     featuredImage,
     hero,
     about,
+    chiefDesigner,
     whyChooseUs,
     processSteps,
     gallery,
@@ -989,6 +1027,22 @@ async function normalizeLandingPagePayload(body = {}, existing = {}) {
     callText: toStringValue(body.cta?.callText || existing.cta?.callText || masterFallback.cta.callText)
   };
 
+  // Meet Our Chief Designer (NEW Section 4)
+  const rawCDPayload = body.chiefDesigner || existing.chiefDesigner || masterFallback.chiefDesigner;
+  const chiefDesigner = {
+    sectionHeading: toStringValue(rawCDPayload?.sectionHeading || masterFallback.chiefDesigner?.sectionHeading),
+    sectionIntro: toStringValue(rawCDPayload?.sectionIntro || masterFallback.chiefDesigner?.sectionIntro),
+    designerImage: normalizeImage(rawCDPayload?.designerImage || rawCDPayload?.image || masterFallback.chiefDesigner?.designerImage, 'Shruthi Ajith, Founder & Chief Designer'),
+    designerImageAlt: toStringValue(rawCDPayload?.designerImageAlt || rawCDPayload?.designerImage?.alt || masterFallback.chiefDesigner?.designerImageAlt),
+    designerName: toStringValue(rawCDPayload?.designerName || masterFallback.chiefDesigner?.designerName),
+    designation: toStringValue(rawCDPayload?.designation || masterFallback.chiefDesigner?.designation),
+    designerBio: toStringValue(rawCDPayload?.designerBio || masterFallback.chiefDesigner?.designerBio),
+    designerCtaHeading: toStringValue(rawCDPayload?.designerCtaHeading || masterFallback.chiefDesigner?.designerCtaHeading),
+    designerCtaText: toStringValue(rawCDPayload?.designerCtaText || masterFallback.chiefDesigner?.designerCtaText),
+    designerCtaButtonText: toStringValue(rawCDPayload?.designerCtaButtonText || masterFallback.chiefDesigner?.designerCtaButtonText),
+    designerCtaLink: toStringValue(rawCDPayload?.designerCtaLink || masterFallback.chiefDesigner?.designerCtaLink)
+  };
+
   return {
     title,
     serviceCategory,
@@ -1001,6 +1055,7 @@ async function normalizeLandingPagePayload(body = {}, existing = {}) {
     featuredImage,
     hero,
     about,
+    chiefDesigner,
     whyChooseUs,
     processSteps,
     gallery,
@@ -1736,95 +1791,98 @@ export async function generatePageFromMaster(req, res, next) {
  */
 export async function batchGenerateLandingPages(req, res, next) {
   try {
-    const { serviceCategory, status = 'draft' } = req.body;
-    const rawLocations = req.body.locationNames || req.body.locations || [];
+    const status = req.body.status || 'draft';
+    const rawServices = req.body.serviceCategories || req.body.serviceCategory || [];
+    const serviceCategories = Array.isArray(rawServices) ? rawServices : [rawServices].filter(Boolean);
+    const rawLocations = req.body.locationNames || req.body.locations || req.body.locationName || [];
     const locationNames = Array.isArray(rawLocations) ? rawLocations : [rawLocations].filter(Boolean);
     const overwriteExisting = req.body.overwriteExisting !== undefined ? Boolean(req.body.overwriteExisting) : true;
 
-    if (!serviceCategory || locationNames.length === 0) {
-      return res.status(400).json({ message: 'serviceCategory and a non-empty list of locations (locationNames or locations) are required.' });
+    if (serviceCategories.length === 0 || locationNames.length === 0) {
+      return res.status(400).json({ message: 'At least one service category and at least one location are required.' });
     }
 
-    // 1. Fetch Master Template from Firestore
-    const master = await getEffectiveMasterTemplate(serviceCategory);
-
-    // 2. Fetch all locations from database
+    // Fetch all locations from database
     const locSnapshot = await db.collection(LOCATION_COLLECTION).get();
     const allLocations = locSnapshot.docs.map(mapDocument);
 
     const createdPages = [];
     const skippedPages = [];
 
-    for (const locName of locationNames) {
-      const cleanLocName = toStringValue(locName);
-      if (!cleanLocName) continue;
+    for (const srvCategory of serviceCategories) {
+      const master = await getEffectiveMasterTemplate(srvCategory);
 
-      const locObj =
-        allLocations.find((l) => l.name.toLowerCase() === cleanLocName.toLowerCase()) ||
-        DEFAULT_BANGALORE_LOCATIONS.find((l) => l.name.toLowerCase() === cleanLocName.toLowerCase()) || {
-          name: cleanLocName,
-          areaGroup: 'Bangalore West'
-        };
+      for (const locName of locationNames) {
+        const cleanLocName = toStringValue(locName);
+        if (!cleanLocName) continue;
 
-      const targetSlug = slugifyBangaloreLandingPage(master.serviceName, cleanLocName);
+        const locObj =
+          allLocations.find((l) => l.name.toLowerCase() === cleanLocName.toLowerCase()) ||
+          DEFAULT_BANGALORE_LOCATIONS.find((l) => l.name.toLowerCase() === cleanLocName.toLowerCase()) || {
+            name: cleanLocName,
+            areaGroup: 'Bangalore West'
+          };
 
-      // Check if page already exists (either by service+location or by targetSlug)
-      let existingDoc = null;
-      const existingSnapshot = await db
-        .collection(LANDING_PAGE_COLLECTION)
-        .where('serviceCategory', '==', master.serviceName)
-        .where('locationName', '==', cleanLocName)
-        .limit(1)
-        .get();
+        const targetSlug = slugifyBangaloreLandingPage(master.serviceName, cleanLocName);
 
-      if (!existingSnapshot.empty) {
-        existingDoc = existingSnapshot.docs[0];
-      } else {
-        const slugSnapshot = await db
+        // Check if page already exists
+        let existingDoc = null;
+        const existingSnapshot = await db
           .collection(LANDING_PAGE_COLLECTION)
-          .where('slug', '==', targetSlug)
+          .where('serviceCategory', '==', master.serviceName)
+          .where('locationName', '==', cleanLocName)
           .limit(1)
           .get();
-        if (!slugSnapshot.empty) {
-          existingDoc = slugSnapshot.docs[0];
+
+        if (!existingSnapshot.empty) {
+          existingDoc = existingSnapshot.docs[0];
+        } else {
+          const slugSnapshot = await db
+            .collection(LANDING_PAGE_COLLECTION)
+            .where('slug', '==', targetSlug)
+            .limit(1)
+            .get();
+          if (!slugSnapshot.empty) {
+            existingDoc = slugSnapshot.docs[0];
+          }
         }
+
+        if (existingDoc && !overwriteExisting) {
+          skippedPages.push({ serviceCategory: master.serviceName, locationName: cleanLocName, reason: 'Already exists' });
+          continue;
+        }
+
+        const merged = applyMasterTemplateToLocation(master, cleanLocName, locObj);
+        const url = `${BANGALORE_BASE_PATH}/${targetSlug}`;
+
+        const payload = {
+          ...merged,
+          slug: targetSlug,
+          url,
+          canonicalUrl: `${getPublicSiteUrl()}${url}`,
+          status: ['draft', 'published', 'scheduled'].includes(status) ? status : 'draft',
+          publishedAt: status === 'published' ? new Date().toISOString() : '',
+          analytics: existingDoc ? existingDoc.data()?.analytics || { views: 0, conversions: 0 } : { views: 0, conversions: 0 },
+          createdAt: existingDoc ? existingDoc.data()?.createdAt || Timestamp.now() : Timestamp.now(),
+          updatedAt: Timestamp.now()
+        };
+
+        let docRef;
+        if (existingDoc) {
+          docRef = existingDoc.ref;
+          await docRef.set(payload, { merge: true });
+        } else {
+          docRef = await db.collection(LANDING_PAGE_COLLECTION).add(payload);
+        }
+
+        const saved = await docRef.get();
+        createdPages.push(mapDocument(saved));
       }
-
-      if (existingDoc && !overwriteExisting) {
-        skippedPages.push({ locationName: cleanLocName, reason: 'Already exists' });
-        continue;
-      }
-
-      const merged = applyMasterTemplateToLocation(master, cleanLocName, locObj);
-      const url = `${BANGALORE_BASE_PATH}/${targetSlug}`;
-
-      const payload = {
-        ...merged,
-        slug: targetSlug,
-        url,
-        canonicalUrl: `${getPublicSiteUrl()}${url}`,
-        status: ['draft', 'published', 'scheduled'].includes(status) ? status : 'draft',
-        publishedAt: status === 'published' ? new Date().toISOString() : '',
-        analytics: existingDoc ? existingDoc.data()?.analytics || { views: 0, conversions: 0 } : { views: 0, conversions: 0 },
-        createdAt: existingDoc ? existingDoc.data()?.createdAt || Timestamp.now() : Timestamp.now(),
-        updatedAt: Timestamp.now()
-      };
-
-      let docRef;
-      if (existingDoc) {
-        docRef = existingDoc.ref;
-        await docRef.set(payload, { merge: true });
-      } else {
-        docRef = await db.collection(LANDING_PAGE_COLLECTION).add(payload);
-      }
-
-      const saved = await docRef.get();
-      createdPages.push(mapDocument(saved));
     }
 
     res.json({
       message: `Batch generation completed. Created/updated ${createdPages.length} pages, skipped ${skippedPages.length} pages.`,
-      total: locationNames.length,
+      total: serviceCategories.length * locationNames.length,
       created: createdPages.length,
       createdCount: createdPages.length,
       updated: createdPages.length,

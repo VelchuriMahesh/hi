@@ -70,6 +70,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
         }
       ]
     },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
+    },
     whyChooseUs: {
       headingTemplate: 'Why Clients in {Location} Choose Shrusara Boutique',
       descriptionTemplate: 'Shrusara is an appointment-based, customization-only fashion boutique in Mahalakshmipuram, easily accessible from {Location}. Here is why women across Bangalore trust us for their saree transformation:',
@@ -297,6 +314,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
         }
       ]
     },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
+    },
     whyChooseUs: {
       headingTemplate: 'Why Brides in {Location} Choose Shrusara Fashion Boutique',
       introTemplate: 'Choosing a bridal blouse is about more than stitching. At Shrusara Fashion Boutique, we guide every bride through personalized design consultation, accurate measurements, trial fitting, and careful finishing to create a bridal blouse that is comfortable, elegant, and made especially for her wedding day.',
@@ -521,6 +555,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
         }
       ]
     },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
+    },
     whyChooseUs: {
       headingTemplate: 'Why Brides in {Location} Choose Shrusara for Maggam Work',
       descriptionTemplate: 'Conveniently located in Mahalakshmipuram near {Location}, Shrusara Boutique is Bangalore’s premier destination for genuine handcrafted bridal needlework:',
@@ -733,6 +784,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
           description: 'Porter fabric pickup and express delivery across {Location} and all Bangalore localities.'
         }
       ]
+    },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
     },
     whyChooseUs: {
       headingTemplate: 'Why Clients in {Location} Choose Shrusara for Designer Blouses',
@@ -947,6 +1015,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
         }
       ]
     },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
+    },
     whyChooseUs: {
       headingTemplate: 'Why Clients in {Location} Choose Shrusara for Designer Gowns',
       descriptionTemplate: 'Located in Mahalakshmipuram near {Location}, Shrusara Boutique is Bangalore’s premier couture destination for custom-tailored gowns:',
@@ -1159,6 +1244,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
           description: 'Insured, safe delivery of your bridal lehenga ensemble right to your address in {Location}.'
         }
       ]
+    },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
     },
     whyChooseUs: {
       headingTemplate: 'Why Brides in {Location} Choose Shrusara for Lehengas',
@@ -1373,6 +1475,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
         }
       ]
     },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
+    },
     whyChooseUs: {
       headingTemplate: 'Why Clients in {Location} Choose Shrusara for Occasion Wear',
       descriptionTemplate: 'Located in Mahalakshmipuram near {Location}, Shrusara Boutique is Bangalore’s top destination for festive couture and Indo-Western wear:',
@@ -1585,6 +1704,23 @@ export const DEFAULT_MASTER_TEMPLATES = [
           description: 'Convenient Porter fabric pickup and doorstep delivery right to your home in {Location}.'
         }
       ]
+    },
+    chiefDesigner: {
+      sectionHeading: 'Meet Our Chief Designer — Shruthi Ajith',
+      sectionIntro: 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.',
+      designerImage: {
+        url: '/videos/lead-of-shrusara.webp',
+        alt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+        title: 'Shruthi Ajith – Chief Designer'
+      },
+      designerImageAlt: 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique',
+      designerName: 'Shruthi Ajith',
+      designation: 'Founder & Chief Designer',
+      designerBio: 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.',
+      designerCtaHeading: 'Discuss Your Design With Shruthi',
+      designerCtaText: 'Have a design idea in mind? Speak with our designer about your customization requirements.',
+      designerCtaButtonText: 'Chat With Our Designer',
+      designerCtaLink: 'https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.'
     },
     whyChooseUs: {
       headingTemplate: 'Why Parents in {Location} Choose Shrusara Kids Boutique',

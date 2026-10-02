@@ -18,13 +18,14 @@ const TABS = [
   { id: 'seo', label: '1. SEO & Metadata' },
   { id: 'hero', label: '2. Hero Section' },
   { id: 'about', label: '3. About & Features' },
-  { id: 'why', label: '4. Why Choose Us' },
-  { id: 'process', label: '5. 5-Step Process' },
-  { id: 'gallery', label: '6. Gallery Showcase' },
-  { id: 'proximity', label: '7. Proximity & Maps' },
-  { id: 'testimonials', label: '8. Testimonials' },
-  { id: 'faqs', label: '9. FAQs (Schema)' },
-  { id: 'cta', label: '10. Bottom CTA' }
+  { id: 'chiefDesigner', label: '4. Meet Our Chief Designer' },
+  { id: 'why', label: '5. Why Choose Us' },
+  { id: 'process', label: '6. 5-Step Process' },
+  { id: 'gallery', label: '7. Gallery Showcase' },
+  { id: 'proximity', label: '8. Proximity & Maps' },
+  { id: 'testimonials', label: '9. Testimonials' },
+  { id: 'faqs', label: '10. FAQs (Schema)' },
+  { id: 'cta', label: '11. Bottom CTA' }
 ];
 
 function slugifyService(serviceName = '') {
@@ -993,7 +994,243 @@ export default function MasterTemplateManager() {
               </div>
             )}
 
-            {/* TAB 4: WHY CHOOSE US */}
+            {/* TAB 4: MEET OUR CHIEF DESIGNER */}
+            {activeTab === 'chiefDesigner' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-heading text-xl text-ink">4. Meet Our Chief Designer Section</h2>
+                  <p className="text-xs text-stone-500">
+                    A dedicated section showcasing Founder & Chief Designer Shruthi Ajith. Available in every Service Master Template.
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Section Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={template.chiefDesigner?.sectionHeading || 'Meet Our Chief Designer — Shruthi Ajith'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          chiefDesigner: { ...(template.chiefDesigner || {}), sectionHeading: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                    <p className="mt-1 text-[11px] text-stone-500">
+                      Preview: <strong className="text-cocoa">{preview(template.chiefDesigner?.sectionHeading || 'Meet Our Chief Designer — Shruthi Ajith')}</strong>
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Designer Name
+                    </label>
+                    <input
+                      type="text"
+                      value={template.chiefDesigner?.designerName || 'Shruthi Ajith'}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          chiefDesigner: { ...(template.chiefDesigner || {}), designerName: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Section Intro
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={template.chiefDesigner?.sectionIntro || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        chiefDesigner: { ...(template.chiefDesigner || {}), sectionIntro: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    Preview: <strong className="text-cocoa">{preview(template.chiefDesigner?.sectionIntro)}</strong>
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Designer Image URL
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="/videos/lead-of-shrusara.webp"
+                      value={template.chiefDesigner?.designerImage?.url || template.chiefDesigner?.image || '/videos/lead-of-shrusara.webp'}
+                      onChange={(e) => {
+                        const url = e.target.value;
+                        setTemplate({
+                          ...template,
+                          chiefDesigner: {
+                            ...(template.chiefDesigner || {}),
+                            designerImage: {
+                              ...(template.chiefDesigner?.designerImage || {}),
+                              url
+                            }
+                          }
+                        });
+                      }}
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Designer Image ALT Text
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique"
+                      value={template.chiefDesigner?.designerImageAlt || template.chiefDesigner?.designerImage?.alt || ''}
+                      onChange={(e) => {
+                        const alt = e.target.value;
+                        setTemplate({
+                          ...template,
+                          chiefDesigner: {
+                            ...(template.chiefDesigner || {}),
+                            designerImageAlt: alt,
+                            designerImage: {
+                              ...(template.chiefDesigner?.designerImage || {}),
+                              alt
+                            }
+                          }
+                        });
+                      }}
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                    <p className="mt-1 text-[11px] text-stone-500">
+                      Preview: <strong className="text-cocoa">{preview(template.chiefDesigner?.designerImageAlt || template.chiefDesigner?.designerImage?.alt)}</strong>
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    value={template.chiefDesigner?.designation || 'Founder & Chief Designer'}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        chiefDesigner: { ...(template.chiefDesigner || {}), designation: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                    Designer Bio (Rich / Multi-line Text)
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={template.chiefDesigner?.designerBio || ''}
+                    onChange={(e) =>
+                      setTemplate({
+                        ...template,
+                        chiefDesigner: { ...(template.chiefDesigner || {}), designerBio: e.target.value }
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-ink/10 bg-linen px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                  />
+                </div>
+
+                <div className="rounded-xl border border-cocoa/20 bg-sand/20 p-4 space-y-4">
+                  <h3 className="font-heading text-base font-bold text-ink">Chief Designer CTA Box</h3>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                        CTA Heading
+                      </label>
+                      <input
+                        type="text"
+                        value={template.chiefDesigner?.designerCtaHeading || 'Discuss Your Design With Shruthi'}
+                        onChange={(e) =>
+                          setTemplate({
+                            ...template,
+                            chiefDesigner: { ...(template.chiefDesigner || {}), designerCtaHeading: e.target.value }
+                          })
+                        }
+                        className="mt-1 w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                        CTA Button Text
+                      </label>
+                      <input
+                        type="text"
+                        value={template.chiefDesigner?.designerCtaButtonText || 'Chat With Our Designer'}
+                        onChange={(e) =>
+                          setTemplate({
+                            ...template,
+                            chiefDesigner: { ...(template.chiefDesigner || {}), designerCtaButtonText: e.target.value }
+                          })
+                        }
+                        className="mt-1 w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      CTA Description Text
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={template.chiefDesigner?.designerCtaText || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          chiefDesigner: { ...(template.chiefDesigner || {}), designerCtaText: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      CTA Link / Action URL
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="https://wa.me/919741827558?text=..."
+                      value={template.chiefDesigner?.designerCtaLink || ''}
+                      onChange={(e) =>
+                        setTemplate({
+                          ...template,
+                          chiefDesigner: { ...(template.chiefDesigner || {}), designerCtaLink: e.target.value }
+                        })
+                      }
+                      className="mt-1 w-full rounded-xl border border-ink/10 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: WHY CHOOSE US */}
             {activeTab === 'why' && (
               <div className="space-y-6">
                 <h2 className="font-heading text-xl text-ink">4. Why Choose Us Section</h2>

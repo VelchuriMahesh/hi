@@ -140,6 +140,7 @@ export default function BangaloreLandingPage() {
     featuredImage,
     hero = {},
     about = {},
+    chiefDesigner = {},
     whyChooseUs = {},
     processSteps = [],
     gallery = [],
@@ -389,7 +390,81 @@ export default function BangaloreLandingPage() {
         </section>
 
         {/* =========================================================================
-            SECTION 6 — WHY CHOOSE SHRUSARA (GLOBAL V2)
+            SECTION 4 — MEET OUR CHIEF DESIGNER (NEW V2)
+           ========================================================================= */}
+        {chiefDesigner ? (
+          <section className="border-t border-ink/10 bg-linen/30 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="mx-auto max-w-7xl">
+              <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+                <div className="lg:col-span-5">
+                  <div className="relative mx-auto max-w-sm lg:max-w-none">
+                    <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-3 shadow-xl">
+                      <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-cocoa/5">
+                        <img
+                          src={chiefDesigner.designerImage?.url || '/videos/lead-of-shrusara.webp'}
+                          alt={chiefDesigner.designerImageAlt || chiefDesigner.designerImage?.alt || 'Shruthi Ajith, Founder & Chief Designer'}
+                          title={chiefDesigner.designerImage?.title || chiefDesigner.designerName || 'Shruthi Ajith'}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="p-3 text-center">
+                        <h3 className="font-heading text-lg font-bold text-ink">
+                          {chiefDesigner.designerName || 'Shruthi Ajith'}
+                        </h3>
+                        <p className="text-xs font-medium text-cocoa">
+                          {chiefDesigner.designation || 'Founder & Chief Designer'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-7 space-y-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-cocoa">
+                    Personalized Designer Attention
+                  </p>
+                  <h2 className="font-heading text-3xl text-ink sm:text-4xl">
+                    {chiefDesigner.sectionHeading || 'Meet Our Chief Designer — Shruthi Ajith'}
+                  </h2>
+                  {chiefDesigner.sectionIntro && (
+                    <p className="text-base font-medium text-stone-800 leading-relaxed">
+                      {chiefDesigner.sectionIntro}
+                    </p>
+                  )}
+                  {chiefDesigner.designerBio && (
+                    <p className="text-sm text-stone-600 leading-relaxed whitespace-pre-line">
+                      {chiefDesigner.designerBio}
+                    </p>
+                  )}
+
+                  <div className="pt-4 rounded-2xl border border-cocoa/20 bg-white p-6 shadow-sm space-y-3">
+                    <h3 className="font-heading text-lg font-bold text-ink">
+                      {chiefDesigner.designerCtaHeading || 'Discuss Your Design With Shruthi'}
+                    </h3>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      {chiefDesigner.designerCtaText || 'Have a design idea in mind? Speak with our designer about your customization requirements.'}
+                    </p>
+                    <div className="pt-1">
+                      <a
+                        href={chiefDesigner.designerCtaLink || waLink(`Hi Shruthi ma'am! I am from ${locationName} and would like to discuss my ${serviceCategory} customization.`)}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => trackWhatsApp('chief_designer_cta')}
+                        className="button-primary inline-flex items-center gap-2 px-5 py-3 text-xs font-semibold"
+                      >
+                        <span>💬</span>
+                        <span>{chiefDesigner.designerCtaButtonText || 'Chat With Our Designer'}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {/* =========================================================================
+            SECTION 5 — WHY CHOOSE SHRUSARA (GLOBAL V2)
            ========================================================================= */}
         <section className="bg-sand/40 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="mx-auto max-w-7xl">

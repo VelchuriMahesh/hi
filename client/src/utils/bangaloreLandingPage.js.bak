@@ -2373,23 +2373,6 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
       introTemplate: aboutIntro,
       descriptionTemplate: aboutDescription
     },
-    chiefDesigner: {
-      sectionHeading: replacePlaceholders(overrides.chiefDesigner?.sectionHeading || master.chiefDesigner?.sectionHeading || 'Meet Our Chief Designer — Shruthi Ajith', loc, normService),
-      sectionIntro: replacePlaceholders(overrides.chiefDesigner?.sectionIntro || master.chiefDesigner?.sectionIntro || 'Designing bespoke bridal and designer wear with passion, precision, and over a decade of couture expertise in Bangalore.', loc, normService),
-      designerImage: {
-        url: overrides.chiefDesigner?.designerImage?.url || master.chiefDesigner?.designerImage?.url || '/videos/lead-of-shrusara.webp',
-        alt: replacePlaceholders(overrides.chiefDesigner?.designerImage?.alt || overrides.chiefDesigner?.designerImageAlt || master.chiefDesigner?.designerImage?.alt || master.chiefDesigner?.designerImageAlt || 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique', loc, normService),
-        title: replacePlaceholders(overrides.chiefDesigner?.designerImage?.title || master.chiefDesigner?.designerImage?.title || 'Shruthi Ajith – Chief Designer', loc, normService)
-      },
-      designerImageAlt: replacePlaceholders(overrides.chiefDesigner?.designerImageAlt || master.chiefDesigner?.designerImageAlt || 'Shruthi Ajith, Founder & Chief Designer at Shrusara Fashion Boutique', loc, normService),
-      designerName: replacePlaceholders(overrides.chiefDesigner?.designerName || master.chiefDesigner?.designerName || 'Shruthi Ajith', loc, normService),
-      designation: replacePlaceholders(overrides.chiefDesigner?.designation || master.chiefDesigner?.designation || 'Founder & Chief Designer', loc, normService),
-      designerBio: replacePlaceholders(overrides.chiefDesigner?.designerBio || master.chiefDesigner?.designerBio || 'With a deep passion for fine craftsmanship and personalized tailoring, Shruthi Ajith has guided over a thousand brides and clients in creating their dream outfits. Every design begins with understanding your unique body shape, saree aesthetics, and event requirements to deliver a perfectly fitted, one-of-a-kind creation.', loc, normService),
-      designerCtaHeading: replacePlaceholders(overrides.chiefDesigner?.designerCtaHeading || master.chiefDesigner?.designerCtaHeading || 'Discuss Your Design With Shruthi', loc, normService),
-      designerCtaText: replacePlaceholders(overrides.chiefDesigner?.designerCtaText || master.chiefDesigner?.designerCtaText || 'Have a design idea in mind? Speak with our designer about your customization requirements.', loc, normService),
-      designerCtaButtonText: replacePlaceholders(overrides.chiefDesigner?.designerCtaButtonText || master.chiefDesigner?.designerCtaButtonText || 'Chat With Our Designer', loc, normService),
-      designerCtaLink: replacePlaceholders(overrides.chiefDesigner?.designerCtaLink || master.chiefDesigner?.designerCtaLink || `https://wa.me/919741827558?text=Hi%20Shruthi%20ma%27am!%20I%20would%20like%20to%20discuss%20my%20design%20requirements.`, loc, normService)
-    },
     whyChooseUs: {
       heading: whyHeading,
       intro: whyIntro,
