@@ -197,27 +197,17 @@ export default function BangaloreLandingPage() {
               </div>
             </Link>
 
-            {/* Header Right CTAs */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            {/* Header Right CTA — Single Black Button */}
+            <div>
               <a
                 href={waLink()}
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => trackWhatsApp('landing_header_whatsapp')}
-                className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-semibold text-white shadow hover:bg-emerald-700 transition sm:px-4 sm:py-2 sm:text-xs"
+                className="inline-flex items-center gap-2 bg-[#1C1410] px-3.5 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white shadow hover:bg-[#B8935A] transition sm:px-4 sm:py-2.5 sm:text-xs"
               >
                 <span>💬</span>
-                <span className="hidden sm:inline">Chat on</span> WhatsApp
-              </a>
-
-              <a
-                href={`tel:${phoneNumber}`}
-                onClick={() => trackPhoneCall('landing_header_call')}
-                className="inline-flex items-center gap-1.5 rounded-full border border-cocoa/30 bg-linen/50 px-3 py-1.5 text-[11px] font-semibold text-cocoa hover:bg-linen transition sm:px-4 sm:py-2 sm:text-xs"
-              >
-                <span>📞</span>
-                <span className="hidden sm:inline">Call Boutique</span>
-                <span className="sm:hidden">Call</span>
+                <span>CHAT WITH OUR DESIGNER</span>
               </a>
             </div>
           </div>
@@ -1009,23 +999,14 @@ export default function BangaloreLandingPage() {
                 📞 <a href={`tel:${phoneNumber}`} onClick={() => trackPhoneCall('footer_phone')} className="hover:text-white transition">+91 {phoneNumber}</a>
               </p>
               <p className="mt-1 text-linen/70 text-xs">
+                💬 <a href={waLink()} target="_blank" rel="noreferrer" onClick={() => trackWhatsApp('footer_whatsapp')} className="hover:text-white transition">WhatsApp Consultation</a>
+              </p>
+              <p className="mt-1 text-linen/70 text-xs">
                 🕒 Mon - Sun: 10:30 AM - 8:30 PM
               </p>
               <p className="mt-1.5 text-linen/50 text-[11px]">
                 Direct Green Line Metro to Mahalakshmi Metro Station.
               </p>
-              <div className="mt-4">
-                <a
-                  href={waLink()}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => trackWhatsApp('footer_whatsapp')}
-                  className="inline-flex items-center gap-2 rounded-full border border-amber-200/30 bg-[#2A1E17] px-4 py-2.5 text-xs font-semibold text-amber-200 hover:bg-[#3E2C23] hover:text-white transition duration-300 shadow-md"
-                >
-                  <span className="text-sm">💬</span>
-                  <span>Chat with Our Designer</span>
-                </a>
-              </div>
             </div>
           </div>
 
@@ -1035,59 +1016,37 @@ export default function BangaloreLandingPage() {
         </footer>
 
         {/* =========================================================================
-            SECTION 13 — FLOATING & STICKY CTAS (NEW V2)
+            SECTION 13 — FLOATING CIRCULAR CONTACT BUTTONS (BOTTOM-RIGHT)
            ========================================================================= */}
-        {/* Desktop: Floating Contact Actions (bottom-right) */}
-        <div className="fixed bottom-6 right-6 z-50 hidden md:flex items-center gap-3">
+        {/* Floating Call Button — Black Circle */}
+        <div className="fixed bottom-24 right-5 z-50">
           <a
             href={`tel:${phoneNumber}`}
-            onClick={() => trackPhoneCall('floating_desktop_call')}
+            onClick={() => trackPhoneCall('floating_call')}
             aria-label="Call Shrusara Boutique"
-            className="flex items-center gap-2.5 rounded-full bg-[#1F150F] border border-amber-200/30 px-4 py-3 text-xs font-semibold text-amber-200 shadow-2xl hover:bg-[#2A1E17] hover:scale-105 transition duration-300"
+            className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black text-white shadow-[0_6px_24px_rgba(0,0,0,0.4)] transition hover:bg-[#B8935A] hover:scale-105 active:scale-95"
           >
-            <span className="text-base">📞</span>
-            <span>Call Boutique</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+            </svg>
           </a>
+        </div>
 
+        {/* Floating WhatsApp Button — Green Circle */}
+        <div className="fixed bottom-6 right-5 z-50">
           <a
             href={waLink()}
             target="_blank"
             rel="noreferrer"
-            onClick={() => trackWhatsApp('floating_desktop_whatsapp')}
+            onClick={() => trackWhatsApp('floating_whatsapp')}
             aria-label="Chat with Our Designer on WhatsApp"
-            className="flex items-center gap-2.5 rounded-full bg-emerald-600 px-4 py-3 text-xs font-semibold text-white shadow-2xl hover:bg-emerald-700 hover:scale-105 transition duration-300"
+            className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_6px_24px_rgba(37,211,102,0.45)] transition hover:scale-105 active:scale-95"
           >
-            <span className="text-lg">💬</span>
-            <span>Chat with Designer</span>
+            <span className="absolute inset-0 -z-10 rounded-full bg-[#25D366] opacity-55 animate-ping" />
+            <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 sm:h-7 sm:w-7" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
           </a>
-        </div>
-
-        {/* Mobile: Fixed Bottom Contact Bar (visible while scrolling) */}
-        <div
-          className="fixed bottom-0 inset-x-0 z-50 border-t border-ink/10 bg-white/95 backdrop-blur-md px-3 pt-2.5 md:hidden shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
-          style={{ paddingBottom: 'calc(0.625rem + env(safe-area-inset-bottom, 0px))' }}
-        >
-          <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => trackWhatsApp('sticky_mobile_whatsapp')}
-              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-md active:scale-95 transition"
-            >
-              <span className="text-base">💬</span>
-              <span>WhatsApp</span>
-            </a>
-
-            <a
-              href={`tel:${phoneNumber}`}
-              onClick={() => trackPhoneCall('sticky_mobile_call')}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#1F150F] border border-amber-200/20 py-3 text-xs font-bold text-amber-200 shadow-md active:scale-95 transition"
-            >
-              <span className="text-base">📞</span>
-              <span>Call Boutique</span>
-            </a>
-          </div>
         </div>
       </div>
     </>
