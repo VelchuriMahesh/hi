@@ -169,7 +169,7 @@ export default function BangaloreLandingPage() {
         ].filter(Boolean)}
       />
 
-      <div className="min-h-screen bg-[#FCFBF7] text-ink selection:bg-cocoa selection:text-white pb-20 md:pb-0">
+      <div className="min-h-screen bg-[#FCFBF7] text-ink selection:bg-cocoa selection:text-white pb-24 md:pb-0">
         {/* =========================================================================
             SECTION 1 — GLOBAL LANDING PAGE HEADER (NEW V2)
            ========================================================================= */}
@@ -180,31 +180,31 @@ export default function BangaloreLandingPage() {
 
         {/* Minimal Clean Header */}
         <header className="sticky top-0 z-40 border-b border-ink/8 bg-white/90 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-            <Link to="/" className="flex items-center gap-3">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-3.5 py-2.5 sm:px-6 sm:py-3 lg:px-8">
+            <Link to="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0">
               <img
                 src="/videos/Revisedlogo.webp"
                 alt="Shrusara Fashion Boutique Logo"
-                className="h-12 w-auto object-contain sm:h-14"
+                className="h-10 w-auto object-contain sm:h-14"
               />
               <div>
-                <span className="font-heading text-lg font-bold tracking-wide text-ink sm:text-xl">
+                <span className="font-heading text-base font-bold tracking-wide text-ink sm:text-xl">
                   Shrusara
                 </span>
-                <span className="block text-[10px] uppercase tracking-[0.25em] text-cocoa font-semibold">
+                <span className="block text-[9px] uppercase tracking-[0.2em] text-cocoa font-semibold sm:text-[10px] sm:tracking-[0.25em]">
                   Fashion Boutique
                 </span>
               </div>
             </Link>
 
             {/* Header Right CTAs */}
-            <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <a
                 href={waLink()}
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => trackWhatsApp('landing_header_whatsapp')}
-                className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition sm:px-4 sm:py-2"
+                className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-semibold text-white shadow hover:bg-emerald-700 transition sm:px-4 sm:py-2 sm:text-xs"
               >
                 <span>💬</span>
                 <span className="hidden sm:inline">Chat on</span> WhatsApp
@@ -213,7 +213,7 @@ export default function BangaloreLandingPage() {
               <a
                 href={`tel:${phoneNumber}`}
                 onClick={() => trackPhoneCall('landing_header_call')}
-                className="inline-flex items-center gap-1.5 rounded-full border border-cocoa/30 bg-linen/50 px-3.5 py-1.5 text-xs font-semibold text-cocoa hover:bg-linen transition sm:px-4 sm:py-2"
+                className="inline-flex items-center gap-1.5 rounded-full border border-cocoa/30 bg-linen/50 px-3 py-1.5 text-[11px] font-semibold text-cocoa hover:bg-linen transition sm:px-4 sm:py-2 sm:text-xs"
               >
                 <span>📞</span>
                 <span className="hidden sm:inline">Call Boutique</span>
@@ -243,10 +243,40 @@ export default function BangaloreLandingPage() {
         {/* =========================================================================
             SECTION 4 — HERO SECTION (GLOBAL V2)
            ========================================================================= */}
-        <section className="relative overflow-hidden px-4 pt-8 pb-14 sm:px-6 lg:px-8 lg:pt-14 lg:pb-20">
+        <section className="relative overflow-hidden px-4 pt-6 pb-12 sm:px-6 lg:px-8 lg:pt-14 lg:pb-20">
           <div className="mx-auto max-w-7xl">
-            <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
-              <div className="lg:col-span-7">
+            <div className="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center">
+              
+              {/* Hero Image — Mobile: Order 1 (Top), Desktop: Order 2 (Right, Col Span 5) */}
+              <div className="order-1 lg:order-2 lg:col-span-5">
+                <div className="relative mx-auto max-w-md lg:max-w-none">
+                  <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-2.5 shadow-xl">
+                    <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink/5">
+                      <img
+                        src={featuredImage?.url || '/bridal/bridalblow/hero-bridal.webp'}
+                        alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
+                        title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
+                        fetchPriority="high"
+                        decoding="async"
+                        className="h-full w-full object-cover transition duration-700 hover:scale-105"
+                      />
+                    </div>
+                    {featuredImage?.caption ? (
+                      <p className="p-2 text-center text-xs text-stone-600">
+                        {featuredImage.caption}
+                      </p>
+                    ) : (
+                      <div className="flex items-center justify-between p-2 text-xs text-stone-600">
+                        <span className="font-semibold text-cocoa">✦ Bespoke Craftsmanship</span>
+                        <span>Shrusara Boutique</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Hero Content — Mobile: Order 2 (Below Image), Desktop: Order 1 (Left, Col Span 7) */}
+              <div className="order-2 lg:order-1 lg:col-span-7">
                 {/* Hero Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-cocoa/30 bg-cocoa/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-cocoa">
                   <span>✦</span>
@@ -258,7 +288,7 @@ export default function BangaloreLandingPage() {
                   {hero.heading || title || `${serviceCategory} in ${locationName}, Bangalore`}
                 </h1>
 
-                {/* Subtitle */}
+                {/* Subtitle / Tagline */}
                 <p className="mt-4 text-base leading-relaxed text-stone-700 sm:text-lg">
                   {hero.tagline ||
                     `Bespoke ${serviceCategory.toLowerCase()} tailored to your exact measurements, handcrafted by master artisans for clients in ${locationName}, Bangalore.`}
@@ -307,33 +337,6 @@ export default function BangaloreLandingPage() {
                 </p>
               </div>
 
-              {/* Hero Image */}
-              <div className="lg:col-span-5">
-                <div className="relative mx-auto max-w-md lg:max-w-none">
-                  <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-2.5 shadow-xl">
-                    <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink/5">
-                      <img
-                        src={featuredImage?.url || '/bridal/bridalblow/hero-bridal.webp'}
-                        alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
-                        title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
-                        fetchPriority="high"
-                        decoding="async"
-                        className="h-full w-full object-cover transition duration-700 hover:scale-105"
-                      />
-                    </div>
-                    {featuredImage?.caption ? (
-                      <p className="p-2 text-center text-xs text-stone-600">
-                        {featuredImage.caption}
-                      </p>
-                    ) : (
-                      <div className="flex items-center justify-between p-2 text-xs text-stone-600">
-                        <span className="font-semibold text-cocoa">✦ Bespoke Craftsmanship</span>
-                        <span>Shrusara Boutique</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -1002,18 +1005,27 @@ export default function BangaloreLandingPage() {
 
             <div>
               <h4 className="font-heading text-sm font-semibold text-white mb-3">Contact & Consultation</h4>
-              <p className="text-linen/70">
-                📞 <a href={`tel:${phoneNumber}`} className="hover:text-white">+91 {phoneNumber}</a>
+              <p className="text-linen/70 text-xs">
+                📞 <a href={`tel:${phoneNumber}`} onClick={() => trackPhoneCall('footer_phone')} className="hover:text-white transition">+91 {phoneNumber}</a>
               </p>
-              <p className="mt-1 text-linen/70">
-                💬 <a href={waLink()} target="_blank" rel="noreferrer" className="hover:text-white">WhatsApp Consultation</a>
-              </p>
-              <p className="mt-1 text-linen/70">
+              <p className="mt-1 text-linen/70 text-xs">
                 🕒 Mon - Sun: 10:30 AM - 8:30 PM
               </p>
-              <p className="mt-3 text-linen/50">
+              <p className="mt-1.5 text-linen/50 text-[11px]">
                 Direct Green Line Metro to Mahalakshmi Metro Station.
               </p>
+              <div className="mt-4">
+                <a
+                  href={waLink()}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => trackWhatsApp('footer_whatsapp')}
+                  className="inline-flex items-center gap-2 rounded-full border border-amber-200/30 bg-[#2A1E17] px-4 py-2.5 text-xs font-semibold text-amber-200 hover:bg-[#3E2C23] hover:text-white transition duration-300 shadow-md"
+                >
+                  <span className="text-sm">💬</span>
+                  <span>Chat with Our Designer</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -1025,41 +1037,54 @@ export default function BangaloreLandingPage() {
         {/* =========================================================================
             SECTION 13 — FLOATING & STICKY CTAS (NEW V2)
            ========================================================================= */}
-        {/* Desktop: Floating WhatsApp Button (bottom-right) */}
-        <div className="fixed bottom-6 right-6 z-50 hidden md:block">
+        {/* Desktop: Floating Contact Actions (bottom-right) */}
+        <div className="fixed bottom-6 right-6 z-50 hidden md:flex items-center gap-3">
+          <a
+            href={`tel:${phoneNumber}`}
+            onClick={() => trackPhoneCall('floating_desktop_call')}
+            aria-label="Call Shrusara Boutique"
+            className="flex items-center gap-2.5 rounded-full bg-[#1F150F] border border-amber-200/30 px-4 py-3 text-xs font-semibold text-amber-200 shadow-2xl hover:bg-[#2A1E17] hover:scale-105 transition duration-300"
+          >
+            <span className="text-base">📞</span>
+            <span>Call Boutique</span>
+          </a>
+
           <a
             href={waLink()}
             target="_blank"
             rel="noreferrer"
             onClick={() => trackWhatsApp('floating_desktop_whatsapp')}
             aria-label="Chat with Our Designer on WhatsApp"
-            className="flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-2xl hover:bg-emerald-700 hover:scale-105 transition duration-300"
+            className="flex items-center gap-2.5 rounded-full bg-emerald-600 px-4 py-3 text-xs font-semibold text-white shadow-2xl hover:bg-emerald-700 hover:scale-105 transition duration-300"
           >
             <span className="text-lg">💬</span>
             <span>Chat with Designer</span>
           </a>
         </div>
 
-        {/* Mobile: Sticky Bottom Bar (visible while scrolling) */}
-        <div className="fixed bottom-0 inset-x-0 z-50 border-t border-ink/10 bg-white/95 backdrop-blur-md p-2.5 md:hidden shadow-2xl">
-          <div className="grid grid-cols-2 gap-2">
+        {/* Mobile: Fixed Bottom Contact Bar (visible while scrolling) */}
+        <div
+          className="fixed bottom-0 inset-x-0 z-50 border-t border-ink/10 bg-white/95 backdrop-blur-md px-3 pt-2.5 md:hidden shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
+          style={{ paddingBottom: 'calc(0.625rem + env(safe-area-inset-bottom, 0px))' }}
+        >
+          <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
             <a
               href={waLink()}
               target="_blank"
               rel="noreferrer"
               onClick={() => trackWhatsApp('sticky_mobile_whatsapp')}
-              className="flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2.5 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition"
+              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-md active:scale-95 transition"
             >
-              <span>💬</span>
+              <span className="text-base">💬</span>
               <span>WhatsApp</span>
             </a>
 
             <a
               href={`tel:${phoneNumber}`}
               onClick={() => trackPhoneCall('sticky_mobile_call')}
-              className="flex items-center justify-center gap-1.5 rounded-xl bg-cocoa py-2.5 text-xs font-semibold text-white shadow hover:bg-cocoa-dark transition"
+              className="flex items-center justify-center gap-2 rounded-xl bg-[#1F150F] border border-amber-200/20 py-3 text-xs font-bold text-amber-200 shadow-md active:scale-95 transition"
             >
-              <span>📞</span>
+              <span className="text-base">📞</span>
               <span>Call Boutique</span>
             </a>
           </div>
