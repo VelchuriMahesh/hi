@@ -165,28 +165,28 @@ export const SERVICE_CATEGORIES = [
 
 export function normalizeServiceCategory(input = '') {
   const s = String(input || '').trim().toLowerCase();
-  if (s.includes('ready-to-wear') || s.includes('ready to wear') || s.includes('saree transformation')) {
+  if (s.includes('ready-to-wear') || s.includes('ready to wear') || s.includes('saree transformation') || s.includes('pre-stitched saree') || s.includes('pre stitched saree') || (s.includes('saree') && !s.includes('blouse'))) {
     return 'Ready-to-Wear Saree Customization';
   }
   if (s.includes('maggam') || s.includes('aari')) {
     return 'Maggam & Aari Work Bridal Blouse';
   }
-  if (s.includes('bridal blouse') || s.includes('customized bridal blouse')) {
-    return 'Bridal Blouse';
-  }
   if (s.includes('designer blouse')) {
     return 'Designer Blouse';
   }
-  if (s.includes('gown')) {
+  if (s.includes('bridal blouse') || s.includes('customized bridal blouse') || s.includes('blouse')) {
+    return 'Bridal Blouse';
+  }
+  if (s.includes('gown') || s.includes('gowns') || s.includes('maxi') || s.includes('frock')) {
     return 'Designer Gown';
   }
-  if (s.includes('lehenga')) {
+  if (s.includes('lehenga') || s.includes('lehangas') || s.includes('ghagra')) {
     return 'Bridal Lehenga';
   }
-  if (s.includes('kids')) {
+  if (s.includes('kids') || s.includes('children') || s.includes('baby') || s.includes('pattu pavadai')) {
     return 'Kids Boutique';
   }
-  if (s.includes('occasion') || s.includes('party') || s.includes('indo-western')) {
+  if (s.includes('occasion') || s.includes('party') || s.includes('indo-western') || s.includes('anarkali') || s.includes('salwar') || s.includes('suit') || s.includes('kurti') || s.includes('sharara') || s.includes('designer outfits') || s.includes('designer outfit')) {
     return 'Luxury Occasion Wear';
   }
   return 'Bridal Blouse';

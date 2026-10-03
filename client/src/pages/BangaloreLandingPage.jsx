@@ -20,47 +20,56 @@ import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 
 export default function BangaloreLandingPage() {
   const { slug } = useParams();
-  const [page, setPage] = useState(() => parseAndBuildLandingPageFromSlug(slug));
-  const [loading, setLoading] = useState(!page);
-  const [error, setError] = useState(null);
+
+  // 1. Instantly parse local master page for target slug synchronously on EVERY render frame
+  const localPage = useMemo(() => parseAndBuildLandingPageFromSlug(slug), [slug]);
+
+  // 2. Track remote overrides per slug
+  const [remoteOverrides, setRemoteOverrides] = useState({});
   const [openFaqIndex, setOpenFaqIndex] = useState(0); // Open first FAQ by default
   const [selectedLightboxImage, setSelectedLightboxImage] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
-    
-    // Instantly hydrate page for target slug so render is immediate (<50ms)
-    const initialLocalPage = parseAndBuildLandingPageFromSlug(slug);
-    if (initialLocalPage) {
-      setPage(initialLocalPage);
-      setLoading(false);
-    } else {
-      setLoading(true);
-    }
-    setError(null);
 
-    async function loadRemotePage() {
-      try {
-        const res = await fetchLandingPageBySlug(slug);
-        if (isMounted && res?.item) {
-          // Update with remote database item if server overrides exist
-          setPage(res.item);
-          if (res.item.id) {
-            void trackLandingPageView(res.item.id);
+    if (slug && !remoteOverrides[slug]) {
+      async function loadRemotePage() {
+        try {
+          const res = await fetchLandingPageBySlug(slug);
+          if (isMounted && res?.item) {
+            setRemoteOverrides((prev) => ({
+              ...prev,
+              [slug]: res.item
+            }));
+            if (res.item.id) {
+              void trackLandingPageView(res.item.id);
+            }
           }
+        } catch (err) {
+          // Silent catch: page is hydrated locally from Master Template
         }
-      } catch (err) {
-        // Silent catch: page is already fully hydrated locally from Master Template
-      } finally {
-        if (isMounted) setLoading(false);
       }
+
+      loadRemotePage();
     }
 
-    loadRemotePage();
     return () => {
       isMounted = false;
     };
-  }, [slug]);
+  }, [slug, remoteOverrides]);
+
+  // Merge remote override onto local master page iff slug matches
+  const page = useMemo(() => {
+    if (!localPage) return null;
+    const remote = remoteOverrides[slug];
+    if (remote && (remote.slug === slug || remote.slug === localPage.slug)) {
+      return { ...localPage, ...remote };
+    }
+    return localPage;
+  }, [localPage, remoteOverrides, slug]);
+
+  const loading = !page;
+  const error = null;
 
   const waNumber = BOUTIQUE_WHATSAPP;
   const phoneNumber = BOUTIQUE_PHONE;
