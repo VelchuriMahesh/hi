@@ -244,10 +244,10 @@ export default function BangaloreLandingPage() {
            ========================================================================= */}
         <section className="relative overflow-hidden px-4 pt-6 pb-12 sm:px-6 lg:px-8 lg:pt-14 lg:pb-20">
           <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center">
+            <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 lg:items-center">
               
-              {/* Hero Image — Mobile: Order 1 (Top), Desktop: Order 2 (Right, Col Span 5) */}
-              <div className="order-1 lg:order-2 lg:col-span-5">
+              {/* Hero Image — Natural DOM position 1st (renders at top on mobile immediately on Frame 0). Placed in Cols 8-12 on Desktop */}
+              <div className="lg:col-start-8 lg:col-span-5 lg:row-start-1">
                 <div className="relative mx-auto max-w-md lg:max-w-none">
                   <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-2.5 shadow-xl">
                     <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink/5">
@@ -274,8 +274,8 @@ export default function BangaloreLandingPage() {
                 </div>
               </div>
 
-              {/* Hero Content — Mobile: Order 2 (Below Image), Desktop: Order 1 (Left, Col Span 7) */}
-              <div className="order-2 lg:order-1 lg:col-span-7">
+              {/* Hero Content — Natural DOM position 2nd (renders below image on mobile). Placed in Cols 1-7 on Desktop */}
+              <div className="lg:col-start-1 lg:col-span-7 lg:row-start-1">
                 {/* Hero Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-cocoa/30 bg-cocoa/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-cocoa">
                   <span>✦</span>
