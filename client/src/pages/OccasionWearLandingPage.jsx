@@ -344,8 +344,8 @@ export default function OccasionWearLandingPage() {
         /* ── HERO ── */
         .ow-hero { display: flex; min-height: 88vh; background: var(--cream); overflow: hidden; position: relative; }
         .ow-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 28% 55%, rgba(184,147,90,.07) 0%, transparent 70%); pointer-events: none; z-index: 1; }
-        .ow-hero-text { flex: 1.1; display: flex; flex-direction: column; justify-content: center; padding: 72px 40px 72px 5vw; z-index: 2; }
-        .ow-hero-img  { flex: 1; position: relative; overflow: hidden; min-height: 88vh; }
+        .ow-hero-text { order: 1; flex: 1.1; display: flex; flex-direction: column; justify-content: center; padding: 72px 40px 72px 5vw; z-index: 2; }
+        .ow-hero-img  { order: 2; flex: 1; position: relative; overflow: hidden; min-height: 88vh; }
         .ow-hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
         .ow-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--cream) 0%, transparent 18%); }
         .ow-hero-tag  { display: inline-flex; align-items: center; gap: 9px; font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 18px; }
@@ -531,9 +531,9 @@ export default function OccasionWearLandingPage() {
           .ow-hdr-badge { display: none; }
           .ow-hdr-cta { font-size: .5rem; padding: 9px 11px; }
           .ow-hero { flex-direction: column; min-height: auto; }
-          .ow-hero-img { order: 1; height: 58vw; min-height: 220px; min-height: auto; }
+          .ow-hero-img { height: 58vw; min-height: 220px; min-height: auto; }
           .ow-hero-img-fade { background: linear-gradient(to bottom, transparent 50%, var(--cream) 100%); }
-          .ow-hero-text { order: 2; padding: 28px 16px 44px; }
+          .ow-hero-text { padding: 28px 16px 44px; }
           .ow-hero-btns { flex-direction: column; }
           .ow-btn-pri, .ow-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .64rem; }
           .ow-sec { padding: 48px 16px; }
@@ -580,6 +580,10 @@ export default function OccasionWearLandingPage() {
 
       {/* ── SECTION 1: HERO ── */}
       <section className="ow-hero">
+        <div className="ow-hero-img">
+          <img src="/videos/hii.webp" alt="Premium customized occasion wear by Shrusara Fashion Boutique Bangalore" />
+          <div className="ow-hero-img-fade" />
+        </div>
         <div className="ow-hero-text">
           <p className="ow-hero-tag">Bangalore's Premium Designer Boutique</p>
           <h1 className="ow-hero-h1">Premium Customized<br /><em>Occasion Wear</em> in Bangalore</h1>
@@ -600,10 +604,6 @@ export default function OccasionWearLandingPage() {
             </a>
           </div>
           <p className="ow-hero-note">Limited designer consultation slots available this week.</p>
-        </div>
-        <div className="ow-hero-img">
-          <img src="/videos/hii.webp" alt="Premium customized occasion wear by Shrusara Fashion Boutique Bangalore" />
-          <div className="ow-hero-img-fade" />
         </div>
       </section>
 

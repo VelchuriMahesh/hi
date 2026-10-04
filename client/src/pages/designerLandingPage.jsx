@@ -434,6 +434,7 @@ const DesignerLandingPage = () => {
           background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,.08) 0%, transparent 70%);
         }
         .dl-hero-text {
+          order: 1;
           flex: 1.1; display: flex; flex-direction: column;
           justify-content: center; align-items: flex-start;
           padding: 72px 40px 72px 5vw; z-index: 2;
@@ -451,7 +452,7 @@ const DesignerLandingPage = () => {
         .dl-hero-scarcity { display: inline-flex; align-items: center; gap: 6px; font-size: .66rem; color: rgba(184,147,90,.85); font-weight: 500; letter-spacing: .04em; margin-bottom: 24px; }
         .dl-hero-scarcity::before { content: '⚑'; font-size: .63rem; }
         .dl-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-        .dl-hero-img-wrap { flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
+        .dl-hero-img-wrap { order: 2; flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
         .dl-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .dl-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--dl-cream) 0%, transparent 18%); }
         .dl-btn-pri { display: inline-flex; align-items: center; gap: 9px; background: var(--dl-dark); color: var(--dl-white); font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; border: 2px solid var(--dl-dark); transition: transform .2s, box-shadow .2s; }
@@ -622,9 +623,9 @@ const DesignerLandingPage = () => {
           .dl-hdr-badge { display: none; }
           .dl-hdr-cta  { font-size: .52rem; padding: 9px 11px; letter-spacing: .09em; gap: 5px; }
           .dl-hero { flex-direction: column; min-height: auto; }
-          .dl-hero-img-wrap { order: 1; height: 56vw; min-height: 220px; width: 100%; }
+          .dl-hero-img-wrap { height: 56vw; min-height: 220px; width: 100%; }
           .dl-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--dl-cream) 100%); }
-          .dl-hero-text { order: 2; padding: 28px 16px 40px; }
+          .dl-hero-text { padding: 28px 16px 40px; }
           .dl-hero-btns { flex-direction: column; gap: 10px; }
           .dl-btn-pri, .dl-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .65rem; }
           .dl-trust { padding: 0 16px 40px; }
@@ -693,6 +694,10 @@ const DesignerLandingPage = () => {
 
         {/* ── HERO ── */}
         <section className="dl-hero">
+          <div className="dl-hero-img-wrap">
+            <img src="/videos/desingerhero.webp" alt="Designer outfit by Shrusara Fashion Boutique Bangalore" />
+            <div className="dl-hero-img-fade" />
+          </div>
           <div className="dl-hero-text">
             <p className="dl-hero-eyebrow">Designer Specialist · Bangalore</p>
             <h1 className="dl-hero-h1">Designer Outfits in <em>Bangalore</em> for Modern Occasions</h1>
@@ -721,10 +726,6 @@ const DesignerLandingPage = () => {
                 <PhoneIcon size={14} /> Call Now
               </a>
             </div>
-          </div>
-          <div className="dl-hero-img-wrap">
-            <img src="/videos/desingerhero.webp" alt="Designer outfit by Shrusara Fashion Boutique Bangalore" />
-            <div className="dl-hero-img-fade" />
           </div>
         </section>
 

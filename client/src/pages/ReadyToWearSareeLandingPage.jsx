@@ -528,6 +528,7 @@ function ReadyToWearSareeLandingPage() {
           background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,.08) 0%, transparent 70%);
         }
         .rtw-hero-text {
+          order: 1;
           flex: 1.1; display: flex; flex-direction: column;
           justify-content: center; align-items: flex-start;
           padding: 72px 40px 72px 5vw; z-index: 2;
@@ -620,7 +621,7 @@ function ReadyToWearSareeLandingPage() {
         }
         .rtw-hero-scarcity::before { content: '\\2691'; font-size: .63rem; }
         .rtw-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-        .rtw-hero-img-wrap { flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
+        .rtw-hero-img-wrap { order: 2; flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
         .rtw-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .rtw-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--rtw-cream) 0%, transparent 18%); }
 
@@ -1410,9 +1411,9 @@ function ReadyToWearSareeLandingPage() {
           .rtw-hdr-cta { font-size: .54rem; padding: 9px 12px; letter-spacing: .1em; gap: 5px; }
 
           .rtw-hero { flex-direction: column; min-height: auto; }
-          .rtw-hero-img-wrap { order: 1; height: 56vw; min-height: 240px; width: 100%; }
+          .rtw-hero-img-wrap { height: 56vw; min-height: 240px; width: 100%; }
           .rtw-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--rtw-cream) 100%); }
-          .rtw-hero-text { order: 2; padding: 32px 16px 40px; }
+          .rtw-hero-text { padding: 32px 16px 40px; }
           .rtw-hero-eyebrow { font-size: .56rem; margin-bottom: 12px; }
           .rtw-hero-h1 { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 8px; }
           .rtw-hero-h2 { font-size: clamp(.95rem, 3.5vw, 1.2rem); margin-bottom: 14px; }
@@ -1527,6 +1528,10 @@ function ReadyToWearSareeLandingPage() {
 
         <main>
           <section className="rtw-hero">
+            <div className="rtw-hero-img-wrap">
+              <img src={`${IMAGE_BASE}/customized-ready-to-wear-saree-front-view-bangalore.webp`} alt="Customized Ready-to-Wear Saree front view tailored to customer measurements by Shrusara Fashion Boutique in Bangalore." />
+              <div className="rtw-hero-img-fade" />
+            </div>
             <div className="rtw-hero-text">
               <p className="rtw-hero-eyebrow">Ready-to-Wear Saree Specialist Bangalore</p>
               <h1 className="rtw-hero-h1">Convert Your Saree Into a Ready-to-Wear Saree in <em>Bangalore</em></h1>
@@ -1556,10 +1561,6 @@ function ReadyToWearSareeLandingPage() {
                   <WaIcon size={16} /> Chat With Our Designer
                 </a>
               </div>
-            </div>
-            <div className="rtw-hero-img-wrap">
-              <img src={`${IMAGE_BASE}/customized-ready-to-wear-saree-front-view-bangalore.webp`} alt="Customized Ready-to-Wear Saree front view tailored to customer measurements by Shrusara Fashion Boutique in Bangalore." />
-              <div className="rtw-hero-img-fade" />
             </div>
           </section>
 

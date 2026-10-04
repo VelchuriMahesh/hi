@@ -292,6 +292,7 @@ const BridalLandingPage = () => {
           background: radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,.08) 0%, transparent 70%);
         }
         .bl-hero-text {
+          order: 1;
           flex: 1.1; display: flex; flex-direction: column;
           justify-content: center; align-items: flex-start;
           padding: 72px 40px 72px 5vw; z-index: 2;
@@ -334,7 +335,7 @@ const BridalLandingPage = () => {
         }
         .bl-hero-scarcity::before { content: '⚑'; font-size: .63rem; }
         .bl-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-        .bl-hero-img-wrap { flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
+        .bl-hero-img-wrap { order: 2; flex: 1; position: relative; min-height: 88vh; overflow: hidden; }
         .bl-hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .bl-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--bl-cream) 0%, transparent 18%); }
 
@@ -582,9 +583,9 @@ const BridalLandingPage = () => {
 
           /* Hero — stack image above text */
           .bl-hero { flex-direction: column; min-height: auto; }
-          .bl-hero-img-wrap { order: 1; height: 56vw; min-height: 240px; width: 100%; min-height: unset; }
+          .bl-hero-img-wrap { height: 56vw; min-height: 240px; width: 100%; min-height: unset; }
           .bl-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--bl-cream) 100%); }
-          .bl-hero-text { order: 2; padding: 32px 16px 40px; }
+          .bl-hero-text { padding: 32px 16px 40px; }
           .bl-hero-eyebrow { font-size: .56rem; margin-bottom: 12px; }
           .bl-hero-h1 { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 8px; }
           .bl-hero-h2 { font-size: clamp(.95rem, 3.5vw, 1.2rem); margin-bottom: 14px; }
@@ -711,6 +712,10 @@ const BridalLandingPage = () => {
 
         {/* HERO */}
         <section className="bl-hero">
+          <div className="bl-hero-img-wrap">
+            <img src={heroBridal} alt="Bridal blouse by Shrusara Fashion Boutique Bangalore" />
+            <div className="bl-hero-img-fade" />
+          </div>
           <div className="bl-hero-text">
             <p className="bl-hero-eyebrow">Bridal Specialist · Bangalore</p>
             <h1 className="bl-hero-h1">Customized Bridal Blouse Designer in <em>Bangalore</em><br />Premium Bridal Blouses &amp; Complete Bridal Outfits</h1>
@@ -727,10 +732,6 @@ const BridalLandingPage = () => {
                 <PhoneIcon size={14} /> Call Now
               </a>
             </div>
-          </div>
-          <div className="bl-hero-img-wrap">
-            <img src={heroBridal} alt="Bridal blouse by Shrusara Fashion Boutique Bangalore" />
-            <div className="bl-hero-img-fade" />
           </div>
         </section>
 

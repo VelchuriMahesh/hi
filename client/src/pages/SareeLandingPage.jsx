@@ -316,8 +316,8 @@ export default function SareeLandingPage() {
         /* ── HERO ── */
         .sw-hero { display: flex; min-height: 88vh; background: var(--sw-cream); overflow: hidden; position: relative; }
         .sw-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 28% 55%, rgba(184,147,90,.07) 0%, transparent 70%); pointer-events: none; z-index: 1; }
-        .sw-hero-text { flex: 1.1; display: flex; flex-direction: column; justify-content: center; padding: 72px 40px 72px 5vw; z-index: 2; }
-        .sw-hero-img  { flex: 1; position: relative; overflow: hidden; }
+        .sw-hero-text { order: 1; flex: 1.1; display: flex; flex-direction: column; justify-content: center; padding: 72px 40px 72px 5vw; z-index: 2; }
+        .sw-hero-img  { order: 2; flex: 1; position: relative; overflow: hidden; }
         .sw-hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
         .sw-hero-img-fade { position: absolute; inset: 0; background: linear-gradient(to right, var(--sw-cream) 0%, transparent 18%); }
         .sw-hero-tag  { display: inline-flex; align-items: center; gap: 9px; font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--sw-gold); font-weight: 600; margin-bottom: 18px; }
@@ -507,9 +507,9 @@ export default function SareeLandingPage() {
           .sw-hdr-badge { display: none; }
           .sw-hdr-cta { font-size: .5rem; padding: 9px 11px; }
           .sw-hero { flex-direction: column; min-height: auto; }
-          .sw-hero-img { order: 1; height: 58vw; min-height: 220px; }
+          .sw-hero-img { height: 58vw; min-height: 220px; }
           .sw-hero-img-fade { background: linear-gradient(to bottom, transparent 50%, var(--sw-cream) 100%); }
-          .sw-hero-text { order: 2; padding: 28px 16px 44px; }
+          .sw-hero-text { padding: 28px 16px 44px; }
           .sw-hero-btns { flex-direction: column; }
           .sw-btn-pri, .sw-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .64rem; }
           .sw-sec { padding: 48px 16px; }
@@ -558,6 +558,10 @@ export default function SareeLandingPage() {
 
       {/* ── SECTION 1: HERO ── */}
       <section className="sw-hero">
+        <div className="sw-hero-img">
+          <img src="/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp" alt="Ready-to-wear saree and saree transformation services in Bangalore by Shrusara" />
+          <div className="sw-hero-img-fade" />
+        </div>
         <div className="sw-hero-text">
           <p className="sw-hero-tag">Bangalore's Premium Designer Boutique</p>
           <h1 className="sw-hero-h1">
@@ -582,10 +586,6 @@ export default function SareeLandingPage() {
             </a>
           </div>
           <p className="sw-hero-note">We do not sell ready-made sarees or outfits. Every project is customized according to your saree, measurements and style preferences.</p>
-        </div>
-        <div className="sw-hero-img">
-          <img src="/videos/ready-to-wear-designer-saree-bangalore-shrusara.webp" alt="Ready-to-wear saree and saree transformation services in Bangalore by Shrusara" />
-          <div className="sw-hero-img-fade" />
         </div>
       </section>
 
