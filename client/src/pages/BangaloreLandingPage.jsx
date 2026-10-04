@@ -24,29 +24,35 @@ export default function BangaloreLandingPage() {
   // 1. Instantly parse local master page for target slug synchronously on EVERY render frame
   const localPage = useMemo(() => parseAndBuildLandingPageFromSlug(slug), [slug]);
 
-  // 2. Track remote overrides per slug
+  // 2. Track remote overrides & fetched status per slug
   const [remoteOverrides, setRemoteOverrides] = useState({});
+  const [fetchedSlugs, setFetchedSlugs] = useState({});
   const [openFaqIndex, setOpenFaqIndex] = useState(0); // Open first FAQ by default
   const [selectedLightboxImage, setSelectedLightboxImage] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
 
-    if (slug && !remoteOverrides[slug]) {
+    if (slug && !fetchedSlugs[slug]) {
       async function loadRemotePage() {
         try {
           const res = await fetchLandingPageBySlug(slug);
-          if (isMounted && res?.item) {
-            setRemoteOverrides((prev) => ({
-              ...prev,
-              [slug]: res.item
-            }));
-            if (res.item.id) {
-              void trackLandingPageView(res.item.id);
+          if (isMounted) {
+            if (res?.item) {
+              setRemoteOverrides((prev) => ({
+                ...prev,
+                [slug]: res.item
+              }));
+              if (res.item.id) {
+                void trackLandingPageView(res.item.id);
+              }
             }
+            setFetchedSlugs((prev) => ({ ...prev, [slug]: true }));
           }
         } catch (err) {
-          // Silent catch: page is hydrated locally from Master Template
+          if (isMounted) {
+            setFetchedSlugs((prev) => ({ ...prev, [slug]: true }));
+          }
         }
       }
 
@@ -56,7 +62,7 @@ export default function BangaloreLandingPage() {
     return () => {
       isMounted = false;
     };
-  }, [slug, remoteOverrides]);
+  }, [slug, fetchedSlugs]);
 
   // Merge remote override onto local master page iff slug matches
   const page = useMemo(() => {
@@ -68,7 +74,8 @@ export default function BangaloreLandingPage() {
     return localPage;
   }, [localPage, remoteOverrides, slug]);
 
-  const loading = !page;
+  const isFetchingRemote = Boolean(slug && !fetchedSlugs[slug]);
+  const loading = !page || isFetchingRemote;
   const error = null;
 
   const waNumber = BOUTIQUE_WHATSAPP;
@@ -92,11 +99,64 @@ export default function BangaloreLandingPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[70vh] items-center justify-center bg-[#FCFBF7] text-ink">
-        <div className="text-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-cocoa border-t-transparent mx-auto" />
-          <p className="mt-4 font-heading text-lg text-cocoa">Loading customized collection...</p>
+      <div className="min-h-screen bg-[#FCFBF7] text-ink pb-24 md:pb-0">
+        {/* Top Announcement Bar Skeleton */}
+        <div className="bg-[#2A1E17] px-4 py-2 text-center text-xs font-medium text-linen/95">
+          <span>100% Customized Bridal & Designer Boutique in Bangalore • Video Consultation Available Across Bangalore</span>
         </div>
+
+        {/* Header Skeleton */}
+        <header className="sticky top-0 z-40 border-b border-ink/8 bg-white/90 backdrop-blur-md">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-3.5 py-2.5 sm:px-6 sm:py-3 lg:px-8">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <img
+                src="/videos/Revisedlogo.webp"
+                alt="Shrusara Fashion Boutique Logo"
+                className="h-10 w-auto object-contain sm:h-14"
+              />
+              <div>
+                <span className="font-heading text-base font-bold tracking-wide text-ink sm:text-xl">
+                  Shrusara
+                </span>
+                <span className="block text-[9px] uppercase tracking-[0.2em] text-cocoa font-semibold sm:text-[10px] sm:tracking-[0.25em]">
+                  Fashion Boutique
+                </span>
+              </div>
+            </div>
+            <div>
+              <div className="h-9 w-36 animate-pulse rounded bg-stone-200" />
+            </div>
+          </div>
+        </header>
+
+        {/* Hero Section Skeleton */}
+        <section className="relative overflow-hidden px-4 pt-6 pb-12 sm:px-6 lg:px-8 lg:pt-14 lg:pb-20">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 lg:items-center">
+              {/* Hero Image Skeleton */}
+              <div className="lg:col-start-8 lg:col-span-5 lg:row-start-1">
+                <div className="mx-auto max-w-md lg:max-w-none">
+                  <div className="aspect-[4/5] w-full animate-pulse rounded-3xl bg-stone-200 border border-ink/10 shadow-xl" />
+                </div>
+              </div>
+              {/* Hero Content Skeleton */}
+              <div className="lg:col-start-1 lg:col-span-7 lg:row-start-1 space-y-4">
+                <div className="h-6 w-48 animate-pulse rounded bg-stone-200" />
+                <div className="h-10 w-3/4 animate-pulse rounded bg-stone-200" />
+                <div className="h-16 w-full animate-pulse rounded bg-stone-200" />
+                <div className="space-y-2 pt-2">
+                  <div className="h-4 w-5/6 animate-pulse rounded bg-stone-200" />
+                  <div className="h-4 w-4/6 animate-pulse rounded bg-stone-200" />
+                  <div className="h-4 w-3/6 animate-pulse rounded bg-stone-200" />
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <div className="h-12 w-40 animate-pulse rounded bg-stone-200" />
+                  <div className="h-12 w-40 animate-pulse rounded bg-stone-200" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }
