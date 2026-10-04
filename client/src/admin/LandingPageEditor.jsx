@@ -73,9 +73,8 @@ export default function LandingPageEditor() {
   const [activeTab, setActiveTab] = useState('seo');
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(isEditing);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState('');
-  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingTarget, setUploadingTarget] = useState(null);
+  const uploadingImage = Boolean(uploadingTarget);
   const [autoSyncMaster, setAutoSyncMaster] = useState(true);
 
   // Master Template Loading State
@@ -314,11 +313,12 @@ export default function LandingPageEditor() {
     }
   }
 
-  async function handleImageUpload(e, target = 'featuredImage') {
+  async function handleImageUpload(e, target = 'featuredImage', galleryIndex = null) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploadingImage(true);
+    const targetKey = target === 'gallery' && galleryIndex !== null ? `gallery-${galleryIndex}` : target;
+    setUploadingTarget(targetKey);
     setMessage('');
     try {
       const uploaded = await uploadImageToImgbb(file);
@@ -331,6 +331,23 @@ export default function LandingPageEditor() {
             caption: prev.featuredImage?.caption || ''
           }
         }));
+      } else if (target === 'chiefDesigner') {
+        setPage((prev) => ({
+          ...prev,
+          chiefDesigner: {
+            ...prev.chiefDesigner,
+            designerImage: {
+              ...(typeof prev.chiefDesigner?.designerImage === 'object' ? prev.chiefDesigner.designerImage : {}),
+              url: uploaded.url
+            }
+          }
+        }));
+      } else if (target === 'gallery' && galleryIndex !== null) {
+        setPage((prev) => {
+          const updated = [...(prev.gallery || [])];
+          updated[galleryIndex] = { ...updated[galleryIndex], url: uploaded.url };
+          return { ...prev, gallery: updated };
+        });
       } else if (target === 'gallery') {
         setPage((prev) => ({
           ...prev,
@@ -349,7 +366,7 @@ export default function LandingPageEditor() {
     } catch (err) {
       setMessage(err.message || 'Image upload failed.');
     } finally {
-      setUploadingImage(false);
+      setUploadingTarget(null);
     }
   }
 
@@ -938,7 +955,15 @@ export default function LandingPageEditor() {
                     Featured / Hero Image
                   </label>
                   <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
-                    {page.featuredImage?.url ? (
+                    {uploadingTarget === 'featuredImage' ? (
+                      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-cocoa/30 bg-amber-50/60 p-2 text-center animate-pulse">
+                        <svg className="h-6 w-6 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span className="mt-1 text-[10px] font-semibold text-cocoa">Uploading...</span>
+                      </div>
+                    ) : page.featuredImage?.url ? (
                       <img
                         src={page.featuredImage.url}
                         alt="Featured preview"
@@ -1229,7 +1254,15 @@ export default function LandingPageEditor() {
                     Designer Image
                   </label>
                   <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
-                    {page.chiefDesigner?.designerImage?.url || page.chiefDesigner?.designerImage ? (
+                    {uploadingTarget === 'chiefDesigner' ? (
+                      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-cocoa/30 bg-amber-50/60 p-2 text-center animate-pulse">
+                        <svg className="h-6 w-6 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span className="mt-1 text-[10px] font-semibold text-cocoa">Uploading...</span>
+                      </div>
+                    ) : page.chiefDesigner?.designerImage?.url || page.chiefDesigner?.designerImage ? (
                       <img
                         src={typeof page.chiefDesigner.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner.designerImage?.url}
                         alt="Designer preview"
@@ -1768,11 +1801,21 @@ export default function LandingPageEditor() {
                   {(page.gallery || []).map((img, idx) => (
                     <div key={idx} className="rounded-xl border border-ink/10 bg-linen/50 p-3 space-y-2">
                       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-ink/5">
-                        <img
-                          src={img.url}
-                          alt={img.alt || 'Gallery image'}
-                          className="h-full w-full object-cover"
-                        />
+                        {uploadingTarget === `gallery-${idx}` ? (
+                          <div className="flex h-full w-full flex-col items-center justify-center border border-cocoa/30 bg-amber-50/60 p-3 text-center animate-pulse">
+                            <svg className="h-7 w-7 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span className="mt-2 text-xs font-semibold text-cocoa">Uploading...</span>
+                          </div>
+                        ) : (
+                          <img
+                            src={img.url}
+                            alt={img.alt || 'Gallery image'}
+                            className="h-full w-full object-cover"
+                          />
+                        )}
                         <button
                           type="button"
                           onClick={() => {
@@ -1785,17 +1828,29 @@ export default function LandingPageEditor() {
                         </button>
                       </div>
 
-                      <input
-                        type="text"
-                        placeholder="Image URL"
-                        value={img.url || ''}
-                        onChange={(e) => {
-                          const newGallery = [...page.gallery];
-                          newGallery[idx] = { ...newGallery[idx], url: e.target.value };
-                          setPage({ ...page, gallery: newGallery });
-                        }}
-                        className="w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs text-ink outline-none focus:border-cocoa"
-                      />
+                      <div className="flex items-center gap-2">
+                        <label className="button-secondary cursor-pointer py-1 px-2 text-[11px] font-semibold inline-block flex-shrink-0">
+                          <span>{img.url ? '📷 Replace' : '📤 Upload'}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            disabled={uploadingImage}
+                            onChange={(e) => handleImageUpload(e, 'gallery', idx)}
+                            className="hidden"
+                          />
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Image URL"
+                          value={img.url || ''}
+                          onChange={(e) => {
+                            const newGallery = [...page.gallery];
+                            newGallery[idx] = { ...newGallery[idx], url: e.target.value };
+                            setPage({ ...page, gallery: newGallery });
+                          }}
+                          className="w-full rounded-lg border border-ink/10 bg-white px-2.5 py-1 text-xs text-ink outline-none focus:border-cocoa"
+                        />
+                      </div>
 
                       <input
                         type="text"

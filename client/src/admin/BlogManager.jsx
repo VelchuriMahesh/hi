@@ -456,7 +456,15 @@ function BlogImageInput({ index, section, uploading, onChange, onUpload }) {
   return (
     <div className="space-y-3">
       <div className="overflow-hidden rounded-2xl border-[6px] border-white bg-linen shadow-soft">
-        {image.url ? (
+        {uploading ? (
+          <div className="flex h-64 w-full flex-col items-center justify-center bg-amber-50/60 p-6 text-center animate-pulse">
+            <svg className="h-8 w-8 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-cocoa">Uploading Image...</p>
+          </div>
+        ) : image.url ? (
           <img className="h-64 w-full object-cover" src={image.url} alt={image.alt || ''} />
         ) : (
           <div className="flex h-64 items-center justify-center px-6 text-center text-sm text-stone-500">
@@ -536,7 +544,15 @@ function HeroImageInput({ image, uploading, onChange, onUpload }) {
       </div>
 
       <div className="overflow-hidden rounded-2xl border-[6px] border-white bg-white shadow-soft">
-        {normalizedImage.url ? (
+        {uploading ? (
+          <div className="flex h-56 w-full flex-col items-center justify-center bg-amber-50/60 p-6 text-center animate-pulse">
+            <svg className="h-8 w-8 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-cocoa">Uploading Hero Image...</p>
+          </div>
+        ) : normalizedImage.url ? (
           <img className="h-56 w-full object-cover" src={normalizedImage.url} alt={normalizedImage.alt || ''} />
         ) : (
           <div className="flex h-56 items-center justify-center px-6 text-center text-sm text-stone-500">

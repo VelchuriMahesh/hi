@@ -76,7 +76,8 @@ export default function MasterTemplateManager() {
   const [testLocation, setTestLocation] = useState('Malleshwaram');
   const [locations, setLocations] = useState([]);
 
-  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingTarget, setUploadingTarget] = useState(null);
+  const uploadingImage = Boolean(uploadingTarget);
 
   // Remote templates map: { [id]: template }
   const [backendTemplates, setBackendTemplates] = useState({});
@@ -87,7 +88,8 @@ export default function MasterTemplateManager() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploadingImage(true);
+    const targetKey = target === 'gallery' && galleryIndex !== null ? `gallery-${galleryIndex}` : target;
+    setUploadingTarget(targetKey);
     setMessage('');
     try {
       const uploaded = await uploadImageToImgbb(file);
@@ -135,7 +137,7 @@ export default function MasterTemplateManager() {
     } catch (err) {
       setMessage(err.message || 'Image upload failed.');
     } finally {
-      setUploadingImage(false);
+      setUploadingTarget(null);
     }
   }
 
@@ -836,7 +838,15 @@ export default function MasterTemplateManager() {
                     Hero Image Management
                   </label>
                   <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
-                    {template.heroImage || template.featuredImage?.url ? (
+                    {uploadingTarget === 'heroImage' ? (
+                      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-cocoa/30 bg-amber-50/60 p-2 text-center animate-pulse">
+                        <svg className="h-6 w-6 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span className="mt-1 text-[10px] font-semibold text-cocoa">Uploading...</span>
+                      </div>
+                    ) : template.heroImage || template.featuredImage?.url ? (
                       <img
                         src={template.heroImage || template.featuredImage?.url}
                         alt="Hero preview"
@@ -1238,7 +1248,15 @@ export default function MasterTemplateManager() {
                     Designer Image Management
                   </label>
                   <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
-                    {template.chiefDesigner?.designerImage?.url || template.chiefDesigner?.image ? (
+                    {uploadingTarget === 'chiefDesigner' ? (
+                      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-cocoa/30 bg-amber-50/60 p-2 text-center animate-pulse">
+                        <svg className="h-6 w-6 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span className="mt-1 text-[10px] font-semibold text-cocoa">Uploading...</span>
+                      </div>
+                    ) : template.chiefDesigner?.designerImage?.url || template.chiefDesigner?.image ? (
                       <img
                         src={template.chiefDesigner?.designerImage?.url || template.chiefDesigner?.image}
                         alt="Chief Designer preview"
@@ -1790,7 +1808,15 @@ export default function MasterTemplateManager() {
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {(template.gallery || []).map((img, idx) => (
                     <div key={idx} className="overflow-hidden rounded-xl border border-ink/10 bg-sand/20 p-3">
-                      {img.url ? (
+                      {uploadingTarget === `gallery-${idx}` ? (
+                        <div className="flex h-36 w-full flex-col items-center justify-center rounded-lg border border-cocoa/30 bg-amber-50/60 p-3 text-center animate-pulse">
+                          <svg className="h-7 w-7 animate-spin text-cocoa" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span className="mt-2 text-xs font-semibold text-cocoa">Uploading Image...</span>
+                        </div>
+                      ) : img.url ? (
                         <img
                           src={img.url}
                           alt={preview(img.alt)}
