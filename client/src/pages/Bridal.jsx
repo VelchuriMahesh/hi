@@ -262,7 +262,7 @@ export default function Bridal() {
           position: absolute; inset: 0; pointer-events: none;
           background: radial-gradient(ellipse 55% 65% at 28% 50%, rgba(200,169,106,.09) 0%, transparent 70%);
         }
-        .br-hero-text { padding: 80px 40px 80px 5vw; z-index: 2; }
+        .br-hero-text { order: 1; padding: 80px 40px 80px 5vw; z-index: 2; }
         .br-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font: 600 11px/1 'Poppins',sans-serif; letter-spacing:.18em;
@@ -309,7 +309,7 @@ export default function Bridal() {
           border: 2px solid var(--c-primary); transition: background .2s, color .2s;
         }
         .br-btn-sec:hover { background: var(--c-primary); color: #fff; }
-        .br-hero-img-wrap { position: relative; height: 88vh; overflow: hidden; }
+        .br-hero-img-wrap { order: 2; position: relative; height: 88vh; overflow: hidden; }
         .br-hero-img { width:100%; height:100%; object-fit:cover; object-position:center top; }
         .br-hero-fade {
           position: absolute; inset: 0;
@@ -509,8 +509,8 @@ export default function Bridal() {
         }
         @media(max-width:768px){
           .br-hero { grid-template-columns:1fr; min-height:auto; }
-          .br-hero-text { padding:50px 5vw 32px; order:2; }
-          .br-hero-img-wrap { order:1; height:55vw; min-height:280px; }
+          .br-hero-text { padding:50px 5vw 32px; }
+          .br-hero-img-wrap { height:55vw; min-height:280px; }
           .br-hero-fade { background:linear-gradient(to bottom,transparent 60%,var(--c-bg) 100%); }
           .br-hero-btns { flex-direction:column; }
           .br-btn-pri, .br-btn-sec { width:100%; justify-content:center; }
@@ -544,6 +544,10 @@ export default function Bridal() {
 
       {/* ── 1. HERO ── */}
       <section className="br-hero">
+        <div className="br-hero-img-wrap">
+          <img src={heroBridal} alt="Bridal Blouse Bangalore" className="br-hero-img" />
+          <div className="br-hero-fade" />
+        </div>
         <div className="br-hero-text">
           <p className="br-eyebrow">Bridal Specialist · Bangalore</p>
           <h1 className="br-hero-h1">
@@ -575,10 +579,6 @@ export default function Bridal() {
               <PhoneIcon /> Call Now
             </a>
           </div>
-        </div>
-        <div className="br-hero-img-wrap">
-          <img src={heroBridal} alt="Bridal Blouse Bangalore" className="br-hero-img" />
-          <div className="br-hero-fade" />
         </div>
       </section>
 

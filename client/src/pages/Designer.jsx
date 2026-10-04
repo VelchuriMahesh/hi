@@ -223,7 +223,7 @@ export default function Designer() {
           position: absolute; inset: 0; pointer-events: none;
           background: radial-gradient(ellipse 55% 65% at 28% 50%, rgba(200,169,106,.09) 0%, transparent 70%);
         }
-        .ds-hero-text { padding: 80px 40px 80px 5vw; z-index: 2; }
+        .ds-hero-text { order: 1; padding: 80px 40px 80px 5vw; z-index: 2; }
         .ds-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font: 600 11px/1 'Poppins',sans-serif; letter-spacing:.18em;
@@ -266,7 +266,7 @@ export default function Designer() {
         .ds-btn-sec:hover { background: var(--c-primary); color: #fff; }
 
         /* Hero image */
-        .ds-hero-img-wrap { position: relative; height: 88vh; overflow: hidden; }
+        .ds-hero-img-wrap { order: 2; position: relative; height: 88vh; overflow: hidden; }
         .ds-hero-img { width:100%; height:100%; object-fit:cover; object-position:center top; }
         .ds-hero-fade {
           position: absolute; inset: 0;
@@ -641,8 +641,8 @@ export default function Designer() {
         }
         @media(max-width:768px){
           .ds-hero { grid-template-columns:1fr; min-height:auto; }
-          .ds-hero-text { padding:50px 5vw 32px; order:2; }
-          .ds-hero-img-wrap { order:1; height:55vw; min-height:280px; }
+          .ds-hero-text { padding:50px 5vw 32px; }
+          .ds-hero-img-wrap { height:55vw; min-height:280px; }
           .ds-hero-fade { background:linear-gradient(to bottom,transparent 60%,var(--c-bg) 100%); }
           .ds-hero-btns { flex-direction:column; }
           .ds-btn-pri,.ds-btn-sec { width:100%; justify-content:center; }
@@ -682,6 +682,14 @@ export default function Designer() {
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="ds-hero">
+        <div className="ds-hero-img-wrap">
+          <img
+            src="/videos/desingerhero.webp"
+            alt="Designer outfits Bangalore – Shrusara Fashion Boutique"
+            className="ds-hero-img"
+          />
+          <div className="ds-hero-fade" />
+        </div>
         <div className="ds-hero-text">
           <p className="ds-eyebrow">Designer Outfits · Bangalore</p>
           <h1 className="ds-hero-h1">
@@ -698,14 +706,6 @@ export default function Designer() {
               <PhoneIcon /> Call Now
             </a>
           </div>
-        </div>
-        <div className="ds-hero-img-wrap">
-          <img
-            src="/videos/desingerhero.webp"
-            alt="Designer outfits Bangalore – Shrusara Fashion Boutique"
-            className="ds-hero-img"
-          />
-          <div className="ds-hero-fade" />
         </div>
       </section>
 

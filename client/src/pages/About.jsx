@@ -142,7 +142,7 @@ body { background: var(--c-bg); }
   pointer-events: none;
   background: radial-gradient(ellipse 55% 65% at 28% 50%, rgba(200,169,106,.09) 0%, transparent 70%);
 }
-.ab-hero-text { padding: 80px 40px 80px 5vw; z-index: 2; }
+.ab-hero-text { order: 1; padding: 80px 40px 80px 5vw; z-index: 2; }
 .ab-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   font: 600 11px/1 'Poppins',sans-serif; letter-spacing: .18em;
@@ -182,6 +182,7 @@ body { background: var(--c-bg); }
 
 /* Hero image/video wrapper — desktop */
 .ab-hero-img-wrap {
+  order: 2;
   position: relative;
   height: 88vh;
   overflow: hidden;
@@ -834,7 +835,6 @@ body { background: var(--c-bg); }
 
   /* VIDEO WRAPPER: use a proper aspect-ratio box so it NEVER clips */
   .ab-hero-img-wrap {
-    order: 1;
     width: 100%;
     height: auto;
     aspect-ratio: 9 / 14;
@@ -856,7 +856,6 @@ body { background: var(--c-bg); }
   }
 
   .ab-hero-text {
-    order: 2;
     padding: 0 6vw 48px;
     margin-top: -40px;
     background: var(--c-bg);
@@ -973,6 +972,19 @@ body { background: var(--c-bg); }
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="ab-hero">
+        <div className="ab-hero-img-wrap">
+          <video
+            src="/videos/about.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            webkit-playsinline="true"
+            className="ab-hero-img"
+          />
+          <div className="ab-hero-fade" />
+        </div>
+
         <div className="ab-hero-text">
           <p className="ab-eyebrow">About Shrusara · Bangalore</p>
           <h1 className="ab-hero-h1">
@@ -1002,19 +1014,6 @@ body { background: var(--c-bg); }
               <PhoneIcon /> Call Now
             </a>
           </div>
-        </div>
-
-        <div className="ab-hero-img-wrap">
-          <video
-            src="/videos/about.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            webkit-playsinline="true"
-            className="ab-hero-img"
-          />
-          <div className="ab-hero-fade" />
         </div>
       </section>
 

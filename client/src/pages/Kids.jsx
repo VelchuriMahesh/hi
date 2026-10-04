@@ -137,7 +137,7 @@ export default function Kids() {
           content: ''; position: absolute; inset: 0; pointer-events: none;
           background: radial-gradient(ellipse 55% 65% at 28% 50%, rgba(200,169,106,.09) 0%, transparent 70%);
         }
-        .kd-hero-text { padding: 80px 40px 80px 5vw; z-index: 2; }
+        .kd-hero-text { order: 1; padding: 80px 40px 80px 5vw; z-index: 2; }
         .kd-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
           font: 600 11px/1 'Poppins',sans-serif; letter-spacing: .18em;
@@ -170,7 +170,7 @@ export default function Kids() {
           border: 2px solid var(--c-primary); transition: background .2s, color .2s;
         }
         .kd-btn-sec:hover { background: var(--c-primary); color: #fff; }
-        .kd-hero-img-wrap { position: relative; height: 88vh; overflow: hidden; }
+        .kd-hero-img-wrap { order: 2; position: relative; height: 88vh; overflow: hidden; }
         .kd-hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
         .kd-hero-fade {
           position: absolute; inset: 0;
@@ -298,8 +298,8 @@ export default function Kids() {
         }
         @media(max-width:768px) {
           .kd-hero { grid-template-columns: 1fr; min-height: auto; }
-          .kd-hero-text { padding: 50px 5vw 32px; order: 2; }
-          .kd-hero-img-wrap { order: 1; height: 55vw; min-height: 280px; }
+          .kd-hero-text { padding: 50px 5vw 32px; }
+          .kd-hero-img-wrap { height: 55vw; min-height: 280px; }
           .kd-hero-fade { background: linear-gradient(to bottom, transparent 60%, var(--c-bg) 100%); }
           .kd-hero-btns { flex-direction: column; }
           .kd-btn-pri, .kd-btn-sec { width: 100%; justify-content: center; }
@@ -323,6 +323,14 @@ export default function Kids() {
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="kd-hero">
+        <div className="kd-hero-img-wrap">
+          <img
+            src="/videos/kidshero.webp"
+            alt="Kids outfits Bangalore – Shrusara Fashion Boutique"
+            className="kd-hero-img"
+          />
+          <div className="kd-hero-fade" />
+        </div>
         <div className="kd-hero-text">
           <p className="kd-eyebrow">Kids Outfits · Bangalore</p>
           <h1 className="kd-hero-h1">
@@ -341,14 +349,6 @@ export default function Kids() {
   <PhoneIcon /> Call Now
 </a>
           </div>
-        </div>
-        <div className="kd-hero-img-wrap">
-          <img
-            src="/videos/kidshero.webp"
-            alt="Kids outfits Bangalore – Shrusara Fashion Boutique"
-            className="kd-hero-img"
-          />
-          <div className="kd-hero-fade" />
         </div>
       </section>
 

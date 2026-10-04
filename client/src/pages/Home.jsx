@@ -217,6 +217,7 @@ export default function Home() {
           z-index: 1;
         }
         .sf-hero-text {
+          order: 1;
           flex: 1.1;
           display: flex;
           flex-direction: column;
@@ -302,6 +303,7 @@ export default function Home() {
           color: var(--sf-white);
         }
         .sf-hero-img-wrap {
+          order: 2;
           flex: 1;
           position: relative;
           min-height: 90vh;
@@ -690,8 +692,8 @@ export default function Home() {
         }
         @media (max-width: 768px) {
           .sf-hero           { flex-direction: column; min-height: auto; }
-          .sf-hero-text      { padding: 50px 5vw 32px; order: 2; align-items: flex-start; }
-          .sf-hero-img-wrap  { order: 1; height: 55vw; min-height: 300px; min-width: 100%; }
+          .sf-hero-text      { padding: 50px 5vw 32px; align-items: flex-start; }
+          .sf-hero-img-wrap  { height: 55vw; min-height: 300px; min-width: 100%; }
           .sf-hero-img       { min-height: 300px; }
           .sf-hero-img-overlay { background: linear-gradient(to bottom, transparent 60%, var(--sf-bg) 100%); }
           .sf-hero-btns      { flex-direction: column; align-items: stretch; }
@@ -730,6 +732,15 @@ export default function Home() {
 
       {/* ── 1. HERO ──────────────────────────────────────────────────────────── */}
       <section className="sf-hero">
+        <div className="sf-hero-img-wrap">
+          <img
+            src="/videos/homehero.webp"
+            alt="Bridal blouse designer Bangalore – Shrusara Fashion Boutique"
+            className="sf-hero-img"
+          />
+          <div className="sf-hero-img-overlay" />
+        </div>
+
         <div className="sf-hero-text">
           <p className="sf-hero-eyebrow">Trusted Boutique · Bangalore</p>
           <h1 className="sf-hero-h1">Bridal & Designer Boutique in Bangalore</h1>
@@ -771,15 +782,6 @@ export default function Home() {
               Call Now
             </a>
           </div>
-        </div>
-
-        <div className="sf-hero-img-wrap">
-          <img
-            src="/videos/homehero.webp"
-            alt="Bridal blouse designer Bangalore – Shrusara Fashion Boutique"
-            className="sf-hero-img"
-          />
-          <div className="sf-hero-img-overlay" />
         </div>
       </section>
 
