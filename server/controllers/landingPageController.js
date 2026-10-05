@@ -257,7 +257,7 @@ export const DEFAULT_EXISTING_LANDING_PAGES = [
       'party wear bangalore'
     ],
     featuredImage: {
-      url: '/videos/hii.webp',
+      url: 'https://www.shrusara.com/videos/hii.webp',
       alt: 'Customized Occasion Wear & Designer Outfits in Bangalore'
     }
   },

@@ -31,7 +31,7 @@ const LANDING_PAGES = {
     title: 'Customized Occasion Wear & Designer Outfits Bangalore | Shrusara',
     description: 'Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara.',
     keywords: 'occasion wear bangalore, designer gowns bangalore, crop top lehenga bangalore, half saree bangalore, boutique bangalore, party wear bangalore',
-    image: '/videos/hii.webp',
+    image: 'https://www.shrusara.com/videos/hii.webp',
     path: '/customized-occasion-wear-bangalore',
     serviceType: 'Occasion Wear, Designer Gowns & Custom Party Wear Designing',
     serviceName: 'Customized Occasion Wear & Designer Outfits in Bangalore'
@@ -444,13 +444,20 @@ export default async function handler(req, res) {
     try {
       const dbPage = await fetchLandingPageFromApi(rawPage);
       if (dbPage) {
+        let dbImage = getImageUrl(dbPage.featuredImage) || getImageUrl(dbPage.heroImage);
+        if (dbImage && (dbImage.includes('i.ibb.co') || dbImage.includes('ibb.co'))) {
+          dbImage = null;
+        }
+        if (rawPage === 'customized-occasion-wear-bangalore') {
+          dbImage = 'https://www.shrusara.com/videos/hii.webp';
+        }
         pageConfig = {
           title: toStringValue(dbPage.metaTitle || dbPage.title || pageConfig.title),
           description: toStringValue(dbPage.metaDescription || dbPage.hero?.tagline || pageConfig.description),
           keywords: Array.isArray(dbPage.metaKeywords)
             ? dbPage.metaKeywords.join(', ')
             : toStringValue(dbPage.metaKeywords || pageConfig.keywords),
-          image: getImageUrl(dbPage.featuredImage) || getImageUrl(dbPage.heroImage) || pageConfig.image,
+          image: dbImage || pageConfig.image,
           path: dbPage.url || pageConfig.path,
           serviceType: pageConfig.serviceType || dbPage.serviceCategory,
           serviceName: pageConfig.serviceName || dbPage.title,

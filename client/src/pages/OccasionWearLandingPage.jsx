@@ -279,7 +279,7 @@ export default function OccasionWearLandingPage() {
         description="Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara."
         keywords="occasion wear bangalore, designer gowns bangalore, crop top lehenga bangalore, half saree bangalore, boutique bangalore, party wear bangalore"
         canonicalPath="/customized-occasion-wear-bangalore"
-        image="/videos/hii.webp"
+        image="https://www.shrusara.com/videos/hii.webp"
         schema={occasionLandingSchema}
       />
 
