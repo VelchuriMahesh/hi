@@ -5,6 +5,7 @@ import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
 // ─── Constants ────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919741827558';
 const PHONE_NUMBER    = import.meta.env.VITE_PHONE_NUMBER    || '9741827558';
+const heroOccasion = '/videos/hii.webp';
 const OCCASION_WHATSAPP_MESSAGE = "Hi, I'd like to know more about your Designer Outfits.";
 
 const occasionLandingSchema = {
@@ -279,7 +280,7 @@ export default function OccasionWearLandingPage() {
         description="Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara."
         keywords="occasion wear bangalore, designer gowns bangalore, crop top lehenga bangalore, half saree bangalore, boutique bangalore, party wear bangalore"
         canonicalPath="/customized-occasion-wear-bangalore"
-        image="https://www.shrusara.com/videos/hii.webp"
+        image={heroOccasion}
         schema={occasionLandingSchema}
       />
 
