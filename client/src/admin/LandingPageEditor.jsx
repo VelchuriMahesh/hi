@@ -73,6 +73,8 @@ export default function LandingPageEditor() {
   const [activeTab, setActiveTab] = useState('seo');
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(isEditing);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState('');
   const [uploadingTarget, setUploadingTarget] = useState(null);
   const uploadingImage = Boolean(uploadingTarget);
   const [autoSyncMaster, setAutoSyncMaster] = useState(true);
@@ -419,8 +421,9 @@ export default function LandingPageEditor() {
         await updateLandingPage(token, id, payload);
       } else {
         const res = await createLandingPage(token, payload);
-        if (res?.item?.id) {
-          navigate(`/admin/landing-pages/edit/${res.item.id}`, { replace: true });
+        const createdId = res?.item?.id || res?.item?._id || res?.id || res?._id;
+        if (createdId) {
+          navigate(`/admin/landing-pages/edit/${createdId}`, { replace: true });
         }
       }
 

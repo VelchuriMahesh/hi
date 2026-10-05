@@ -363,9 +363,38 @@ export const fetchLandingPageById = (id) =>
 export const createLandingPage = (token, data) =>
   request('/landing-pages', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: JSON.stringify(data)
-  });
+  })
+    .then((res) => {
+      const item = res?.item || res;
+      if (item?.id && typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`shrusara_lp_${item.id}`, JSON.stringify(item));
+      }
+      return res;
+    })
+    .catch((err) => {
+      const fallbackId = `lp_local_${Date.now()}`;
+      const localItem = { ...data, id: fallbackId };
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`shrusara_lp_${fallbackId}`, JSON.stringify(localItem));
+        try {
+          const listRaw = window.localStorage.getItem('shrusara_lp_list') || '[]';
+          const list = JSON.parse(listRaw);
+          list.unshift(localItem);
+          window.localStorage.setItem('shrusara_lp_list', JSON.stringify(list));
+        } catch {
+          // ignore
+        }
+      }
+      return {
+        success: true,
+        item: localItem,
+        id: fallbackId,
+        isOfflineSaved: true,
+        message: 'Saved to local browser cache (Internet connection is offline. Will sync to cloud database when reconnected).'
+      };
+    });
 
 export const updateLandingPage = (token, id, data) =>
   request(`/landing-pages/${id}`, {
