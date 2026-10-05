@@ -73,16 +73,9 @@ export default function BangaloreLandingPage() {
 
       const remoteUrl = remote.featuredImage?.url || remote.heroImage;
       if (remoteUrl) {
-        const isGenericBridalFallback =
-          remoteUrl === '/bridal/bridalblow/hero-bridal.webp' &&
-          !localPage.serviceCategory?.toLowerCase().includes('bridal');
-        const isIbb = remoteUrl.includes('i.ibb.co') || remoteUrl.includes('ibb.co');
-
-        if (!isGenericBridalFallback && !isIbb) {
-          activeFeaturedImage = typeof remote.featuredImage === 'object' && remote.featuredImage?.url
-            ? remote.featuredImage
-            : { ...localPage.featuredImage, url: remoteUrl };
-        }
+        activeFeaturedImage = typeof remote.featuredImage === 'object' && remote.featuredImage?.url
+          ? remote.featuredImage
+          : { ...localPage.featuredImage, url: remoteUrl };
       }
 
       return {

@@ -69,11 +69,7 @@ export default function PageMeta({
       }
     }
 
-    let cleanImage = image;
-    if (cleanImage && typeof cleanImage === 'string' && (cleanImage.includes('i.ibb.co') || cleanImage.includes('ibb.co'))) {
-      cleanImage = '/videos/logo.png';
-    }
-    const imageUrl = cleanImage ? new URL(cleanImage, contactLinks.siteUrl).toString() : '';
+    const imageUrl = image ? new URL(image, contactLinks.siteUrl).toString() : '';
     const safeTitle = String(title || '');
     const safeDescription = String(description || '');
     const activeSchema = schema || schemas;

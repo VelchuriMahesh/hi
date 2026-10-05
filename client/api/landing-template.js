@@ -445,9 +445,6 @@ export default async function handler(req, res) {
       const dbPage = await fetchLandingPageFromApi(rawPage);
       if (dbPage) {
         let dbImage = getImageUrl(dbPage.featuredImage) || getImageUrl(dbPage.heroImage);
-        if (dbImage && (dbImage.includes('i.ibb.co') || dbImage.includes('ibb.co'))) {
-          dbImage = null;
-        }
         if (rawPage === 'customized-occasion-wear-bangalore') {
           dbImage = 'https://www.shrusara.com/videos/hii.webp';
         }

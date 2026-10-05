@@ -104,9 +104,6 @@ function buildSeo(page, slug, siteUrl) {
       `Customized ${page.serviceCategory || 'bridal and designer wear'} in ${page.locationName || 'Bangalore'} with handcrafted embroidery and perfect fit by Shrusara.`
   );
   let rawImage = getImageUrl(page.featuredImage) || getImageUrl(page.heroImage) || '/bridal/bridalblow/hero-bridal.webp';
-  if (rawImage && (rawImage.includes('i.ibb.co') || rawImage.includes('ibb.co'))) {
-    rawImage = '/videos/hii.webp';
-  }
   if (slug === 'customized-occasion-wear-bangalore') {
     rawImage = 'https://www.shrusara.com/videos/hii.webp';
   }
