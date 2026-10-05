@@ -64,29 +64,69 @@ export default function BangaloreLandingPage() {
     };
   }, [slug, fetchedSlugs]);
 
-  // Merge remote override onto local master page iff slug matches
+  // Deep merge helper so admin overrides preserve all nested fields (hero, about, why, etc.)
   const page = useMemo(() => {
     if (!localPage) return null;
     const remote = remoteOverrides[slug];
     if (remote && (remote.slug === slug || remote.slug === localPage.slug)) {
       let activeFeaturedImage = localPage.featuredImage;
 
-      if (remote.featuredImage?.url) {
-        const remoteUrl = remote.featuredImage.url;
+      const remoteUrl = remote.featuredImage?.url || remote.heroImage;
+      if (remoteUrl) {
         const isGenericBridalFallback =
           remoteUrl === '/bridal/bridalblow/hero-bridal.webp' &&
           !localPage.serviceCategory?.toLowerCase().includes('bridal');
         const isIbb = remoteUrl.includes('i.ibb.co') || remoteUrl.includes('ibb.co');
 
         if (!isGenericBridalFallback && !isIbb) {
-          activeFeaturedImage = remote.featuredImage;
+          activeFeaturedImage = typeof remote.featuredImage === 'object' && remote.featuredImage?.url
+            ? remote.featuredImage
+            : { ...localPage.featuredImage, url: remoteUrl };
         }
       }
 
       return {
         ...localPage,
         ...remote,
-        featuredImage: activeFeaturedImage || localPage.featuredImage
+        featuredImage: activeFeaturedImage || localPage.featuredImage,
+        hero: {
+          ...localPage.hero,
+          ...remote.hero
+        },
+        about: {
+          ...localPage.about,
+          ...remote.about,
+          highlights: (Array.isArray(remote.about?.highlights) && remote.about.highlights.length > 0)
+            ? remote.about.highlights
+            : localPage.about?.highlights
+        },
+        whyChooseUs: {
+          ...localPage.whyChooseUs,
+          ...remote.whyChooseUs,
+          cards: (Array.isArray(remote.whyChooseUs?.cards) && remote.whyChooseUs.cards.length > 0)
+            ? remote.whyChooseUs.cards
+            : localPage.whyChooseUs?.cards
+        },
+        processSteps: (Array.isArray(remote.processSteps) && remote.processSteps.length > 0)
+          ? remote.processSteps
+          : localPage.processSteps,
+        gallery: (Array.isArray(remote.gallery) && remote.gallery.length > 0)
+          ? remote.gallery
+          : localPage.gallery,
+        testimonials: (Array.isArray(remote.testimonials) && remote.testimonials.length > 0)
+          ? remote.testimonials
+          : localPage.testimonials,
+        faqs: (Array.isArray(remote.faqs) && remote.faqs.length > 0)
+          ? remote.faqs
+          : localPage.faqs,
+        proximity: {
+          ...localPage.proximity,
+          ...remote.proximity
+        },
+        cta: {
+          ...localPage.cta,
+          ...remote.cta
+        }
       };
     }
     return localPage;
