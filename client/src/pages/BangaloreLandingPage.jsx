@@ -74,8 +74,7 @@ export default function BangaloreLandingPage() {
     return localPage;
   }, [localPage, remoteOverrides, slug]);
 
-  const isFetchingRemote = Boolean(slug && !fetchedSlugs[slug]);
-  const loading = !page || isFetchingRemote;
+  const loading = !page;
   const error = null;
 
   const waNumber = BOUTIQUE_WHATSAPP;
