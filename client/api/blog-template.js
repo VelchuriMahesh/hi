@@ -146,13 +146,11 @@ function buildBlogSchemas(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
   const title = toStringValue(post.seoTitle || post.metaTitle || post.title || slugToTitle(postSlug) || 'Shrusara Blog');
   const decodedContent = decodeSimpleBlogContent(post.content);
   const description = toStringValue(post.metaDescription || decodedContent?.metaDescription || post.excerpt || `${title} - Shrusara Fashion Boutique Bangalore.`);
-  const imageUrl = toAbsoluteUrl(
-    getImageUrl(post.openGraph?.image) ||
-    getImageUrl(post.featuredImage) ||
-    post.coverImage ||
-    '/videos/logo.png',
-    siteUrl
-  );
+  let rawImg = getImageUrl(post.openGraph?.image) || getImageUrl(post.featuredImage) || post.coverImage || '/videos/logo.png';
+  if (rawImg && (rawImg.includes('i.ibb.co') || rawImg.includes('ibb.co'))) {
+    rawImg = '/videos/logo.png';
+  }
+  const imageUrl = toAbsoluteUrl(rawImg, siteUrl);
   const publishedDate = toIsoDate(post.publishedAt || post.createdAt);
   const modifiedDate = toIsoDate(post.updatedAt || post.publishedAt || post.createdAt);
   const faqs = (Array.isArray(post.faqs) ? post.faqs : []).filter((faq) => faq?.question && faq?.answer);
@@ -300,13 +298,11 @@ function buildBlogSeo(post = {}, slug = '', siteUrl = DEFAULT_SITE_URL) {
   const title = rawTitle.includes('Shrusara') ? rawTitle : `${rawTitle} | Shrusara`;
   const decodedContent = decodeSimpleBlogContent(post.content);
   const description = toStringValue(post.metaDescription || decodedContent?.metaDescription || post.excerpt || `${rawTitle} - Designer insights and bridal fashion tips from Shrusara Boutique Bangalore.`);
-  const image = toAbsoluteUrl(
-    getImageUrl(post.openGraph?.image) ||
-    getImageUrl(post.featuredImage) ||
-    post.coverImage ||
-    '/videos/logo.png',
-    siteUrl
-  );
+  let rawImage = getImageUrl(post.openGraph?.image) || getImageUrl(post.featuredImage) || post.coverImage || '/videos/logo.png';
+  if (rawImage && (rawImage.includes('i.ibb.co') || rawImage.includes('ibb.co'))) {
+    rawImage = '/videos/logo.png';
+  }
+  const image = toAbsoluteUrl(rawImage, siteUrl);
 
   return {
     title,
