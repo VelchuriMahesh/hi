@@ -91,6 +91,33 @@ export default function MasterTemplateManager() {
     const targetKey = target === 'gallery' && galleryIndex !== null ? `gallery-${galleryIndex}` : target;
     setUploadingTarget(targetKey);
     setMessage('');
+
+    // Immediately clear old image URL from state so old image disappears instantly on replace!
+    if (target === 'heroImage') {
+      setTemplate((prev) => ({
+        ...prev,
+        heroImage: '',
+        featuredImage: { ...prev?.featuredImage, url: '' }
+      }));
+    } else if (target === 'chiefDesigner') {
+      setTemplate((prev) => ({
+        ...prev,
+        chiefDesigner: {
+          ...prev?.chiefDesigner,
+          designerImage: {
+            ...(typeof prev?.chiefDesigner?.designerImage === 'object' ? prev.chiefDesigner.designerImage : {}),
+            url: ''
+          }
+        }
+      }));
+    } else if (target === 'gallery' && galleryIndex !== null) {
+      setTemplate((prev) => {
+        const updated = [...(prev?.gallery || [])];
+        updated[galleryIndex] = { ...updated[galleryIndex], url: '' };
+        return { ...prev, gallery: updated };
+      });
+    }
+
     try {
       const uploaded = await uploadImageToImgbb(file);
       if (target === 'heroImage') {

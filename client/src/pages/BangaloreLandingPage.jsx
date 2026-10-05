@@ -27,8 +27,11 @@ export default function BangaloreLandingPage() {
   // 2. Track remote overrides & fetched status per slug
   const [remoteOverrides, setRemoteOverrides] = useState({});
   const [fetchedSlugs, setFetchedSlugs] = useState({});
+  const [heroImageState, setHeroImageState] = useState('loading'); // 'loading' | 'loaded' | 'error'
   const [openFaqIndex, setOpenFaqIndex] = useState(0); // Open first FAQ by default
   const [selectedLightboxImage, setSelectedLightboxImage] = useState(null);
+
+  const isRemoteLoading = Boolean(slug && !fetchedSlugs[slug]);
 
   useEffect(() => {
     let isMounted = true;
@@ -272,6 +275,44 @@ export default function BangaloreLandingPage() {
     (loc) => loc.name.toLowerCase() !== locationName.toLowerCase()
   ).slice(0, 8);
 
+  const targetHeroImageUrl = useMemo(() => {
+    if (isRemoteLoading) return null;
+    const remote = remoteOverrides[slug];
+    const remoteUrl = remote?.featuredImage?.url || remote?.heroImage;
+    if (remote) {
+      if (remoteUrl) return remoteUrl;
+    }
+    return featuredImage?.url || localPage?.featuredImage?.url || '/videos/Revisedlogo.webp';
+  }, [isRemoteLoading, remoteOverrides, slug, featuredImage?.url, localPage?.featuredImage?.url]);
+
+  const targetDesignerImageUrl = useMemo(() => {
+    if (isRemoteLoading) return null;
+    const remote = remoteOverrides[slug];
+    const remoteDesignerUrl = typeof remote?.chiefDesigner?.designerImage === 'string'
+      ? remote.chiefDesigner.designerImage
+      : remote?.chiefDesigner?.designerImage?.url;
+
+    if (remote) {
+      if (remoteDesignerUrl) return remoteDesignerUrl;
+    }
+
+    const localImg = typeof chiefDesigner?.designerImage === 'string'
+      ? chiefDesigner.designerImage
+      : chiefDesigner?.designerImage?.url;
+
+    return localImg || '/videos/lead-of-shrusara.webp';
+  }, [isRemoteLoading, remoteOverrides, slug, chiefDesigner]);
+
+  const [designerImageState, setDesignerImageState] = useState('loading');
+
+  useEffect(() => {
+    setHeroImageState('loading');
+  }, [slug, targetHeroImageUrl]);
+
+  useEffect(() => {
+    setDesignerImageState('loading');
+  }, [slug, targetDesignerImageUrl]);
+
   let metaImageUrl = featuredImage?.url;
   if (metaImageUrl && (metaImageUrl.includes('i.ibb.co') || metaImageUrl.includes('ibb.co'))) {
     metaImageUrl = '/videos/hii.webp';
@@ -368,15 +409,58 @@ export default function BangaloreLandingPage() {
               <div className="lg:col-start-8 lg:col-span-5 lg:row-start-1">
                 <div className="relative mx-auto max-w-md lg:max-w-none">
                   <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-2.5 shadow-xl">
-                    <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink/5">
-                      <img
-                        src={featuredImage?.url || localPage?.featuredImage?.url || '/videos/Revisedlogo.webp'}
-                        alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
-                        title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
-                        fetchPriority="high"
-                        decoding="async"
-                        className="h-full w-full object-cover transition duration-700 hover:scale-105"
-                      />
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-stone-100">
+                      {/* 1. LOADING STATE: Shimmer Skeleton Overlay */}
+                      {(isRemoteLoading || heroImageState === 'loading') && (
+                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-br from-stone-100 via-stone-200/70 to-stone-100 animate-pulse p-6 text-center">
+                          <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-md">
+                            <img
+                              src="/videos/Revisedlogo.webp"
+                              alt="Loading Shrusara..."
+                              className="h-9 w-auto object-contain animate-bounce opacity-85"
+                            />
+                          </div>
+                          <div className="mt-4 space-y-2">
+                            <div className="h-3 w-32 mx-auto rounded-full bg-stone-300 animate-pulse" />
+                            <div className="h-2 w-24 mx-auto rounded-full bg-stone-200 animate-pulse" />
+                          </div>
+                          <span className="mt-3 font-heading text-[11px] font-semibold tracking-wider text-cocoa uppercase">
+                            Loading Bespoke Preview...
+                          </span>
+                        </div>
+                      )}
+
+                      {/* 2. ERROR STATE: Clean error placeholder instead of showing old template image */}
+                      {!isRemoteLoading && heroImageState === 'error' && (
+                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-stone-100 p-6 text-center border border-dashed border-stone-300 rounded-2xl">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-cocoa/10 text-cocoa text-xl">
+                            ✦
+                          </div>
+                          <span className="mt-3 font-heading text-sm font-semibold text-ink">
+                            Custom Image Unavailable
+                          </span>
+                          <p className="mt-1 text-xs text-stone-500 max-w-[200px]">
+                            Shrusara Fashion Boutique Bespoke Design
+                          </p>
+                        </div>
+                      )}
+
+                      {/* 3. LOADED IMAGE: Smooth fade in when fully loaded */}
+                      {targetHeroImageUrl ? (
+                        <img
+                          key={targetHeroImageUrl}
+                          src={targetHeroImageUrl}
+                          alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
+                          title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
+                          fetchPriority="high"
+                          decoding="async"
+                          onLoad={() => setHeroImageState('loaded')}
+                          onError={() => setHeroImageState('error')}
+                          className={`h-full w-full object-cover transition-opacity duration-700 hover:scale-105 ${
+                            heroImageState === 'loaded' && !isRemoteLoading ? 'opacity-100' : 'opacity-0'
+                          }`}
+                        />
+                      ) : null}
                     </div>
                     {featuredImage?.caption ? (
                       <p className="p-2 text-center text-xs text-stone-600">
@@ -517,13 +601,44 @@ export default function BangaloreLandingPage() {
                 <div className="lg:col-span-5">
                   <div className="relative mx-auto max-w-sm lg:max-w-none">
                     <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-3 shadow-xl">
-                      <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-cocoa/5">
-                        <img
-                          src={chiefDesigner.designerImage?.url || '/videos/lead-of-shrusara.webp'}
-                          alt={chiefDesigner.designerImageAlt || chiefDesigner.designerImage?.alt || 'Shruthi Ajith, Founder & Chief Designer'}
-                          title={chiefDesigner.designerImage?.title || chiefDesigner.designerName || 'Shruthi Ajith'}
-                          className="h-full w-full object-cover"
-                        />
+                      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-cocoa/5">
+                        {/* Loading Shimmer Skeleton overlay */}
+                        {(isRemoteLoading || designerImageState === 'loading') && (
+                          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-br from-stone-100 via-stone-200/70 to-stone-100 animate-pulse p-4 text-center">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-sm">
+                              <img
+                                src="/videos/Revisedlogo.webp"
+                                alt="Loading Shrusara..."
+                                className="h-8 w-auto object-contain animate-bounce opacity-80"
+                              />
+                            </div>
+                            <span className="mt-2 text-[10px] font-semibold text-cocoa uppercase tracking-wider">
+                              Loading Designer Profile...
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Error State */}
+                        {!isRemoteLoading && designerImageState === 'error' && (
+                          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-stone-100 p-4 text-center">
+                            <span className="text-xs font-semibold text-ink">Designer Photo Unavailable</span>
+                          </div>
+                        )}
+
+                        {/* Image Element */}
+                        {targetDesignerImageUrl ? (
+                          <img
+                            key={targetDesignerImageUrl}
+                            src={targetDesignerImageUrl}
+                            alt={chiefDesigner.designerImageAlt || chiefDesigner.designerImage?.alt || 'Shruthi Ajith, Founder & Chief Designer'}
+                            title={chiefDesigner.designerImage?.title || chiefDesigner.designerName || 'Shruthi Ajith'}
+                            onLoad={() => setDesignerImageState('loaded')}
+                            onError={() => setDesignerImageState('error')}
+                            className={`h-full w-full object-cover transition-opacity duration-700 ${
+                              designerImageState === 'loaded' && !isRemoteLoading ? 'opacity-100' : 'opacity-0'
+                            }`}
+                          />
+                        ) : null}
                       </div>
                       <div className="p-3 text-center">
                         <h3 className="font-heading text-lg font-bold text-ink">

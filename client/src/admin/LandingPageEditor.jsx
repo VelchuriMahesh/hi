@@ -322,6 +322,32 @@ export default function LandingPageEditor() {
     const targetKey = target === 'gallery' && galleryIndex !== null ? `gallery-${galleryIndex}` : target;
     setUploadingTarget(targetKey);
     setMessage('');
+
+    // Immediately clear old image URL from state so old image disappears instantly on replace!
+    if (target === 'featuredImage') {
+      setPage((prev) => ({
+        ...prev,
+        featuredImage: { ...prev.featuredImage, url: '' }
+      }));
+    } else if (target === 'chiefDesigner') {
+      setPage((prev) => ({
+        ...prev,
+        chiefDesigner: {
+          ...prev.chiefDesigner,
+          designerImage: {
+            ...(typeof prev.chiefDesigner?.designerImage === 'object' ? prev.chiefDesigner.designerImage : {}),
+            url: ''
+          }
+        }
+      }));
+    } else if (target === 'gallery' && galleryIndex !== null) {
+      setPage((prev) => {
+        const updated = [...(prev.gallery || [])];
+        updated[galleryIndex] = { ...updated[galleryIndex], url: '' };
+        return { ...prev, gallery: updated };
+      });
+    }
+
     try {
       const uploaded = await uploadImageToImgbb(file);
       if (target === 'featuredImage') {
@@ -954,9 +980,20 @@ export default function LandingPageEditor() {
 
                 {/* Hero Image Upload */}
                 <div className="rounded-xl border border-ink/10 bg-linen/50 p-4">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                    Featured / Hero Image
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Featured / Hero Image
+                    </label>
+                    {page.featuredImage?.url ? (
+                      <button
+                        type="button"
+                        onClick={() => setPage((prev) => ({ ...prev, featuredImage: { ...prev.featuredImage, url: '' } }))}
+                        className="text-xs text-red-600 hover:text-red-800 font-semibold transition flex items-center gap-1"
+                      >
+                        🗑️ Clear / Remove Image
+                      </button>
+                    ) : null}
+                  </div>
                   <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
                     {uploadingTarget === 'featuredImage' ? (
                       <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-cocoa/30 bg-amber-50/60 p-2 text-center animate-pulse">
@@ -967,28 +1004,50 @@ export default function LandingPageEditor() {
                         <span className="mt-1 text-[10px] font-semibold text-cocoa">Uploading...</span>
                       </div>
                     ) : page.featuredImage?.url ? (
-                      <img
-                        src={page.featuredImage.url}
-                        alt="Featured preview"
-                        className="h-28 w-28 rounded-xl object-cover border border-ink/10"
-                      />
+                      <div className="relative group">
+                        <img
+                          src={page.featuredImage.url}
+                          alt="Featured preview"
+                          className="h-28 w-28 rounded-xl object-cover border border-ink/10 shadow-sm"
+                        />
+                        <button
+                          type="button"
+                          title="Remove Image"
+                          onClick={() => setPage((prev) => ({ ...prev, featuredImage: { ...prev.featuredImage, url: '' } }))}
+                          className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white text-xs font-bold shadow hover:bg-red-700 transition"
+                        >
+                          ✕
+                        </button>
+                      </div>
                     ) : (
-                      <div className="flex h-28 w-28 items-center justify-center rounded-xl bg-ink/5 text-xs text-stone-400">
-                        No Image
+                      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-dashed border-stone-300 bg-stone-50 p-2 text-center text-xs text-stone-400">
+                        <span>No Image</span>
+                        <span className="text-[10px] text-stone-400 mt-1">Upload required</span>
                       </div>
                     )}
                     <div className="flex-1 space-y-2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        disabled={uploadingImage}
-                        onChange={(e) => handleImageUpload(e, 'featuredImage')}
-                        className="text-xs text-stone-600"
-                      />
-                      {uploadingImage && <p className="text-xs text-cocoa">Uploading to ImgBB...</p>}
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingImage}
+                          onChange={(e) => handleImageUpload(e, 'featuredImage')}
+                          className="text-xs text-stone-600 flex-1"
+                        />
+                        {page.featuredImage?.url ? (
+                          <button
+                            type="button"
+                            onClick={() => setPage((prev) => ({ ...prev, featuredImage: { ...prev.featuredImage, url: '' } }))}
+                            className="rounded-lg bg-stone-200 px-2.5 py-1 text-xs font-medium text-stone-700 hover:bg-red-100 hover:text-red-700 transition"
+                          >
+                            Clear
+                          </button>
+                        ) : null}
+                      </div>
+                      {uploadingImage && <p className="text-xs text-cocoa">Uploading compressed image...</p>}
                       <input
                         type="text"
-                        placeholder="Image URL or Path"
+                        placeholder="Image URL or Path (leave blank if no image)"
                         value={page.featuredImage?.url || ''}
                         onChange={(e) =>
                           setPage({
@@ -1253,9 +1312,31 @@ export default function LandingPageEditor() {
                 </div>
 
                 <div className="rounded-xl border border-ink/10 bg-linen/50 p-4">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
-                    Designer Image
-                  </label>
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                      Designer Image
+                    </label>
+                    {(typeof page.chiefDesigner?.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner?.designerImage?.url) ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setPage({
+                            ...page,
+                            chiefDesigner: {
+                              ...page.chiefDesigner,
+                              designerImage: {
+                                ...(typeof page.chiefDesigner?.designerImage === 'object' ? page.chiefDesigner.designerImage : {}),
+                                url: ''
+                              }
+                            }
+                          })
+                        }
+                        className="text-xs text-red-600 hover:text-red-800 font-semibold transition flex items-center gap-1"
+                      >
+                        🗑️ Clear / Remove Image
+                      </button>
+                    ) : null}
+                  </div>
                   <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
                     {uploadingTarget === 'chiefDesigner' ? (
                       <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-cocoa/30 bg-amber-50/60 p-2 text-center animate-pulse">
@@ -1265,28 +1346,72 @@ export default function LandingPageEditor() {
                         </svg>
                         <span className="mt-1 text-[10px] font-semibold text-cocoa">Uploading...</span>
                       </div>
-                    ) : page.chiefDesigner?.designerImage?.url || page.chiefDesigner?.designerImage ? (
-                      <img
-                        src={typeof page.chiefDesigner.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner.designerImage?.url}
-                        alt="Designer preview"
-                        className="h-28 w-28 rounded-xl object-cover border border-ink/10"
-                      />
+                    ) : (typeof page.chiefDesigner?.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner?.designerImage?.url) ? (
+                      <div className="relative group">
+                        <img
+                          src={typeof page.chiefDesigner.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner.designerImage?.url}
+                          alt="Designer preview"
+                          className="h-28 w-28 rounded-xl object-cover border border-ink/10 shadow-sm"
+                        />
+                        <button
+                          type="button"
+                          title="Remove Image"
+                          onClick={() =>
+                            setPage({
+                              ...page,
+                              chiefDesigner: {
+                                ...page.chiefDesigner,
+                                designerImage: {
+                                  ...(typeof page.chiefDesigner?.designerImage === 'object' ? page.chiefDesigner.designerImage : {}),
+                                  url: ''
+                                }
+                              }
+                            })
+                          }
+                          className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white text-xs font-bold shadow hover:bg-red-700 transition"
+                        >
+                          ✕
+                        </button>
+                      </div>
                     ) : (
-                      <div className="flex h-28 w-28 items-center justify-center rounded-xl bg-ink/5 text-xs text-stone-400">
-                        No Image
+                      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-xl border border-dashed border-stone-300 bg-stone-50 p-2 text-center text-xs text-stone-400">
+                        <span>No Image</span>
+                        <span className="text-[10px] text-stone-400 mt-1">Upload required</span>
                       </div>
                     )}
                     <div className="flex-1 space-y-2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        disabled={uploadingImage}
-                        onChange={(e) => handleImageUpload(e, 'chiefDesigner')}
-                        className="text-xs text-stone-600"
-                      />
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingImage}
+                          onChange={(e) => handleImageUpload(e, 'chiefDesigner')}
+                          className="text-xs text-stone-600 flex-1"
+                        />
+                        {(typeof page.chiefDesigner?.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner?.designerImage?.url) ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setPage({
+                                ...page,
+                                chiefDesigner: {
+                                  ...page.chiefDesigner,
+                                  designerImage: {
+                                    ...(typeof page.chiefDesigner?.designerImage === 'object' ? page.chiefDesigner.designerImage : {}),
+                                    url: ''
+                                  }
+                                }
+                              })
+                            }
+                            className="rounded-lg bg-stone-200 px-2.5 py-1 text-xs font-medium text-stone-700 hover:bg-red-100 hover:text-red-700 transition"
+                          >
+                            Clear
+                          </button>
+                        ) : null}
+                      </div>
                       <input
                         type="text"
-                        placeholder="Designer Image URL"
+                        placeholder="Designer Image URL (leave blank if no image)"
                         value={typeof page.chiefDesigner?.designerImage === 'string' ? page.chiefDesigner.designerImage : page.chiefDesigner?.designerImage?.url || ''}
                         onChange={(e) =>
                           setPage({
