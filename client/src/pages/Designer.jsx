@@ -640,9 +640,9 @@ export default function Designer() {
           .ds-btn-gold-pill, .ds-btn-outline-pill { width:100%; text-align:center; }
         }
         @media(max-width:768px){
-          .ds-hero { grid-template-columns:1fr; min-height:auto; }
-          .ds-hero-text { padding:50px 5vw 32px; }
-          .ds-hero-img-wrap { height:55vw; min-height:280px; }
+          .ds-hero { display: flex; flex-direction: column; min-height: auto; }
+          .ds-hero-img-wrap { order: 1; height: 55vw; min-height: 280px; }
+          .ds-hero-text { order: 2; padding: 50px 5vw 32px; }
           .ds-hero-fade { background:linear-gradient(to bottom,transparent 60%,var(--c-bg) 100%); }
           .ds-hero-btns { flex-direction:column; }
           .ds-btn-pri,.ds-btn-sec { width:100%; justify-content:center; }

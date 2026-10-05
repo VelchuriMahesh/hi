@@ -623,9 +623,9 @@ const DesignerLandingPage = () => {
           .dl-hdr-badge { display: none; }
           .dl-hdr-cta  { font-size: .52rem; padding: 9px 11px; letter-spacing: .09em; gap: 5px; }
           .dl-hero { flex-direction: column; min-height: auto; }
-          .dl-hero-img-wrap { height: 56vw; min-height: 220px; width: 100%; }
+          .dl-hero-img-wrap { order: 1; height: 56vw; min-height: 220px; width: 100%; }
           .dl-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--dl-cream) 100%); }
-          .dl-hero-text { padding: 28px 16px 40px; }
+          .dl-hero-text { order: 2; padding: 28px 16px 40px; }
           .dl-hero-btns { flex-direction: column; gap: 10px; }
           .dl-btn-pri, .dl-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .65rem; }
           .dl-trust { padding: 0 16px 40px; }

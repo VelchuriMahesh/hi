@@ -508,9 +508,9 @@ export default function Bridal() {
           .br-image-match-banner { padding: 40px 40px; }
         }
         @media(max-width:768px){
-          .br-hero { grid-template-columns:1fr; min-height:auto; }
-          .br-hero-text { padding:50px 5vw 32px; }
-          .br-hero-img-wrap { height:55vw; min-height:280px; }
+          .br-hero { display: flex; flex-direction: column; min-height: auto; }
+          .br-hero-img-wrap { order: 1; height: 55vw; min-height: 280px; }
+          .br-hero-text { order: 2; padding: 50px 5vw 32px; }
           .br-hero-fade { background:linear-gradient(to bottom,transparent 60%,var(--c-bg) 100%); }
           .br-hero-btns { flex-direction:column; }
           .br-btn-pri, .br-btn-sec { width:100%; justify-content:center; }

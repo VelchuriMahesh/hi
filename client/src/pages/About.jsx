@@ -835,6 +835,7 @@ body { background: var(--c-bg); }
 
   /* VIDEO WRAPPER: use a proper aspect-ratio box so it NEVER clips */
   .ab-hero-img-wrap {
+    order: 1;
     width: 100%;
     height: auto;
     aspect-ratio: 9 / 14;
@@ -856,6 +857,7 @@ body { background: var(--c-bg); }
   }
 
   .ab-hero-text {
+    order: 2;
     padding: 0 6vw 48px;
     margin-top: -40px;
     background: var(--c-bg);

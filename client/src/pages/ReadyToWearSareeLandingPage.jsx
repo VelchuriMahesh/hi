@@ -1411,9 +1411,9 @@ function ReadyToWearSareeLandingPage() {
           .rtw-hdr-cta { font-size: .54rem; padding: 9px 12px; letter-spacing: .1em; gap: 5px; }
 
           .rtw-hero { flex-direction: column; min-height: auto; }
-          .rtw-hero-img-wrap { height: 56vw; min-height: 240px; width: 100%; }
+          .rtw-hero-img-wrap { order: 1; height: 56vw; min-height: 240px; width: 100%; }
           .rtw-hero-img-fade { background: linear-gradient(to bottom, transparent 55%, var(--rtw-cream) 100%); }
-          .rtw-hero-text { padding: 32px 16px 40px; }
+          .rtw-hero-text { order: 2; padding: 32px 16px 40px; }
           .rtw-hero-eyebrow { font-size: .56rem; margin-bottom: 12px; }
           .rtw-hero-h1 { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 8px; }
           .rtw-hero-h2 { font-size: clamp(.95rem, 3.5vw, 1.2rem); margin-bottom: 14px; }

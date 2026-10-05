@@ -531,9 +531,9 @@ export default function OccasionWearLandingPage() {
           .ow-hdr-badge { display: none; }
           .ow-hdr-cta { font-size: .5rem; padding: 9px 11px; }
           .ow-hero { flex-direction: column; min-height: auto; }
-          .ow-hero-img { height: 58vw; min-height: 220px; min-height: auto; }
+          .ow-hero-img { order: 1; height: 58vw; min-height: 220px; min-height: auto; }
           .ow-hero-img-fade { background: linear-gradient(to bottom, transparent 50%, var(--cream) 100%); }
-          .ow-hero-text { padding: 28px 16px 44px; }
+          .ow-hero-text { order: 2; padding: 28px 16px 44px; }
           .ow-hero-btns { flex-direction: column; }
           .ow-btn-pri, .ow-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .64rem; }
           .ow-sec { padding: 48px 16px; }

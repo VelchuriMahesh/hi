@@ -507,9 +507,9 @@ export default function SareeLandingPage() {
           .sw-hdr-badge { display: none; }
           .sw-hdr-cta { font-size: .5rem; padding: 9px 11px; }
           .sw-hero { flex-direction: column; min-height: auto; }
-          .sw-hero-img { height: 58vw; min-height: 220px; }
+          .sw-hero-img { order: 1; height: 58vw; min-height: 220px; }
           .sw-hero-img-fade { background: linear-gradient(to bottom, transparent 50%, var(--sw-cream) 100%); }
-          .sw-hero-text { padding: 28px 16px 44px; }
+          .sw-hero-text { order: 2; padding: 28px 16px 44px; }
           .sw-hero-btns { flex-direction: column; }
           .sw-btn-pri, .sw-btn-sec { width: 100%; justify-content: center; padding: 13px 18px; font-size: .64rem; }
           .sw-sec { padding: 48px 16px; }

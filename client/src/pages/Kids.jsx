@@ -297,9 +297,9 @@ export default function Kids() {
           .kd-offering-grid { grid-template-columns: 1fr 1fr; }
         }
         @media(max-width:768px) {
-          .kd-hero { grid-template-columns: 1fr; min-height: auto; }
-          .kd-hero-text { padding: 50px 5vw 32px; }
-          .kd-hero-img-wrap { height: 55vw; min-height: 280px; }
+          .kd-hero { display: flex; flex-direction: column; min-height: auto; }
+          .kd-hero-img-wrap { order: 1; height: 55vw; min-height: 280px; }
+          .kd-hero-text { order: 2; padding: 50px 5vw 32px; }
           .kd-hero-fade { background: linear-gradient(to bottom, transparent 60%, var(--c-bg) 100%); }
           .kd-hero-btns { flex-direction: column; }
           .kd-btn-pri, .kd-btn-sec { width: 100%; justify-content: center; }
