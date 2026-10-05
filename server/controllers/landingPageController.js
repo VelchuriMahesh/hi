@@ -257,7 +257,7 @@ export const DEFAULT_EXISTING_LANDING_PAGES = [
       'party wear bangalore'
     ],
     featuredImage: {
-      url: '/occasion_wear/Designer%20Gowns%20&%20Indo%20western%20outfits/Designer%20Gowns%20&%20Indo%20western%20outfits/indo-western-fusion-bridal-wear-shrusara.webp',
+      url: '/videos/hii.webp',
       alt: 'Customized Occasion Wear & Designer Outfits in Bangalore'
     }
   },

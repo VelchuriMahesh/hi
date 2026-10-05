@@ -18,7 +18,7 @@ const occasionLandingSchema = {
     name: 'Shrusara Fashion Boutique',
     url: 'https://www.shrusara.com/',
     telephone: '+919741827558',
-    image: 'https://www.shrusara.com/occasion_wear/Designer%20Gowns%20&%20Indo%20western%20outfits/Designer%20Gowns%20&%20Indo%20western%20outfits/indo-western-fusion-bridal-wear-shrusara.webp',
+    image: 'https://www.shrusara.com/videos/hii.webp',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '106, 6th Main Road, Mahalakshmipuram',
@@ -279,7 +279,7 @@ export default function OccasionWearLandingPage() {
         description="Customized occasion wear in Bangalore including designer gowns, crop top lehengas, half sarees, and designer blouses crafted with perfect fit by Shrusara."
         keywords="occasion wear bangalore, designer gowns bangalore, crop top lehenga bangalore, half saree bangalore, boutique bangalore, party wear bangalore"
         canonicalPath="/customized-occasion-wear-bangalore"
-        image="/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/indo-western-fusion-bridal-wear-shrusara.webp"
+        image="/videos/hii.webp"
         schema={occasionLandingSchema}
       />
 
