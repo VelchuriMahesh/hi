@@ -1562,7 +1562,7 @@ export const MASTER_SERVICE_TEMPLATES = {
     serviceName: 'Luxury Occasion Wear',
     singular: 'Luxury Occasion Wear Outfit',
     plural: 'Luxury Occasion Wear Outfits',
-    heroImage: '/occasion_wear/Designer Gowns & Indo western outfits/Designer Gowns & Indo western outfits/indo-western-fusion-bridal-wear-shrusara.webp',
+    heroImage: '/videos/hii.webp',
     hero: {
       badgeTemplate: '100% Customized | {Location}, Bangalore',
       headingTemplate: 'Luxury Occasion Wear in {Location}, Bangalore',
@@ -2565,8 +2565,15 @@ export function generateLandingPageSchemas({ page = {}, siteUrl = DEFAULT_SITE_U
   const description = page.metaDescription || page.hero?.tagline || 'Customized bridal and designer wear in Bangalore by Shrusara Fashion Boutique.';
   const serviceCategory = page.serviceCategory || 'Ready-to-Wear Saree Customization';
   const locationName = page.locationName || 'Bangalore';
-  const imageUrl = page.featuredImage?.url
-    ? (/^https?:\/\//i.test(page.featuredImage.url) ? page.featuredImage.url : `${cleanSiteUrl}${page.featuredImage.url.startsWith('/') ? '' : '/'}${page.featuredImage.url}`)
+  let rawImg = page.featuredImage?.url;
+  if (rawImg && (rawImg.includes('i.ibb.co') || rawImg.includes('ibb.co'))) {
+    rawImg = '/videos/hii.webp';
+  }
+  if (pageSlug === 'customized-occasion-wear-bangalore') {
+    rawImg = 'https://www.shrusara.com/videos/hii.webp';
+  }
+  const imageUrl = rawImg
+    ? (/^https?:\/\//i.test(rawImg) ? rawImg : `${cleanSiteUrl}${rawImg.startsWith('/') ? '' : '/'}${rawImg}`)
     : `${cleanSiteUrl}/videos/logo.png`;
 
   // 1. Service Schema

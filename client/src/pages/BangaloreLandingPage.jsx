@@ -221,13 +221,21 @@ export default function BangaloreLandingPage() {
     (loc) => loc.name.toLowerCase() !== locationName.toLowerCase()
   ).slice(0, 8);
 
+  let metaImageUrl = featuredImage?.url;
+  if (metaImageUrl && (metaImageUrl.includes('i.ibb.co') || metaImageUrl.includes('ibb.co'))) {
+    metaImageUrl = '/videos/hii.webp';
+  }
+  if (page?.slug === 'customized-occasion-wear-bangalore') {
+    metaImageUrl = 'https://www.shrusara.com/videos/hii.webp';
+  }
+
   return (
     <>
       <PageMeta
         title={metaTitle || `${title} | Shrusara Fashion Boutique`}
         description={metaDescription}
         keywords={Array.isArray(metaKeywords) ? metaKeywords.join(', ') : metaKeywords}
-        image={featuredImage?.url}
+        image={metaImageUrl}
         canonicalUrl={currentCanonicalUrl}
         schemas={[
           schemas.serviceSchema,
