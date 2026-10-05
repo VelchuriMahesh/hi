@@ -69,7 +69,25 @@ export default function BangaloreLandingPage() {
     if (!localPage) return null;
     const remote = remoteOverrides[slug];
     if (remote && (remote.slug === slug || remote.slug === localPage.slug)) {
-      return { ...localPage, ...remote };
+      let activeFeaturedImage = localPage.featuredImage;
+
+      if (remote.featuredImage?.url) {
+        const remoteUrl = remote.featuredImage.url;
+        const isGenericBridalFallback =
+          remoteUrl === '/bridal/bridalblow/hero-bridal.webp' &&
+          !localPage.serviceCategory?.toLowerCase().includes('bridal');
+        const isIbb = remoteUrl.includes('i.ibb.co') || remoteUrl.includes('ibb.co');
+
+        if (!isGenericBridalFallback && !isIbb) {
+          activeFeaturedImage = remote.featuredImage;
+        }
+      }
+
+      return {
+        ...localPage,
+        ...remote,
+        featuredImage: activeFeaturedImage || localPage.featuredImage
+      };
     }
     return localPage;
   }, [localPage, remoteOverrides, slug]);
@@ -319,7 +337,7 @@ export default function BangaloreLandingPage() {
                   <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-2.5 shadow-xl">
                     <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-ink/5">
                       <img
-                        src={featuredImage?.url || '/bridal/bridalblow/hero-bridal.webp'}
+                        src={featuredImage?.url || localPage?.featuredImage?.url || '/videos/Revisedlogo.webp'}
                         alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
                         title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
                         fetchPriority="high"
