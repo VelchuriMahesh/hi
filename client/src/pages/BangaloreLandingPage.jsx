@@ -39,7 +39,16 @@ export default function BangaloreLandingPage() {
     if (slug && !fetchedSlugs[slug]) {
       async function loadRemotePage() {
         try {
-          const res = await fetchLandingPageBySlug(slug);
+          const res = await fetchLandingPageBySlug(slug, {
+            onRevalidate: (freshItem) => {
+              if (isMounted && freshItem) {
+                setRemoteOverrides((prev) => ({
+                  ...prev,
+                  [slug]: freshItem
+                }));
+              }
+            }
+          });
           if (isMounted) {
             if (res?.item) {
               setRemoteOverrides((prev) => ({
@@ -276,24 +285,22 @@ export default function BangaloreLandingPage() {
   ).slice(0, 8);
 
   const targetHeroImageUrl = useMemo(() => {
-    if (isRemoteLoading) return null;
     const remote = remoteOverrides[slug];
     const remoteUrl = remote?.featuredImage?.url || remote?.heroImage;
-    if (remote) {
-      if (remoteUrl) return remoteUrl;
+    if (remoteUrl) {
+      return remoteUrl;
     }
-    return featuredImage?.url || localPage?.featuredImage?.url || '/videos/Revisedlogo.webp';
-  }, [isRemoteLoading, remoteOverrides, slug, featuredImage?.url, localPage?.featuredImage?.url]);
+    return page?.featuredImage?.url || localPage?.featuredImage?.url || '/videos/Revisedlogo.webp';
+  }, [remoteOverrides, slug, page?.featuredImage?.url, localPage?.featuredImage?.url]);
 
   const targetDesignerImageUrl = useMemo(() => {
-    if (isRemoteLoading) return null;
     const remote = remoteOverrides[slug];
     const remoteDesignerUrl = typeof remote?.chiefDesigner?.designerImage === 'string'
       ? remote.chiefDesigner.designerImage
       : remote?.chiefDesigner?.designerImage?.url;
 
-    if (remote) {
-      if (remoteDesignerUrl) return remoteDesignerUrl;
+    if (remoteDesignerUrl) {
+      return remoteDesignerUrl;
     }
 
     const localImg = typeof chiefDesigner?.designerImage === 'string'
@@ -301,7 +308,7 @@ export default function BangaloreLandingPage() {
       : chiefDesigner?.designerImage?.url;
 
     return localImg || '/videos/lead-of-shrusara.webp';
-  }, [isRemoteLoading, remoteOverrides, slug, chiefDesigner]);
+  }, [remoteOverrides, slug, chiefDesigner]);
 
   const [designerImageState, setDesignerImageState] = useState('loading');
 
@@ -423,7 +430,7 @@ export default function BangaloreLandingPage() {
                   <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-2.5 shadow-xl">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-stone-100">
                       {/* 1. LOADING STATE: Shimmer Skeleton Overlay */}
-                      {(isRemoteLoading || heroImageState === 'loading') && (
+                      {heroImageState === 'loading' && (
                         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-br from-stone-100 via-stone-200/70 to-stone-100 animate-pulse p-6 text-center">
                           <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-md">
                             <img
@@ -443,7 +450,7 @@ export default function BangaloreLandingPage() {
                       )}
 
                       {/* 2. ERROR STATE: Clean error placeholder instead of showing old template image */}
-                      {!isRemoteLoading && heroImageState === 'error' && (
+                      {heroImageState === 'error' && (
                         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-stone-100 p-6 text-center border border-dashed border-stone-300 rounded-2xl">
                           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-cocoa/10 text-cocoa text-xl">
                             ✦
@@ -465,11 +472,12 @@ export default function BangaloreLandingPage() {
                           alt={featuredImage?.alt || `${serviceCategory} in ${locationName}, Bangalore – Shrusara Fashion Boutique`}
                           title={featuredImage?.title || `${serviceCategory} in ${locationName}`}
                           fetchPriority="high"
+                          loading="eager"
                           decoding="async"
                           onLoad={() => setHeroImageState('loaded')}
                           onError={() => setHeroImageState('error')}
                           className={`h-full w-full object-cover transition-opacity duration-700 hover:scale-105 ${
-                            heroImageState === 'loaded' && !isRemoteLoading ? 'opacity-100' : 'opacity-0'
+                            heroImageState === 'loaded' ? 'opacity-100' : 'opacity-0'
                           }`}
                         />
                       ) : null}
@@ -615,7 +623,7 @@ export default function BangaloreLandingPage() {
                     <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-3 shadow-xl">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-cocoa/5">
                         {/* Loading Shimmer Skeleton overlay */}
-                        {(isRemoteLoading || designerImageState === 'loading') && (
+                        {designerImageState === 'loading' && (
                           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-br from-stone-100 via-stone-200/70 to-stone-100 animate-pulse p-4 text-center">
                             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 shadow-sm">
                               <img
@@ -631,7 +639,7 @@ export default function BangaloreLandingPage() {
                         )}
 
                         {/* Error State */}
-                        {!isRemoteLoading && designerImageState === 'error' && (
+                        {designerImageState === 'error' && (
                           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-stone-100 p-4 text-center">
                             <span className="text-xs font-semibold text-ink">Designer Photo Unavailable</span>
                           </div>
@@ -644,10 +652,13 @@ export default function BangaloreLandingPage() {
                             src={targetDesignerImageUrl}
                             alt={chiefDesigner.designerImageAlt || chiefDesigner.designerImage?.alt || 'Shruthi Ajith, Founder & Chief Designer'}
                             title={chiefDesigner.designerImage?.title || chiefDesigner.designerName || 'Shruthi Ajith'}
+                            fetchPriority="high"
+                            loading="eager"
+                            decoding="async"
                             onLoad={() => setDesignerImageState('loaded')}
                             onError={() => setDesignerImageState('error')}
                             className={`h-full w-full object-cover transition-opacity duration-700 ${
-                              designerImageState === 'loaded' && !isRemoteLoading ? 'opacity-100' : 'opacity-0'
+                              designerImageState === 'loaded' ? 'opacity-100' : 'opacity-0'
                             }`}
                           />
                         ) : null}

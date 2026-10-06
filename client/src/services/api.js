@@ -317,57 +317,91 @@ export const fetchAdminLandingPages = (token) =>
 
 const LANDING_PAGE_SLUG_CACHE = 'shrusara_lp_slug_';
 
-export const fetchLandingPageBySlug = async (slug) => {
-  const cacheKey = `${LANDING_PAGE_SLUG_CACHE}${slug}`;
-
+export const invalidateLandingPageSlugCache = (slug) => {
   if (typeof window !== 'undefined' && window.localStorage) {
     try {
-      const cached = window.localStorage.getItem(cacheKey);
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        // Background revalidation
-        request(`/landing-pages/slug/${encodeURIComponent(slug)}`).then((res) => {
-          if (res?.item) {
-            try {
-              window.localStorage.setItem(cacheKey, JSON.stringify(res.item));
-            } catch {}
-          }
-        }).catch(() => {});
-        return { item: parsed };
+      if (slug) {
+        window.localStorage.removeItem(`${LANDING_PAGE_SLUG_CACHE}${slug}`);
       }
-    } catch {
-      // LocalStorage fallback
-    }
-  }
-
-  const res = await request(`/landing-pages/slug/${encodeURIComponent(slug)}`).catch(async (error) => {
-    if (error.status !== 404) {
-      throw error;
-    }
-    const targetSlug = String(slug || '').toLowerCase().trim();
-    const response = await fetchLandingPages();
-    const item = (response.items || []).find((page) => {
-      const candidates = [
-        page.slug,
-        page.title,
-        page.id,
-        String(page.url || '').split('/').filter(Boolean).pop()
-      ];
-      return candidates.some((c) => String(c || '').toLowerCase().trim() === targetSlug);
-    });
-
-    if (!item) {
-      throw error;
-    }
-    return { item };
-  });
-
-  if (res?.item && typeof window !== 'undefined' && window.localStorage) {
-    try {
-      window.localStorage.setItem(cacheKey, JSON.stringify(res.item));
     } catch {}
   }
-  return res;
+};
+
+export const fetchLandingPageBySlug = async (slug, options = {}) => {
+  const cacheKey = `${LANDING_PAGE_SLUG_CACHE}${slug}`;
+  const { onRevalidate, maxAgeMs = 120000 } = options;
+  const now = Date.now();
+
+  let cachedPayload = null;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const raw = window.localStorage.getItem(cacheKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const cachedItem = parsed?.item || (parsed?.slug ? parsed : null);
+        const cachedAt = parsed?.cachedAt || 0;
+        if (cachedItem) {
+          cachedPayload = { item: cachedItem, cachedAt };
+        }
+      }
+    } catch {
+      // LocalStorage read fallback
+    }
+  }
+
+  const revalidate = async () => {
+    try {
+      const res = await request(`/landing-pages/slug/${encodeURIComponent(slug)}`);
+      if (res?.item && typeof window !== 'undefined' && window.localStorage) {
+        try {
+          window.localStorage.setItem(cacheKey, JSON.stringify({ item: res.item, cachedAt: Date.now() }));
+        } catch {}
+        if (typeof onRevalidate === 'function') {
+          onRevalidate(res.item);
+        }
+      }
+      return res;
+    } catch (err) {
+      return null;
+    }
+  };
+
+  // If cache is fresh (< 2 mins), return cached item immediately for 0ms load and revalidate in background
+  if (cachedPayload?.item && (now - cachedPayload.cachedAt < maxAgeMs)) {
+    void revalidate();
+    return { item: cachedPayload.item };
+  }
+
+  // Stale or missing cache: Fetch fresh from network first to guarantee latest Hero data
+  const netRes = await revalidate();
+  if (netRes?.item) {
+    return netRes;
+  }
+
+  // Fallback to cached payload if network is offline
+  if (cachedPayload?.item) {
+    return { item: cachedPayload.item };
+  }
+
+  // Fallback search in full landing pages list
+  const targetSlug = String(slug || '').toLowerCase().trim();
+  const response = await fetchLandingPages();
+  const item = (response.items || []).find((page) => {
+    const candidates = [
+      page.slug,
+      page.title,
+      page.id,
+      String(page.url || '').split('/').filter(Boolean).pop()
+    ];
+    return candidates.some((c) => String(c || '').toLowerCase().trim() === targetSlug);
+  });
+
+  if (item && typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.setItem(cacheKey, JSON.stringify({ item, cachedAt: Date.now() }));
+    } catch {}
+  }
+  return { item };
 };
 
 export const fetchLandingPageById = (id) =>

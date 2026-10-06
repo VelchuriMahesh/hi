@@ -11,7 +11,8 @@ import {
   generateLandingPageFromMaster,
   saveMasterTemplate,
   syncLandingPageFromMaster,
-  updateLandingPage
+  updateLandingPage,
+  invalidateLandingPageSlugCache
 } from '../services/api';
 import { uploadImageToImgbb } from '../services/uploaders';
 import {
@@ -454,6 +455,7 @@ export default function LandingPageEditor() {
       }
 
       // Auto-sync edits into the Service Master Template so new pages inherit these changes!
+      invalidateLandingPageSlugCache(payload.slug);
       if (autoSyncMaster) {
         const srv = payload.serviceCategory;
         const sId = slugifyService(srv);
