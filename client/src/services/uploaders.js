@@ -29,11 +29,11 @@ function hasTransparency(canvas, ctx) {
  * - Skips recompression if image is already <= 200 KB and within HD bounds
  * 
  * @param {File} file Original image file uploaded by user/admin
- * @param {number} targetMaxKB Target maximum file size in kilobytes (default 200)
- * @param {number} maxDimension Max width/height dimension in pixels for HD quality (default 1920)
+ * @param {number} targetMaxKB Target maximum file size in kilobytes (default 150)
+ * @param {number} maxDimension Max width/height dimension in pixels for HD quality (default 1400)
  * @returns {Promise<File>} Compressed File object (or original file if uncompressable/error)
  */
-export async function compressImage(file, targetMaxKB = 200, maxDimension = 1920) {
+export async function compressImage(file, targetMaxKB = 150, maxDimension = 1400) {
   if (!file || !(file instanceof File) || !file.type.startsWith('image/')) {
     return file;
   }
@@ -199,10 +199,10 @@ export async function uploadImageToImgbb(file) {
     throw new Error('Set VITE_IMGBB_API_KEY in client/.env to upload blog images.');
   }
 
-  // Automatically compress file to ~200 KB with HD quality before uploading
+  // Automatically compress file to ~150 KB with HD quality before uploading
   let fileToUpload = file;
   try {
-    fileToUpload = await compressImage(file, 200, 1920);
+    fileToUpload = await compressImage(file, 150, 1400);
   } catch (err) {
     console.warn('Image compression fallback:', err);
   }

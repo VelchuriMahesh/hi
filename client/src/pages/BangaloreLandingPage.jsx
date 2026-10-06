@@ -307,10 +307,22 @@ export default function BangaloreLandingPage() {
 
   useEffect(() => {
     setHeroImageState('loading');
+    if (targetHeroImageUrl) {
+      const img = new Image();
+      img.onload = () => setHeroImageState('loaded');
+      img.onerror = () => setHeroImageState('error');
+      img.src = targetHeroImageUrl;
+    }
   }, [slug, targetHeroImageUrl]);
 
   useEffect(() => {
     setDesignerImageState('loading');
+    if (targetDesignerImageUrl) {
+      const img = new Image();
+      img.onload = () => setDesignerImageState('loaded');
+      img.onerror = () => setDesignerImageState('error');
+      img.src = targetDesignerImageUrl;
+    }
   }, [slug, targetDesignerImageUrl]);
 
   let metaImageUrl = featuredImage?.url;

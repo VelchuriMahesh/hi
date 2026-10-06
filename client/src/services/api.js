@@ -315,8 +315,32 @@ export const fetchAdminLandingPages = (token) =>
     throw error;
   });
 
-export const fetchLandingPageBySlug = (slug) =>
-  request(`/landing-pages/slug/${encodeURIComponent(slug)}`).catch(async (error) => {
+const LANDING_PAGE_SLUG_CACHE = 'shrusara_lp_slug_';
+
+export const fetchLandingPageBySlug = async (slug) => {
+  const cacheKey = `${LANDING_PAGE_SLUG_CACHE}${slug}`;
+
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const cached = window.localStorage.getItem(cacheKey);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        // Background revalidation
+        request(`/landing-pages/slug/${encodeURIComponent(slug)}`).then((res) => {
+          if (res?.item) {
+            try {
+              window.localStorage.setItem(cacheKey, JSON.stringify(res.item));
+            } catch {}
+          }
+        }).catch(() => {});
+        return { item: parsed };
+      }
+    } catch {
+      // LocalStorage fallback
+    }
+  }
+
+  const res = await request(`/landing-pages/slug/${encodeURIComponent(slug)}`).catch(async (error) => {
     if (error.status !== 404) {
       throw error;
     }
@@ -337,6 +361,14 @@ export const fetchLandingPageBySlug = (slug) =>
     }
     return { item };
   });
+
+  if (res?.item && typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.setItem(cacheKey, JSON.stringify(res.item));
+    } catch {}
+  }
+  return res;
+};
 
 export const fetchLandingPageById = (id) =>
   request(`/landing-pages/${id}`)
