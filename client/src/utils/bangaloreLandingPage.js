@@ -152,6 +152,29 @@ export const BANGALORE_LOCATIONS_PRESET = [
   }
 ];
 
+export function getStoredBangaloreLocations() {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const raw = window.localStorage.getItem('shrusara_bangalore_locations');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const map = new Map();
+          BANGALORE_LOCATIONS_PRESET.forEach((loc) => map.set(loc.name.toLowerCase(), loc));
+          parsed.forEach((loc) => {
+            if (loc?.name) {
+              const existing = map.get(loc.name.toLowerCase()) || {};
+              map.set(loc.name.toLowerCase(), { ...existing, ...loc });
+            }
+          });
+          return Array.from(map.values());
+        }
+      }
+    } catch {}
+  }
+  return BANGALORE_LOCATIONS_PRESET;
+}
+
 export const SERVICE_CATEGORIES = [
   'Bridal Blouse',
   'Maggam & Aari Work Bridal Blouse',
@@ -2215,7 +2238,8 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
     options.serviceCategory || rawMaster?.serviceCategory || rawMaster?.serviceName || 'Bridal Blouse'
   );
   const rawLocStr = String(locationName || 'Bangalore').trim() || 'Bangalore';
-  const foundPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === rawLocStr.toLowerCase());
+  const allKnownLocations = getStoredBangaloreLocations();
+  const foundPreset = allKnownLocations.find((l) => l.name.toLowerCase() === rawLocStr.toLowerCase());
   const loc = foundPreset ? foundPreset.name : rawLocStr.split(' ').map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
 
   const locSlug = loc.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -2508,7 +2532,8 @@ export function parseAndBuildLandingPageFromSlug(rawSlug = '') {
   const clean = String(rawSlug || '').toLowerCase().trim().replace(/^\/+/g, '').replace(/^bangalore\//i, '');
   if (!clean) return buildLandingPageFromMaster('Bridal Blouse', 'Mahalakshmipuram');
 
-  const sortedLocs = [...BANGALORE_LOCATIONS_PRESET].sort((a, b) => b.name.length - a.name.length);
+  const allKnownLocations = getStoredBangaloreLocations();
+  const sortedLocs = [...allKnownLocations].sort((a, b) => b.name.length - a.name.length);
   let matchedLocName = 'Bangalore';
   let matchedLocObj = null;
   let servicePart = clean;
@@ -2537,7 +2562,7 @@ export function parseAndBuildLandingPageFromSlug(rawSlug = '') {
     const parts = clean.split('-stitching-');
     servicePart = parts[0];
     const locPart = parts.slice(1).join('-stitching-');
-    const locPreset = BANGALORE_LOCATIONS_PRESET.find((l) => l.name.toLowerCase() === locPart.replace(/-/g, ' ').toLowerCase());
+    const locPreset = allKnownLocations.find((l) => l.name.toLowerCase() === locPart.replace(/-/g, ' ').toLowerCase());
     if (locPreset) {
       matchedLocName = locPreset.name;
       matchedLocObj = locPreset;

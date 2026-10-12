@@ -11,6 +11,7 @@ import {
   DEFAULT_SITE_URL,
   SERVICE_CATEGORIES,
   buildLandingPageFromMaster,
+  getStoredBangaloreLocations,
   parseAndBuildLandingPageFromSlug,
   generateLandingPageSchemas,
   generatePresetContent,
@@ -280,7 +281,8 @@ export default function BangaloreLandingPage() {
   const currentCanonicalUrl = schemas.canonicalUrl || `${DEFAULT_SITE_URL}${BANGALORE_BASE_PATH}/${page.slug}`;
 
   // Nearby locations for internal links section
-  const nearbyLocations = BANGALORE_LOCATIONS_PRESET.filter(
+  const allBangaloreLocations = getStoredBangaloreLocations();
+  const nearbyLocations = allBangaloreLocations.filter(
     (loc) => loc.name.toLowerCase() !== locationName.toLowerCase()
   ).slice(0, 8);
 
@@ -1246,7 +1248,7 @@ export default function BangaloreLandingPage() {
             <div>
               <h4 className="font-heading text-sm font-semibold text-white mb-3">Bangalore Locations</h4>
               <div className="grid grid-cols-2 gap-1 text-linen/70">
-                {BANGALORE_LOCATIONS_PRESET.slice(0, 10).map((locItem, i) => (
+                {allBangaloreLocations.slice(0, 10).map((locItem, i) => (
                   <Link
                     key={i}
                     to={`${BANGALORE_BASE_PATH}/${slugifyBangalorePage(serviceCategory, locItem.name)}`}

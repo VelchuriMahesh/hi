@@ -507,21 +507,42 @@ export const trackLandingPageView = (id) =>
   });
 
 // BANGALORE LOCATIONS (CMS)
-export const fetchBangaloreLocations = () =>
-  request('/landing-pages/locations');
+export const fetchBangaloreLocations = async () => {
+  const res = await request('/landing-pages/locations');
+  if (res?.items && typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.setItem('shrusara_bangalore_locations', JSON.stringify(res.items));
+    } catch {}
+  }
+  return res;
+};
 
-export const saveBangaloreLocation = (token, data) =>
-  request('/landing-pages/locations', {
+export const saveBangaloreLocation = async (token, data) => {
+  const res = await request('/landing-pages/locations', {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(data)
   });
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.removeItem('shrusara_bangalore_locations');
+    } catch {}
+  }
+  return res;
+};
 
-export const deleteBangaloreLocation = (token, id) =>
-  request(`/landing-pages/locations/${id}`, {
+export const deleteBangaloreLocation = async (token, id) => {
+  const res = await request(`/landing-pages/locations/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` }
   });
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.removeItem('shrusara_bangalore_locations');
+    } catch {}
+  }
+  return res;
+};
 
 // MASTER TEMPLATES (CMS V2)
 export const fetchMasterTemplates = async () => {

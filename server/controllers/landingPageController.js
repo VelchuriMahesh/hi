@@ -1763,10 +1763,22 @@ export async function generatePageFromMaster(req, res, next) {
 
     // 2. Fetch Location
     let locObj = null;
-    const locDoc = await db.collection(LOCATION_COLLECTION).doc(slugify(locationName)).get();
+    const locSlug = slugify(locationName);
+    const locDoc = await db.collection(LOCATION_COLLECTION).doc(locSlug).get();
     if (locDoc.exists) {
       locObj = locDoc.data();
     } else {
+      try {
+        const locSnapshot = await db.collection(LOCATION_COLLECTION).get();
+        if (!locSnapshot.empty) {
+          const found = locSnapshot.docs.map(mapDocument).find(
+            (l) => slugify(l.name) === locSlug || String(l.name).toLowerCase() === String(locationName).toLowerCase()
+          );
+          if (found) locObj = found;
+        }
+      } catch {}
+    }
+    if (!locObj) {
       locObj = DEFAULT_BANGALORE_LOCATIONS.find((l) => l.name.toLowerCase() === locationName.toLowerCase()) || {
         name: locationName,
         areaGroup: 'Bangalore West'
@@ -1946,10 +1958,22 @@ export async function syncLandingPageFromMaster(req, res, next) {
 
     // 2. Fetch Location info
     let locObj = null;
-    const locDoc = await db.collection(LOCATION_COLLECTION).doc(slugify(locationName)).get();
+    const locSlug = slugify(locationName);
+    const locDoc = await db.collection(LOCATION_COLLECTION).doc(locSlug).get();
     if (locDoc.exists) {
       locObj = locDoc.data();
     } else {
+      try {
+        const locSnapshot = await db.collection(LOCATION_COLLECTION).get();
+        if (!locSnapshot.empty) {
+          const found = locSnapshot.docs.map(mapDocument).find(
+            (l) => slugify(l.name) === locSlug || String(l.name).toLowerCase() === String(locationName).toLowerCase()
+          );
+          if (found) locObj = found;
+        }
+      } catch {}
+    }
+    if (!locObj) {
       locObj = DEFAULT_BANGALORE_LOCATIONS.find((l) => l.name.toLowerCase() === locationName.toLowerCase()) || {
         name: locationName,
         areaGroup: existing.areaGroup || 'Bangalore West'

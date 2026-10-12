@@ -78,7 +78,7 @@ export default function LandingPageEditor() {
   const [message, setMessage] = useState('');
   const [uploadingTarget, setUploadingTarget] = useState(null);
   const uploadingImage = Boolean(uploadingTarget);
-  const [autoSyncMaster, setAutoSyncMaster] = useState(true);
+  const [autoSyncMaster, setAutoSyncMaster] = useState(false);
 
   // Master Template Loading State
   const initialService = queryService ? normalizeServiceCategory(queryService) : 'Ready-to-Wear Saree Customization';
@@ -528,7 +528,12 @@ export default function LandingPageEditor() {
                 <input
                   type="checkbox"
                   checked={autoSyncMaster}
-                  onChange={(e) => setAutoSyncMaster(e.target.checked)}
+                  onChange={(e) => {
+                    if (e.target.checked && !window.confirm(`⚠️ Warning: Enabling Master Template Auto-sync will push changes from "${page.locationName || 'this location'}" into the global "${page.serviceCategory}" Master Template, affecting all future pages for this service.\n\nAre you sure you want to enable this?`)) {
+                      return;
+                    }
+                    setAutoSyncMaster(e.target.checked);
+                  }}
                   className="rounded border-ink/20 text-cocoa focus:ring-cocoa"
                 />
                 <span>Auto-sync changes to <strong>{page.serviceCategory}</strong> Master Template</span>
@@ -804,14 +809,28 @@ export default function LandingPageEditor() {
 
                     {/* Custom location write-in field */}
                     {(isCustomLocationInput || !locations.some((l) => l.name.toLowerCase() === (page.locationName || '').toLowerCase())) && (
-                      <div className="mt-2">
-                        <input
-                          type="text"
-                          value={page.locationName}
-                          onChange={(e) => handleCustomLocationNameChange(e.target.value)}
-                          placeholder="Type custom location name (e.g. Sarjapur Road)"
-                          className="w-full rounded-xl border border-cocoa/30 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa"
-                        />
+                      <div className="mt-2 space-y-1.5">
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={page.locationName}
+                            onChange={(e) => handleCustomLocationNameChange(e.target.value)}
+                            placeholder="Type custom location name (e.g. Sarjapur Road)"
+                            className="flex-1 rounded-xl border border-cocoa/30 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-cocoa font-medium"
+                          />
+                          <button
+                            type="button"
+                            disabled={!page.locationName.trim() || isApplyingMaster}
+                            onClick={() => applyMasterTemplate(page.serviceCategory, page.locationName.trim())}
+                            className="rounded-xl bg-cocoa text-white px-3 py-2 text-xs font-semibold shadow hover:bg-cocoa/90 transition disabled:opacity-50 whitespace-nowrap"
+                            title="Populate all sections with Master Template copy for this custom location"
+                          >
+                            {isApplyingMaster ? 'Populating...' : '⚡ Apply Template'}
+                          </button>
+                        </div>
+                        <p className="text-[11px] text-stone-500">
+                          Click <strong>Apply Template</strong> to populate all sections for &ldquo;{page.locationName || 'this location'}&rdquo; from the Master Template without modifying the global template.
+                        </p>
                       </div>
                     )}
                   </div>
