@@ -192,6 +192,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'Their doorstep Porter pickup and video consultation made the entire process so smooth. Beautiful finish with zero damage to the saree border.'
       }
     ],
+    faqsHeading: 'Ready-to-Wear Saree Customization in {Location} FAQs',
+    faqsIntro: 'Find answers to common questions about 1-minute saree pre-stitching, measurements, fitting, and doorstep delivery across Bangalore.',
     faqs: [
       {
         question: 'Can I customize a Ready-to-Wear Saree in {Location}?',
@@ -443,6 +445,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'The trial fitting process was so reassuring. They accommodated all my small requests and delivered on the promised date.'
       }
     ],
+    faqsHeading: 'Customized Bridal Blouse FAQs',
+    faqsIntro: 'Find answers to common questions about bridal blouse design, fabric, fitting and arranging delivery.',
     faqs: [
       {
         question: 'How early should I book my bridal blouse consultation  ?',
@@ -677,6 +681,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'Their hand tracing is completely customized to your neckline. The trial fitting ensured that none of the heavy embroidery cut into my shoulders.'
       }
     ],
+    faqsHeading: 'Maggam & Aari Work Bridal Blouse in {Location} FAQs',
+    faqsIntro: 'Everything you need to know about our customization process, fittings, and delivery.',
     faqs: [
       {
         question: 'What is the difference between Maggam and Aari work?',
@@ -907,6 +913,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'Super close to Rajajinagar and the quality is on par with top designer labels in Mumbai or Delhi.'
       }
     ],
+    faqsHeading: 'Designer Blouse FAQs',
+    faqsIntro: 'Everything you need to know about designer neckline styling, padded blouses, corset fits, and customization timelines.',
     faqs: [
       {
         question: 'What styles of designer blouses do you customize in {Location}?',
@@ -1137,6 +1145,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'Finding a custom gown boutique in Bangalore that does high-end western silhouettes was tough until I discovered Shrusara. Exceptional craftsmanship.'
       }
     ],
+    faqsHeading: 'Designer Gown FAQ',
+    faqsIntro: 'Testing Intro',
     faqs: [
       {
         question: 'How much time does it take to customize a designer gown in {Location}?',
@@ -1367,6 +1377,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'Personal attention from Shruthi Ajith made all the difference. She gave honest advice on fabric and flare that suited my height perfectly.'
       }
     ],
+    faqsHeading: 'Customized Bridal Lehenga FAQs',
+    faqsIntro: 'Common questions about bespoke bridal lehengas, cancan flare, fabric selection, and trial consultations.',
     faqs: [
       {
         question: 'How many months in advance should I order my bridal lehenga in {Location}?',
@@ -1597,6 +1609,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'The trial fitting was great. They adjusted the skirt length and waist fit so I could dance comfortably all night.'
       }
     ],
+    faqsHeading: 'Luxury Occasion Wear FAQs',
+    faqsIntro: 'Answers to common questions about bespoke party wear, Indo-Western styling, fabric curation, and express delivery.',
     faqs: [
       {
         question: 'What types of occasion wear do you customize in {Location}?',
@@ -1827,6 +1841,8 @@ export const DEFAULT_MASTER_TEMPLATES = [
         reviewText: 'The growth margins are a lifesaver. We were able to loosen the waist easily six months later for another family function.'
       }
     ],
+    faqsHeading: 'Kids Boutique in {Location} FAQs',
+    faqsIntro: 'Everything you need to know about our customization process, fittings, and delivery.',
     faqs: [
       {
         question: 'What age groups do you customize kids outfits for in {Location}?',

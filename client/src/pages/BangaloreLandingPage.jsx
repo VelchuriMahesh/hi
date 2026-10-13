@@ -15,9 +15,34 @@ import {
   parseAndBuildLandingPageFromSlug,
   generateLandingPageSchemas,
   generatePresetContent,
+  replacePlaceholders,
   slugifyBangalorePage
 } from '../utils/bangaloreLandingPage';
 import { trackPhoneCall, trackWhatsApp } from '../utils/tracking';
+
+function displayTestimonialLocation(rawLoc, pageLoc = '') {
+  if (!rawLoc || typeof rawLoc !== 'string') return '';
+  const trimmed = rawLoc.trim();
+  if (!trimmed) return '';
+  const lower = trimmed.toLowerCase();
+  if (lower.includes('{location}') || lower.includes('[location]')) return '';
+  const pLoc = String(pageLoc || '').trim().toLowerCase();
+  if (lower === 'bangalore' || lower === 'bengaluru') return '';
+  if (pLoc && (lower === pLoc || lower === `${pLoc}, bangalore` || lower === `${pLoc}, bengaluru`)) return '';
+  return trimmed;
+}
+
+function displayTestimonialName(rawName, pageLoc = '') {
+  if (!rawName || typeof rawName !== 'string') return '';
+  const trimmed = rawName.trim();
+  if (!trimmed) return '';
+  const lower = trimmed.toLowerCase();
+  if (lower.includes('{location}') || lower.includes('[location]')) return '';
+  const pLoc = String(pageLoc || '').trim().toLowerCase();
+  if (pLoc && (lower === `${pLoc} client` || lower === `${pLoc}, bangalore client`)) return '';
+  if (lower === 'bangalore client' || lower === 'bengaluru client') return '';
+  return trimmed;
+}
 
 export default function BangaloreLandingPage() {
   const { slug } = useParams();
@@ -125,6 +150,12 @@ export default function BangaloreLandingPage() {
         faqs: (Array.isArray(remote.faqs) && remote.faqs.length > 0)
           ? remote.faqs
           : localPage.faqs,
+        faqsHeading: (remote.faqsHeading && remote.faqsHeading !== `${localPage.serviceCategory} in ${localPage.locationName} FAQs`)
+          ? remote.faqsHeading
+          : (localPage.faqsHeading || remote.faqsHeading),
+        faqsIntro: (remote.faqsIntro !== undefined && remote.faqsIntro !== null && remote.faqsIntro !== '' && remote.faqsIntro !== 'Everything you need to know about our customization process, fittings, and delivery.')
+          ? remote.faqsIntro
+          : (localPage.faqsIntro || remote.faqsIntro),
         proximity: {
           ...localPage.proximity,
           ...remote.proximity
@@ -341,6 +372,22 @@ export default function BangaloreLandingPage() {
   if (page?.slug === 'customized-occasion-wear-bangalore') {
     metaImageUrl = 'https://www.shrusara.com/videos/hii.webp';
   }
+
+  const displayFaqsHeading = useMemo(() => {
+    const raw = faqsHeading || page?.faqsHeading;
+    if (raw && typeof raw === 'string' && raw.trim()) {
+      return replacePlaceholders(raw.trim(), locationName, serviceCategory);
+    }
+    return `${serviceCategory} in ${locationName} FAQs`;
+  }, [faqsHeading, page?.faqsHeading, locationName, serviceCategory]);
+
+  const displayFaqsIntro = useMemo(() => {
+    const raw = faqsIntro !== undefined && faqsIntro !== null ? faqsIntro : page?.faqsIntro;
+    if (raw && typeof raw === 'string' && raw.trim()) {
+      return replacePlaceholders(raw.trim(), locationName, serviceCategory);
+    }
+    return '';
+  }, [faqsIntro, page?.faqsIntro, locationName, serviceCategory]);
 
   return (
     <>
@@ -1025,9 +1072,11 @@ export default function BangaloreLandingPage() {
 
                     <div className="mt-5 flex items-center justify-between border-t border-ink/5 pt-3">
                       <div>
-                        <p className="font-heading text-sm font-bold text-ink">{testi.name}</p>
-                        {testi.location && typeof testi.location === 'string' && testi.location.trim() && !testi.location.includes('{Location}') ? (
-                          <p className="text-xs text-stone-500">{testi.location.trim()}</p>
+                        {displayTestimonialName(testi.name, locationName) ? (
+                          <p className="font-heading text-sm font-bold text-ink">{displayTestimonialName(testi.name, locationName)}</p>
+                        ) : null}
+                        {displayTestimonialLocation(testi.location, locationName) ? (
+                          <p className="text-xs text-stone-500">{displayTestimonialLocation(testi.location, locationName)}</p>
                         ) : null}
                       </div>
                       <span className="rounded-full bg-cocoa/10 px-2.5 py-0.5 text-[10px] font-semibold text-cocoa">
@@ -1052,11 +1101,13 @@ export default function BangaloreLandingPage() {
                   Frequently Asked Questions
                 </p>
                 <h2 className="mt-2 font-heading text-3xl text-ink sm:text-4xl">
-                  {serviceCategory} in {locationName} FAQs
+                  {displayFaqsHeading}
                 </h2>
-                <p className="mt-2 text-sm text-stone-600">
-                  Everything you need to know about our customization process, fittings, and delivery.
-                </p>
+                {displayFaqsIntro ? (
+                  <p className="mt-2 text-sm text-stone-600">
+                    {displayFaqsIntro}
+                  </p>
+                ) : null}
               </div>
 
               <div className="mt-10 divide-y divide-ink/10 rounded-2xl border border-ink/10 bg-linen/20">

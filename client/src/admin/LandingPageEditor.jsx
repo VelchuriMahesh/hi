@@ -2516,7 +2516,8 @@ export default function LandingPageEditor() {
                     </label>
                     <input
                       type="text"
-                      value={page.faqsHeading || `${page.serviceCategory} in ${page.locationName} FAQs`}
+                      placeholder={`Leave blank to inherit from Master Template`}
+                      value={page.faqsHeading || ''}
                       onChange={(e) =>
                         setPage({
                           ...page,
@@ -2533,6 +2534,7 @@ export default function LandingPageEditor() {
                     </label>
                     <textarea
                       rows={2}
+                      placeholder="Leave blank to inherit from Master Template intro"
                       value={page.faqsIntro || ''}
                       onChange={(e) =>
                         setPage({

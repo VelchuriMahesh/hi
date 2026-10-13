@@ -697,15 +697,41 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     ? overrides.testimonials
     : (master?.testimonials?.length ? master.testimonials : []);
 
-  const testimonials = rawTestimonials.map((t) => ({
-    name: replaceLoc(t.name || 'Bangalore Client'),
-    location: (t.location && typeof t.location === 'string' && t.location.trim() && !t.location.includes('{Location}'))
-      ? t.location.trim()
-      : '',
-    rating: Number(t.rating) || 5,
-    outfitType: replaceLoc(t.outfitType || serviceName),
-    reviewText: replaceLoc(t.reviewText || '')
-  }));
+  const testimonials = rawTestimonials.map((t) => {
+    const rawLoc = String(t.location || '').trim();
+    const rawLocLower = rawLoc.toLowerCase();
+    let cleanLoc = rawLoc;
+    if (
+      !rawLoc ||
+      rawLocLower.includes('{location}') ||
+      rawLocLower.includes('[location]') ||
+      rawLocLower === loc.toLowerCase() ||
+      rawLocLower === `${loc.toLowerCase()}, bangalore` ||
+      rawLocLower === `${loc.toLowerCase()}, bengaluru` ||
+      rawLocLower === 'bangalore' ||
+      rawLocLower === 'bengaluru'
+    ) {
+      cleanLoc = '';
+    }
+
+    let cleanName = String(t.name || '').trim();
+    if (
+      cleanName.toLowerCase() === 'bangalore client' ||
+      cleanName.toLowerCase() === 'bengaluru client' ||
+      cleanName.toLowerCase() === `${loc.toLowerCase()} client` ||
+      cleanName.toLowerCase() === `${loc.toLowerCase()}, bangalore client`
+    ) {
+      cleanName = '';
+    }
+
+    return {
+      name: replaceLoc(cleanName),
+      location: cleanLoc,
+      rating: Number(t.rating) || 5,
+      outfitType: replaceLoc(t.outfitType || serviceName),
+      reviewText: replaceLoc(t.reviewText || '')
+    };
+  });
 
   const faqs = deepReplace(
     overrides.faqs?.length
@@ -1198,6 +1224,92 @@ export async function listAdminLandingPages(req, res, next) {
 }
 
 /**
+ * Enrich landing page with Master Template saved FAQ heading/intro and sanitize testimonials
+ */
+export async function enrichLandingPageWithMasterDefaults(item) {
+  if (!item) return item;
+  const serviceCategory = item.serviceCategory || item.serviceName || 'Bridal Blouse';
+  const loc = item.locationName || 'Bangalore';
+  const locSlug = slugify(loc);
+  const serviceSlug = slugify(serviceCategory);
+
+  const replaceLoc = (str = '') => {
+    if (typeof str !== 'string') return str;
+    return str
+      .replace(/\{Location-slug\}/gi, locSlug)
+      .replace(/\{location-slug\}/gi, locSlug)
+      .replace(/\{Location\}/g, loc)
+      .replace(/\[Location\]/g, loc)
+      .replace(/\{location\}/g, loc.toLowerCase())
+      .replace(/\{Service-slug\}/gi, serviceSlug)
+      .replace(/\{service-slug\}/gi, serviceSlug)
+      .replace(/\{Service\}/g, serviceCategory)
+      .replace(/\[Service\]/g, serviceCategory)
+      .replace(/\{service\}/g, serviceCategory.toLowerCase());
+  };
+
+  try {
+    const master = await getEffectiveMasterTemplate(serviceCategory);
+    if (master) {
+      const genericHeading = `${serviceCategory} in ${loc} FAQs`;
+      if (!item.faqsHeading || item.faqsHeading === genericHeading) {
+        if (master.faqsHeading) {
+          item.faqsHeading = replaceLoc(master.faqsHeading);
+        }
+      }
+
+      const genericIntro = 'Everything you need to know about our customization process, fittings, and delivery.';
+      if (!item.faqsIntro || item.faqsIntro === genericIntro) {
+        if (master.faqsIntro) {
+          item.faqsIntro = replaceLoc(master.faqsIntro);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Could not enrich landing page with master defaults:', err.message);
+  }
+
+  if (Array.isArray(item.testimonials)) {
+    const locLower = loc.toLowerCase();
+    item.testimonials = item.testimonials.map((t) => {
+      const rawLoc = String(t.location || '').trim();
+      const rawLocLower = rawLoc.toLowerCase();
+      let cleanLoc = rawLoc;
+      if (
+        !rawLoc ||
+        rawLocLower.includes('{location}') ||
+        rawLocLower.includes('[location]') ||
+        rawLocLower === locLower ||
+        rawLocLower === `${locLower}, bangalore` ||
+        rawLocLower === `${locLower}, bengaluru` ||
+        rawLocLower === 'bangalore' ||
+        rawLocLower === 'bengaluru'
+      ) {
+        cleanLoc = '';
+      }
+
+      let cleanName = String(t.name || '').trim();
+      if (
+        cleanName.toLowerCase() === 'bangalore client' ||
+        cleanName.toLowerCase() === 'bengaluru client' ||
+        cleanName.toLowerCase() === `${locLower} client` ||
+        cleanName.toLowerCase() === `${locLower}, bangalore client`
+      ) {
+        cleanName = '';
+      }
+
+      return {
+        ...t,
+        name: cleanName,
+        location: cleanLoc
+      };
+    });
+  }
+
+  return item;
+}
+
+/**
  * GET /api/landing-pages/slug/:slug
  */
 export async function getLandingPageBySlug(req, res, next) {
@@ -1246,7 +1358,8 @@ export async function getLandingPageBySlug(req, res, next) {
       return res.status(404).json({ message: 'Landing page not found.' });
     }
 
-    const item = mapDocument(doc);
+    const rawItem = mapDocument(doc);
+    const item = await enrichLandingPageWithMasterDefaults(rawItem);
 
     // Track view asynchronously
     try {
@@ -1277,7 +1390,9 @@ export async function getLandingPageById(req, res, next) {
       return res.status(404).json({ message: 'Landing page not found.' });
     }
 
-    res.json({ item: mapDocument(doc) });
+    const rawItem = mapDocument(doc);
+    const item = await enrichLandingPageWithMasterDefaults(rawItem);
+    res.json({ item });
   } catch (error) {
     console.error('🔥 Firestore Error in getLandingPageById:', error.message);
     if (isNetworkOrDnsError(error)) {

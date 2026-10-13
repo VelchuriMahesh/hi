@@ -385,6 +385,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Shrusara Boutique is the only place in Bangalore I trust with my heirloom silk sarees. Everything was delivered on time with impeccable finishing.'
       }
     ],
+    faqsHeading: 'Ready-to-Wear Saree Customization in {Location} FAQs',
+    faqsIntro: 'Find answers to common questions about 1-minute saree pre-stitching, measurements, fitting, and doorstep delivery across Bangalore.',
     faqs: [
       {
         question: 'Can I customize a Ready-to-Wear Saree in {Location}?',
@@ -636,6 +638,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Even though I live in South Bangalore, their video consultation and courier delivery made getting my bridal blouse completely effortless.'
       }
     ],
+    faqsHeading: 'Customized Bridal Blouse FAQs',
+    faqsIntro: 'Find answers to common questions about bridal blouse design, fabric, fitting and arranging delivery.',
     faqs: [
       {
         question: 'How early should I book my bridal blouse consultation  ?',
@@ -851,6 +855,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Living in Koramangala, I did most of the design discussion over WhatsApp and video call. The blouse arrived ahead of time and fitted like a glove!'
       }
     ],
+    faqsHeading: 'Maggam & Aari Work Bridal Blouse in {Location} FAQs',
+    faqsIntro: 'Everything you need to know about our customization process, fittings, and delivery.',
     faqs: [
       {
         question: 'What is the difference between Maggam and Aari work?',
@@ -1076,6 +1082,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Loved the virtual video consultation and Porter pickup. Outstanding service for busy corporate professionals.'
       }
     ],
+    faqsHeading: 'Designer Blouse FAQs',
+    faqsIntro: 'Everything you need to know about designer neckline styling, padded blouses, corset fits, and customization timelines.',
     faqs: [
       {
         question: 'What styles of designer blouses do you customize in {Location}?',
@@ -1300,6 +1308,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'We coordinated the entire design over video calls. The delivery to Whitefield was punctual and the fit needed zero alterations.'
       }
     ],
+    faqsHeading: 'Designer Gown FAQ',
+    faqsIntro: 'Testing Intro',
     faqs: [
       {
         question: 'How much time does it take to customize a designer gown in {Location}?',
@@ -1525,6 +1535,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Great communication via video calls and prompt delivery to Whitefield. Looked breathtaking in the wedding photographs.'
       }
     ],
+    faqsHeading: 'Customized Bridal Lehenga FAQs',
+    faqsIntro: 'Common questions about bespoke bridal lehengas, cancan flare, fabric selection, and trial consultations.',
     faqs: [
       {
         question: 'How many months in advance should I order my bridal lehenga in {Location}?',
@@ -1750,6 +1762,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Coordinated the order through WhatsApp and video call. The package arrived in HSR Layout in pristine condition and fitted perfectly.'
       }
     ],
+    faqsHeading: 'Luxury Occasion Wear FAQs',
+    faqsIntro: 'Answers to common questions about bespoke party wear, Indo-Western styling, fabric curation, and express delivery.',
     faqs: [
       {
         question: 'What types of occasion wear do you customize in {Location}?',
@@ -1975,6 +1989,8 @@ export const MASTER_SERVICE_TEMPLATES = {
         reviewText: 'Traditional pattu pavadai tailored to perfection with soft waistband and pure silk. Excellent boutique.'
       }
     ],
+    faqsHeading: 'Kids Boutique in {Location} FAQs',
+    faqsIntro: 'Everything you need to know about our customization process, fittings, and delivery.',
     faqs: [
       {
         question: 'What age groups do you customize kids outfits for in {Location}?',
@@ -2397,12 +2413,39 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
     { name: 'Pooja K.', location: '', rating: 5, outfitType: normService, reviewText: `Shrusara exceeded all my expectations for ${normService}. The fit was absolutely flawless and Shruthi ma'am understood my style instantly. Highly recommended for everyone in Bangalore!` },
     { name: 'Divya M.', location: '', rating: 5, outfitType: normService, reviewText: `The attention to detail and trial session made all the difference. Delivered right on schedule to my home.` }
   ]);
-  const testimonials = rawTestimonials.map((t) => ({
-    ...t,
-    location: (t.location && typeof t.location === 'string' && t.location.trim() && !t.location.includes('{Location}'))
-      ? t.location.trim()
-      : ''
-  }));
+  const testimonials = rawTestimonials.map((t) => {
+    const rawLoc = String(t.location || '').trim();
+    const rawLocLower = rawLoc.toLowerCase();
+    let cleanLoc = rawLoc;
+    if (
+      !rawLoc ||
+      rawLocLower.includes('{location}') ||
+      rawLocLower.includes('[location]') ||
+      rawLocLower === loc.toLowerCase() ||
+      rawLocLower === `${loc.toLowerCase()}, bangalore` ||
+      rawLocLower === `${loc.toLowerCase()}, bengaluru` ||
+      rawLocLower === 'bangalore' ||
+      rawLocLower === 'bengaluru'
+    ) {
+      cleanLoc = '';
+    }
+
+    let cleanName = String(t.name || '').trim();
+    if (
+      cleanName.toLowerCase() === 'bangalore client' ||
+      cleanName.toLowerCase() === 'bengaluru client' ||
+      cleanName.toLowerCase() === `${loc.toLowerCase()} client` ||
+      cleanName.toLowerCase() === `${loc.toLowerCase()}, bangalore client`
+    ) {
+      cleanName = '';
+    }
+
+    return {
+      ...t,
+      name: cleanName,
+      location: cleanLoc
+    };
+  });
 
   // 9. Localized FAQs
   const faqsHeading = overrides.faqsHeading || master.faqsHeading || master.faqs?.headingTemplate || `${normService} in ${loc} FAQs`;
