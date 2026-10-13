@@ -2208,7 +2208,8 @@ export default function MasterTemplateManager() {
                         />
                         <input
                           type="text"
-                          placeholder="Customer Actual Locality (e.g. Rajajinagar, Bangalore)"
+                          placeholder="Customer Actual Locality (optional)"
+                          title="Customer Actual Locality (optional) — If left blank, no customer location will be displayed"
                           value={t.location || ''}
                           onChange={(e) => {
                             const updated = [...template.testimonials];
@@ -2282,10 +2283,10 @@ export default function MasterTemplateManager() {
                       ...(template.testimonials || []),
                       {
                         name: 'Boutique Client',
-                        location: '{Location}, Bangalore',
+                        location: '',
                         rating: 5,
                         outfitType: selectedService,
-                        reviewText: `Shrusara provided exceptional customized ${selectedService} in {Location}. I received compliments all evening!`
+                        reviewText: `Shrusara provided exceptional customized ${selectedService}. I received compliments all evening!`
                       }
                     ];
                     setTemplate({ ...template, testimonials: updated });

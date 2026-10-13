@@ -172,21 +172,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Sushmitha Rao',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Ready-to-Wear Saree Customization',
         reviewText: "I had two heavy Kanjeevaram sarees that I dreaded draping for weddings. Shruthi ma'am converted them into ready-to-wear sarees. The pleats sit perfectly and I was dressed in 45 seconds! Highly recommended for all Bangalore women."
       },
       {
         name: 'Deepa Hegde',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Ready-to-Wear Saree Customization',
         reviewText: 'The fit is phenomenal. No pins poking me throughout the reception. The Try Before You Customize session gave me so much confidence in their craft. Thank you Shrusara!'
       },
       {
         name: 'Aishwarya K.',
-        location: '{Location}, Bangalore',
+        location: 'Basaveshwaranagar, Bangalore',
         rating: 5,
         outfitType: 'Ready-to-Wear Saree Customization',
         reviewText: 'Their doorstep Porter pickup and video consultation made the entire process so smooth. Beautiful finish with zero damage to the saree border.'
@@ -423,21 +423,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Kavya Murali',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Bridal Blouse',
         reviewText: "Shruthi ma'am personally designed my muhurtham blouse. The fitting was so comfortable that I didn't feel any heaviness during the 5-hour ritual. Truly the best bridal boutique in Bangalore!"
       },
       {
         name: 'Sahana Venkatesh',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Bridal Blouse',
         reviewText: 'Zero shoulder slipping! That was my biggest worry with deep back blouses, but Shrusara tailored it to absolute perfection.'
       },
       {
         name: 'Divya Ramesh',
-        location: '{Location}, Bangalore',
+        location: 'Sadashivanagar, Bangalore',
         rating: 5,
         outfitType: 'Bridal Blouse',
         reviewText: 'The trial fitting process was so reassuring. They accommodated all my small requests and delivered on the promised date.'
@@ -657,21 +657,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Harini Sridhar',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Maggam & Aari Work Bridal Blouse',
         reviewText: 'The maggam work on my bridal blouse was a work of art. Shruthi ma’am matched the zardosi tone exactly to my Kanjeevaram saree border. Outstanding finishing!'
       },
       {
         name: 'Monika Gowda',
-        location: '{Location}, Bangalore',
+        location: 'Basaveshwaranagar, Bangalore',
         rating: 5,
         outfitType: 'Maggam & Aari Work Bridal Blouse',
         reviewText: 'So many boutiques use cheap plastic beads, but Shrusara uses genuine antique gold zardosi and smooth lining. It did not itch even once throughout the marriage.'
       },
       {
         name: 'Lakshmi Prasad',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Maggam & Aari Work Bridal Blouse',
         reviewText: 'Their hand tracing is completely customized to your neckline. The trial fitting ensured that none of the heavy embroidery cut into my shoulders.'
@@ -887,21 +887,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Rhea Sen',
-        location: '{Location}, Bangalore',
+        location: 'Indiranagar, Bangalore',
         rating: 5,
         outfitType: 'Designer Blouse',
         reviewText: 'Finding someone in Bangalore who understands modern corset blouses without making them stiff was impossible until I met Shruthi Ajith. It fits like a second skin!'
       },
       {
         name: 'Pooja Nair',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Designer Blouse',
         reviewText: 'I got three designer blouses stitched for reception and cocktail parties. Every single one has unique necklines and clean finishing.'
       },
       {
         name: 'Swathi Bhatt',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Designer Blouse',
         reviewText: 'Super close to Rajajinagar and the quality is on par with top designer labels in Mumbai or Delhi.'
@@ -1117,21 +1117,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Tanya Fernandez',
-        location: '{Location}, Bangalore',
+        location: 'Sadashivanagar, Bangalore',
         rating: 5,
         outfitType: 'Designer Gown',
         reviewText: 'Shrusara designed my engagement ball gown. It had the most flattering corset waistline and a grand flare that looked straight out of a fairy tale! Cannot thank Shruthi ma’am enough.'
       },
       {
         name: 'Preethi Shenoy',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Designer Gown',
         reviewText: 'The quality of fabrics and internal boning is remarkable. The gown was voluminous yet felt surprisingly lightweight to dance in.'
       },
       {
         name: 'Meera Chacko',
-        location: '{Location}, Bangalore',
+        location: 'Indiranagar, Bangalore',
         rating: 5,
         outfitType: 'Designer Gown',
         reviewText: 'Finding a custom gown boutique in Bangalore that does high-end western silhouettes was tough until I discovered Shrusara. Exceptional craftsmanship.'
@@ -1347,21 +1347,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Varsha Reddy',
-        location: '{Location}, Bangalore',
+        location: 'Basaveshwaranagar, Bangalore',
         rating: 5,
         outfitType: 'Bridal Lehenga',
         reviewText: 'My reception lehenga was customized exactly to the color shade I envisioned. The double cancan gave it royal volume without feeling heavy. Shrusara is simply the best in Bangalore!'
       },
       {
         name: 'Rachana Gowda',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Bridal Lehenga',
         reviewText: 'The blouse fitting was incredible and the lehenga skirt did not slip or pinch my waist at all. Highly recommended!'
       },
       {
         name: 'Shreya Iyer',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Bridal Lehenga',
         reviewText: 'Personal attention from Shruthi Ajith made all the difference. She gave honest advice on fabric and flare that suited my height perfectly.'
@@ -1577,21 +1577,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Pratibha Joshi',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Luxury Occasion Wear',
         reviewText: 'I got an Indo-Western jacket and crop top skirt set stitched for my cousin’s sangeet. Everyone complimented the unique color combination and fitting!'
       },
       {
         name: 'Nandita Rao',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Luxury Occasion Wear',
         reviewText: 'Shrusara’s half saree designs are breathtaking. Modern yet rooted in tradition. Shruthi ma’am is extremely creative.'
       },
       {
         name: 'Aishwarya M.',
-        location: '{Location}, Bangalore',
+        location: 'Sadashivanagar, Bangalore',
         rating: 5,
         outfitType: 'Luxury Occasion Wear',
         reviewText: 'The trial fitting was great. They adjusted the skirt length and waist fit so I could dance comfortably all night.'
@@ -1807,21 +1807,21 @@ export const DEFAULT_MASTER_TEMPLATES = [
     testimonials: [
       {
         name: 'Anupama Murthy',
-        location: '{Location}, Bangalore',
+        location: 'Malleshwaram, Bangalore',
         rating: 5,
         outfitType: 'Kids Boutique',
         reviewText: 'My 3-year-old daughter usually cries whenever we dress her in heavy party frocks because they itch. Shrusara used pure cotton lining and she wore it happily for 6 hours! Best kids boutique in Bangalore.'
       },
       {
         name: 'Sowmya Suresh',
-        location: '{Location}, Bangalore',
+        location: 'Rajajinagar, Bangalore',
         rating: 5,
         outfitType: 'Kids Boutique',
         reviewText: 'We got mother-daughter matching gowns stitched for my daughter’s first birthday. Everyone was stunned by how beautiful we looked together!'
       },
       {
         name: 'Nandini K.',
-        location: '{Location}, Bangalore',
+        location: 'Basaveshwaranagar, Bangalore',
         rating: 5,
         outfitType: 'Kids Boutique',
         reviewText: 'The growth margins are a lifesaver. We were able to loosen the waist easily six months later for another family function.'

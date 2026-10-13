@@ -693,15 +693,17 @@ export function applyMasterTemplateToLocation(master, locationName = 'Bangalore'
     )
   };
 
-  const testimonials = deepReplace(
-    overrides.testimonials?.length
-      ? overrides.testimonials
-      : (master?.testimonials?.length ? master.testimonials : [])
-  ).map((t) => ({
-    name: t.name || 'Bangalore Client',
-    location: replaceLoc(t.location || `${loc}, Bangalore`),
+  const rawTestimonials = overrides.testimonials?.length
+    ? overrides.testimonials
+    : (master?.testimonials?.length ? master.testimonials : []);
+
+  const testimonials = rawTestimonials.map((t) => ({
+    name: replaceLoc(t.name || 'Bangalore Client'),
+    location: (t.location && typeof t.location === 'string' && t.location.trim() && !t.location.includes('{Location}'))
+      ? t.location.trim()
+      : '',
     rating: Number(t.rating) || 5,
-    outfitType: t.outfitType || serviceName,
+    outfitType: replaceLoc(t.outfitType || serviceName),
     reviewText: replaceLoc(t.reviewText || '')
   }));
 
@@ -1028,7 +1030,9 @@ async function normalizeLandingPagePayload(body = {}, existing = {}) {
   const testimonials = Array.isArray(body.testimonials) && body.testimonials.length
     ? body.testimonials.map((t) => ({
         name: toStringValue(t.name || 'Bangalore Client'),
-        location: toStringValue(t.location || locationName),
+        location: (t.location && typeof t.location === 'string' && t.location.trim() && !t.location.includes('{Location}'))
+          ? toStringValue(t.location.trim())
+          : '',
         rating: Number(t.rating) || 5,
         outfitType: toStringValue(t.outfitType || serviceCategory),
         reviewText: toStringValue(t.reviewText || '')

@@ -2157,7 +2157,9 @@ export function extractMasterTemplateFromPage(page = {}) {
     googleReviewButtonText: page.googleReviewButtonText || page.testimonials?.googleReviewButtonText || 'Read Our Google Reviews ↗',
     testimonials: (page.testimonials || []).map((t) => ({
       name: t.name,
-      location: toTemplate(t.location || `{Location}, Bangalore`),
+      location: (t.location && typeof t.location === 'string' && t.location.trim() && !t.location.includes('{Location}'))
+        ? t.location.trim()
+        : '',
       rating: t.rating || 5,
       outfitType: t.outfitType || service,
       reviewText: toTemplate(t.reviewText)
@@ -2391,10 +2393,16 @@ export function hydrateLandingPageFromMasterTemplate(rawMaster = {}, locationNam
   const testimonialsIntro = overrides.testimonialsIntro || master.testimonialsIntro || master.testimonials?.introTemplate || 'Genuine 5-star experiences from clients who trusted Shrusara with their milestone outfits.';
   const googleReviewsUrl = overrides.googleReviewsUrl || master.googleReviewsUrl || master.testimonials?.googleReviewsUrl || 'https://g.page/r/ShrusaraFashionBoutique/review';
   const googleReviewButtonText = overrides.googleReviewButtonText || master.googleReviewButtonText || master.testimonials?.googleReviewButtonText || 'Read Our Google Reviews ↗';
-  const testimonials = overrides.testimonials?.length ? overrides.testimonials : (master.testimonials?.length ? master.testimonials : [
-    { name: 'Pooja K.', location: `${loc}, Bangalore`, rating: 5, outfitType: normService, reviewText: `Shrusara exceeded all my expectations for ${normService}. The fit was absolutely flawless and Shruthi ma'am understood my style instantly. Highly recommended for everyone in ${loc}!` },
-    { name: 'Divya M.', location: `${loc}, Bangalore`, rating: 5, outfitType: normService, reviewText: `The attention to detail and trial session made all the difference. Delivered right on schedule to my home in ${loc}.` }
+  const rawTestimonials = overrides.testimonials?.length ? overrides.testimonials : (master.testimonials?.length ? master.testimonials : [
+    { name: 'Pooja K.', location: '', rating: 5, outfitType: normService, reviewText: `Shrusara exceeded all my expectations for ${normService}. The fit was absolutely flawless and Shruthi ma'am understood my style instantly. Highly recommended for everyone in Bangalore!` },
+    { name: 'Divya M.', location: '', rating: 5, outfitType: normService, reviewText: `The attention to detail and trial session made all the difference. Delivered right on schedule to my home.` }
   ]);
+  const testimonials = rawTestimonials.map((t) => ({
+    ...t,
+    location: (t.location && typeof t.location === 'string' && t.location.trim() && !t.location.includes('{Location}'))
+      ? t.location.trim()
+      : ''
+  }));
 
   // 9. Localized FAQs
   const faqsHeading = overrides.faqsHeading || master.faqsHeading || master.faqs?.headingTemplate || `${normService} in ${loc} FAQs`;

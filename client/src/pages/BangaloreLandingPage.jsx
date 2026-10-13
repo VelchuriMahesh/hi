@@ -1026,7 +1026,9 @@ export default function BangaloreLandingPage() {
                     <div className="mt-5 flex items-center justify-between border-t border-ink/5 pt-3">
                       <div>
                         <p className="font-heading text-sm font-bold text-ink">{testi.name}</p>
-                        <p className="text-xs text-stone-500">{testi.location || `${locationName}, Bangalore`}</p>
+                        {testi.location && typeof testi.location === 'string' && testi.location.trim() && !testi.location.includes('{Location}') ? (
+                          <p className="text-xs text-stone-500">{testi.location.trim()}</p>
+                        ) : null}
                       </div>
                       <span className="rounded-full bg-cocoa/10 px-2.5 py-0.5 text-[10px] font-semibold text-cocoa">
                         {testi.outfitType || serviceCategory}

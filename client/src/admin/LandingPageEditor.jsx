@@ -2315,7 +2315,7 @@ export default function LandingPageEditor() {
                           ...(page.testimonials || []),
                           {
                             name: 'Client Name',
-                            location: page.locationName || 'Bangalore',
+                            location: '',
                             rating: 5,
                             outfitType: page.serviceCategory || 'Bridal Blouse',
                             reviewText: ''
@@ -2453,7 +2453,8 @@ export default function LandingPageEditor() {
                         />
                         <input
                           type="text"
-                          placeholder="Area / Locality"
+                          placeholder="Customer Actual Locality (optional)"
+                          title="Customer Actual Locality (optional) — If left blank, no customer location will be displayed"
                           value={testi.location || ''}
                           onChange={(e) => {
                             const newTestis = [...page.testimonials];
